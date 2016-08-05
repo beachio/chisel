@@ -5,7 +5,9 @@ import CSSModules from 'react-css-modules';
 
 import styles from './app.sss';
 
-
+import Header from 'containers/Header/Header';
+import Sidebar from 'containers/Sidebar/Sidebar';
+import Content from 'containers/Content/Content';
 
 @CSSModules(styles, {allowMultiple: true})
 class App extends React.Component {
@@ -15,7 +17,11 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        lalala
+        <div className="wrapper">
+          <div className="container">
+            <Header />
+          </div>
+        </div>
       </div>
     );
   }

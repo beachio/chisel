@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
-import windows from './windows';
+import nav from './nav';
 
 
 export default combineReducers({
-  windows
+  nav
 });
