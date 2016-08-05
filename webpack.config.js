@@ -8,7 +8,7 @@ module.exports = {
   devtool: 'eval-source-map',
   entry: [
     'whatwg-fetch',
-    'webpack-hot-middleware/client',
+    'webpack-hot-middleware/client?reload=true',
     path.join(__dirname, 'src/index.js')
   ],
   output: {

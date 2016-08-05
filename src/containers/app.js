@@ -10,8 +10,6 @@ import styles from './app.sss';
 @CSSModules(styles, {allowMultiple: true})
 class App extends React.Component {
   componentDidMount() {
-    const {getLocalStorage} = this.props.userActions;
-    getLocalStorage();
   }
 
   render() {
