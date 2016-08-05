@@ -5,7 +5,7 @@ import styles from './ModelsList.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-class ModelsList extends Component {
+export default class ModelsList extends Component {
   componentDidMount() {
   }
   

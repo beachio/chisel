@@ -5,14 +5,14 @@ import styles from './User.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-class User extends Component {
+export default class User extends Component {
   componentDidMount() {
   }
   
   render() {
     return (
       <div>
-        lalala
+        Kein Ansell
       </div>
     );
   }

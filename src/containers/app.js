@@ -18,9 +18,9 @@ class App extends React.Component {
     return (
       <div>
         <div className="wrapper">
-          <div className="container">
-            <Header />
-          </div>
+          <Header />
+          <Sidebar />
+          <Content />
         </div>
       </div>
     );

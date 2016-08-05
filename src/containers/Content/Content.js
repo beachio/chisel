@@ -1,9 +1,10 @@
 import React, {Component, PropTypes} from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 
 import styles from './Content.sss';
-import Menu from 'components/header/Menu/Menu';
+import Model from 'components/content/models/Model/Model';
 
 import {openPage} from 'ducks/nav';
 
@@ -15,11 +16,11 @@ export default class Content extends Component  {
   
   render() {
     const {nav} = this.props;
-    const {openPage} = this.props.modalActions;
+    const {openPage} = this.props.navActions;
     
     return (
-      <div styleName="header">
-        <Menu openPage={openPage} />
+      <div styleName="content">
+        <Model />
       </div>
     );
   }
@@ -33,7 +34,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    navActions: bindActionCreators({openPage}, dispatch),
+    navActions: bindActionCreators({openPage}, dispatch)
   };
 }
 

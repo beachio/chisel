@@ -5,7 +5,7 @@ import styles from './Model.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-class Model extends Component {
+export default class Model extends Component {
   componentDidMount() {
   }
 

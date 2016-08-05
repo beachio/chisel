@@ -1,113 +1,33 @@
-.header
-  position: relative
-  z-index: 2
-  padding: 22px 0
+.menu
+  margin-right: auto
+  margin-left: auto
   display: flex
-  flex-flow: row nowrap
-  justify-content: space-between
-  align-items: flex-start
-  font-size: 12px
+  justify-content: center
   
-  .nav
-    flex: 0 0 47%
-    font-size: 11px
-    display: flex
-    flex-flow: row nowrap
-    align-items: center
-    
-    &-item
-      color: #fff
-      opacity: 0.3
-      text-transform: uppercase
-      transition: opacity 0.1s ease
-      will-change: opacity
-      cursor: pointer
-      
-      margin: 0 15px
-      
-      &:hover
-        opacity: 0.7
-  
-  .options
-    flex: 0 0 54%
-    margin-top: 4px
-    display: flex
-    flex-flow: row nowrap
-    justify-content: flex-end
-    align-items: flex-start
-  
-  .options-left
-    display: flex
-    flex-flow: row nowrap
-    justify-content: space-around
-    align-items: center
-  
-  .button
-    background: rgba(255, 255, 255, 0.07)
-    padding: 6px
-    border-radius: 150px
-    text-align: center
-    cursor: pointer
-    user-select: none
-    color: rgba(0, 0, 0, 0.5)
+  &-item
+    color: #fff
+    opacity: 0.3
     text-transform: uppercase
-  
-  .button-inner
-    background: #ffd388
-    border-radius: 150px
-    padding: 9px 0 8px
-    width: 100px
-    position: relative
-    transition: background 0.1s ease
-    will-change: background
+    transition: opacity 0.1s ease
+    will-change: opacity
+    cursor: pointer
+    
+    margin: 0 15px
     
     &:hover
-      background: #fdd694
-    
-    &:before,
-    &:after
-      display: block
-      content: ''
-      position: absolute
-      height: 3px
-      border-radius: 5px
-      background: #fff
-      opacity: 0.3
-      top: 10%
-    
-    &:before
-      left: 17%
-      width: 48%
-    
-    &:after
-      right: 17%
-      width: 12%
+      opacity: 0.7
+
+.button
+  background: rgba(255, 255, 255, 0.07)
+  padding-left: 26px
+  padding-right: 26px
+  text-align: center
+  cursor: pointer
+  user-select: none
+  color: rgba(0, 0, 0, 0.5)
+  transition: background 0.1s ease
+  will-change: background
+  font-size: 13px
   
-  .free-satoshi:hover .button-inner
-    background: #47ffbc
-  
-  .free-satoshi .button-inner
-    background: #20ffae
-    width: 126px
-  
-  .chat .button-inner
-    background: #483c6c
-    color: #fff
-    
-    &:hover
-      background: #4e4173
-    
-    &:after,
-    &:before
-      background: rgba(255,255,255,0.3)
-  
-  .balance
-    color: #fff
-    margin-right: 20px
-  
-  .free-satoshi
-    margin-right: 10px
-  
-  .withdraw,
-  .chat
-    margin-left: 10px
+  &:hover
+    background: #fdd694

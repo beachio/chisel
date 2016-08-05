@@ -1,9 +1,11 @@
 import React, {Component, PropTypes} from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 
 import styles from './Sidebar.sss';
-import Menu from 'components/header/Menu/Menu';
+import User from 'components/sidebar/User/User';
+import Sites from 'components/sidebar/Sites/Sites';
 
 import {openPage} from 'ducks/nav';
 
@@ -15,11 +17,12 @@ export default class Sidebar extends Component  {
   
   render() {
     const {nav} = this.props;
-    const {openPage} = this.props.modalActions;
+    const {openPage} = this.props.navActions;
     
     return (
-      <div styleName="header">
-        <Menu openPage={openPage} />
+      <div styleName="sidebar">
+        <User />
+        <Sites />
       </div>
     );
   }
@@ -33,7 +36,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    navActions: bindActionCreators({openPage}, dispatch),
+    navActions: bindActionCreators({openPage}, dispatch)
   };
 }
 

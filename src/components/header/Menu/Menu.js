@@ -14,26 +14,12 @@ export default class Menu extends Component  {
     const {openPage} = this.props;
     
     return (
-      <div styleName="nav">
-        <div styleName="button">
-          <div styleName="button-inner" onClick={() => openPage(PAGE_MODELS)}>Models</div>
-        </div>
-        
-        <div styleName="button">
-          <div styleName="button-inner" onClick={() => openPage(PAGE_API)}>API</div>
-        </div>
-        
-        <div styleName="button">
-          <div styleName="button-inner" onClick={() => openPage(PAGE_CONTENT)}>Content</div>
-        </div>
-        
-        <div styleName="button">
-          <div styleName="button-inner" onClick={() => openPage(PAGE_SETTINGS)}>Settings</div>
-        </div>
-  
-        <div styleName="button">
-          <div styleName="button-inner" onClick={() => openPage(PAGE_SHARING)}>Sharing</div>
-        </div>
+      <div styleName="menu">
+        <div styleName="button" onClick={() => openPage(PAGE_MODELS)}>Models</div>
+        <div styleName="button" onClick={() => openPage(PAGE_API)}>API</div>
+        <div styleName="button" onClick={() => openPage(PAGE_CONTENT)}>Content</div>
+        <div styleName="button" onClick={() => openPage(PAGE_SETTINGS)}>Settings</div>
+        <div styleName="button" onClick={() => openPage(PAGE_SHARING)}>Sharing</div>
       </div>
   );
   }
