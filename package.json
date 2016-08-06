@@ -93,6 +93,8 @@
     "secure-random": "^1.1.1",
     "socket.io": "^1.4.8",
     "socket.io-client": "^1.4.8",
+    "svg-inline-loader": "^0.6.1",
+    "svg-inline-react": "^1.0.2",
     "webpack-hot-middleware": "^2.10.0",
     "whatwg-fetch": "^1.0.0",
     "winston": "^2.2.0"

@@ -1,33 +1,17 @@
 .menu
-  margin-right: auto
-  margin-left: auto
+  flex: 0 0 80%
   display: flex
   justify-content: center
-  
-  &-item
-    color: #fff
-    opacity: 0.3
-    text-transform: uppercase
-    transition: opacity 0.1s ease
-    will-change: opacity
-    cursor: pointer
-    
-    margin: 0 15px
-    
-    &:hover
-      opacity: 0.7
 
 .button
-  background: rgba(255, 255, 255, 0.07)
-  padding-left: 26px
-  padding-right: 26px
-  text-align: center
+  font-size: 13px
+  color: #666666
+  letter-spacing: 0.5px
   cursor: pointer
   user-select: none
-  color: rgba(0, 0, 0, 0.5)
-  transition: background 0.1s ease
-  will-change: background
-  font-size: 13px
-  
-  &:hover
-    background: #fdd694
+  line-height: 60px
+  padding: 0 30px
+
+  &.active
+    background: #F9F9F9
+    color: #6D9EE1

@@ -19,8 +19,10 @@ class App extends React.Component {
       <div>
         <div className="wrapper">
           <Header />
-          <Sidebar />
-          <Content />
+          <div styleName="wrapper-inner">
+            <Sidebar />
+            <Content />
+          </div>
         </div>
       </div>
     );

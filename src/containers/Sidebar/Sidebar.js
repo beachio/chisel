@@ -14,11 +14,11 @@ import {openPage} from 'ducks/nav';
 export default class Sidebar extends Component  {
   componentWillReceiveProps(nextProps) {
   }
-  
+
   render() {
     const {nav} = this.props;
     const {openPage} = this.props.navActions;
-    
+
     return (
       <div styleName="sidebar">
         <User />

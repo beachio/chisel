@@ -9,17 +9,21 @@ import Menu from 'components/header/Menu/Menu';
 import {openPage} from 'ducks/nav';
 
 
+
 @CSSModules(styles, {allowMultiple: true})
 export default class Header extends Component  {
   componentWillReceiveProps(nextProps) {
   }
-  
+
   render() {
     const {nav} = this.props;
     const {openPage} = this.props.navActions;
-    
+
     return (
       <div styleName="header">
+        <div styleName="logo">
+          <img src={require("./logo.png")} />
+        </div>
         <Menu openPage={openPage} />
       </div>
     );
@@ -39,4 +43,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
-

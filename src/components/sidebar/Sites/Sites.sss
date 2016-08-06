@@ -1,17 +1,89 @@
+.sites
+  display: flex
+  flex-flow: column nowrap
+
 .section
-  padding-top: 5px
-  padding-bottom: 5px
-  
+  line-height: 50px
+
 .header
+  display: flex
+  justify-content: space-between
+  padding: 0 14px
+
   .title
-    float: left
-    
+    font-weight: 600
+    font-size: 12px
+    color: #666666
+    letter-spacing: 0.5px
+    text-transform: uppercase
+
   .counter
-    float: right
-    
+    font-weight: 600
+    font-size: 12px
+    color: #666666
+    letter-spacing: 0.5px
+
 .list
   .element
-    background: #fff
-    
+    display: flex
+    flex-flow: row nowrap
+    justify-content: space-between
+    align-items: center
+
+    padding: 0 14px
+    cursor: pointer
+    transition: background 0.1s ease
+    will-change: background
+
+    &:hover
+      background: #ececec
+
+    &-active
+      background: #F9F9F9
+      box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.10)
+
+    &-active:hover
+      background: #F9F9F9
+
+    .site-name
+      font-size: 12px
+      color: #333333
+      letter-spacing: 0.5px
+      overflow: hidden
+      white-space: nowrap
+      text-overflow: ellipsis
+      max-width: 160px
+      flex: 1 0 auto
+
+    .icon
+      background: #EEEEEE
+      border-radius: 2px
+
+      display: flex
+      flex-flow: column nowrap
+      justify-content: center
+      align-items: center
+
+      width: 24px
+      height: 24px
+
+      & svg
+        height: 12px
+
+    .link svg
+      height: 12px
+
 .new-site
+  padding: 0 14px
   visibility: visible
+
+  display: flex
+  align-items: center
+
+  font-size: 12px
+  color: #666666
+  letter-spacing: 0.5px
+
+  & svg
+    margin-right: 14px
+    height: 14px
