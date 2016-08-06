@@ -21,9 +21,9 @@ export default class Header extends Component  {
 
     return (
       <div styleName="header">
-        <div styleName="logo">
+        <a href="/" styleName="logo">
           <img src={require("./logo.png")} />
-        </div>
+        </a>
         <Menu openPage={openPage} />
       </div>
     );
