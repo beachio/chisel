@@ -17,7 +17,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <div className="wrapper">
+        <div styleName="wrapper">
           <Header />
           <div styleName="wrapper-inner">
             <Sidebar />

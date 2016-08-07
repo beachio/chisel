@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
-
+import InlineSVG from 'svg-inline-react';
 import styles from './Sidebar.sss';
 import User from 'components/sidebar/User/User';
 import Sites from 'components/sidebar/Sites/Sites';
@@ -23,6 +23,9 @@ export default class Sidebar extends Component  {
       <div styleName="sidebar">
         <User />
         <Sites />
+        <div styleName="answer-question">
+          <InlineSVG styleName="icon" src={require("./question.svg")} />
+        </div>
       </div>
     );
   }

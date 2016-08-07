@@ -5,6 +5,7 @@ import CSSModules from 'react-css-modules';
 
 import styles from './Content.sss';
 import ModelsList from 'components/content/models/ModelsList/ModelsList';
+import Model from 'components/content/models/Model/Model';
 
 import {openPage} from 'ducks/nav';
 
@@ -21,6 +22,7 @@ export default class Content extends Component  {
     return (
       <div styleName="content">
         <ModelsList />
+        <Model />
       </div>
     );
   }

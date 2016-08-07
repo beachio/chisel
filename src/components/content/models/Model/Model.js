@@ -13,7 +13,34 @@ export default class Model extends Component {
 
   render() {
     return (
-      <div></div>
+      <div className="g-container" styleName="models">
+        <div styleName="header">
+          <div styleName="back">Back</div>
+          <div styleName="header-title">Post</div>
+          <div styleName="header-subtitle">A blog post or article content type</div>
+        </div>
+        <form>
+          <div styleName="list">
+            <div styleName="list-item">
+              <div styleName="list-type">
+                <div styleName="list-title">Title</div>
+                <div styleName="list-subtitle">Short Text</div>
+              </div>
+            </div>
+            <div styleName="list-item">
+              <div styleName="list-type">
+                <div styleName="list-title">Body</div>
+                <div styleName="list-subtitle">Long Text</div>
+              </div>
+            </div>
+          </div>
+
+          <div styleName="create-new">
+            <input styleName="input" placeholder="Add New Field" />
+            <InlineSVG styleName="plus" src={require("./plus.svg")} />
+          </div>
+        </form>
+      </div>
     );
   }
 }
