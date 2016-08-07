@@ -1,6 +1,60 @@
-.wrapper
-  overflow-x: hidden
-  font-weight: bold
-  height: 100vh
-  width: 100vw
-  transform: translate3d(0, 0, 0)
+.list
+  display: flex
+  flex-flow: column nowrap
+  width: 80%
+  margin: 0 auto
+  margin-top: 22px
+
+  &-item
+    display: flex
+    flex-flow: row nowrap
+    align-items: center
+
+    margin-bottom: 9px
+
+    .type
+      position: relative
+      flex: 0 0 70%
+
+      &:before
+        content: ''
+        position: absolute
+        top: 50%
+        transform: translateY(-50%)
+        left: -31px
+        height: 20px
+        width: 20px
+        border-radius: 100%
+
+
+    .fields,
+    .updated
+      flex: 0 0 15%
+
+    .title,
+    .subtitle,
+    .fields,
+    .updated
+      font-size: 13px
+      color: #666666
+      letter-spacing: 0.5px
+      text-align: left
+
+    .title
+      font-weight: 600
+
+    .subtitle
+      letter-spacing: 0.46px
+
+  &-item.type-post .type:before
+    background: #2ABB9B
+
+  &-item.type-page .type:before
+    background: #EF7D00
+
+  &-header
+    margin-bottom: 5px
+
+    .fields,
+    .updated
+      color: #999999

@@ -8,11 +8,46 @@ import styles from './ModelsList.sss';
 export default class ModelsList extends Component {
   componentDidMount() {
   }
-  
+
   render() {
     return (
-      <div>
-        lalala
+      <div styleName="list">
+        <div styleName="list-item list-header">
+          <div styleName="type">
+          </div>
+          <div styleName="fields">
+            FIELDS
+          </div>
+          <div styleName="updated">
+            UPDATED
+          </div>
+        </div>
+
+        <div styleName="list-item type-post">
+          <div styleName="type">
+            <div styleName="title">Post</div>
+            <div styleName="subtitle">A blog post or article content type</div>
+          </div>
+          <div styleName="fields">
+            7
+          </div>
+          <div styleName="updated">
+            3 Hours ago
+          </div>
+        </div>
+
+        <div styleName="list-item type-page">
+          <div styleName="type">
+            <div styleName="title">Page</div>
+            <div styleName="subtitle">A static and standalone Page content type</div>
+          </div>
+          <div styleName="fields">
+            7
+          </div>
+          <div styleName="updated">
+            24 Mar
+          </div>
+        </div>
       </div>
     );
   }

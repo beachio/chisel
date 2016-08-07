@@ -1,5 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
+import ModelsList from '../ModelsList/ModelsList';
+import InlineSVG from 'svg-inline-react';
 
 import styles from './Model.sss';
 
@@ -11,8 +13,18 @@ export default class Model extends Component {
 
   render() {
     return (
-      <div>
-        lalala
+      <div styleName="models">
+        <div styleName="title">
+          Models
+        </div>
+        <form>
+          <ModelsList />
+
+          <div styleName="create-new">
+            <input styleName="input" placeholder="Create a new Content Type" />
+            <InlineSVG styleName="plus" src={require("./plus.svg")} />
+          </div>
+        </form>
       </div>
     );
   }
