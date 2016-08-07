@@ -11,11 +11,12 @@ export default class Sites extends Component {
   }
 
   render() {
+
     return (
       <div styleName="sites">
         <div styleName="section header">
           <div styleName="title">Your sites</div>
-          <div styleName="counter">1/10</div>
+          <div styleName="counter">3/10</div>
         </div>
         <div styleName="section list">
           {

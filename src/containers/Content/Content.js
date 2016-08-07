@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 
 import styles from './Content.sss';
-import Model from 'components/content/models/Model/Model';
+import ModelsList from 'components/content/models/ModelsList/ModelsList';
 
 import {openPage} from 'ducks/nav';
 
@@ -13,14 +13,14 @@ import {openPage} from 'ducks/nav';
 export default class Content extends Component  {
   componentWillReceiveProps(nextProps) {
   }
-  
+
   render() {
     const {nav} = this.props;
     const {openPage} = this.props.navActions;
-    
+
     return (
       <div styleName="content">
-        <Model />
+        <ModelsList />
       </div>
     );
   }

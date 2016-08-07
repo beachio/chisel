@@ -1,60 +1,100 @@
-.list
-  display: flex
-  flex-flow: column nowrap
-  width: 80%
-  margin: 0 auto
-  margin-top: 22px
+.models
+  width: 90%
+  background: #fff
+  border-radius: 5px
+  text-align: center
+  padding-bottom: 65px
 
-  &-item
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.10);
+
+  .g-title
+    font-size: 20px
+    color: #666666
+    letter-spacing: 0.83px
+    line-height: 55px
+    border-bottom: 1px solid #E5E5E5
+
+  .create-new
+    width: 80%
+    position: relative
+    margin: 0 auto
+    margin-top: 11px
+
+    .input
+      background: #FFFFFF
+      border: 1px solid #CCCCCC
+      box-shadow: inset 0px 1px 2px 0px rgba(0,0,0,0.10)
+      border-radius: 2px
+      line-height: 34px
+      width: 100%
+      padding: 0 40px 0 9px
+      outline: none
+
+    .plus
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      right: 15px
+      width: 14px
+      height: 14px
+
+  .list
     display: flex
-    flex-flow: row nowrap
-    align-items: center
+    flex-flow: column nowrap
+    width: 80%
+    margin: 0 auto
+    margin-top: 22px
 
-    margin-bottom: 9px
+    &-item
+      display: flex
+      flex-flow: row nowrap
+      align-items: center
 
-    .type
-      position: relative
-      flex: 0 0 70%
+      margin-bottom: 9px
 
-      &:before
-        content: ''
-        position: absolute
-        top: 50%
-        transform: translateY(-50%)
-        left: -31px
-        height: 20px
-        width: 20px
-        border-radius: 100%
+      .type
+        position: relative
+        flex: 0 0 70%
+
+        &:before
+          content: ''
+          position: absolute
+          top: 50%
+          transform: translateY(-50%)
+          left: -31px
+          height: 20px
+          width: 20px
+          border-radius: 100%
 
 
-    .fields,
-    .updated
-      flex: 0 0 15%
+      .fields,
+      .updated
+        flex: 0 0 15%
 
-    .title,
-    .subtitle,
-    .fields,
-    .updated
-      font-size: 13px
-      color: #666666
-      letter-spacing: 0.5px
-      text-align: left
+      .title,
+      .subtitle,
+      .fields,
+      .updated
+        font-size: 13px
+        color: #666666
+        letter-spacing: 0.5px
+        text-align: left
 
-    .title
-      font-weight: 600
+      .title
+        font-weight: 600
 
-    .subtitle
-      letter-spacing: 0.46px
+      .subtitle
+        letter-spacing: 0.46px
 
-  &-item.type-post .type:before
-    background: #2ABB9B
+    &-item.type-post .type:before
+      background: #2ABB9B
 
-  &-item.type-page .type:before
-    background: #EF7D00
+    &-item.type-page .type:before
+      background: #EF7D00
 
-  &-header
-    margin-bottom: 5px
+    &-header
+      margin-bottom: 5px
 
-    .fields,
-    .updated
-      color: #999999
+      .fields,
+      .updated
+        color: #999999
