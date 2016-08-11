@@ -1,5 +1,7 @@
 import {Parse} from 'parse';
 
+import {UserData} from '../models/UserData';
+
 
 export const LOGIN_REQUEST              = 'app/users/LOGIN_REQUEST';
 export const LOGIN_RESPONSE             = 'app/users/LOGIN_RESPONSE';
@@ -27,12 +29,14 @@ export function register(email, password) {
     user
       .signUp()
       .then(() => {
-        localStorage.setItem('authorization', JSON.stringify({email, password}));
         Parse.User.logIn(email, password)
           .then(() => {
+            localStorage.setItem('authorization', JSON.stringify({email, password}));
+            let userData = new UserData().setFromServer(Parse.User.current());
             dispatch({
               type: LOGIN_RESPONSE,
-              authorized: true
+              authorized: true,
+              userData
             });
           }, () => {
             console.log('FATAL ERROR!!! AAAAAA!!!');
@@ -57,9 +61,11 @@ export function login(email, password) {
     Parse.User.logIn(email, password)
       .then(() => {
         localStorage.setItem('authorization', JSON.stringify({email, password}));
+        let userData = new UserData().setFromServer(Parse.User.current());
         dispatch({
           type: LOGIN_RESPONSE,
-          authorized: true
+          authorized: true,
+          userData
         });
       }, () => {
         dispatch({
@@ -81,9 +87,11 @@ export function loginOrRegister(email, password) {
     Parse.User.logIn(email, password)
       .then(() => {
         localStorage.setItem('authorization', JSON.stringify({email, password}));
+        let userData = new UserData().setFromServer(Parse.User.current());
         dispatch({
           type: LOGIN_RESPONSE,
-          authorized: true
+          authorized: true,
+          userData
         });
       }, () => {
         let user = new Parse.User();
@@ -93,12 +101,14 @@ export function loginOrRegister(email, password) {
         user
           .signUp()
           .then(() => {
-            localStorage.setItem('authorization', JSON.stringify({email, password}));
             Parse.User.logIn(email, password)
               .then(() => {
+                localStorage.setItem('authorization', JSON.stringify({email, password}));
+                let userData = new UserData().setFromServer(Parse.User.current());
                 dispatch({
                   type: LOGIN_RESPONSE,
-                  authorized: true
+                  authorized: true,
+                  userData
                 });
               }, () => {
                 console.log('FATAL ERROR!!! AAAAAA!!!');
@@ -126,9 +136,11 @@ export function getLocalStorage() {
 
       Parse.User.logIn(auth.email, auth.password)
         .then(() => {
+          let userData = new UserData().setFromServer(Parse.User.current());
           dispatch({
             type: LOGIN_RESPONSE,
-            authorized: true
+            authorized: true,
+            userData
           });
         }, () => {
           dispatch({
@@ -160,7 +172,7 @@ const initialState = {
   email: '',
   password: '',
 
-  id: ''
+  userData: null
 };
 
 export default function userReducer(state = initialState, action) {
@@ -181,7 +193,8 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         authorized: action.authorized,
-        authError:  action.authError
+        authError:  action.authError,
+        userData: action.userData
       };
 
     case LOCAL_STORAGE_RESPONSE:

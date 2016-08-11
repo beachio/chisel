@@ -9,6 +9,7 @@ import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
 import Content from 'containers/Content/Content';
 import Sign from 'containers/Sign/Sign';
+import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import {getLocalStorage} from '../ducks/user';
 
 
@@ -20,31 +21,37 @@ class App extends React.Component {
   }
 
   render() {
-    const {user} = this.props;
+    const {user, initialize} = this.props;
 
     let Page = (
       <div>
-        <Header />
-        <div styleName="wrapper-inner">
-          <Sidebar />
-          <Content />
-        </div>
+        <SiteLoader />
       </div>
     );
 
-    if (!user.authorized) {
+    if (initialize.initialized) {
       Page = (
         <div className="container">
           <Sign />
         </div>
       );
+
+      if (user.authorized) {
+        Page = (
+          <div>
+            <Header />
+            <div styleName="wrapper-inner">
+              <Sidebar />
+              <Content />
+            </div>
+          </div>
+        );
+      }
     }
 
     return (
-      <div>
-        <div styleName="wrapper">
-          {Page}
-        </div>
+      <div styleName="wrapper">
+        {Page}
       </div>
     );
   }
@@ -52,7 +59,8 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    user:     state.user
+    initialize: state.initialize,
+    user:       state.user
   };
 }
 
