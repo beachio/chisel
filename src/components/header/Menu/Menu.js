@@ -21,6 +21,6 @@ export default class Menu extends Component  {
         <div styleName="button" onClick={() => openPage(PAGE_SETTINGS)}>Settings</div>
         <div styleName="button" onClick={() => openPage(PAGE_SHARING)}>Sharing</div>
       </div>
-  );
+    );
   }
 }
