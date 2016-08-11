@@ -1,0 +1,102 @@
+.Sign
+  display: flex
+  flex-flow: column nowrap
+  justify-content: center
+  align-items: center
+
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+
+  text-align: center
+
+.form
+  margin-bottom: 0
+  display: flex
+  flex-flow: column nowrap
+  width: 60%
+  justify-content: center
+
+.title
+  color: #20ffae
+  text-shadow: 0px 0px 10px #20ffae
+  font-size: 23px
+  text-transform: uppercase
+
+.subtitle,
+.or,
+.already
+  margin-top: 18px
+  font-size: 12px
+  color: rgba(0, 0, 0, 0.7)
+
+  text-align: center
+
+
+.input
+  background: #f1f1f1
+  border: none
+  border-radius: 50px
+  padding: 0 14px
+  font-size: 11px
+  font-weight: bold
+  line-height: 33px
+  outline: none
+  margin-top: 12px
+  text-transform: none
+  width: 100%
+  color: #000
+  &::-webkit-input-placeholder
+    color: #999999
+  &::-moz-placeholder
+    color: #999999
+  &:-moz-placeholder
+    color: #999999
+  &:-ms-input-placeholder
+    color: #999999
+
+
+.button
+  margin-top: 20px
+  background: rgba(255, 255, 255, 0.07)
+  padding: 6px
+  border-radius: 150px
+  outline: none
+  text-align: center
+  cursor: pointer
+  user-select: none
+  border: none
+  font-size: 12px
+  color: rgba(0, 0, 0, 0.5)
+
+.button-inner
+  background: #20ffae
+  border-radius: 150px
+  padding: 9px 17px 8px
+  position: relative
+
+  &:before,
+  &:after
+    display: block
+    content: ''
+    position: absolute
+    height: 3px
+    border-radius: 5px
+    background: #fff
+    opacity: 0.3
+    top: 10%
+
+  &:before
+    left: 17%
+    width: 48%
+
+  &:after
+    right: 17%
+    width: 12%
+
+.already
+  font-size: 16px
+  text-decoration: underline
+  color: rgba(0, 0, 0, 0.6)
+  cursor: pointer

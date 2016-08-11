@@ -8,6 +8,8 @@ import styles from './app.sss';
 import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
 import Content from 'containers/Content/Content';
+import Sign from 'containers/Sign/Sign';
+
 
 @CSSModules(styles, {allowMultiple: true})
 class App extends React.Component {
@@ -15,14 +17,30 @@ class App extends React.Component {
   }
 
   render() {
+    const {user} = this.props;
+
+    let Page = (
+      <div>
+        <Header />
+        <div styleName="wrapper-inner">
+          <Sidebar />
+          <Content />
+        </div>
+      </div>
+    );
+
+    if (!user.authorized) {
+      Page = (
+        <div className="container">
+          <Sign />
+        </div>
+      );
+    }
+
     return (
       <div>
         <div styleName="wrapper">
-          <Header />
-          <div styleName="wrapper-inner">
-            <Sidebar />
-            <Content />
-          </div>
+          {Page}
         </div>
       </div>
     );
@@ -31,6 +49,7 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    user:     state.user
   };
 }
 
