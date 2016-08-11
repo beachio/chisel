@@ -2,6 +2,26 @@
   overflow-x: hidden
   display: inline-block
   background: #f1f1f1
-  height: 100vh
+  height: calc(100vh - 60px)
   width: 240px
   transform: translate3d(0, 0, 0)
+
+  .answer-question
+    height: 32px
+    width: 32px
+    border-radius: 100%
+    position: absolute
+    bottom: 40px
+    left: 50%
+    transform: translateX(-50%)
+    background: #FFFFFF
+    border: 1px solid #CCCCCC
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.10)
+    display: flex
+    flex-flow: column nowrap
+    justify-content: center
+    align-items: center
+    cursor: pointer
+
+    .icon svg
+      height: 15px

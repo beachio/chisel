@@ -12,8 +12,8 @@ export default class ModelsList extends Component {
 
   render() {
     return (
-      <div styleName="models">
-        <div styleName="g-title">
+      <div className="g-container" styleName="models">
+        <div className="g-title">
           Models
         </div>
         <form>
@@ -29,7 +29,7 @@ export default class ModelsList extends Component {
               </div>
             </div>
 
-            <div styleName="list-item type-post">
+            <div styleName="list-item">
               <div styleName="type">
                 <div styleName="title">Post</div>
                 <div styleName="subtitle">A blog post or article content type</div>
@@ -42,7 +42,7 @@ export default class ModelsList extends Component {
               </div>
             </div>
 
-            <div styleName="list-item type-page">
+            <div styleName="list-item">
               <div styleName="type">
                 <div styleName="title">Page</div>
                 <div styleName="subtitle">A static and standalone Page content type</div>

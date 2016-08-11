@@ -1,0 +1,109 @@
+.models
+  text-align: center
+  padding-bottom: 65px
+
+  .create-new
+    width: 81%
+    position: relative
+    margin: 0 auto
+    margin-top: 9px
+
+    .input
+      background: #FFFFFF
+      border: 1px solid #CCCCCC
+      box-shadow: inset 0px 1px 2px 0px rgba(0,0,0,0.10)
+      border-radius: 2px
+      line-height: 34px
+      width: 100%
+      padding: 0 40px 0 9px
+      outline: none
+
+    .plus
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      right: 15px
+      width: 14px
+      height: 14px
+
+  .header
+    border-bottom: 1px solid #E5E5E5
+    position: relative
+
+    min-height: 55px
+    display: flex
+    flex-flow: column nowrap
+    justify-content: center
+    align-items: center
+
+    .back
+      font-size: 13px
+      color: #999999
+      letter-spacing: 0.5px
+
+      position: absolute
+      left: 34px
+      top: 50%
+      transform: translateY(-50%)
+      cursor: pointer
+
+    &-title
+      font-size: 20px
+      color: #666666
+      letter-spacing: 0.83px
+
+    &-subtitle
+      font-size: 12px
+      color: #666666
+      letter-spacing: 0.46px
+
+.list
+  display: flex
+  flex-flow: column nowrap
+  width: 80%
+  margin: 0 auto
+  margin-top: 22px
+
+  &-title,
+  &-subtitle
+    font-size: 13px
+    color: #666666
+    letter-spacing: 0.5px
+    text-align: left
+
+  &-title
+    font-weight: 600
+
+  &-subtitle
+    letter-spacing: 0.46px
+
+  &-type
+    position: relative
+
+    &:before
+      content: ''
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      left: -31px
+      height: 20px
+      width: 20px
+      border-radius: 100%
+
+  &-item
+    display: flex
+    flex-flow: row nowrap
+    align-items: center
+
+    cursor: pointer
+
+    margin-bottom: 9px
+
+  &-item:nth-child(odd) .list-type:before
+    background: #2ABB9B
+
+  &-item:nth-child(even) .list-type:before
+    background: #EF7D00
+
+  /*&-item:first-child .list-type:before
+    background: #EF7D00*/
