@@ -114,20 +114,33 @@ export function loginOrRegister(email, password) {
 }
 
 export function getLocalStorage() {
-  let authStr = localStorage.getItem('authorization');
-  if (authStr) {
-    let auth = JSON.parse(authStr);
-    return {
-      type: LOCAL_STORAGE_RESPONSE,
-      authorized: true,
-      email: auth.email,
-      password: auth.password
-    };
-  }
+  return dispatch => {
+    let authStr = localStorage.getItem('authorization');
+    if (authStr) {
+      let auth = JSON.parse(authStr);
+      dispatch({
+        type: LOCAL_STORAGE_RESPONSE,
+        email: auth.email,
+        password: auth.password
+      });
 
-  return {
-    type: LOCAL_STORAGE_RESPONSE,
-    authorized: false
+      Parse.User.logIn(auth.email, auth.password)
+        .then(() => {
+          dispatch({
+            type: LOGIN_RESPONSE,
+            authorized: true
+          });
+        }, () => {
+          dispatch({
+            type: LOGIN_RESPONSE,
+            authError: ERROR_WRONG_PASS
+          });
+        });
+    }
+
+    return {
+      type: LOCAL_STORAGE_RESPONSE
+    };
   };
 }
 
@@ -168,18 +181,15 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         authorized: action.authorized,
-        authError:  action.authError,
-        tokens:     action.tokens
+        authError:  action.authError
       };
 
     case LOCAL_STORAGE_RESPONSE:
-      if (action.authorized)
+      if (action.email)
         return {
           ...state,
-          authorized: true,
-          email: action.email,
+          email:    action.email,
           password: action.password,
-          tokens:   action.tokens
         };
       else
         return state;

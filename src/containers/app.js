@@ -9,11 +9,14 @@ import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
 import Content from 'containers/Content/Content';
 import Sign from 'containers/Sign/Sign';
+import {getLocalStorage} from '../ducks/user';
 
 
 @CSSModules(styles, {allowMultiple: true})
 class App extends React.Component {
   componentDidMount() {
+    const {getLocalStorage} = this.props.userActions;
+    getLocalStorage();
   }
 
   render() {
@@ -55,6 +58,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    userActions:  bindActionCreators({getLocalStorage}, dispatch),
   };
 }
 
