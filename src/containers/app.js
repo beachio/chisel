@@ -10,16 +10,10 @@ import Sidebar from 'containers/Sidebar/Sidebar';
 import Content from 'containers/Content/Content';
 import Sign from 'containers/Sign/Sign';
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
-import {getLocalStorage} from '../ducks/user';
 
 
 @CSSModules(styles, {allowMultiple: true})
 class App extends React.Component {
-  componentDidMount() {
-    const {getLocalStorage} = this.props.userActions;
-    getLocalStorage();
-  }
-
   render() {
     const {user, initialize} = this.props;
 
@@ -29,24 +23,24 @@ class App extends React.Component {
       </div>
     );
 
-    if (initialize.initialized) {
+    if (!user.fetchingRequest && !user.authorized) {
       Page = (
         <div className="container">
           <Sign />
         </div>
       );
+    }
 
-      if (user.authorized) {
-        Page = (
-          <div>
-            <Header />
-            <div styleName="wrapper-inner">
-              <Sidebar />
-              <Content />
-            </div>
+    if (user.authorized && initialize.initializedUser) {
+      Page = (
+        <div>
+          <Header />
+          <div styleName="wrapper-inner">
+            <Sidebar />
+            <Content />
           </div>
-        );
-      }
+        </div>
+      );
     }
 
     return (
@@ -66,7 +60,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions:  bindActionCreators({getLocalStorage}, dispatch),
   };
 }
 

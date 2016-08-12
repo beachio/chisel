@@ -3,12 +3,11 @@ import {Parse} from 'parse';
 import {UserData} from '../models/UserData';
 
 
-export const LOGIN_REQUEST              = 'app/users/LOGIN_REQUEST';
-export const LOGIN_RESPONSE             = 'app/users/LOGIN_RESPONSE';
-export const REGISTER_REQUEST           = 'app/users/REGISTER_REQUEST';
-export const REGISTER_RESPONSE          = 'app/users/REGISTER_RESPONSE';
-export const LOCAL_STORAGE_RESPONSE     = 'app/users/LOCAL_STORAGE_RESPONSE';
-export const LOGOUT                     = 'app/users/LOGOUT';
+export const LOGIN_REQUEST          = 'app/users/LOGIN_REQUEST';
+export const LOGIN_RESPONSE         = 'app/users/LOGIN_RESPONSE';
+export const REGISTER_REQUEST       = 'app/users/REGISTER_REQUEST';
+export const REGISTER_RESPONSE      = 'app/users/REGISTER_RESPONSE';
+export const LOGOUT                 = 'app/users/LOGOUT';
 
 export const ERROR_USER_EXISTS  = 'app/users/ERROR_USER_EXISTS';
 export const ERROR_WRONG_PASS   = 'app/users/ERROR_WRONG_PASS';
@@ -129,7 +128,7 @@ export function getLocalStorage() {
     if (authStr) {
       let auth = JSON.parse(authStr);
       dispatch({
-        type: LOCAL_STORAGE_RESPONSE,
+        type: LOGIN_REQUEST,
         email: auth.email,
         password: auth.password
       });
@@ -144,15 +143,14 @@ export function getLocalStorage() {
           });
         }, () => {
           dispatch({
-            type: LOGIN_RESPONSE,
-            authError: ERROR_WRONG_PASS
+            type: LOGIN_RESPONSE
           });
         });
+    } else {
+      dispatch({
+        type: LOGIN_RESPONSE
+      });
     }
-
-    return {
-      type: LOCAL_STORAGE_RESPONSE
-    };
   };
 }
 
@@ -166,6 +164,8 @@ export function logout() {
 
 
 const initialState = {
+  fetchingRequest: true,
+
   authorized: false,
   authError: null,
 
@@ -182,6 +182,7 @@ export default function userReducer(state = initialState, action) {
     case REGISTER_REQUEST:
       return {
         ...state,
+        fetchingRequest: true,
         authorized: false,
         authError: null,
         email: action.email,
@@ -192,20 +193,11 @@ export default function userReducer(state = initialState, action) {
     case REGISTER_RESPONSE:
       return {
         ...state,
+        fetchingRequest: false,
         authorized: action.authorized,
         authError:  action.authError,
-        userData: action.userData
+        userData:   action.userData
       };
-
-    case LOCAL_STORAGE_RESPONSE:
-      if (action.email)
-        return {
-          ...state,
-          email:    action.email,
-          password: action.password,
-        };
-      else
-        return state;
 
     case LOGOUT:
       return {
