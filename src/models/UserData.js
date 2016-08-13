@@ -10,13 +10,13 @@ export class UserData {
   
 
   init() {
-    let object = Parse.User.current();
+    let origin = Parse.User.current();
     
-    if (object.get('email'))      this.email      = object.get('email');
-    if (object.get('firstName'))  this.firstName  = object.get('firstName');
-    if (object.get('lastName'))   this.lastName   = object.get('lastName');
-    if (object.get('avatar'))     this.avatar     = object.get('avatar');
-    if (object.get('sex'))        this.sex        = object.get('sex');
+    if (origin.get('email'))      this.email      = origin.get('email');
+    if (origin.get('firstName'))  this.firstName  = origin.get('firstName');
+    if (origin.get('lastName'))   this.lastName   = origin.get('lastName');
+    if (origin.get('avatar'))     this.avatar     = origin.get('avatar');
+    if (origin.get('sex'))        this.sex        = origin.get('sex');
 
     return this;
   }

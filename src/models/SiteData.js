@@ -4,20 +4,18 @@ import {Parse} from 'parse';
 export class SiteData {
   OriginClass = Parse.Object.extend("Site");
   origin = null;
-  objectId = "";
   
   domain = "";
   owner = null;
   collaborations = [];
 
   
-  setOrigin(object) {
-    this.origin = object;
-    this.objectId = object.id;
+  setOrigin(origin) {
+    this.origin = origin;
 
-    if (object.get('domain'))         this.domain         = object.get('domain');
-    if (object.get('owner'))          this.owner          = object.get('owner');
-    if (object.get('collaborations')) this.collaborations = object.get('collaborations');
+    if (origin.get('domain'))         this.domain         = origin.get('domain');
+    if (origin.get('owner'))          this.owner          = origin.get('owner');
+    if (origin.get('collaborations')) this.collaborations = origin.get('collaborations');
 
     return this;
   }
