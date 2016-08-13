@@ -3,14 +3,14 @@ import {Parse} from 'parse';
 import {UserData} from '../models/UserData';
 
 
-export const LOGIN_REQUEST          = 'app/users/LOGIN_REQUEST';
-export const LOGIN_RESPONSE         = 'app/users/LOGIN_RESPONSE';
-export const REGISTER_REQUEST       = 'app/users/REGISTER_REQUEST';
-export const REGISTER_RESPONSE      = 'app/users/REGISTER_RESPONSE';
-export const LOGOUT                 = 'app/users/LOGOUT';
+export const LOGIN_REQUEST          = 'app/user/LOGIN_REQUEST';
+export const LOGIN_RESPONSE         = 'app/user/LOGIN_RESPONSE';
+export const REGISTER_REQUEST       = 'app/user/REGISTER_REQUEST';
+export const REGISTER_RESPONSE      = 'app/user/REGISTER_RESPONSE';
+export const LOGOUT                 = 'app/user/LOGOUT';
 
-export const ERROR_USER_EXISTS  = 'app/users/ERROR_USER_EXISTS';
-export const ERROR_WRONG_PASS   = 'app/users/ERROR_WRONG_PASS';
+export const ERROR_USER_EXISTS  = 'app/user/ERROR_USER_EXISTS';
+export const ERROR_WRONG_PASS   = 'app/user/ERROR_WRONG_PASS';
 
 
 export function register(email, password) {
@@ -31,7 +31,7 @@ export function register(email, password) {
         Parse.User.logIn(email, password)
           .then(() => {
             localStorage.setItem('authorization', JSON.stringify({email, password}));
-            let userData = new UserData().setFromServer(Parse.User.current());
+            let userData = new UserData().init();
             dispatch({
               type: LOGIN_RESPONSE,
               authorized: true,
@@ -60,7 +60,7 @@ export function login(email, password) {
     Parse.User.logIn(email, password)
       .then(() => {
         localStorage.setItem('authorization', JSON.stringify({email, password}));
-        let userData = new UserData().setFromServer(Parse.User.current());
+        let userData = new UserData().init();
         dispatch({
           type: LOGIN_RESPONSE,
           authorized: true,
@@ -86,7 +86,7 @@ export function loginOrRegister(email, password) {
     Parse.User.logIn(email, password)
       .then(() => {
         localStorage.setItem('authorization', JSON.stringify({email, password}));
-        let userData = new UserData().setFromServer(Parse.User.current());
+        let userData = new UserData().init();
         dispatch({
           type: LOGIN_RESPONSE,
           authorized: true,
@@ -105,7 +105,7 @@ export function loginOrRegister(email, password) {
             Parse.User.logIn(email, password)
               .then(() => {
                 localStorage.setItem('authorization', JSON.stringify({email, password}));
-                let userData = new UserData().setFromServer(Parse.User.current());
+                let userData = new UserData().init();
                 dispatch({
                   type: LOGIN_RESPONSE,
                   authorized: true,
@@ -137,7 +137,7 @@ export function getLocalStorage() {
 
       Parse.User.logIn(auth.email, auth.password)
         .then(() => {
-          let userData = new UserData().setFromServer(Parse.User.current());
+          let userData = new UserData().init();
           dispatch({
             type: LOGIN_RESPONSE,
             localStorageReady: true,

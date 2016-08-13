@@ -1,10 +1,18 @@
+import {Parse} from 'parse';
+
+
 export class SiteData {
+  OriginClass = Parse.Object.extend("Site");
+  origin = null;
   objectId = "";
+  
   domain = "";
   owner = null;
   collaborations = [];
 
-  setFromServer(object) {
+  
+  setOrigin(object) {
+    this.origin = object;
     this.objectId = object.id;
 
     if (object.get('domain'))         this.domain         = object.get('domain');
@@ -14,9 +22,12 @@ export class SiteData {
     return this;
   }
 
-  updateRemote(remote) {
-    remote.set("domain",          this.domain);
-    remote.set("owner",           this.owner);
-    remote.set("collaborations",  this.collaborations);
+  updateOrigin() {
+    if (!this.origin)
+      this.origin = new this.OriginClass();
+    
+    this.origin.set("domain",         this.domain);
+    this.origin.set("owner",          this.owner);
+    this.origin.set("collaborations", this.collaborations);
   }
 }

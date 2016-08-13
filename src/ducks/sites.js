@@ -16,18 +16,13 @@ export function init() {
       .then(sites => {
         let sitesAll = [];
         let sitesUser = [];
-        let sitesAll_r = [];
-        let sitesUser_r = [];
 
-        for (let site_r of sites) {
-          sitesAll_r.push(site_r);
-          let site = new SiteData().setFromServer(site_r);
+        for (let site_o of sites) {
+          let site = new SiteData().setOrigin(site_o);
           sitesAll.push(site);
 
-          if (site_r.get('owner').id == Parse.User.current().id) {
-            sitesUser_r.push(site_r);
+          if (site_o.get('owner').id == Parse.User.current().id)
             sitesUser.push(site);
-          }
         }
 
         let currentSite = sitesUser.length ? sitesUser[0] : null;
@@ -36,8 +31,6 @@ export function init() {
           type: INIT_END,
           sitesAll,
           sitesUser,
-          sitesAll_r,
-          sitesUser_r,
           currentSite
         });
       }, () => {})
@@ -54,29 +47,19 @@ export function setCurrentSite(currentSite) {
 export function addSite(site) {
   let sitesAll = store.getState().sites.sitesAll;
   let sitesUser = store.getState().sites.sitesUser;
-  let sitesAll_r = store.getState().sites.sitesAll_r;
-  let sitesUser_r = store.getState().sites.sitesUser_r;
 
   site.owner = Parse.User.current();
 
   sitesAll.push(site);
   sitesUser.push(site);
 
-  let Site = Parse.Object.extend("Site");
-  let site_r = new Site();
-  site.updateRemote(site_r);
-
-  sitesAll_r.push(site_r);
-  sitesUser_r.push(site_r);
-
-  site_r.save();
+  site.updateOrigin();
+  site.origin.save();
 
   return {
     type: SITE_ADD,
     sitesAll,
     sitesUser,
-    sitesAll_r,
-    sitesUser_r,
     currentSite: site
   };
 }
@@ -85,8 +68,6 @@ export function addSite(site) {
 const initialState = {
   sitesAll: [],
   sitesUser: [],
-  sitesAll_r: [],
-  sitesUser_r: [],
 
   currentSite: null
 };
@@ -97,19 +78,15 @@ export default function sitesReducer(state = initialState, action) {
     case SITE_ADD:
       return {
         ...state,
-
-        sitesAll:     action.sitesAll,
-        sitesUser:    action.sitesUser,
-        sitesAll_r:   action.sitesAll_r,
-        sitesUser_r:  action.sitesUser_r,
-
-        currentSite:  action.currentSite
+        sitesAll:       action.sitesAll,
+        sitesUser:      action.sitesUser,
+        currentSite:    action.currentSite
       };
 
     case SET_CURRENT_SITE:
       return {
         ...state,
-        currentSite: action.currentSite
+        currentSite:    action.currentSite
       };
 
     default:
