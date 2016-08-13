@@ -97,6 +97,8 @@ export function loginOrRegister(email, password) {
         user.set("username", email);
         user.set("email", email);
         user.set("password", password);
+        user.set("firstName", "Jack");
+        user.set("lastName", "Daniel");
         user
           .signUp()
           .then(() => {
@@ -138,17 +140,20 @@ export function getLocalStorage() {
           let userData = new UserData().setFromServer(Parse.User.current());
           dispatch({
             type: LOGIN_RESPONSE,
+            localStorageReady: true,
             authorized: true,
             userData
           });
         }, () => {
           dispatch({
-            type: LOGIN_RESPONSE
+            type: LOGIN_RESPONSE,
+            localStorageReady: true
           });
         });
     } else {
       dispatch({
-        type: LOGIN_RESPONSE
+        type: LOGIN_RESPONSE,
+        localStorageReady: true
       });
     }
   };
@@ -164,7 +169,8 @@ export function logout() {
 
 
 const initialState = {
-  fetchingRequest: true,
+  localStorageReady: false,
+  fetchingRequest: false,
 
   authorized: false,
   authError: null,
@@ -191,13 +197,16 @@ export default function userReducer(state = initialState, action) {
 
     case LOGIN_RESPONSE:
     case REGISTER_RESPONSE:
-      return {
+      let result = {
         ...state,
         fetchingRequest: false,
         authorized: action.authorized,
         authError:  action.authError,
         userData:   action.userData
       };
+      if (action.localStorageReady)
+        result.localStorageReady = true;
+      return result;
 
     case LOGOUT:
       return {

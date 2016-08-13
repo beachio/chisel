@@ -23,24 +23,28 @@ class App extends React.Component {
       </div>
     );
 
-    if (!user.fetchingRequest && !user.authorized) {
-      Page = (
-        <div className="container">
-          <Sign />
-        </div>
-      );
-    }
-
-    if (user.authorized && initialize.initializedUser) {
-      Page = (
-        <div>
-          <Header />
-          <div styleName="wrapper-inner">
-            <Sidebar />
-            <Content />
+    if (user.localStorageReady) {
+      if (user.authorized) {
+        Page = (
+          <div>
+            <Header />
+            <div styleName="wrapper-inner">
+              <Sidebar />
+              <Content />
+            </div>
           </div>
-        </div>
-      );
+        );
+      } else {
+        Page = (
+          <div className="container">
+            <Sign />
+            {
+              user.fetchingRequest &&
+                <SiteLoader />
+            }
+          </div>
+        );
+      }
     }
 
     return (

@@ -8,21 +8,22 @@ import User from 'components/sidebar/User/User';
 import Sites from 'components/sidebar/Sites/Sites';
 
 import {openPage} from 'ducks/nav';
+import {setCurrentSite, addSite} from 'ducks/sites';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export default class Sidebar extends Component  {
-  componentWillReceiveProps(nextProps) {
-  }
-
+export default class Sidebar extends Component {
   render() {
-    const {nav} = this.props;
-    const {openPage} = this.props.navActions;
+    const {sites, user} = this.props;
+    const {setCurrentSite, addSite} = this.props.siteActions;
 
     return (
       <div styleName="sidebar">
-        <User />
-        <Sites />
+        <User userData={user.userData} />
+        <Sites sites={sites.sitesUser}
+               currentSite={sites.currentSite}
+               setCurrentSite={setCurrentSite}
+               addSite={addSite} />
         <div styleName="answer-question">
           <InlineSVG styleName="icon" src={require("./question.svg")} />
         </div>
@@ -33,13 +34,15 @@ export default class Sidebar extends Component  {
 
 function mapStateToProps(state) {
   return {
-    nav:  state.nav
+    sites:  state.sites,
+    user:   state.user
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    navActions: bindActionCreators({openPage}, dispatch)
+    navActions:   bindActionCreators({openPage}, dispatch),
+    siteActions:  bindActionCreators({setCurrentSite, addSite}, dispatch)
   };
 }
 

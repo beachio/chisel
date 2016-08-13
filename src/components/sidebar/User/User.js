@@ -11,7 +11,7 @@ export default class User extends Component {
   }
 
   render() {
-
+    const {userData} = this.props;
     const imgUrl = 'https://s3.amazonaws.com/uifaces/faces/twitter/zeldman/128.jpg'; /// it needs to receive url from gravatar
 
     return (
@@ -21,7 +21,7 @@ export default class User extends Component {
             <div styleName="avatar-image" style={{backgroundImage: 'url(' + imgUrl + ')'}}></div>
           </div>
           <div styleName="avatar-name">
-            Keir Ansell
+            {userData.firstName} {userData.lastName}
           </div>
         </div>
         <div styleName="settings">

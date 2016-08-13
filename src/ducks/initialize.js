@@ -1,7 +1,6 @@
 import {Parse} from 'parse';
 
 import {store} from '../index';
-import {SiteData} from '../models/SiteData';
 import {getLocalStorage} from '../ducks/user';
 
 
@@ -29,65 +28,21 @@ export function initApp() {
 }
 
 
-function subInitSites() {
-  let Site = Parse.Object.extend("Site");
-
-  return new Promise((resolve, reject) => {
-    new Parse.Query(Site)
-      .find()
-      .then(sites => {
-        let result = {
-          sitesAll: [],
-          sitesUser: [],
-          sitesAll_r: [],
-          sitesUser_r: []
-        };
-
-        for (let site_r of sites) {
-          result.sitesAll_r.push(site_r);
-          let site = new SiteData().setFromServer(site_r);
-          result.sitesAll.push(site);
-
-          if (site_r.get('owner') == Parse.User.current()) {
-            result.sitesUser_r.push(site_r);
-            result.sitesUser.push(site);
-          }
-        }
-
-        resolve(result);
-      }, () => reject());
-  });
-}
-
 export function initUser() {
   return dispatch => {
     dispatch({
       type: INITIALIZE_USER_START
     });
 
-    let sites;
-
-    subInitSites()
-      .then(_sites => {
-        sites = _sites;
-
-        dispatch({
-          ...sites,
-          type: INITIALIZE_USER_END
-        });
-      });
+    dispatch({
+      type: INITIALIZE_USER_END
+    });
   };
 }
 
 const initialState = {
   initializedApp: false,
-
-  initializedUser: false,
-
-  sitesAll: [],
-  sitesUser: [],
-  sitesAll_r: [],
-  sitesUser_r: []
+  initializedUser: false
 };
 
 export default function initializeReducer(state = initialState, action) {
@@ -104,12 +59,6 @@ export default function initializeReducer(state = initialState, action) {
     case INITIALIZE_USER_END:
       return {
         ...state,
-
-        sitesAll:     action.sitesAll,
-        sitesUser:    action.sitesUser,
-        sitesAll_r:   action.sitesAll_r,
-        sitesUser_r:  action.sitesUser_r,
-
         initializedUser: true
       };
 
