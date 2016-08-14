@@ -7,22 +7,19 @@ import styles from './Content.sss';
 import ModelsList from 'components/content/models/ModelsList/ModelsList';
 import Model from 'components/content/models/Model/Model';
 
-import {openPage} from 'ducks/nav';
+import {addModel} from 'ducks/models';
 
 
 @CSSModules(styles, {allowMultiple: true})
 export default class Content extends Component  {
-  componentWillReceiveProps(nextProps) {
-  }
-
   render() {
-    const {nav} = this.props;
-    const {openPage} = this.props.navActions;
+    const {models} = this.props;
+    const {addModel} = this.props.modelsActions;
 
     return (
       <div styleName="content">
-        <ModelsList />
-        <Model />
+        <ModelsList modelsCurrent={models.modelsCurrent}
+                    addModel={addModel} />
       </div>
     );
   }
@@ -30,13 +27,13 @@ export default class Content extends Component  {
 
 function mapStateToProps(state) {
   return {
-    nav:  state.nav
+    models: state.models
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    navActions: bindActionCreators({openPage}, dispatch)
+    modelsActions: bindActionCreators({addModel}, dispatch)
   };
 }
 

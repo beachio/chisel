@@ -2,6 +2,7 @@ import {Parse} from 'parse';
 
 import {store} from '../index';
 import {SiteData} from '../models/SiteData';
+import {setCurrentSite as setCurrentSite_models} from './models';
 
 export const INIT_END         = 'app/sites/INIT_END';
 export const SITE_ADD         = 'app/sites/SITE_ADD';
@@ -37,9 +38,13 @@ export function init() {
 }
 
 export function setCurrentSite(currentSite) {
-  return {
-    type: SET_CURRENT_SITE,
-    currentSite
+  return dispatch => {
+    dispatch({
+      type: SET_CURRENT_SITE,
+      currentSite
+    });
+  
+    store.dispatch(setCurrentSite_models());
   };
 }
 

@@ -51,7 +51,9 @@ export default class Sites extends Component {
                 style += " element-active";
 
               return(
-                <div styleName={style} onClick={() => this.onClickSite(site)} key={site.domain}>
+                <div styleName={style}
+                     onClick={() => this.onClickSite(site)}
+                     key={site.domain}>
                   <div styleName="icon">
                     <InlineSVG src={require("./hammer.svg")} />
                   </div>
