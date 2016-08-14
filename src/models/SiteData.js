@@ -2,7 +2,8 @@ import {Parse} from 'parse';
 
 
 export class SiteData {
-  OriginClass = Parse.Object.extend("Site");
+  static get OriginClass() {return Parse.Object.extend("Site");}
+  
   origin = null;
   
   domain = "";
@@ -22,7 +23,7 @@ export class SiteData {
 
   updateOrigin() {
     if (!this.origin)
-      this.origin = new this.OriginClass();
+      this.origin = new SiteData.OriginClass;
     
     this.origin.set("domain",         this.domain);
     this.origin.set("owner",          this.owner);

@@ -10,8 +10,7 @@ export const SET_CURRENT_SITE = 'app/sites/SET_CURRENT_SITE';
 
 export function init() {
   return dispatch => {
-    let Site = Parse.Object.extend("Site");
-    new Parse.Query(Site)
+    new Parse.Query(SiteData.OriginClass)
       .find()
       .then(sites => {
         let sitesAll = [];
