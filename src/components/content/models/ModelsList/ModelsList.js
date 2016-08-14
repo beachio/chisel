@@ -66,10 +66,13 @@ export default class ModelsList extends Component {
                 if (!updatedDate)
                   updatedDate = new Date();
                 let updatedStr = updatedDate.toLocaleString("en-US", {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
+  
+                let colorStyle = {background: model.color};
                 
                 return(
                   <div styleName="list-item" key={model.name}>
                     <div styleName="type">
+                      <div styleName="colorLabel" style={colorStyle}></div>
                       <div styleName="name">{model.name}</div>
                       <div styleName="description">{model.description}</div>
                     </div>

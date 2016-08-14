@@ -46,8 +46,7 @@
         position: relative
         flex: 0 0 70%
 
-        &:before
-          content: ''
+        .colorLabel
           position: absolute
           top: 50%
           transform: translateY(-50%)
@@ -55,11 +54,7 @@
           height: 20px
           width: 20px
           border-radius: 100%
-
-      .fields,
-      .updated
-        flex: 0 0 15%
-
+          
       .name,
       .description,
       .fields,
@@ -68,18 +63,17 @@
         color: #666666
         letter-spacing: 0.5px
         text-align: left
-
+  
       .name
         font-weight: 600
-
+  
       .description
         letter-spacing: 0.46px
 
-    &-item:nth-child(even) .type:before
-      background: #2ABB9B
+      .fields,
+      .updated
+        flex: 0 0 15%
 
-    &-item:nth-child(odd) .type:before
-      background: #EF7D00
 
     &-header
       margin-bottom: 5px
@@ -87,6 +81,3 @@
       .fields,
       .updated
         color: #999999
-
-      .type:before
-        background: transparent !important
