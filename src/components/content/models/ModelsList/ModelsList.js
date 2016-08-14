@@ -24,7 +24,10 @@ export default class ModelsList extends Component {
     this.setState({modelName: name});
   };
   
-  onAddModel = () => {
+  onAddModel = event => {
+    if (event)
+      event.preventDefault();
+    
     if (!this.state.modelName)
       return;
     
@@ -39,6 +42,8 @@ export default class ModelsList extends Component {
     model.color = `rgba(${red}, ${green}, ${blue}, 1)`;
   
     addModel(model);
+  
+    this.setState({modelName: ""});
   };
 
   render() {
@@ -47,7 +52,7 @@ export default class ModelsList extends Component {
         <div className="g-title">
           Models
         </div>
-        <form>
+        <div>
           <div styleName="list">
             <div styleName="list-item list-header">
               <div styleName="type">
@@ -83,14 +88,14 @@ export default class ModelsList extends Component {
               })
             }
           </div>
-          <div styleName="create-new">
+          <form styleName="create-new" onSubmit={this.onAddModel}>
             <input styleName="input"
                    value={this.state.modelName}
                    placeholder="Create a new Content Type"
                    onChange={this.onModelNameChange} />
             <InlineSVG styleName="plus" src={require("./plus.svg")} onClick={this.onAddModel} />
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     );
   }

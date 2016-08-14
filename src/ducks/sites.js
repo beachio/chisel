@@ -49,23 +49,27 @@ export function setCurrentSite(currentSite) {
 }
 
 export function addSite(site) {
-  let sitesAll = store.getState().sites.sitesAll;
-  let sitesUser = store.getState().sites.sitesUser;
-
-  site.owner = Parse.User.current();
-
-  sitesAll.push(site);
-  sitesUser.push(site);
-
-  site.updateOrigin();
-  site.origin.save();
-
-  return {
-    type: SITE_ADD,
-    sitesAll,
-    sitesUser,
-    currentSite: site
-  };
+  return dispatch => {
+    let sitesAll = store.getState().sites.sitesAll;
+    let sitesUser = store.getState().sites.sitesUser;
+  
+    site.owner = Parse.User.current();
+  
+    sitesAll.push(site);
+    sitesUser.push(site);
+  
+    site.updateOrigin();
+    site.origin.save();
+  
+    dispatch({
+      type: SITE_ADD,
+      sitesAll,
+      sitesUser,
+      currentSite: site
+    });
+  
+    store.dispatch(setCurrentSite_models());
+  }
 }
 
 
