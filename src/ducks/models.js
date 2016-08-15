@@ -117,6 +117,7 @@ export function addModel(model) {
   currentSite.models.push(model);
   
   model.site = currentSite;
+  model.tableName = model.generateTableName();
   model.updateOrigin();
   model.origin.save();
   

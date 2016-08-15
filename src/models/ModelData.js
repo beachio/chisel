@@ -74,6 +74,12 @@ export class ModelData {
   
     this.origin.set("site",         this.site.origin);
   }
+  
+  generateTableName() {
+    let domainComponents = this.site.domain.split('.');
+    let domain = domainComponents.join('_');
+    return `content__${this.site.origin.id}__${domain}__${this.name}`;
+  }
 }
 
 
