@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 
 import rootReducer from '../ducks';
 import {initialization} from '../middleware/initialization';
+import {structure} from '../middleware/structure';
 
 
 export default function configureStore(initialState) {
@@ -12,7 +13,7 @@ export default function configureStore(initialState) {
   const store = createStore(
     rootReducer,
     initialState,
-    applyMiddleware(initialization, thunk, logger));
+    applyMiddleware(initialization, structure, thunk, logger));
 
   if (module.hot) {
     module.hot.accept('../ducks', () => {

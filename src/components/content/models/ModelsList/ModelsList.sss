@@ -2,30 +2,6 @@
   padding-bottom: 65px
   text-align: center
 
-  .create-new
-    width: 81%
-    position: relative
-    margin: 0 auto
-    margin-top: 9px
-
-    .input
-      background: #FFFFFF
-      border: 1px solid #CCCCCC
-      box-shadow: inset 0px 1px 2px 0px rgba(0,0,0,0.10)
-      border-radius: 2px
-      line-height: 34px
-      width: 100%
-      padding: 0 40px 0 9px
-      outline: none
-
-    .plus
-      position: absolute
-      top: 50%
-      transform: translateY(-50%)
-      right: 15px
-      width: 14px
-      height: 14px
-
   .list
     display: flex
     flex-flow: column nowrap
@@ -40,21 +16,20 @@
 
       cursor: pointer
 
-      margin-bottom: 9px
-
+      margin-top: 3px
+      margin-bottom: 3px
+      padding: 5px
+  
+      .colorLabel
+        flex: 0 0 20px
+        margin-right: 10px
+        height: 20px
+        border-radius: 100%
+      
       .type
         position: relative
         flex: 0 0 70%
 
-        .colorLabel
-          position: absolute
-          top: 50%
-          transform: translateY(-50%)
-          left: -31px
-          height: 20px
-          width: 20px
-          border-radius: 100%
-          
       .name,
       .description,
       .fields,
@@ -73,11 +48,42 @@
       .fields,
       .updated
         flex: 0 0 15%
+        
+      &:hover
+        background: #ececec
 
 
     &-header
       margin-bottom: 5px
+  
+      .colorLabel
+        visibility: hidden
 
       .fields,
       .updated
         color: #999999
+        
+  
+  .create-new
+    width: 81%
+    position: relative
+    margin: 0 auto
+    margin-top: 9px
+    
+    .input
+      background: #FFFFFF
+      border: 1px solid #CCCCCC
+      box-shadow: inset 0px 1px 2px 0px rgba(0,0,0,0.10)
+      border-radius: 2px
+      line-height: 34px
+      width: 100%
+      padding: 0 40px 0 9px
+      outline: none
+    
+    .plus
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      right: 15px
+      width: 14px
+      height: 14px

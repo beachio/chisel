@@ -25,51 +25,40 @@ export function init() {
             sitesUser.push(site);
         }
 
-        let currentSite = sitesUser.length ? sitesUser[0] : null;
-
         dispatch({
           type: INIT_END,
           sitesAll,
-          sitesUser,
-          currentSite
+          sitesUser
         });
       }, () => {})
   };
 }
 
 export function setCurrentSite(currentSite) {
-  return dispatch => {
-    dispatch({
-      type: SET_CURRENT_SITE,
-      currentSite
-    });
-  
-    store.dispatch(setCurrentSite_models());
+  return {
+    type: SET_CURRENT_SITE,
+    currentSite
   };
 }
 
 export function addSite(site) {
-  return dispatch => {
-    let sitesAll = store.getState().sites.sitesAll;
-    let sitesUser = store.getState().sites.sitesUser;
-  
-    site.owner = Parse.User.current();
-  
-    sitesAll.push(site);
-    sitesUser.push(site);
-  
-    site.updateOrigin();
-    site.origin.save();
-  
-    dispatch({
-      type: SITE_ADD,
-      sitesAll,
-      sitesUser,
-      currentSite: site
-    });
-  
-    store.dispatch(setCurrentSite_models());
-  }
+  let sitesAll = store.getState().sites.sitesAll;
+  let sitesUser = store.getState().sites.sitesUser;
+
+  site.owner = Parse.User.current();
+
+  sitesAll.push(site);
+  sitesUser.push(site);
+
+  site.updateOrigin();
+  site.origin.save();
+
+  return {
+    type: SITE_ADD,
+    site,
+    sitesAll,
+    sitesUser
+  };
 }
 
 
@@ -87,8 +76,7 @@ export default function sitesReducer(state = initialState, action) {
       return {
         ...state,
         sitesAll:       action.sitesAll,
-        sitesUser:      action.sitesUser,
-        currentSite:    action.currentSite
+        sitesUser:      action.sitesUser
       };
 
     case SET_CURRENT_SITE:

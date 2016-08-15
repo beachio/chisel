@@ -1,44 +1,90 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
-
 import InlineSVG from 'svg-inline-react';
 
+import {ModelFieldData} from '../../../../models/ModelData';
 import styles from './Model.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
 export default class Model extends Component {
+  state = {
+    fields: [],
+    fieldName: ""
+  };
+  
   componentDidMount() {
+    this.setState({fields: this.props.model.fields});
   }
-
+  
+  componentWillReceiveProps(nextProps) {
+    this.setState({fields: nextProps.model.fields});
+  }
+  
+  onFieldNameChange = event => {
+    let name = event.target.value;
+    name = name.replace(/\s+/g, '');
+    this.setState({fieldName: name});
+  };
+  
+  onAddField = event => {
+    if (event)
+      event.preventDefault();
+    
+    if (!this.state.fieldName)
+      return;
+    
+    const {addField} = this.props;
+    
+    let field = new ModelFieldData();
+    field.name = this.state.fieldName;
+    
+    let red   = Math.floor(Math.random() * 256);
+    let green = Math.floor(Math.random() * 256);
+    let blue  = Math.floor(Math.random() * 256);
+    field.color = `rgba(${red}, ${green}, ${blue}, 1)`;
+    
+    addField(field);
+    
+    this.setState({fieldName: ""});
+  };
+  
   render() {
+    const {model, onClose} = this.props;
+    
     return (
       <div className="g-container" styleName="models">
         <div styleName="header">
-          <div styleName="back">Back</div>
-          <div styleName="header-title">Post</div>
-          <div styleName="header-subtitle">A blog post or article content type</div>
+          <div styleName="back" onClick={onClose}>Back</div>
+          <div styleName="header-name">{model.name}</div>
+          <div styleName="header-description">{model.description}</div>
         </div>
-        <form>
-          <div styleName="list">
-            <div styleName="list-item">
-              <div styleName="list-type">
-                <div styleName="list-title">Title</div>
-                <div styleName="list-subtitle">Short Text</div>
-              </div>
-            </div>
-            <div styleName="list-item">
-              <div styleName="list-type">
-                <div styleName="list-title">Body</div>
-                <div styleName="list-subtitle">Long Text</div>
-              </div>
-            </div>
-          </div>
+        <div styleName="list">
+          {
+            this.state.fields.map(field => {
+              let colorStyle = {background: field.color};
+  
+              return (
+                <div styleName="list-item" key={field.name}>
+                  <div styleName="list-item-color" style={colorStyle}></div>
+                  <div styleName="list-item-text">
+                    <div styleName="list-item-name">{field.name}</div>
+                    <div styleName="list-item-type">{field.type}</div>
+                  </div>
+                </div>
+              );
+            })
+          }
+        </div>
 
-          <div styleName="create-new">
-            <input styleName="input" placeholder="Add New Field" />
-            <InlineSVG styleName="plus" src={require("./plus.svg")} />
-          </div>
+        <form styleName="create-new" onSubmit={this.onAddField}>
+          <input styleName="input"
+                 placeholder="Add New Field"
+                 value={this.state.fieldName}
+                 onChange={this.onFieldNameChange} />
+          <InlineSVG styleName="plus"
+                     src={require("./plus.svg")}
+                     onClick={this.onAddField} />
         </form>
       </div>
     );

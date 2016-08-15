@@ -73,7 +73,7 @@ export class ModelFieldData {
   
   updateOrigin() {
     if (!this.origin)
-      this.origin = new ModelData.OriginClass;
+      this.origin = new ModelFieldData.OriginClass;
     
     this.origin.set("name",   this.name);
     this.origin.set("type",   this.type);

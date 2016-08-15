@@ -14,6 +14,10 @@ export default class ModelsList extends Component {
     modelName: ""
   };
   
+  componentDidMount() {
+    this.setState({models: this.props.modelsCurrent});
+  }
+  
   componentWillReceiveProps(nextProps) {
     this.setState({models: nextProps.modelsCurrent});
   }
@@ -45,6 +49,11 @@ export default class ModelsList extends Component {
   
     this.setState({modelName: ""});
   };
+  
+  onModelClick = model => {
+    const {setCurrentModel} = this.props;
+    setCurrentModel(model);
+  };
 
   render() {
     return (
@@ -55,14 +64,10 @@ export default class ModelsList extends Component {
         <div>
           <div styleName="list">
             <div styleName="list-item list-header">
-              <div styleName="type">
-              </div>
-              <div styleName="fields">
-                FIELDS
-              </div>
-              <div styleName="updated">
-                UPDATED
-              </div>
+              <div styleName="colorLabel"></div>
+              <div styleName="type"></div>
+              <div styleName="fields">FIELDS</div>
+              <div styleName="updated">UPDATED</div>
             </div>
   
             {
@@ -75,9 +80,11 @@ export default class ModelsList extends Component {
                 let colorStyle = {background: model.color};
                 
                 return(
-                  <div styleName="list-item" key={model.name}>
+                  <div styleName="list-item"
+                       key={model.name}
+                       onClick={() => this.onModelClick(model)}>
+                    <div styleName="colorLabel" style={colorStyle}></div>
                     <div styleName="type">
-                      <div styleName="colorLabel" style={colorStyle}></div>
                       <div styleName="name">{model.name}</div>
                       <div styleName="description">{model.description}</div>
                     </div>
@@ -93,7 +100,9 @@ export default class ModelsList extends Component {
                    value={this.state.modelName}
                    placeholder="Create a new Content Type"
                    onChange={this.onModelNameChange} />
-            <InlineSVG styleName="plus" src={require("./plus.svg")} onClick={this.onAddModel} />
+            <InlineSVG styleName="plus"
+                       src={require("./plus.svg")}
+                       onClick={this.onAddModel} />
           </form>
         </div>
       </div>

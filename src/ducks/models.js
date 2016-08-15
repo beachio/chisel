@@ -3,9 +3,11 @@ import {Parse} from 'parse';
 import {store} from '../index';
 import {ModelData, ModelFieldData} from '../models/ModelData';
 
-export const INIT_END           = 'app/models/INIT_END';
-export const MODEL_ADD          = 'app/models/MODEL_ADD';
-export const SET_CURRENT_MODELS = 'app/models/SET_CURRENT_MODELS';
+export const INIT_END               = 'app/models/INIT_END';
+export const MODEL_ADD              = 'app/models/MODEL_ADD';
+export const FIELD_ADD              = 'app/models/FIELD_ADD';
+export const UPDATE_CURRENT_MODELS  = 'app/models/UPDATE_CURRENT_MODELS';
+export const SET_CURRENT_MODEL      = 'app/models/SET_CURRENT_MODEL';
 
 
 export function init() {
@@ -55,14 +57,12 @@ export function init() {
               type: INIT_END,
               models
             });
-  
-            store.dispatch(setCurrentSite());
           });
       });
   }
 }
 
-export function setCurrentSite() {
+export function updateCurrentModels() {
   let modelsCurrent = [];
   let currentSite = store.getState().sites.currentSite;
   for (let model of store.getState().models.models) {
@@ -71,49 +71,88 @@ export function setCurrentSite() {
   }
   
   return {
-    type: SET_CURRENT_MODELS,
+    type: UPDATE_CURRENT_MODELS,
     modelsCurrent
   };
 }
 
 export function addModel(model) {
-  return dispatch => {
-    model.site = store.getState().sites.currentSite;
-    model.updateOrigin();
-    model.origin.save();
+  let currentSite = store.getState().sites.currentSite;
   
-    let models = store.getState().models.models;
-    models.push(model);
+  model.site = currentSite;
+  model.updateOrigin();
+  model.origin.save();
+
+  let models = store.getState().models.models;
+  models.push(model);
   
-    dispatch({
-      type: MODEL_ADD,
-      models
-    });
-    
-    store.dispatch(setCurrentSite());
-  }
+  let modelsCurrent = store.getState().models.modelsCurrent;
+  modelsCurrent.push(model);
+
+  return {
+    type: MODEL_ADD,
+    models,
+    modelsCurrent
+  };
 }
 
+export function setCurrentModel(currentModel) {
+  return {
+    type: SET_CURRENT_MODEL,
+    currentModel
+  };
+}
+
+export function addField(field) {
+  let currentModel = store.getState().models.currentModel;
+  
+  field.model = currentModel;
+  field.updateOrigin();
+  field.origin.save();
+  
+  currentModel.fields.push(field);
+  
+  return {
+    type: FIELD_ADD
+  };
+}
 
 const initialState = {
   models: [],
-  modelsCurrent: []
+  modelsCurrent: [],
+  
+  currentModel: null
 };
 
 export default function modelsReducer(state = initialState, action) {
   switch (action.type) {
     case INIT_END:
-    case MODEL_ADD:
       return {
         ...state,
         models:     action.models
       };
+  
+    case MODEL_ADD:
+      return {
+        ...state,
+        models:         action.models,
+        modelsCurrent:  action.modelsCurrent
+      };
     
-    case SET_CURRENT_MODELS:
+    case UPDATE_CURRENT_MODELS:
       return {
         ...state,
         modelsCurrent: action.modelsCurrent
       };
+  
+    case SET_CURRENT_MODEL:
+      return {
+        ...state,
+        currentModel: action.currentModel
+      };
+  
+    case FIELD_ADD:
+      return state;
     
     default:
       return state;

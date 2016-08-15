@@ -4,22 +4,36 @@ import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 
 import styles from './Content.sss';
+
 import ModelsList from 'components/content/models/ModelsList/ModelsList';
 import Model from 'components/content/models/Model/Model';
-
-import {addModel} from 'ducks/models';
+import {addModel, setCurrentModel, addField} from 'ducks/models';
+import {closeModel} from 'ducks/nav';
 
 
 @CSSModules(styles, {allowMultiple: true})
 export default class Content extends Component  {
   render() {
-    const {models} = this.props;
-    const {addModel} = this.props.modelsActions;
+    const {models, nav} = this.props;
+    const {addModel, setCurrentModel, addField} = this.props.modelsActions;
+    const {closeModel} = this.props.navActions;
 
+    let Content = (
+      <ModelsList modelsCurrent={models.modelsCurrent}
+                  setCurrentModel={setCurrentModel}
+                  addModel={addModel} />
+    );
+    
+    if (nav.openedModel)
+      Content = (
+        <Model model={models.currentModel}
+               onClose={closeModel}
+               addField={addField} />
+      );
+    
     return (
       <div styleName="content">
-        <ModelsList modelsCurrent={models.modelsCurrent}
-                    addModel={addModel} />
+        {Content}
       </div>
     );
   }
@@ -27,13 +41,15 @@ export default class Content extends Component  {
 
 function mapStateToProps(state) {
   return {
-    models: state.models
+    models: state.models,
+    nav:    state.nav
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelsActions: bindActionCreators({addModel}, dispatch)
+    modelsActions:  bindActionCreators({addModel, setCurrentModel, addField}, dispatch),
+    navActions:     bindActionCreators({closeModel}, dispatch)
   };
 }
 
