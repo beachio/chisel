@@ -1,42 +1,69 @@
 import {Parse} from 'parse';
 
 import {store} from '../index';
-import {ModelData, ModelFieldData} from '../models/ModelData';
+import {SiteData, ModelData, ModelFieldData} from '../models/ModelData';
+
 
 export const INIT_END               = 'app/models/INIT_END';
+
+export const SITE_ADD               = 'app/models/SITE_ADD';
 export const MODEL_ADD              = 'app/models/MODEL_ADD';
 export const FIELD_ADD              = 'app/models/FIELD_ADD';
+
 export const UPDATE_CURRENT_MODELS  = 'app/models/UPDATE_CURRENT_MODELS';
+export const SET_CURRENT_SITE       = 'app/models/SET_CURRENT_SITE';
 export const SET_CURRENT_MODEL      = 'app/models/SET_CURRENT_MODEL';
 
 
 export function init() {
   return dispatch => {
+    let sites_o = [];
+    let sites = [];
     let models_o = [];
     let models = [];
-    
-    new Promise((resolve, reject) => {
-      new Parse.Query(ModelData.OriginClass)
-        .find()
-        .then(_models_o => {
-          models_o = _models_o;
   
-          let sites = store.getState().sites.sitesUser;
-          
-          for (let model_o of models_o) {
-            let model = new ModelData().setOrigin(model_o);
-            
-            for (let site of sites) {
-              if (site.origin.id == model_o.get("site").id)
-                model.site = site;
-            }
-            
-            models.push(model);
+    new Promise((resolve, reject) => {
+      new Parse.Query(SiteData.OriginClass)
+        .find()
+        .then(_sites_o => {
+          sites_o = _sites_o;
+      
+          for (let site_o of sites_o) {
+            if (site_o.get('owner').id != Parse.User.current().id)
+              continue;
+              
+            let site = new SiteData().setOrigin(site_o);
+            sites.push(site);
           }
           
           resolve();
-        }, reject)
+        }, reject);
     })
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          new Parse.Query(ModelData.OriginClass)
+            .containedIn("site", sites_o)
+            .find()
+            .then(_models_o => {
+              models_o = _models_o;
+        
+              for (let model_o of models_o) {
+                let model = new ModelData().setOrigin(model_o);
+                let site_o = model_o.get("site");
+                for (let site of sites) {
+                  if (site.origin.id == site_o.id) {
+                    model.site = site;
+                    site.models.push(model);
+                    models.push(model);
+                    break;
+                  }
+                }
+              }
+  
+              resolve();
+            }, reject);
+        });
+      })
       .then(() => {
         new Parse.Query(ModelFieldData.OriginClass)
           .containedIn("model", models_o)
@@ -49,50 +76,53 @@ export function init() {
                 if (model.origin.id == model_o.id) {
                   field.model = model;
                   model.fields.push(field);
+                  break;
                 }
               }
             }
-            
+  
             dispatch({
               type: INIT_END,
-              models
+              sites
             });
           });
       });
   }
 }
 
-export function updateCurrentModels() {
-  let modelsCurrent = [];
-  let currentSite = store.getState().sites.currentSite;
-  for (let model of store.getState().models.models) {
-    if (model.site == currentSite)
-      modelsCurrent.push(model);
-  }
+export function setCurrentSite(currentSite) {
+  return {
+    type: SET_CURRENT_SITE,
+    currentSite
+  };
+}
+
+export function addSite(site) {
+  let sites = store.getState().models.sites;
+  sites.push(site);
+  
+  site.owner = Parse.User.current();
+  site.updateOrigin();
+  site.origin.save();
   
   return {
-    type: UPDATE_CURRENT_MODELS,
-    modelsCurrent
+    type: SITE_ADD,
+    site,
+    sites
   };
 }
 
 export function addModel(model) {
-  let currentSite = store.getState().sites.currentSite;
+  let currentSite = store.getState().models.currentSite;
+  currentSite.models.push(model);
   
   model.site = currentSite;
   model.updateOrigin();
   model.origin.save();
-
-  let models = store.getState().models.models;
-  models.push(model);
   
-  let modelsCurrent = store.getState().models.modelsCurrent;
-  modelsCurrent.push(model);
-
   return {
     type: MODEL_ADD,
-    models,
-    modelsCurrent
+    model
   };
 }
 
@@ -105,12 +135,11 @@ export function setCurrentModel(currentModel) {
 
 export function addField(field) {
   let currentModel = store.getState().models.currentModel;
+  currentModel.fields.push(field);
   
   field.model = currentModel;
   field.updateOrigin();
   field.origin.save();
-  
-  currentModel.fields.push(field);
   
   return {
     type: FIELD_ADD
@@ -118,32 +147,28 @@ export function addField(field) {
 }
 
 const initialState = {
-  models: [],
-  modelsCurrent: [],
-  
+  sites: [],
+  currentSite: null,
   currentModel: null
 };
 
 export default function modelsReducer(state = initialState, action) {
   switch (action.type) {
     case INIT_END:
+    case SITE_ADD:
       return {
         ...state,
-        models:     action.models
+        sites: action.sites
+      };
+  
+    case SET_CURRENT_SITE:
+      return {
+        ...state,
+        currentSite:    action.currentSite
       };
   
     case MODEL_ADD:
-      return {
-        ...state,
-        models:         action.models,
-        modelsCurrent:  action.modelsCurrent
-      };
-    
-    case UPDATE_CURRENT_MODELS:
-      return {
-        ...state,
-        modelsCurrent: action.modelsCurrent
-      };
+      return state;
   
     case SET_CURRENT_MODEL:
       return {

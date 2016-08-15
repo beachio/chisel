@@ -18,8 +18,9 @@ export default class Content extends Component  {
     const {addModel, setCurrentModel, addField} = this.props.modelsActions;
     const {closeModel} = this.props.navActions;
 
+    let modelsList = models.currentSite ? models.currentSite.models : [];
     let Content = (
-      <ModelsList modelsCurrent={models.modelsCurrent}
+      <ModelsList models={modelsList}
                   setCurrentModel={setCurrentModel}
                   addModel={addModel} />
     );

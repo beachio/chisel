@@ -15,11 +15,11 @@ export default class ModelsList extends Component {
   };
   
   componentDidMount() {
-    this.setState({models: this.props.modelsCurrent});
+    this.setState({models: this.props.models});
   }
   
   componentWillReceiveProps(nextProps) {
-    this.setState({models: nextProps.modelsCurrent});
+    this.setState({models: nextProps.models});
   }
   
   onModelNameChange = event => {

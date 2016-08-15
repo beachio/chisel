@@ -8,20 +8,20 @@ import User from 'components/sidebar/User/User';
 import Sites from 'components/sidebar/Sites/Sites';
 
 import {openPage} from 'ducks/nav';
-import {setCurrentSite, addSite} from 'ducks/sites';
+import {setCurrentSite, addSite} from 'ducks/models';
 
 
 @CSSModules(styles, {allowMultiple: true})
 export default class Sidebar extends Component {
   render() {
-    const {sites, user} = this.props;
-    const {setCurrentSite, addSite} = this.props.siteActions;
+    const {models, user} = this.props;
+    const {setCurrentSite, addSite} = this.props.modelsActions;
 
     return (
       <div styleName="sidebar">
         <User userData={user.userData} />
-        <Sites sites={sites.sitesUser}
-               currentSite={sites.currentSite}
+        <Sites sites={models.sites}
+               currentSite={models.currentSite}
                setCurrentSite={setCurrentSite}
                addSite={addSite} />
         <div styleName="answer-question">
@@ -34,15 +34,15 @@ export default class Sidebar extends Component {
 
 function mapStateToProps(state) {
   return {
-    sites:  state.sites,
+    models: state.models,
     user:   state.user
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    navActions:   bindActionCreators({openPage}, dispatch),
-    siteActions:  bindActionCreators({setCurrentSite, addSite}, dispatch)
+    navActions:     bindActionCreators({openPage}, dispatch),
+    modelsActions:  bindActionCreators({setCurrentSite, addSite}, dispatch)
   };
 }
 
