@@ -24,14 +24,14 @@ export default class Content extends Component  {
                   setCurrentModel={setCurrentModel}
                   addModel={addModel} />
     );
-    
+
     if (nav.openedModel)
       Content = (
         <Model model={models.currentModel}
                onClose={closeModel}
                addField={addField} />
       );
-    
+
     return (
       <div styleName="content">
         {Content}
