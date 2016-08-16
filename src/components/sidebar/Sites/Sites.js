@@ -58,7 +58,7 @@ export default class Sites extends Component {
                     <InlineSVG src={require("./hammer.svg")} />
                   </div>
                   <div styleName="site-name">{site.domain}</div>
-                  <a href="/" target="_blank">
+                  <a href={`http://${site.domain}`} target="_blank">
                     <InlineSVG styleName="link" src={require("./link.svg")} />
                   </a>
                 </div>
