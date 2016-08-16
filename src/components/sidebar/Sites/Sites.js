@@ -29,7 +29,8 @@ export default class Sites extends Component {
     let count = sites.length + 1;
 
     let site = new SiteData();
-    site.domain = 'test' + count + '.getforge.io';
+    site.name = 'test' + count + '.getforge.io';
+    site.domain = site.name;
 
     addSite(site);
   };
@@ -53,11 +54,11 @@ export default class Sites extends Component {
               return(
                 <div styleName={style}
                      onClick={() => this.onClickSite(site)}
-                     key={site.domain}>
+                     key={site.name}>
                   <div styleName="icon">
                     <InlineSVG src={require("./hammer.svg")} />
                   </div>
-                  <div styleName="site-name">{site.domain}</div>
+                  <div styleName="site-name">{site.name}</div>
                   <a href={`http://${site.domain}`} target="_blank">
                     <InlineSVG styleName="link" src={require("./link.svg")} />
                   </a>

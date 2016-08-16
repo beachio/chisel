@@ -6,6 +6,7 @@ export class SiteData {
   
   origin = null;
   
+  name = "";
   domain = "";
   owner = null;
   collaborations = [];
@@ -16,7 +17,8 @@ export class SiteData {
   
   setOrigin(origin) {
     this.origin = origin;
-    
+  
+    if (origin.get('name'))           this.name           = origin.get('name');
     if (origin.get('domain'))         this.domain         = origin.get('domain');
     if (origin.get('owner'))          this.owner          = origin.get('owner');
     if (origin.get('collaborations')) this.collaborations = origin.get('collaborations');
@@ -27,7 +29,8 @@ export class SiteData {
   updateOrigin() {
     if (!this.origin)
       this.origin = new SiteData.OriginClass;
-    
+  
+    this.origin.set("name",           this.name);
     this.origin.set("domain",         this.domain);
     this.origin.set("owner",          this.owner);
     this.origin.set("collaborations", this.collaborations);
@@ -76,9 +79,9 @@ export class ModelData {
   }
   
   generateTableName() {
-    let domainComponents = this.site.domain.split('.');
-    let domain = domainComponents.join('_');
-    return `content__${this.site.origin.id}__${domain}__${this.name}`;
+    let siteComponents = this.site.name.split('.');
+    let siteName = siteComponents.join('_');
+    return `content__${this.site.origin.id}__${siteName}__${this.name}`;
   }
 }
 
