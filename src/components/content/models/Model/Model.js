@@ -3,6 +3,7 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
 import {ModelFieldData} from '../../../../models/ModelData';
+
 import styles from './Model.sss';
 
 
@@ -12,46 +13,46 @@ export default class Model extends Component {
     fields: [],
     fieldName: ""
   };
-  
+
   componentDidMount() {
     this.setState({fields: this.props.model.fields});
   }
-  
+
   componentWillReceiveProps(nextProps) {
     this.setState({fields: nextProps.model.fields});
   }
-  
+
   onFieldNameChange = event => {
     let name = event.target.value;
     name = name.replace(/\s+/g, '');
     this.setState({fieldName: name});
   };
-  
+
   onAddField = event => {
     if (event)
       event.preventDefault();
-    
+
     if (!this.state.fieldName)
       return;
-    
+
     const {addField} = this.props;
-    
+
     let field = new ModelFieldData();
     field.name = this.state.fieldName;
-    
+
     let red   = Math.floor(Math.random() * 256);
     let green = Math.floor(Math.random() * 256);
     let blue  = Math.floor(Math.random() * 256);
     field.color = `rgba(${red}, ${green}, ${blue}, 1)`;
-    
+
     addField(field);
-    
+
     this.setState({fieldName: ""});
   };
-  
+
   render() {
     const {model, onClose} = this.props;
-    
+
     return (
       <div className="g-container" styleName="models">
         <div styleName="header">
@@ -63,7 +64,7 @@ export default class Model extends Component {
           {
             this.state.fields.map(field => {
               let colorStyle = {background: field.color};
-  
+
               return (
                 <div styleName="list-item" key={field.name}>
                   <div styleName="list-item-color" style={colorStyle}></div>

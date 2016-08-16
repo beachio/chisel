@@ -10,6 +10,7 @@ import Sidebar from 'containers/Sidebar/Sidebar';
 import Content from 'containers/Content/Content';
 import Sign from 'containers/Sign/Sign';
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
+import ModelModal from '../components/modals/ModelModal/ModelModal';
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -27,6 +28,7 @@ class App extends React.Component {
       if (user.authorized) {
         Page = (
           <div>
+            <ModelModal />
             <Header />
             <div styleName="wrapper-inner">
               <Sidebar />
