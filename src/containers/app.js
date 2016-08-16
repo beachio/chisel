@@ -28,7 +28,6 @@ class App extends React.Component {
       if (user.authorized) {
         Page = (
           <div>
-            <ModelModal />
             <Header />
             <div styleName="wrapper-inner">
               <Sidebar />
