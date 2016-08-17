@@ -7,6 +7,7 @@ import styles from './MainArea.sss';
 
 import ModelsList from 'components/mainArea/models/ModelsList/ModelsList';
 import ContentList from 'components/mainArea/content/ContentList/ContentList';
+import Sharing from 'components/mainArea/sharing/Sharing';
 import Model from 'components/mainArea/models/Model/Model';
 import {addModel, setCurrentModel, addField} from 'ducks/models';
 import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, closeModel} from 'ducks/nav';
@@ -42,6 +43,11 @@ export default class MainArea extends Component  {
       case PAGE_CONTENT:
         Area = (
           <ContentList />
+        );
+
+      case PAGE_SHARING:
+        Area = (
+          <Sharing />
         );
     }
 
