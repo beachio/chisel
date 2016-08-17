@@ -104,7 +104,7 @@ export default class Sites extends Component {
           {
             this.state.adding &&
               <div styleName="element">
-                <input styleName="input-site-name"
+                <input styleName="site-name"
                        value={this.state.newSite.name}
                        placeholder="Type site name"
                        autoFocus={true}
