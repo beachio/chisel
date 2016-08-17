@@ -68,6 +68,7 @@
       display: flex
       flex-flow: row nowrap
       align-items: center
+      position: relative
 
       cursor: pointer
 
@@ -78,10 +79,13 @@
           opacity: 0.999
 
       &-color
-        margin-right: 10px
         height: 20px
         width: 20px
         border-radius: 100%
+        position: absolute
+        left: -30px
+        top: 50%
+        transform: translateY(-50%)
 
       &-text
         flex: 1
