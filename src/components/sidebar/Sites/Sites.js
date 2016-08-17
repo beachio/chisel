@@ -50,7 +50,6 @@ export default class Sites extends Component {
 
   onKeyPress = target => {
     //Enter pressed
-    console.log(target.charCode);
     if (target.charCode == 13) {
       this.onAddSite();
     //Esc pressed
@@ -92,7 +91,9 @@ export default class Sites extends Component {
                   <div styleName="icon">
                     <InlineSVG src={require("./hammer.svg")} />
                   </div>
-                  <div styleName="site-name">{site.name}</div>
+                  <input styleName="site-name"
+                         readOnly="true"
+                         value={site.name} />
                   <a href={`http://${site.domain}`} target="_blank">
                     <InlineSVG styleName="link" src={require("./link.svg")} />
                   </a>
