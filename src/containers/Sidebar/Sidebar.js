@@ -19,13 +19,17 @@ export default class Sidebar extends Component {
 
     return (
       <div styleName="sidebar">
-        <User userData={user.userData} />
-        <Sites sites={models.sites}
-               currentSite={models.currentSite}
-               setCurrentSite={setCurrentSite}
-               addSite={addSite} />
-        <div styleName="answer-question">
-          <InlineSVG styleName="icon" src={require("./question.svg")} />
+        <div>
+          <User userData={user.userData} />
+          <Sites sites={models.sites}
+                 currentSite={models.currentSite}
+                 setCurrentSite={setCurrentSite}
+                 addSite={addSite} />
+        </div>
+        <div styleName="answer-wrapper">
+          <div styleName="answer-question">
+            <InlineSVG styleName="icon" src={require("./question.svg")} />
+          </div>
         </div>
       </div>
     );

@@ -1,10 +1,16 @@
 .sidebar
   overflow-x: hidden
-  display: inline-block
+  display: flex
+  flex-flow: column nowrap
+  justify-content: space-between
   background: #f1f1f1
   height: calc(100vh - 60px)
   width: 240px
   transform: translate3d(0, 0, 0)
+
+  .answer-wrapper
+    position: relative
+    flex: 0 0 100px
 
   .answer-question
     height: 32px
