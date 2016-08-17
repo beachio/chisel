@@ -13,43 +13,43 @@ export default class ModelsList extends Component {
     models: [],
     modelName: ""
   };
-  
+
   componentDidMount() {
     this.setState({models: this.props.models});
   }
-  
+
   componentWillReceiveProps(nextProps) {
     this.setState({models: nextProps.models});
   }
-  
+
   onModelNameChange = event => {
     let name = event.target.value;
     name = name.replace(/\s+/g, '');
     this.setState({modelName: name});
   };
-  
+
   onAddModel = event => {
     if (event)
       event.preventDefault();
-    
+
     if (!this.state.modelName)
       return;
-    
+
     const {addModel} = this.props;
-  
+
     let model = new ModelData();
     model.name = this.state.modelName;
-  
+
     let red   = Math.floor(Math.random() * 256);
     let green = Math.floor(Math.random() * 256);
     let blue  = Math.floor(Math.random() * 256);
     model.color = `rgba(${red}, ${green}, ${blue}, 1)`;
-  
+
     addModel(model);
-  
+
     this.setState({modelName: ""});
   };
-  
+
   onModelClick = model => {
     const {setCurrentModel} = this.props;
     setCurrentModel(model);
@@ -69,16 +69,16 @@ export default class ModelsList extends Component {
               <div styleName="fields">FIELDS</div>
               <div styleName="updated">UPDATED</div>
             </div>
-  
+
             {
               this.state.models.map(model => {
                 let updatedDate = model.origin.updatedAt;
                 if (!updatedDate)
                   updatedDate = new Date();
                 let updatedStr = updatedDate.toLocaleString("en-US", {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
-  
+
                 let colorStyle = {background: model.color};
-                
+
                 return(
                   <div styleName="list-item"
                        key={model.name}
