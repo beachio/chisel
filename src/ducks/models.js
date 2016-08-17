@@ -7,6 +7,7 @@ import {SiteData, ModelData, ModelFieldData} from '../models/ModelData';
 export const INIT_END               = 'app/models/INIT_END';
 
 export const SITE_ADD               = 'app/models/SITE_ADD';
+export const SITE_UPDATED           = 'app/models/SITE_UPDATED';
 export const MODEL_ADD              = 'app/models/MODEL_ADD';
 export const FIELD_ADD              = 'app/models/FIELD_ADD';
 
@@ -112,6 +113,20 @@ export function addSite(site) {
   };
 }
 
+export function updateSite(site) {
+  let sites = store.getState().models.sites;
+  for (let _site of sites) {
+    if (site == _site) {
+      site.updateOrigin();
+      site.origin.save();
+      break;
+    }
+  }
+  return {
+    type: SITE_UPDATED
+  };
+}
+
 export function addModel(model) {
   let currentSite = store.getState().models.currentSite;
   currentSite.models.push(model);
@@ -167,6 +182,9 @@ export default function modelsReducer(state = initialState, action) {
         ...state,
         currentSite:    action.currentSite
       };
+
+    case SITE_UPDATED:
+      return state;
   
     case MODEL_ADD:
       return state;

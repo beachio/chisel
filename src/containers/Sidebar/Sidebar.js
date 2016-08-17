@@ -8,14 +8,14 @@ import User from 'components/sidebar/User/User';
 import Sites from 'components/sidebar/Sites/Sites';
 
 import {openPage} from 'ducks/nav';
-import {setCurrentSite, addSite} from 'ducks/models';
+import {setCurrentSite, addSite, updateSite} from 'ducks/models';
 
 
 @CSSModules(styles, {allowMultiple: true})
 export default class Sidebar extends Component {
   render() {
     const {models, user} = this.props;
-    const {setCurrentSite, addSite} = this.props.modelsActions;
+    const {setCurrentSite, addSite, updateSite} = this.props.modelsActions;
 
     return (
       <div styleName="sidebar">
@@ -24,7 +24,8 @@ export default class Sidebar extends Component {
           <Sites sites={models.sites}
                  currentSite={models.currentSite}
                  setCurrentSite={setCurrentSite}
-                 addSite={addSite} />
+                 addSite={addSite}
+                 updateSite={updateSite}/>
         </div>
         <div styleName="answer-wrapper">
           <div styleName="answer-question">
@@ -46,7 +47,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     navActions:     bindActionCreators({openPage}, dispatch),
-    modelsActions:  bindActionCreators({setCurrentSite, addSite}, dispatch)
+    modelsActions:  bindActionCreators({setCurrentSite, addSite, updateSite}, dispatch)
   };
 }
 

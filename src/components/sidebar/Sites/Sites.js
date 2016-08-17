@@ -12,9 +12,9 @@ export default class Sites extends Component {
   state = {
     currentSite: null,
     adding: false,
+    editing: false,
     newSite: null
   };
-
 
 
   componentWillReceiveProps(nextProps) {
@@ -45,27 +45,37 @@ export default class Sites extends Component {
   };
 
   onSiteNameBlur = () => {
-    this.onAddSite();
+    this.onAddOrChangeSite();
   };
 
   onKeyPress = target => {
     //Enter pressed
     if (target.charCode == 13) {
-      this.onAddSite();
+      this.onAddOrChangeSite();
     //Esc pressed
     } else if (target.charCode == 27) {
       this.setState({adding: false, newSite: null});
     }
   };
 
-  onAddSite() {
-    if (this.state.adding && this.state.newSite && this.state.newSite.name) {
-      const {addSite} = this.props;
+  onAddOrChangeSite() {
+    if (this.state.newSite && this.state.newSite.name) {
       let newSite = this.state.newSite;
       newSite.domain = newSite.name;
-      addSite(newSite);
+
+      if (this.state.adding) {
+        const {addSite} = this.props;
+        addSite(newSite);
+      } else if (this.state.editing) {
+        const {updateSite} = this.props;
+        updateSite(newSite);
+      }
     }
-    this.setState({adding: false, newSite: null});
+    this.setState({adding: false, editing: false, newSite: null});
+  }
+
+  onDoubleClickSite(event, site) {
+    this.setState({editing: true, newSite: site});
   }
 
   render() {
@@ -84,6 +94,8 @@ export default class Sites extends Component {
               if (this.state.currentSite == site)
                 style += " element-active";
 
+              let editing = !!this.state.newSite && site == this.state.newSite;
+
               return(
                 <div styleName={style}
                      onClick={() => this.onClickSite(site)}
@@ -92,8 +104,14 @@ export default class Sites extends Component {
                     <InlineSVG src={require("./hammer.svg")} />
                   </div>
                   <input styleName="site-name"
-                         readOnly="true"
-                         value={site.name} />
+                         readOnly={!editing}
+                         autoFocus={editing}
+                         onDoubleClick={event => this.onDoubleClickSite(event, site)}
+                         placeholder="Type site name"
+                         value={site.name}
+                         onBlur={this.onSiteNameBlur}
+                         onChange={this.onSiteNameChange}
+                         onKeyPress={this.onKeyPress} />
                   <a href={`http://${site.domain}`} target="_blank">
                     <InlineSVG styleName="link" src={require("./link.svg")} />
                   </a>
