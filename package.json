@@ -85,6 +85,7 @@
     "react-dnd-html5-backend": "^2.1.2",
     "react-dom": "^15.2.0",
     "react-gcaptcha": "^3.0.2",
+    "react-gravatar": "^2.4.5",
     "react-redux": "^4.4.5",
     "recaptcha2": "^1.0.8",
     "redux": "^3.5.1",

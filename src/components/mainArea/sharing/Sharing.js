@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
+import Gravatar from 'react-gravatar'
 
 import styles from './Sharing.sss';
 
@@ -17,7 +18,9 @@ export default class Sharing extends Component {
           <div styleName="list">
 
             <div styleName="list-item">
-              <div styleName="colorLabel"></div>
+              <div styleName="avatar">
+                <Gravatar email="hello@keiransell.com" styleName="gravatar"/>
+              </div>
               <div styleName="type">
                 <div styleName="name">Keir Ansell</div>
                 <div styleName="email">hello@keiransell.com</div>
@@ -28,7 +31,9 @@ export default class Sharing extends Component {
             </div>
 
             <div styleName="list-item">
-              <div styleName="colorLabel"></div>
+              <div styleName="avatar">
+                <Gravatar email="stevebschofield@gmail.com" styleName="gravatar"/>
+              </div>
               <div styleName="type">
                 <div styleName="name">Steve Schofield</div>
                 <div styleName="email">stevebschofield@gmail.com</div>
