@@ -3,8 +3,8 @@ import CSSModules from 'react-css-modules';
 
 import styles from './ModelModal.sss';
 
-import SwitchControl from '../../SwitchControl/SwitchControl';
-import ButtonControl from '../../ButtonControl/ButtonControl';
+import SwitchControl from '../../elements/SwitchControl/SwitchControl';
+import ButtonControl from '../../elements/ButtonControl/ButtonControl';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ModelModal extends Component  {

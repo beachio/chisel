@@ -1,12 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 
-import ButtonControl from '../ButtonControl/ButtonControl';
+import ButtonControl from '../../elements/ButtonControl/ButtonControl';
 
-import styles from './Modal.sss';
+import styles from './AlertModal.sss';
 
 @CSSModules(styles, {allowMultiple: true})
-export default class Modal extends Component {
+export default class AlertModal extends Component {
   render() {
     const {title, description, buttonText} = this.props;
 

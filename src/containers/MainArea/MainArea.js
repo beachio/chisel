@@ -3,35 +3,35 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 
-import styles from './Content.sss';
+import styles from './MainArea.sss';
 
-import ModelsList from 'components/content/models/ModelsList/ModelsList';
-import ContentList from 'components/content/content/ContentList/ContentList';
-import Model from 'components/content/models/Model/Model';
+import ModelsList from 'components/mainArea/models/ModelsList/ModelsList';
+import ContentList from 'components/mainArea/content/ContentList/ContentList';
+import Model from 'components/mainArea/models/Model/Model';
 import {addModel, setCurrentModel, addField} from 'ducks/models';
 import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, closeModel} from 'ducks/nav';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export default class Content extends Component  {
+export default class MainArea extends Component  {
   render() {
     const {models, nav} = this.props;
 
-    let Content;
+    let Area;
     switch (nav.openedPage) {
       case PAGE_MODELS:
         const {addModel, setCurrentModel, addField} = this.props.modelsActions;
         const {closeModel} = this.props.navActions;
 
         let modelsList = models.currentSite ? models.currentSite.models : [];
-        Content = (
+        Area = (
           <ModelsList models={modelsList}
                       setCurrentModel={setCurrentModel}
                       addModel={addModel} />
         );
 
         if (nav.openedModel)
-          Content = (
+          Area = (
             <Model model={models.currentModel}
                    onClose={closeModel}
                    addField={addField} />
@@ -40,14 +40,14 @@ export default class Content extends Component  {
         break;
 
       case PAGE_CONTENT:
-        Content = (
+        Area = (
           <ContentList />
         );
     }
 
     return (
-      <div styleName="content">
-        {Content}
+      <div styleName="mainArea">
+        {Area}
       </div>
     );
   }
@@ -67,4 +67,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Content);
+export default connect(mapStateToProps, mapDispatchToProps)(MainArea);

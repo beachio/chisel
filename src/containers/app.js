@@ -7,11 +7,11 @@ import styles from './app.sss';
 
 import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
-import Content from 'containers/Content/Content';
+import MainArea from 'containers/MainArea/MainArea';
 import Sign from 'containers/Sign/Sign';
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import ModelModal from '../components/modals/ModelModal/ModelModal';
-import Modal from '../components/Modal/Modal';
+import AlertModal from '../components/modals/AlertModal/AlertModal';
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -32,13 +32,13 @@ class App extends React.Component {
 
             {
               /// <ModelModal />
-              ///<Modal title="Something new" description="Maybe error :(" buttonText="Submit" />
+              /// <AlertModal title="Something new" description="Maybe error :(" buttonText="Submit" />
             }
 
             <Header />
             <div styleName="wrapper-inner">
               <Sidebar />
-              <Content />
+              <MainArea />
             </div>
           </div>
         );
