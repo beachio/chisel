@@ -44,6 +44,8 @@ export default class MainArea extends Component  {
         Area = (
           <ContentList />
         );
+        
+        break;
 
       case PAGE_SHARING:
         Area = (
