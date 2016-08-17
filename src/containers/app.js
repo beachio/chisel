@@ -29,15 +29,11 @@ class App extends React.Component {
       if (user.authorized) {
         Page = (
           <div>
-            {
-              /// <ModelModal /> ///
-            }
 
-            <ModalControl
-                title="Something new"
-                description="Maybe error :("
-                buttonText="Submit"
-                />
+            {
+              /// <ModelModal />
+              ///<ModalControl title="Something new" description="Maybe error :(" buttonText="Submit" />
+            }
 
             <Header />
             <div styleName="wrapper-inner">
