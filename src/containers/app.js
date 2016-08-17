@@ -11,6 +11,7 @@ import Content from 'containers/Content/Content';
 import Sign from 'containers/Sign/Sign';
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import ModelModal from '../components/modals/ModelModal/ModelModal';
+import ModalControl from '../components/ModalControl/ModalControl';
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -31,6 +32,13 @@ class App extends React.Component {
             {
               /// <ModelModal /> ///
             }
+
+            <ModalControl
+                title="Something new"
+                description="Maybe error :("
+                buttonText="Submit"
+                />
+
             <Header />
             <div styleName="wrapper-inner">
               <Sidebar />

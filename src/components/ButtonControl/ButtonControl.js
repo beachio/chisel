@@ -17,7 +17,7 @@ export default class ButtonControl extends Component {
 
     return (
       <div styleName={buttonControlClasses}>
-        {value}
+        {value || 'Clear'}
       </div>
     );
   }
