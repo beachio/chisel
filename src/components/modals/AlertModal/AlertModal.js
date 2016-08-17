@@ -8,7 +8,8 @@ import styles from './AlertModal.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class AlertModal extends Component {
   render() {
-    const {title, description, buttonText} = this.props;
+    const {title, description, buttonText} = this.props.alertParams;
+    const {onClose} = this.props;
 
     return (
       <div styleName="Modal">
@@ -26,7 +27,7 @@ export default class AlertModal extends Component {
               {description || 'Description'}
             </div>
 
-            <ButtonControl type="green" value={buttonText } />
+            <ButtonControl type="green" value={buttonText} onClick={onClose}/>
           </div>
 
         </div>

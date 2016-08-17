@@ -7,7 +7,7 @@ import styles from './Sidebar.sss';
 import User from 'components/sidebar/User/User';
 import Sites from 'components/sidebar/Sites/Sites';
 
-import {openPage} from 'ducks/nav';
+import {showAlert} from 'ducks/nav';
 import {setCurrentSite, addSite, updateSite} from 'ducks/models';
 
 
@@ -16,6 +16,7 @@ export default class Sidebar extends Component {
   render() {
     const {models, user} = this.props;
     const {setCurrentSite, addSite, updateSite} = this.props.modelsActions;
+    const {showAlert} = this.props.navActions;
 
     return (
       <div styleName="sidebar">
@@ -25,7 +26,8 @@ export default class Sidebar extends Component {
                  currentSite={models.currentSite}
                  setCurrentSite={setCurrentSite}
                  addSite={addSite}
-                 updateSite={updateSite}/>
+                 updateSite={updateSite}
+                 showAlert={showAlert} />
         </div>
         <div styleName="answer-wrapper">
           <div styleName="answer-question">
@@ -46,8 +48,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    navActions:     bindActionCreators({openPage}, dispatch),
-    modelsActions:  bindActionCreators({setCurrentSite, addSite, updateSite}, dispatch)
+    modelsActions:  bindActionCreators({setCurrentSite, addSite, updateSite}, dispatch),
+    navActions:     bindActionCreators({showAlert}, dispatch)
   };
 }
 

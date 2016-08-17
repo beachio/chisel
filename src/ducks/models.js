@@ -113,6 +113,20 @@ export function addSite(site) {
   };
 }
 
+//util function
+export function checkSiteName(name) {
+  if (!name)
+    return false;
+
+  let sites = store.getState().models.sites;
+  for (let site of sites) {
+    if (site.name == name)
+      return false;
+  }
+
+  return true;
+}
+
 export function updateSite(site) {
   let sites = store.getState().models.sites;
   for (let _site of sites) {

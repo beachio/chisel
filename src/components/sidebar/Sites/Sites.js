@@ -3,6 +3,7 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
 import {SiteData} from '../../../models/ModelData';
+import {checkSiteName} from 'ducks/models';
 
 import styles from './Sites.sss';
 
@@ -63,15 +64,25 @@ export default class Sites extends Component {
       let newSite = this.state.newSite;
       newSite.domain = newSite.name;
 
-      if (this.state.adding) {
-        const {addSite} = this.props;
-        addSite(newSite);
-      } else if (this.state.editing) {
-        const {updateSite} = this.props;
-        updateSite(newSite);
+      if (checkSiteName(this.state.newSite.name)) {
+        if (this.state.adding) {
+          const {addSite} = this.props;
+          addSite(newSite);
+        } else if (this.state.editing) {
+          const {updateSite} = this.props;
+          updateSite(newSite);
+        }
+        this.setState({adding: false, editing: false, newSite: null});
+      } else {
+        const {showAlert} = this.props;
+        let params = {
+          title: "Warning",
+          description: "This name is already using. Please, select another one.",
+          buttonText: "OK"
+        };
+        showAlert(params);
       }
     }
-    this.setState({adding: false, editing: false, newSite: null});
   }
 
   onDoubleClickSite(event, site) {

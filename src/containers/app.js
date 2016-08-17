@@ -12,12 +12,14 @@ import Sign from 'containers/Sign/Sign';
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import ModelModal from '../components/modals/ModelModal/ModelModal';
 import AlertModal from '../components/modals/AlertModal/AlertModal';
+import {closeAlert} from 'ducks/nav';
 
 
 @CSSModules(styles, {allowMultiple: true})
 class App extends React.Component {
   render() {
-    const {user, initialize} = this.props;
+    const {nav, user} = this.props;
+    const {closeAlert} = this.props.navActions;
 
     let Page = (
       <div>
@@ -29,12 +31,14 @@ class App extends React.Component {
       if (user.authorized) {
         Page = (
           <div>
-
             {
-              /// <ModelModal />
-              /// <AlertModal title="Something new" description="Maybe error :(" buttonText="Submit" />
+              nav.alertShowed &&
+                <AlertModal alertParams={nav.alertParams} onClose={closeAlert} />
             }
-
+            {
+              false &&
+                <ModelModal />
+            }
             <Header />
             <div styleName="wrapper-inner">
               <Sidebar />
@@ -65,13 +69,14 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    initialize: state.initialize,
+    nav:        state.nav,
     user:       state.user
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    navActions: bindActionCreators({closeAlert}, dispatch)
   };
 }
 
