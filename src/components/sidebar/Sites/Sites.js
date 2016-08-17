@@ -27,7 +27,7 @@ export default class Sites extends Component {
     const {setCurrentSite} = this.props;
     setCurrentSite(site);
   };
-  
+
   onClickAdd = () => {
     if (this.state.adding)
       return;
@@ -104,7 +104,7 @@ export default class Sites extends Component {
           {
             this.state.adding &&
               <div styleName="element">
-                <input styleName="site-name"
+                <input styleName="input-site-name"
                        value={this.state.newSite.name}
                        placeholder="Type site name"
                        autoFocus={true}
