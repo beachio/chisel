@@ -10,9 +10,16 @@ import styles from './Sites.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class Sites extends Component {
   state = {
-    currentSite: null
+    sites: [],
+    currentSite: null,
+    newSite: null
   };
+  sitesOld = [];
 
+  componentDidMount() {
+    this.setState({sites: this.props.sites});
+  }
+  
   componentWillReceiveProps(nextProps) {
     this.setState({currentSite: nextProps.currentSite});
   }
@@ -22,6 +29,15 @@ export default class Sites extends Component {
 
     const {setCurrentSite} = this.props;
     setCurrentSite(site);
+  };
+  
+  onClickAdd = () => {
+    let site = new SiteData();
+    this.sitesOld = this.state.sites;
+    
+    let newSites = this.state.sites.slice();
+    newSites.push(site);
+    this.setState({sites: newSites, newSite: site});
   };
 
   onAddSite = () => {
@@ -36,17 +52,15 @@ export default class Sites extends Component {
   };
 
   render() {
-    const {sites} = this.props;
-
     return (
       <div styleName="sites">
         <div styleName="section header">
           <div styleName="title">Your sites</div>
-          <div styleName="counter">{sites.length}/10</div>
+          <div styleName="counter">{this.state.sites.length}/10</div>
         </div>
         <div styleName="section list">
           {
-            sites.map(site => {
+            this.state.sites.map(site => {
               let style = "element";
               if (this.state.currentSite == site)
                 style += " element-active";
@@ -58,7 +72,8 @@ export default class Sites extends Component {
                   <div styleName="icon">
                     <InlineSVG src={require("./hammer.svg")} />
                   </div>
-                  <div styleName="site-name">{site.name}</div>
+                  <input styleName="site-name"
+                         placeholder="Type site name">{site.name}</input>
                   <a href={`http://${site.domain}`} target="_blank">
                     <InlineSVG styleName="link" src={require("./link.svg")} />
                   </a>

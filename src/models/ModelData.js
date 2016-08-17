@@ -78,6 +78,10 @@ export class ModelData {
     this.origin.set("site",         this.site.origin);
   }
   
+  generateString() {
+    
+  }
+  
   generateTableName() {
     let siteComponents = this.site.name.split('.');
     let siteName = siteComponents.join('_');
