@@ -19,19 +19,20 @@ export default class Sharing extends Component {
             <div styleName="list-item">
               <div styleName="colorLabel"></div>
               <div styleName="type">
-                <div styleName="name">20 Best Things You May Be Searching For</div>
-                <div styleName="description">Post</div>
+                <div styleName="name">Keir Ansell</div>
+                <div styleName="email">hello@keiransell.com</div>
               </div>
-              <div styleName="updated">3 hours ago</div>
+              <div styleName="owner">
+                OWNER
+              </div>
             </div>
 
             <div styleName="list-item">
               <div styleName="colorLabel"></div>
               <div styleName="type">
-                <div styleName="name">About us</div>
-                <div styleName="description">Page</div>
+                <div styleName="name">Steve Schofield</div>
+                <div styleName="email">stevebschofield@gmail.com</div>
               </div>
-              <div styleName="updated">24 Mar</div>
             </div>
 
           </div>
