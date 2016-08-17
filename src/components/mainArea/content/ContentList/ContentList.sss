@@ -1,4 +1,4 @@
-.models
+.ContentList
   padding-bottom: 65px
   text-align: center
 
@@ -13,63 +13,65 @@
       display: flex
       flex-flow: row nowrap
       align-items: center
-
+      position: relative
       cursor: pointer
 
       margin-top: 3px
       margin-bottom: 3px
       padding: 5px
-  
+
       .colorLabel
-        flex: 0 0 20px
         margin-right: 10px
         height: 20px
+        width: 20px
         border-radius: 100%
-      
+        position: absolute
+        left: -25px
+        top: 50%
+        transform: translateY(-50%)
+
       .type
         position: relative
-        flex: 0 0 70%
+        flex: 0 0 85%
 
       .name,
       .description,
-      .fields,
       .updated
         font-size: 13px
         color: #666666
         letter-spacing: 0.5px
         text-align: left
-  
+
       .name
         font-weight: 600
-  
+
       .description
         letter-spacing: 0.46px
 
-      .fields,
       .updated
         flex: 0 0 15%
-        
+
       &:hover
         background: #ececec
 
 
     &-header
       margin-bottom: 5px
-  
+
       .colorLabel
         visibility: hidden
 
       .fields,
       .updated
         color: #999999
-        
-  
+
+
   .create-new
-    width: 81%
+    width: 80%
     position: relative
     margin: 0 auto
     margin-top: 9px
-    
+
     .input
       background: #FFFFFF
       border: 1px solid #CCCCCC
@@ -79,7 +81,7 @@
       width: 100%
       padding: 0 40px 0 9px
       outline: none
-    
+
     .plus
       position: absolute
       top: 50%
