@@ -107,10 +107,12 @@ export default class Sites extends Component {
 
               let editing = !!this.state.newSite && site == this.state.newSite;
 
+              let key = site.origin && site.origin.id ? site.origin.id : Math.random();
+
               return(
                 <div styleName={style}
                      onClick={() => this.onClickSite(site)}
-                     key={site.name}>
+                     key={key}>
                   <div styleName="icon">
                     <InlineSVG src={require("./hammer.svg")} />
                   </div>
