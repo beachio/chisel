@@ -6,31 +6,44 @@ import CSSModules from 'react-css-modules';
 import styles from './Content.sss';
 
 import ModelsList from 'components/content/models/ModelsList/ModelsList';
+import ContentList from 'components/content/content/ContentList/ContentList';
 import Model from 'components/content/models/Model/Model';
 import {addModel, setCurrentModel, addField} from 'ducks/models';
-import {closeModel} from 'ducks/nav';
+import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, closeModel} from 'ducks/nav';
 
 
 @CSSModules(styles, {allowMultiple: true})
 export default class Content extends Component  {
   render() {
     const {models, nav} = this.props;
-    const {addModel, setCurrentModel, addField} = this.props.modelsActions;
-    const {closeModel} = this.props.navActions;
 
-    let modelsList = models.currentSite ? models.currentSite.models : [];
-    let Content = (
-      <ModelsList models={modelsList}
-                  setCurrentModel={setCurrentModel}
-                  addModel={addModel} />
-    );
+    let Content;
+    switch (nav.openedPage) {
+      case PAGE_MODELS:
+        const {addModel, setCurrentModel, addField} = this.props.modelsActions;
+        const {closeModel} = this.props.navActions;
 
-    if (nav.openedModel)
-      Content = (
-        <Model model={models.currentModel}
-               onClose={closeModel}
-               addField={addField} />
-      );
+        let modelsList = models.currentSite ? models.currentSite.models : [];
+        Content = (
+          <ModelsList models={modelsList}
+                      setCurrentModel={setCurrentModel}
+                      addModel={addModel} />
+        );
+
+        if (nav.openedModel)
+          Content = (
+            <Model model={models.currentModel}
+                   onClose={closeModel}
+                   addField={addField} />
+          );
+
+        break;
+
+      case PAGE_CONTENT:
+        Content = (
+          <ContentList />
+        );
+    }
 
     return (
       <div styleName="content">

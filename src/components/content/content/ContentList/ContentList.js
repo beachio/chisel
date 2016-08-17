@@ -4,11 +4,11 @@ import InlineSVG from 'svg-inline-react';
 
 import {ModelData} from '../../../../models/ModelData';
 
-import styles from './ModelsList.sss';
+import styles from './ContentList.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export default class ModelsList extends Component {
+export default class ContentList extends Component {
   state = {
     models: [],
     modelName: ""

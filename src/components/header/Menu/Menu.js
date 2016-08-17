@@ -11,15 +11,28 @@ export default class Menu extends Component  {
   }
 
   render() {
-    const {openPage} = this.props;
+    const {openedPage, openPage} = this.props;
+
+    let styleModels   = "button";
+    let styleApi      = "button";
+    let styleContent  = "button";
+    let styleSettings = "button";
+    let styleSharing  = "button";
+    switch(openedPage) {
+      case PAGE_MODELS:   styleModels   += " active"; break;
+      case PAGE_API:      styleApi      += " active"; break;
+      case PAGE_CONTENT:  styleContent  += " active"; break;
+      case PAGE_SETTINGS: styleSettings += " active"; break;
+      case PAGE_SHARING:  styleSharing  += " active"; break;
+    }
 
     return (
       <div styleName="menu">
-        <div styleName="button active" onClick={() => openPage(PAGE_MODELS)}>Models</div>
-        <div styleName="button" onClick={() => openPage(PAGE_API)}>API</div>
-        <div styleName="button" onClick={() => openPage(PAGE_CONTENT)}>Content</div>
-        <div styleName="button" onClick={() => openPage(PAGE_SETTINGS)}>Settings</div>
-        <div styleName="button" onClick={() => openPage(PAGE_SHARING)}>Sharing</div>
+        <div styleName={styleModels}    onClick={() => openPage(PAGE_MODELS)}   >Models</div>
+        <div styleName={styleApi}       onClick={() => openPage(PAGE_API)}      >API</div>
+        <div styleName={styleContent}   onClick={() => openPage(PAGE_CONTENT)}  >Content</div>
+        <div styleName={styleSettings}  onClick={() => openPage(PAGE_SETTINGS)} >Settings</div>
+        <div styleName={styleSharing}   onClick={() => openPage(PAGE_SHARING)}  >Sharing</div>
       </div>
     );
   }
