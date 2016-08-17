@@ -3,15 +3,15 @@ import CSSModules from 'react-css-modules';
 
 import ButtonControl from '../ButtonControl/ButtonControl';
 
-import styles from './ModalControl.sss';
+import styles from './Modal.sss';
 
 @CSSModules(styles, {allowMultiple: true})
-export default class ModalControl extends Component {
+export default class Modal extends Component {
   render() {
     const {title, description, buttonText} = this.props;
 
     return (
-      <div styleName="ModalControl">
+      <div styleName="Modal">
         <div styleName="bg"></div>
 
         <div styleName="modal-inner">
@@ -26,7 +26,7 @@ export default class ModalControl extends Component {
               {description || 'Description'}
             </div>
 
-            <ButtonControl type="green" value={buttonText} />
+            <ButtonControl type="green" value={buttonText } />
           </div>
 
         </div>
