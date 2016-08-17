@@ -7,7 +7,7 @@ import styles from './ButtonControl.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class ButtonControl extends Component {
   render() {
-    const {value, type} = this.props;
+    const {value, type, onClick} = this.props;
 
     let buttonControlClasses = classNames({
       'ButtonControl': true,
@@ -16,7 +16,7 @@ export default class ButtonControl extends Component {
     });
 
     return (
-      <div styleName={buttonControlClasses}>
+      <div styleName={buttonControlClasses} onClick={onClick}>
         {value || 'Clear'}
       </div>
     );
