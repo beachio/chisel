@@ -72,6 +72,14 @@ export default class Model extends Component {
                     <div styleName="list-item-name">{field.name}</div>
                     <div styleName="list-item-type">{field.type}</div>
                   </div>
+                  <div styleName="hidden-controls">
+                    <div styleName="hidden-button">TITLE</div>
+                    <div styleName="hidden-remove">
+                      <InlineSVG styleName="cross"
+                                 src={require("./cross.svg")}
+                                 />
+                    </div>
+                  </div>
                 </div>
               );
             })
