@@ -4,6 +4,7 @@ import CSSModules from 'react-css-modules';
 import styles from './ModelModal.sss';
 
 import SwitchControl from '../../SwitchControl/SwitchControl';
+import ButtonControl from '../../ButtonControl/ButtonControl';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ModelModal extends Component  {
@@ -44,7 +45,20 @@ export default class ModelModal extends Component  {
               </div>
 
               <div styleName="input-wrapper">
-                <SwitchControl />
+                <SwitchControl title="Entry Title?"/>
+              </div>
+
+              <div styleName="more">
+                More...
+              </div>
+
+              <div styleName="input-wrapper buttons-wrapper">
+                <div styleName="buttons-inner">
+                  <ButtonControl type="green" value="Save" />
+                </div>
+                <div styleName="buttons-inner">
+                  <ButtonControl type="gray" value="Cancel" />
+                </div>
               </div>
             </form>
 
