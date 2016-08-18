@@ -38,9 +38,18 @@
     &:hover
       background: #ececec
 
+      .site-name
+        border: 1px solid #ececec
+
     &-active
       background: #F9F9F9
       box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.10)
+
+      &:hover .site-name
+        border: 1px solid #f9f9f9
+
+      .site-name
+        border: 1px solid #f9f9f9
 
     &-active:hover
       background: #F9F9F9
@@ -61,6 +70,9 @@
       text-overflow: ellipsis
       max-width: 160px
       flex: 1 0 auto
+      border: 1px solid #f1f1f1
+
+      transition: border 0.1s ease
 
     .site-name-editable
       border: 1px solid #cccccc
