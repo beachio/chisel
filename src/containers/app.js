@@ -39,6 +39,7 @@ class App extends React.Component {
               nav.modalShowing && nav.modalType == MODAL_TYPE_FIELD &&
                 <FieldModal params={nav.modalParams} onClose={closeModal} />
             }
+            <FieldModal params={nav.modalParams} onClose={closeModal} />
             <Header />
             <div styleName="wrapper-inner">
               <Sidebar />

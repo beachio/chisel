@@ -36,8 +36,8 @@
     align-items: center
 
   .content
-    flex: 0 0 30%
-    padding: 32px 0
+    width: 100%
+    padding: 32px 10%
 
   .title
     font-size: 20px
@@ -49,36 +49,79 @@
     color: #666666
     letter-spacing: 0.46px
 
-  .input,
   .label
-    background: #D8D8D8
-    font-weight: 600
     font-size: 13px
+    font-weight: 600
     color: #666666
-    letter-spacing: 0.5px
-    border: none
-    line-height: 50px
-    padding: 0 16px
-    flex: 1
+    padding-bottom: 6px
+    padding-left: 2px
+
+  .switch
+    margin-top: 6px
+
+  .input
+    background: #FFFFFF
+    border: 2px solid #CCCCCC
+    box-shadow: inset 0px 1px 2px 0px rgba(0,0,0,0.10)
+    border-radius: 3px
+    font-weight: 500
+    line-height: 34px
+    width: 100%
+    padding: 0 9px 0 9px
     outline: none
+
+    font-size: 13px
+    /*color: #999999*/
+    color: #000
+    letter-spacing: 0.5px
 
     &-readonly
       background: #EFEFEF
 
     &-wrapper
-      margin-bottom: 12px
-      display: flex
-      flex-flow: row nowrap
+      width: 100%
+      margin-bottom: 30px
 
-  .more
-    font-weight: 600
-    font-size: 13px
-    color: #4A90E2
-    letter-spacing: 0.5px
-    margin-top: 36px
-    cursor: pointer
+  .type-wrapper
+    position: relative
+
+
+  .suggestions-visible + .suggestions
+    display: block
+
+  .suggestions
+    position: absolute
+    top: calc(100% - 2px)
+    background: #fff
+    z-index: 999
+    width: 100%
+    border: 2px solid #CCCCCC
+    border-top: 1px solid #CCCCCC
+    border-bottom-left-radius: 3px
+    border-bottom-right-radius: 3px
+    overflow-y: scroll
+    max-height: 138px
+
+    display: none
+
+    .suggestion
+      font-weight: 500
+      line-height: 34px
+      width: 100%
+      cursor: pointer
+      padding: 0 9px
+      outline: none
+
+      font-size: 13px
+      color: #333333
+      letter-spacing: 0.5px
+
+      &:hover
+        background: #efefef
 
   .buttons-wrapper
+    display: flex
+    flex-flow: row nowrap
     margin-top: 80px
     justify-content: center
 
