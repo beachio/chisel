@@ -1,9 +1,10 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 
-import ButtonControl from '../../elements/ButtonControl/ButtonControl';
+import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 
 import styles from './AlertModal.sss';
+
 
 @CSSModules(styles, {allowMultiple: true})
 export default class AlertModal extends Component {

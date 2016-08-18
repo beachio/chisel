@@ -3,8 +3,9 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 
+import {loginOrRegister, ERROR_USER_EXISTS, ERROR_WRONG_PASS} from 'ducks/user';
+
 import styles from './Sign.sss';
-import {loginOrRegister, ERROR_USER_EXISTS, ERROR_WRONG_PASS} from '../../ducks/user';
 
 
 @CSSModules(styles, {allowMultiple: true})

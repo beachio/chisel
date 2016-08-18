@@ -2,9 +2,9 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 
-import rootReducer from '../ducks';
-import {initialization} from '../middleware/initialization';
-import {structure} from '../middleware/structure';
+import rootReducer from 'ducks';
+import {initialization} from 'middleware/initialization';
+import {structure} from 'middleware/structure';
 
 
 export default function configureStore(initialState) {

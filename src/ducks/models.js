@@ -1,7 +1,7 @@
 import {Parse} from 'parse';
 
 import {store} from '../index';
-import {SiteData, ModelData, ModelFieldData} from '../models/ModelData';
+import {SiteData, ModelData, ModelFieldData} from 'models/ModelData';
 
 
 export const INIT_END               = 'app/models/INIT_END';

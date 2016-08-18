@@ -1,5 +1,5 @@
-import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOCAL_STORAGE_RESPONSE} from '../ducks/user';
-import {init as initModels} from '../ducks/models';
+import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOCAL_STORAGE_RESPONSE} from 'ducks/user';
+import {init as initModels} from 'ducks/models';
 
 
 export const initialization = store => next => action => {

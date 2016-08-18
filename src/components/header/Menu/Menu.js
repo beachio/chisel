@@ -1,8 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 
-import styles from './Menu.sss';
 import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING} from 'ducks/nav';
+
+import styles from './Menu.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})

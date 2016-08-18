@@ -3,16 +3,16 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 
-import styles from './app.sss';
-
 import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
 import MainArea from 'containers/MainArea/MainArea';
 import Sign from 'containers/Sign/Sign';
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
-import ModelModal from '../components/modals/ModelModal/ModelModal';
-import AlertModal from '../components/modals/AlertModal/AlertModal';
 import {closeAlert} from 'ducks/nav';
+import ModelModal from 'components/modals/ModelModal/ModelModal';
+import AlertModal from 'components/modals/AlertModal/AlertModal';
+
+import styles from './app.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})

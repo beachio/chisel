@@ -1,6 +1,6 @@
 import {Parse} from 'parse';
 
-import {UserData} from '../models/UserData';
+import {UserData} from 'models/UserData';
 
 
 export const LOGIN_REQUEST          = 'app/user/LOGIN_REQUEST';

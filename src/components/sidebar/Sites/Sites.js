@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
-import {SiteData} from '../../../models/ModelData';
+import {SiteData} from 'models/ModelData';
 import {checkSiteName} from 'ducks/models';
 
 import styles from './Sites.sss';

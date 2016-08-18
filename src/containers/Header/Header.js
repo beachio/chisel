@@ -3,11 +3,10 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 
-import styles from './Header.sss';
 import Menu from 'components/header/Menu/Menu';
-
 import {openPage} from 'ducks/nav';
 
+import styles from './Header.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})

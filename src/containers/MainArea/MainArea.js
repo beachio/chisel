@@ -3,8 +3,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 
-import styles from './MainArea.sss';
-
 import ModelsList from 'components/mainArea/models/ModelsList/ModelsList';
 import ContentList from 'components/mainArea/content/ContentList/ContentList';
 import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
@@ -12,6 +10,8 @@ import Sharing from 'components/mainArea/sharing/Sharing';
 import Model from 'components/mainArea/models/Model/Model';
 import {addModel, setCurrentModel, addField} from 'ducks/models';
 import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, closeModel} from 'ducks/nav';
+
+import styles from './MainArea.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})

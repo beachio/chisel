@@ -3,12 +3,14 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
-import styles from './Sidebar.sss';
+
 import User from 'components/sidebar/User/User';
 import Sites from 'components/sidebar/Sites/Sites';
 
 import {showAlert} from 'ducks/nav';
 import {setCurrentSite, addSite, updateSite} from 'ducks/models';
+
+import styles from './Sidebar.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})

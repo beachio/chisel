@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
-import {ModelData} from '../../../../models/ModelData';
+import {ModelData} from 'models/ModelData';
 
 import styles from './ModelsList.sss';
 

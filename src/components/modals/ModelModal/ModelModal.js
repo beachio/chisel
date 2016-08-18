@@ -1,10 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 
+import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
+import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
+
 import styles from './ModelModal.sss';
 
-import SwitchControl from '../../elements/SwitchControl/SwitchControl';
-import ButtonControl from '../../elements/ButtonControl/ButtonControl';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ModelModal extends Component  {

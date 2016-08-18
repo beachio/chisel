@@ -1,5 +1,5 @@
-import {INIT_END as INIT_END_models, SITE_ADD, SET_CURRENT_SITE, MODEL_ADD, SET_CURRENT_MODEL, setCurrentSite} from '../ducks/models';
-import {openModel} from '../ducks/nav';
+import {INIT_END as INIT_END_models, SITE_ADD, SET_CURRENT_MODEL, setCurrentSite} from 'ducks/models';
+import {openModel} from 'ducks/nav';
 
 
 export const structure = store => next => action => {

@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import styles from './ButtonControl.sss';
 
+
 @CSSModules(styles, {allowMultiple: true})
 export default class ButtonControl extends Component {
   render() {

@@ -1,7 +1,7 @@
 import {Parse} from 'parse';
 
 import {store} from '../index';
-import {getLocalStorage} from '../ducks/user';
+import {getLocalStorage} from 'ducks/user';
 
 
 export const INITIALIZE_APP_START   = 'app/initialize/INITIALIZE_APP_START';
