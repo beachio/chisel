@@ -36,6 +36,7 @@ export default class ContentEdit extends Component {
           <div styleName="field">
             <div styleName="field-title">
               body
+              <InlineSVG styleName="link" src={require("./link.svg")} />
             </div>
             <textarea styleName="textarea" placeholder="This is a post">
             </textarea>
