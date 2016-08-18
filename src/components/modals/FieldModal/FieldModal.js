@@ -36,16 +36,16 @@ export default class FieldModal extends Component  {
     })
   }
 
-  onInputClick = (event) => {
+  onSuggestionInputClick = (event) => {
     this.setState({
       suggestionsVisibility: true,
       suggestionValue: event.target.value
     })
   }
 
-  onInputBlur = () => {
+  onSuggestionInputChange = (event) => {
     this.setState({
-      suggestionsVisibility: false
+      suggestionValue: event.target.value
     })
   }
 
@@ -90,7 +90,8 @@ export default class FieldModal extends Component  {
                 <input styleName={inputClasses}
                        placeholder={this.state.suggestionPlaceholder}
                        value={this.state.suggestionValue}
-                       onClick={(event) => this.onInputClick(event)} />
+                       onClick={(event) => this.onSuggestionInputClick(event)}
+                       onChange={(event) => this.onSuggestionInputChange(event)} />
                 <div styleName="suggestions" >
                   <div onMouseEnter={(event) => this.onSuggestionHover(event)}
                        onClick={(event) => this.onSuggestionClick(event)}
