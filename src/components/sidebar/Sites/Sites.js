@@ -54,12 +54,15 @@ export default class Sites extends Component {
     this.onAddOrUpdateSite(true);
   };
 
-  onKeyPress = target => {
+  onKeyDown = event => {
+    if (this.props.modalShowing)
+      return;
+
     //Enter pressed
-    if (target.charCode == 13) {
+    if (event.keyCode == 13) {
       this.onAddOrUpdateSite();
     //Esc pressed
-    } else if (target.charCode == 27) {
+    } else if (event.keyCode == 27) {
       this.endEdit();
     }
   };
@@ -152,7 +155,7 @@ export default class Sites extends Component {
                          value={name}
                          onBlur={this.onSiteNameBlur}
                          onChange={this.onSiteNameChange}
-                         onKeyPress={this.onKeyPress}
+                         onKeyDown={this.onKeyDown}
                          ref={ref} />
                   <a href={`http://${site.domain}`} target="_blank">
                     <InlineSVG styleName="link" src={require("./link.svg")} />
@@ -170,7 +173,7 @@ export default class Sites extends Component {
                        autoFocus={true}
                        onBlur={this.onSiteNameBlur}
                        onChange={this.onSiteNameChange}
-                       onKeyPress={this.onKeyPress}
+                       onKeyDown={this.onKeyDown}
                        ref={c => this.activeInput = c} />
               </div>
           }

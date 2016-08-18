@@ -3,6 +3,7 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
 import {ModelFieldData} from 'models/ModelData';
+import {MODAL_TYPE_FIELD} from 'ducks/nav';
 
 import styles from './Model.sss';
 
@@ -50,6 +51,11 @@ export default class Model extends Component {
     this.setState({fieldName: ""});
   };
 
+  onFieldClick = field => {
+    const {showModal} = this.props;
+    showModal(MODAL_TYPE_FIELD, field);
+  };
+
   render() {
     const {model, onClose} = this.props;
 
@@ -64,9 +70,10 @@ export default class Model extends Component {
           {
             this.state.fields.map(field => {
               let colorStyle = {background: field.color};
+              let key = model.origin && model.origin.id ? model.origin.id : Math.random();
 
               return (
-                <div styleName="list-item" key={field.name}>
+                <div styleName="list-item" key={key}>
                   <div styleName="list-item-color" style={colorStyle}></div>
                   <div styleName="list-item-text">
                     <div styleName="list-item-name">{field.name}</div>

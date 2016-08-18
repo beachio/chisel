@@ -9,7 +9,7 @@ import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import Sharing from 'components/mainArea/sharing/Sharing';
 import Model from 'components/mainArea/models/Model/Model';
 import {addModel, setCurrentModel, addField} from 'ducks/models';
-import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, closeModel} from 'ducks/nav';
+import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, closeModel, showModal} from 'ducks/nav';
 
 import styles from './MainArea.sss';
 
@@ -23,20 +23,23 @@ export default class MainArea extends Component  {
     switch (nav.openedPage) {
       case PAGE_MODELS:
         const {addModel, setCurrentModel, addField} = this.props.modelsActions;
-        const {closeModel} = this.props.navActions;
+        const {closeModel, showModal} = this.props.navActions;
 
         let modelsList = models.currentSite ? models.currentSite.models : [];
         Area = (
           <ModelsList models={modelsList}
                       setCurrentModel={setCurrentModel}
-                      addModel={addModel} />
+                      addModel={addModel}
+                      showModal={showModal}
+                      modalShowing={nav.modalShowing} />
         );
 
         if (nav.openedModel)
           Area = (
             <Model model={models.currentModel}
                    onClose={closeModel}
-                   addField={addField} />
+                   addField={addField}
+                   showModal={showModal} />
           );
 
         break;
@@ -72,7 +75,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     modelsActions:  bindActionCreators({addModel, setCurrentModel, addField}, dispatch),
-    navActions:     bindActionCreators({closeModel}, dispatch)
+    navActions:     bindActionCreators({closeModel, showModal}, dispatch)
   };
 }
 

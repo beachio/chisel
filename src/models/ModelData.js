@@ -1,24 +1,55 @@
 import {Parse} from 'parse';
 
 
+//utils
+export function removeSpacesFromString(str) {
+  return str.trim().replace(/\s+/g, ' ');
+}
+
+export function filterString(str) {
+  if (str.match(/^\d/))
+    str = '_' + str;
+  return str.replace(/\W/g, "_");
+
+  /*
+  return str.replace(/\W+(.)/g, (match, chr) => {
+    return chr.toUpperCase();
+  });
+  */
+}
+
 export class SiteData {
   static get OriginClass() {return Parse.Object.extend("Site");}
   
   origin = null;
   
-  name = "";
   domain = "";
   owner = null;
   collaborations = [];
+
+  //setter
+  _name = "";
+  _nameId = "";
   
   //children
   models = [];
-  
+
+  get name() {return this._name;}
+  set name(name) {
+    this._name = removeSpacesFromString(name);
+    this.nameId = this._name;
+  }
+
+  get nameId() {return this._nameId;}
+  set nameId(nameId) {
+    this._nameId = filterString(nameId);
+  }
   
   setOrigin(origin) {
     this.origin = origin;
   
     if (origin.get('name'))           this.name           = origin.get('name');
+    if (origin.get('nameId'))         this.nameId         = origin.get('nameId');
     if (origin.get('domain'))         this.domain         = origin.get('domain');
     if (origin.get('owner'))          this.owner          = origin.get('owner');
     if (origin.get('collaborations')) this.collaborations = origin.get('collaborations');
@@ -31,6 +62,7 @@ export class SiteData {
       this.origin = new SiteData.OriginClass;
   
     this.origin.set("name",           this.name);
+    this.origin.set("nameId",         this.nameId);
     this.origin.set("domain",         this.domain);
     this.origin.set("owner",          this.owner);
     this.origin.set("collaborations", this.collaborations);
@@ -43,22 +75,37 @@ export class ModelData {
   
   origin = null;
   
-  name = "";
   description = "";
   tableName = "";
   color = "rgba(0, 0, 0, 1)";
+
+  //setter
+  _name = "";
+  _nameId = "";
   
   //links
   site = null;
   
   //children
   fields = [];
-  
+
+
+  get name() {return this._name;}
+  set name(name) {
+    this._name = removeSpacesFromString(name);
+    this.nameId = this._name;
+  }
+
+  get nameId() {return this._nameId;}
+  set nameId(nameId) {
+    this._nameId = filterString(nameId);
+  }
   
   setOrigin(origin) {
     this.origin = origin;
     
     if (origin.get('name'))         this.name         = origin.get('name');
+    if (origin.get('nameId'))       this.nameId       = origin.get('nameId');
     if (origin.get('description'))  this.description  = origin.get('description');
     if (origin.get('tableName'))    this.tableName    = origin.get('tableName');
     if (origin.get('color'))        this.color        = origin.get('color');
@@ -71,21 +118,16 @@ export class ModelData {
       this.origin = new ModelData.OriginClass;
     
     this.origin.set("name",         this.name);
+    this.origin.set("nameId",       this.nameId);
     this.origin.set("description",  this.description);
     this.origin.set("tableName",    this.tableName);
     this.origin.set("color",        this.color);
-  
+
     this.origin.set("site",         this.site.origin);
   }
-  
-  generateString() {
-    
-  }
-  
-  generateTableName() {
-    let siteComponents = this.site.name.split('.');
-    let siteName = siteComponents.join('_');
-    return `content__${this.site.origin.id}__${siteName}__${this.name}`;
+
+  setTableName() {
+    this.tableName = `content___${this.site.nameId}___${this.nameId}`;
   }
 }
 
@@ -100,18 +142,33 @@ export class ModelFieldData {
   
   origin = null;
   
-  name = "";
   type = FIELD_TYPE_SHORT_TEXT;
   color = "rgba(0, 0, 0, 1)";
+
+  //setter
+  _name = "";
+  _nameId = "";
   
   //links
   model = null;
-  
-  
+
+
+  get name() {return this._name;}
+  set name(name) {
+    this._name = removeSpacesFromString(name);
+    this.nameId = this._name;
+  }
+
+  get nameId() {return this._nameId;}
+  set nameId(nameId) {
+    this._nameId = filterString(nameId);
+  }
+
   setOrigin(origin) {
     this.origin = origin;
     
     if (origin.get('name'))   this.name   = origin.get('name');
+    if (origin.get('nameId')) this.nameId = origin.get('nameId');
     if (origin.get('type'))   this.type   = origin.get('type');
     if (origin.get('color'))  this.color  = origin.get('color');
     
@@ -123,6 +180,7 @@ export class ModelFieldData {
       this.origin = new ModelFieldData.OriginClass;
     
     this.origin.set("name",   this.name);
+    this.origin.set("nameId", this.nameId);
     this.origin.set("type",   this.type);
     this.origin.set("color",  this.color);
   

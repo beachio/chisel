@@ -1,7 +1,7 @@
 import {Parse} from 'parse';
 
 import {store} from '../index';
-import {SiteData, ModelData, ModelFieldData} from 'models/ModelData';
+import {removeSpacesFromString, filterString, SiteData, ModelData, ModelFieldData} from 'models/ModelData';
 
 
 export const INIT_END               = 'app/models/INIT_END';
@@ -118,9 +118,12 @@ export function checkSiteName(name) {
   if (!name)
     return false;
 
+  name = removeSpacesFromString(name);
+  let nameId = filterString(name);
+
   let sites = store.getState().models.sites;
   for (let site of sites) {
-    if (site.name == name)
+    if (site.name == name || site.nameId == nameId)
       return false;
   }
 
@@ -144,9 +147,9 @@ export function updateSite(site) {
 export function addModel(model) {
   let currentSite = store.getState().models.currentSite;
   currentSite.models.push(model);
-  
+
   model.site = currentSite;
-  model.tableName = model.generateTableName();
+  model.setTableName();
   model.updateOrigin();
   model.origin.save();
   
@@ -154,6 +157,23 @@ export function addModel(model) {
     type: MODEL_ADD,
     model
   };
+}
+
+//util function
+export function checkModelName(name) {
+  if (!name)
+    return false;
+
+  name = removeSpacesFromString(name);
+  let nameId = filterString(name);
+
+  let models = store.getState().models.currentSite.models;
+  for (let model of models) {
+    if (model.name == name || model.nameId == nameId)
+      return false;
+  }
+
+  return true;
 }
 
 export function setCurrentModel(currentModel) {
@@ -166,7 +186,7 @@ export function setCurrentModel(currentModel) {
 export function addField(field) {
   let currentModel = store.getState().models.currentModel;
   currentModel.fields.push(field);
-  
+
   field.model = currentModel;
   field.updateOrigin();
   field.origin.save();
@@ -174,6 +194,23 @@ export function addField(field) {
   return {
     type: FIELD_ADD
   };
+}
+
+//util function
+export function checkFieldName(name) {
+  if (!name)
+    return false;
+
+  name = removeSpacesFromString(name);
+  let nameId = filterString(name);
+
+  let fields = store.getState().models.currentModel.fields;
+  for (let field of fields) {
+    if (field.name == name || field.nameId == nameId)
+      return false;
+  }
+
+  return true;
 }
 
 const initialState = {

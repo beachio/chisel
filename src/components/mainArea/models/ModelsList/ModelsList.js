@@ -3,6 +3,8 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
 import {ModelData} from 'models/ModelData';
+import {checkModelName} from 'ducks/models';
+import {MODAL_TYPE_ALERT} from 'ducks/nav';
 
 import styles from './ModelsList.sss';
 
@@ -13,19 +15,36 @@ export default class ModelsList extends Component {
     models: [],
     modelName: ""
   };
+  activeInput = null;
 
-  componentDidMount() {
+
+  componentWillMount() {
     this.setState({models: this.props.models});
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!nextProps.modalShowing && this.activeInput)
+      this.activeInput.focus();
     this.setState({models: nextProps.models});
+    if (nextProps.models != this.state.models)
+      this.setState({modelName: ""});
   }
 
   onModelNameChange = event => {
     let name = event.target.value;
-    name = name.replace(/\s+/g, '');
     this.setState({modelName: name});
+  };
+
+  onKeyDown = event => {
+    if (this.props.modalShowing)
+      return;
+    //Enter pressed
+    if (event.keyCode == 13) {
+      this.onAddModel();
+    //Esc pressed
+    } else if (event.keyCode == 27) {
+      this.setState({modelName: ""});
+    }
   };
 
   onAddModel = event => {
@@ -34,6 +53,17 @@ export default class ModelsList extends Component {
 
     if (!this.state.modelName)
       return;
+
+    if (!checkModelName(this.state.modelName)) {
+      const {showModal} = this.props;
+      let params = {
+        title: "Warning",
+        description: "This name is already using. Please, select another one.",
+        buttonText: "OK"
+      };
+      showModal(MODAL_TYPE_ALERT, params);
+      return;
+    }
 
     const {addModel} = this.props;
 
@@ -75,13 +105,15 @@ export default class ModelsList extends Component {
                 let updatedDate = model.origin.updatedAt;
                 if (!updatedDate)
                   updatedDate = new Date();
-                let updatedStr = updatedDate.toLocaleString("en-US", {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
+                let updatedStr = updatedDate.toLocaleString("en-US",
+                  {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
 
                 let colorStyle = {background: model.color};
+                let key = model.origin && model.origin.id ? model.origin.id : Math.random();
 
                 return(
                   <div styleName="list-item"
-                       key={model.name}
+                       key={key}
                        onClick={() => this.onModelClick(model)}>
                     <div styleName="colorLabel" style={colorStyle}></div>
                     <div styleName="type">
@@ -95,16 +127,18 @@ export default class ModelsList extends Component {
               })
             }
           </div>
-          <form styleName="create-new" onSubmit={this.onAddModel}>
+          <div styleName="create-new" onSubmit={this.onAddModel}>
             <input styleName="input"
                    value={this.state.modelName}
                    autoFocus={true}
                    placeholder="Create a new Content Type"
-                   onChange={this.onModelNameChange} />
+                   onChange={this.onModelNameChange}
+                   onKeyDown={this.onKeyDown}
+                   ref={c => this.activeInput = c} />
             <InlineSVG styleName="plus"
                        src={require("./plus.svg")}
                        onClick={this.onAddModel} />
-          </form>
+          </div>
         </div>
       </div>
     );
