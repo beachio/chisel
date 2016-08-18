@@ -4,14 +4,17 @@ import {store} from '../index';
 export const OPEN_PAGE    = 'app/nav/OPEN_PAGE';
 export const OPEN_MODEL   = 'app/nav/OPEN_MODEL';
 export const CLOSE_MODEL  = 'app/nav/CLOSE_MODEL';
-export const SHOW_ALERT   = 'app/nav/SHOW_ALERT';
-export const CLOSE_ALERT  = 'app/nav/CLOSE_ALERT';
+export const SHOW_MODAL   = 'app/nav/SHOW_MODAL';
+export const CLOSE_MODAL  = 'app/nav/CLOSE_MODAL';
 
 export const PAGE_MODELS    = 'app/nav/pages/PAGE_MODELS';
 export const PAGE_CONTENT   = 'app/nav/pages/PAGE_CONTENT';
 export const PAGE_API       = 'app/nav/pages/PAGE_API';
 export const PAGE_SETTINGS  = 'app/nav/pages/PAGE_SETTINGS';
 export const PAGE_SHARING   = 'app/nav/pages/PAGE_SHARING';
+
+export const MODAL_TYPE_ALERT = 'app/nav/modals/MODAL_TYPE_ALERT';
+export const MODAL_TYPE_FIELD = 'app/nav/modals/MODAL_TYPE_FIELD';
 
 
 
@@ -33,25 +36,27 @@ export function closeModel() {
   };
 }
 
-export function showAlert(alertParams) {
+export function showModal(modalType, params) {
   return {
-    type: SHOW_ALERT,
-    alertParams
+    type: SHOW_MODAL,
+    modalType,
+    params
   };
 }
-export function closeAlert() {
+export function closeModal() {
   return {
-    type: CLOSE_ALERT
+    type: CLOSE_MODAL
   };
 }
 
 const initialState = {
   openedPage: PAGE_MODELS,
-  
+
   openedModel: false,
 
-  alertShowing: false,
-  alertParams: null
+  modalShowing: false,
+  modalType: null,
+  modalParams: null
 };
 
 export default function navReducer(state = initialState, action) {
@@ -65,11 +70,11 @@ export default function navReducer(state = initialState, action) {
     case CLOSE_MODEL:
       return {...state, openedModel: false};
 
-    case SHOW_ALERT:
-      return {...state, alertShowing: true, alertParams: action.alertParams};
+    case SHOW_MODAL:
+      return {...state, modalShowing: true, modalType: action.modalType, modalParams: action.params};
 
-    case CLOSE_ALERT:
-      return {...state, alertShowing: false};
+    case CLOSE_MODAL:
+      return {...state, modalShowing: false};
       
     default:
       return state;

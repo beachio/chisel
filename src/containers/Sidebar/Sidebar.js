@@ -6,8 +6,7 @@ import InlineSVG from 'svg-inline-react';
 
 import User from 'components/sidebar/User/User';
 import Sites from 'components/sidebar/Sites/Sites';
-
-import {showAlert} from 'ducks/nav';
+import {showModal} from 'ducks/nav';
 import {setCurrentSite, addSite, updateSite} from 'ducks/models';
 
 import styles from './Sidebar.sss';
@@ -18,7 +17,7 @@ export default class Sidebar extends Component {
   render() {
     const {models, nav, user} = this.props;
     const {setCurrentSite, addSite, updateSite} = this.props.modelsActions;
-    const {showAlert} = this.props.navActions;
+    const {showModal} = this.props.navActions;
 
     return (
       <div styleName="sidebar">
@@ -29,8 +28,8 @@ export default class Sidebar extends Component {
                  setCurrentSite={setCurrentSite}
                  addSite={addSite}
                  updateSite={updateSite}
-                 showAlert={showAlert}
-                 alertShowing={nav.alertShowing}/>
+                 showModal={showModal}
+                 modalShowing={nav.modalShowing}/>
         </div>
         <div styleName="answer-wrapper">
           <div styleName="answer-question">
@@ -53,7 +52,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     modelsActions:  bindActionCreators({setCurrentSite, addSite, updateSite}, dispatch),
-    navActions:     bindActionCreators({showAlert}, dispatch)
+    navActions:     bindActionCreators({showModal}, dispatch)
   };
 }
 

@@ -8,9 +8,9 @@ import Sidebar from 'containers/Sidebar/Sidebar';
 import MainArea from 'containers/MainArea/MainArea';
 import Sign from 'containers/Sign/Sign';
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
-import {closeAlert} from 'ducks/nav';
 import ModelModal from 'components/modals/ModelModal/ModelModal';
 import AlertModal from 'components/modals/AlertModal/AlertModal';
+import {closeModal, MODAL_TYPE_ALERT, MODAL_TYPE_FIELD} from 'ducks/nav';
 
 import styles from './app.sss';
 
@@ -19,7 +19,7 @@ import styles from './app.sss';
 class App extends React.Component {
   render() {
     const {nav, user} = this.props;
-    const {closeAlert} = this.props.navActions;
+    const {closeModal} = this.props.navActions;
 
     let Page = (
       <div>
@@ -32,12 +32,12 @@ class App extends React.Component {
         Page = (
           <div>
             {
-              nav.alertShowing &&
-                <AlertModal alertParams={nav.alertParams} onClose={closeAlert} />
+              nav.modalShowing && nav.modalType == MODAL_TYPE_ALERT &&
+                <AlertModal params={nav.modalParams} onClose={closeModal} />
             }
             {
-              false &&
-                <ModelModal />
+              nav.modalShowing && nav.modalType == MODAL_TYPE_FIELD &&
+                <ModelModal params={nav.modalParams} onClose={closeModal} />
             }
             <Header />
             <div styleName="wrapper-inner">
@@ -76,7 +76,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    navActions: bindActionCreators({closeAlert}, dispatch)
+    navActions: bindActionCreators({closeModal}, dispatch)
   };
 }
 

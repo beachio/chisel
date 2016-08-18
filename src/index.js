@@ -6,7 +6,7 @@ import App from 'containers/app';
 import configureStore from 'store/configureStore';
 import {initApp} from 'ducks/initialize';
 
-import 'styles.global.sss';
+import './styles.global.sss';
 
 
 export const store = configureStore();

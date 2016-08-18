@@ -9,7 +9,7 @@ import styles from './AlertModal.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class AlertModal extends Component {
   render() {
-    const {title, description, buttonText} = this.props.alertParams;
+    const {title, description, buttonText} = this.props.params;
     const {onClose} = this.props;
 
     return (

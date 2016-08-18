@@ -4,6 +4,7 @@ import InlineSVG from 'svg-inline-react';
 
 import {SiteData} from 'models/ModelData';
 import {checkSiteName} from 'ducks/models';
+import {MODAL_TYPE_ALERT} from 'ducks/nav';
 
 import styles from './Sites.sss';
 
@@ -21,7 +22,7 @@ export default class Sites extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.alertShowing && this.activeInput)
+    if (!nextProps.modalShowing && this.activeInput)
       this.activeInput.focus();
     this.setState({currentSite: nextProps.currentSite});
   }
@@ -79,16 +80,16 @@ export default class Sites extends Component {
         }
         this.endEdit();
       } else {
-        if (endOnSameName && !this.props.alertShowing) {
+        if (endOnSameName && !this.props.modalShowing) {
           this.endEdit();
         } else {
-          const {showAlert} = this.props;
+          const {showModal} = this.props;
           let params = {
             title: "Warning",
             description: "This name is already using. Please, select another one.",
             buttonText: "OK"
           };
-          showAlert(params);
+          showModal(MODAL_TYPE_ALERT, params);
         }
       }
     } else {
