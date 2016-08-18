@@ -97,27 +97,27 @@ export default class FieldModal extends Component  {
                        value={camelize(this.state.valueInput)}
                        readOnly />
               </div>
-              <div styleName="input-wrapper type-wrapper" onBlur={() => this.onSuggestionBlur()}>
+              <div styleName="input-wrapper type-wrapper" onBlur={this.onSuggestionBlur}>
                 <div styleName="label">Type</div>
                 <InlineSVG styleName={arrowClasses} src={require("./arrow-down.svg")} />
                 <input styleName={inputClasses}
                        placeholder={this.state.suggestionPlaceholder}
                        value={this.state.suggestionValue}
-                       onClick={(event) => this.onSuggestionInputClick(event)}
-                       onChange={(event) => this.onSuggestionInputChange(event)} />
+                       onClick={this.onSuggestionInputClick}
+                       onChange={this.onSuggestionInputChange} />
                 <div styleName="suggestions">
-                  <div onMouseEnter={(event) => this.onSuggestionHover(event)}
-                       onMouseDown={(event) => this.onSuggestionClick(event)}
+                  <div onMouseEnter={this.onSuggestionHover}
+                       onMouseDown={this.onSuggestionClick}
                        styleName="suggestion">
                     Title
                   </div>
-                  <div onMouseEnter={(event) => this.onSuggestionHover(event)}
-                       onMouseDown={(event) => this.onSuggestionClick(event)}
+                  <div onMouseEnter={this.onSuggestionHover}
+                       onMouseDown={this.onSuggestionClick}
                        styleName="suggestion">
                     Long text
                   </div>
-                  <div onMouseEnter={(event) => this.onSuggestionHover(event)}
-                       onMouseDown={(event) => this.onSuggestionClick(event)}
+                  <div onMouseEnter={this.onSuggestionHover}
+                       onMouseDown={this.onSuggestionClick}
                        styleName="suggestion">
                     Short text
                   </div>
