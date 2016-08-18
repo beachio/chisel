@@ -26,27 +26,33 @@ export default class FieldModal extends Component  {
   onSuggestionHover = event => {
     this.setState({
       suggestionPlaceholder: event.target.innerHTML
-    })
+    });
   }
 
   onSuggestionClick = event => {
     this.setState({
       suggestionValue: event.target.innerHTML,
       suggestionsVisibility: false
-    })
+    });
   }
 
   onSuggestionInputClick = (event) => {
     this.setState({
       suggestionsVisibility: true,
       suggestionValue: event.target.value
-    })
+    });
   }
 
   onSuggestionInputChange = (event) => {
     this.setState({
       suggestionValue: event.target.value
-    })
+    });
+  }
+
+  onSuggestionBlur = () => {
+    this.setState({
+      suggestionsVisibility: false
+    });
   }
 
   render() {
@@ -85,7 +91,7 @@ export default class FieldModal extends Component  {
                        value={camelize(this.state.valueInput)}
                        readOnly />
               </div>
-              <div styleName="input-wrapper type-wrapper">
+              <div styleName="input-wrapper type-wrapper" onBlur={() => this.onSuggestionBlur()}>
                 <div styleName="label">Type</div>
                 <input styleName={inputClasses}
                        placeholder={this.state.suggestionPlaceholder}
@@ -94,17 +100,17 @@ export default class FieldModal extends Component  {
                        onChange={(event) => this.onSuggestionInputChange(event)} />
                 <div styleName="suggestions" >
                   <div onMouseEnter={(event) => this.onSuggestionHover(event)}
-                       onClick={(event) => this.onSuggestionClick(event)}
+                       onMouseDown={(event) => this.onSuggestionClick(event)}
                        styleName="suggestion">
                     Title
                   </div>
                   <div onMouseEnter={(event) => this.onSuggestionHover(event)}
-                       onClick={(event) => this.onSuggestionClick(event)}
+                       onMouseDown={(event) => this.onSuggestionClick(event)}
                        styleName="suggestion">
                     Long text
                   </div>
                   <div onMouseEnter={(event) => this.onSuggestionHover(event)}
-                       onClick={(event) => this.onSuggestionClick(event)}
+                       onMouseDown={(event) => this.onSuggestionClick(event)}
                        styleName="suggestion">
                     Short text
                   </div>
