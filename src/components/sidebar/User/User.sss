@@ -12,7 +12,11 @@
   align-items: center
 
   cursor: pointer
-  
+
+  &:hover
+    .settings
+      opacity: 0.5
+
   .profile
     display: flex
     align-items: center
@@ -41,5 +45,7 @@
       max-width: 150px
 
   .settings
+    transition: opacity 0.2s ease
+    will-change: opacity
     & svg
       height: 16px
