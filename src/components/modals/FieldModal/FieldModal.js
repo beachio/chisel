@@ -4,11 +4,11 @@ import CSSModules from 'react-css-modules';
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 
-import styles from './ModelModal.sss';
+import styles from './FieldModal.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export default class ModelModal extends Component  {
+export default class FieldModal extends Component  {
   state = {
     valueInput: ''
   };

@@ -8,7 +8,7 @@ import Sidebar from 'containers/Sidebar/Sidebar';
 import MainArea from 'containers/MainArea/MainArea';
 import Sign from 'containers/Sign/Sign';
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
-import ModelModal from 'components/modals/ModelModal/ModelModal';
+import FieldModal from 'components/modals/FieldModal/FieldModal';
 import AlertModal from 'components/modals/AlertModal/AlertModal';
 import {closeModal, MODAL_TYPE_ALERT, MODAL_TYPE_FIELD} from 'ducks/nav';
 
@@ -37,7 +37,7 @@ class App extends React.Component {
             }
             {
               nav.modalShowing && nav.modalType == MODAL_TYPE_FIELD &&
-                <ModelModal params={nav.modalParams} onClose={closeModal} />
+                <FieldModal params={nav.modalParams} onClose={closeModal} />
             }
             <Header />
             <div styleName="wrapper-inner">
