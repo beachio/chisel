@@ -8,16 +8,17 @@
   z-index: 25
 
   background: rgba(0,0,0,0.5)
-
-  display: flex
-  flex-flow: column nowrap
-  align-items: center
-  padding: 30px 0
+  overflow-y: scroll
 
   &-inner
+    position: absolute
+    left: 50%
+    transform: translateX(-50%)
     background: #F9F9F9
     box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.10)
     border-radius: 5px
+
+    margin: 30px 0
 
     width: 70%
     display: flex
@@ -59,6 +60,26 @@
   .switch
     margin-top: 6px
 
+  .lock,
+  .arrow-down
+    position: absolute
+
+  .lock
+    height: 24px
+    width: 16px
+    top: 31px
+    right: 12px
+
+  .arrow-down
+    top: 40px
+    right: 12px
+    width: 17px
+    height: 12px
+
+  .arrow-rotated
+    transform: rotateX(180deg)
+    top: 35px
+
   .input
     background: #FFFFFF
     border: 2px solid #CCCCCC
@@ -67,7 +88,7 @@
     font-weight: 500
     line-height: 34px
     width: 100%
-    padding: 0 9px 0 9px
+    padding: 0 40px 0 9px
     outline: none
 
     font-size: 13px
@@ -81,10 +102,10 @@
     &-wrapper
       width: 100%
       margin-bottom: 30px
+      position: relative
 
   .type-wrapper
     position: relative
-
 
   .suggestions-visible + .suggestions
     display: block

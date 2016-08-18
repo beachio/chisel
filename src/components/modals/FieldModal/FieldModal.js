@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import classNames from 'classnames';
+import InlineSVG from 'svg-inline-react';
 
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
@@ -64,7 +65,12 @@ export default class FieldModal extends Component  {
 
     let inputClasses = classNames({
       'input': true,
-      'input suggestions-visible': this.state.suggestionsVisibility === true
+      'input suggestions-visible': this.state.suggestionsVisibility
+    });
+
+    let arrowClasses = classNames({
+      'arrow-down': true,
+      'arrow-down arrow-rotated': this.state.suggestionsVisibility
     });
 
     return (
@@ -75,7 +81,6 @@ export default class FieldModal extends Component  {
             <div styleName="subtitle">Short Text</div>
           </div>
           <div styleName="content">
-
             <form>
               <div styleName="input-wrapper">
                 <div styleName="label">Name</div>
@@ -86,6 +91,7 @@ export default class FieldModal extends Component  {
               </div>
               <div styleName="input-wrapper">
                 <div styleName="label">Field ID</div>
+                <InlineSVG styleName="lock" src={require("./lock.svg")} />
                 <input styleName="input input-readonly"
                        placeholder="mainTitle"
                        value={camelize(this.state.valueInput)}
@@ -93,12 +99,13 @@ export default class FieldModal extends Component  {
               </div>
               <div styleName="input-wrapper type-wrapper" onBlur={() => this.onSuggestionBlur()}>
                 <div styleName="label">Type</div>
+                <InlineSVG styleName={arrowClasses} src={require("./arrow-down.svg")} />
                 <input styleName={inputClasses}
                        placeholder={this.state.suggestionPlaceholder}
                        value={this.state.suggestionValue}
                        onClick={(event) => this.onSuggestionInputClick(event)}
                        onChange={(event) => this.onSuggestionInputChange(event)} />
-                <div styleName="suggestions" >
+                <div styleName="suggestions">
                   <div onMouseEnter={(event) => this.onSuggestionHover(event)}
                        onMouseDown={(event) => this.onSuggestionClick(event)}
                        styleName="suggestion">

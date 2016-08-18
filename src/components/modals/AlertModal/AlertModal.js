@@ -27,8 +27,9 @@ export default class AlertModal extends Component {
             <div styleName="description">
               {description || 'Description'}
             </div>
-
-            <ButtonControl type="green" value={buttonText} onClick={onClose}/>
+            <div styleName="button">
+              <ButtonControl type="green" value={buttonText} onClick={onClose}/>
+            </div>
           </div>
 
         </div>
