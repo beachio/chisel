@@ -21,6 +21,8 @@ export default class Sites extends Component {
 
 
   componentWillReceiveProps(nextProps) {
+    if (!nextProps.alertShowing && this.activeInput)
+      this.activeInput.focus();
     this.setState({currentSite: nextProps.currentSite});
   }
 
@@ -48,7 +50,7 @@ export default class Sites extends Component {
   };
 
   onSiteNameBlur = () => {
-    this.onAddOrUpdateSite();
+    this.onAddOrUpdateSite(true);
   };
 
   onKeyPress = target => {
@@ -57,11 +59,11 @@ export default class Sites extends Component {
       this.onAddOrUpdateSite();
     //Esc pressed
     } else if (target.charCode == 27) {
-      this.setState({adding: false, editing: false, newSiteName: ""});
+      this.endEdit();
     }
   };
 
-  onAddOrUpdateSite() {
+  onAddOrUpdateSite(endOnSameName) {
     if ((this.state.adding || this.state.editing) &&
         this.state.newSiteName &&
         this.state.newSiteName != this.newSite.name) {
@@ -75,19 +77,29 @@ export default class Sites extends Component {
           const {updateSite} = this.props;
           updateSite(this.newSite);
         }
-        this.setState({adding: false, editing: false});
+        this.endEdit();
       } else {
-        const {showAlert} = this.props;
-        let params = {
-          title: "Warning",
-          description: "This name is already using. Please, select another one.",
-          buttonText: "OK"
-        };
-        showAlert(params);
+        if (endOnSameName && !this.props.alertShowing) {
+          this.endEdit();
+        } else {
+          const {showAlert} = this.props;
+          let params = {
+            title: "Warning",
+            description: "This name is already using. Please, select another one.",
+            buttonText: "OK"
+          };
+          showAlert(params);
+        }
       }
     } else {
-      this.setState({adding: false, editing: false, newSiteName: ""});
+      this.endEdit();
     }
+  }
+
+  endEdit() {
+    this.newSite = null;
+    this.activeInput = null;
+    this.setState({adding: false, editing: false, newSiteName: ""});
   }
 
   onDoubleClickSite(event, site) {

@@ -50,7 +50,7 @@ const initialState = {
   
   openedModel: false,
 
-  alertShowed: false,
+  alertShowing: false,
   alertParams: null
 };
 
@@ -66,10 +66,10 @@ export default function navReducer(state = initialState, action) {
       return {...state, openedModel: false};
 
     case SHOW_ALERT:
-      return {...state, alertShowed: true, alertParams: action.alertParams};
+      return {...state, alertShowing: true, alertParams: action.alertParams};
 
     case CLOSE_ALERT:
-      return {...state, alertShowed: false};
+      return {...state, alertShowing: false};
       
     default:
       return state;

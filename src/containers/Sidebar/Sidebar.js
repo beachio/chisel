@@ -14,7 +14,7 @@ import {setCurrentSite, addSite, updateSite} from 'ducks/models';
 @CSSModules(styles, {allowMultiple: true})
 export default class Sidebar extends Component {
   render() {
-    const {models, user} = this.props;
+    const {models, nav, user} = this.props;
     const {setCurrentSite, addSite, updateSite} = this.props.modelsActions;
     const {showAlert} = this.props.navActions;
 
@@ -27,7 +27,8 @@ export default class Sidebar extends Component {
                  setCurrentSite={setCurrentSite}
                  addSite={addSite}
                  updateSite={updateSite}
-                 showAlert={showAlert} />
+                 showAlert={showAlert}
+                 alertShowing={nav.alertShowing}/>
         </div>
         <div styleName="answer-wrapper">
           <div styleName="answer-question">
@@ -42,6 +43,7 @@ export default class Sidebar extends Component {
 function mapStateToProps(state) {
   return {
     models: state.models,
+    nav:    state.nav,
     user:   state.user
   };
 }

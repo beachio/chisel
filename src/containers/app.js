@@ -32,7 +32,7 @@ class App extends React.Component {
         Page = (
           <div>
             {
-              nav.alertShowed &&
+              nav.alertShowing &&
                 <AlertModal alertParams={nav.alertParams} onClose={closeAlert} />
             }
             {
@@ -69,8 +69,8 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    nav:        state.nav,
-    user:       state.user
+    nav:  state.nav,
+    user: state.user
   };
 }
 
