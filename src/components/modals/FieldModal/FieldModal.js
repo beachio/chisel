@@ -28,33 +28,33 @@ export default class FieldModal extends Component  {
     this.setState({
       suggestionPlaceholder: event.target.innerHTML
     });
-  }
+  };
 
   onSuggestionClick = event => {
     this.setState({
       suggestionValue: event.target.innerHTML,
       suggestionsVisibility: false
     });
-  }
+  };
 
-  onSuggestionInputClick = (event) => {
+  onSuggestionInputClick = event => {
     this.setState({
       suggestionsVisibility: true,
       suggestionValue: event.target.value
     });
-  }
+  };
 
-  onSuggestionInputChange = (event) => {
+  onSuggestionInputChange = event => {
     this.setState({
       suggestionValue: event.target.value
     });
-  }
+  };
 
   onSuggestionBlur = () => {
     this.setState({
       suggestionsVisibility: false
     });
-  }
+  };
 
   render() {
     let camelize = str => {

@@ -39,7 +39,8 @@ export default class MainArea extends Component  {
             <Model model={models.currentModel}
                    onClose={closeModel}
                    addField={addField}
-                   showModal={showModal} />
+                   showModal={showModal}
+                   modalShowing={nav.modalShowing} />
           );
 
         break;

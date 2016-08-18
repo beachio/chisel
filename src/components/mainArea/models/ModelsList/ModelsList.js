@@ -127,7 +127,7 @@ export default class ModelsList extends Component {
               })
             }
           </div>
-          <div styleName="create-new" onSubmit={this.onAddModel}>
+          <div styleName="create-new">
             <input styleName="input"
                    value={this.state.modelName}
                    autoFocus={true}

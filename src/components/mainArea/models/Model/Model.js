@@ -3,7 +3,8 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
 import {ModelFieldData} from 'models/ModelData';
-import {MODAL_TYPE_FIELD} from 'ducks/nav';
+import {checkFieldName} from 'ducks/models';
+import {MODAL_TYPE_ALERT, MODAL_TYPE_FIELD} from 'ducks/nav';
 
 import styles from './Model.sss';
 
@@ -14,19 +15,34 @@ export default class Model extends Component {
     fields: [],
     fieldName: ""
   };
+  activeInput = null;
 
-  componentDidMount() {
+
+  componentWillMount() {
     this.setState({fields: this.props.model.fields});
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!nextProps.modalShowing && this.activeInput)
+      this.activeInput.focus();
     this.setState({fields: nextProps.model.fields});
   }
 
   onFieldNameChange = event => {
     let name = event.target.value;
-    name = name.replace(/\s+/g, '');
     this.setState({fieldName: name});
+  };
+
+  onKeyDown = event => {
+    if (this.props.modalShowing)
+      return;
+    //Enter pressed
+    if (event.keyCode == 13) {
+      this.onAddField();
+      //Esc pressed
+    } else if (event.keyCode == 27) {
+      this.setState({fieldName: ""});
+    }
   };
 
   onAddField = event => {
@@ -35,6 +51,17 @@ export default class Model extends Component {
 
     if (!this.state.fieldName)
       return;
+
+    if (!checkFieldName(this.state.fieldName)) {
+      const {showModal} = this.props;
+      let params = {
+        title: "Warning",
+        description: "This name is already using. Please, select another one.",
+        buttonText: "OK"
+      };
+      showModal(MODAL_TYPE_ALERT, params);
+      return;
+    }
 
     const {addField} = this.props;
 
@@ -70,10 +97,12 @@ export default class Model extends Component {
           {
             this.state.fields.map(field => {
               let colorStyle = {background: field.color};
-              let key = model.origin && model.origin.id ? model.origin.id : Math.random();
+              let key = field.origin && field.origin.id ? field.origin.id : Math.random();
 
               return (
-                <div styleName="list-item" key={key}>
+                <div styleName="list-item"
+                     key={key}
+                     onClick={() => this.onFieldClick(field)}>
                   <div styleName="list-item-color" style={colorStyle}></div>
                   <div styleName="list-item-text">
                     <div styleName="list-item-name">{field.name}</div>
@@ -92,16 +121,18 @@ export default class Model extends Component {
           }
         </div>
 
-        <form styleName="create-new" onSubmit={this.onAddField}>
+        <div styleName="create-new">
           <input styleName="input"
                  placeholder="Add New Field"
                  value={this.state.fieldName}
                  autoFocus={true}
-                 onChange={this.onFieldNameChange} />
+                 onKeyDown={this.onKeyDown}
+                 onChange={this.onFieldNameChange}
+                 ref={c => this.activeInput = c} />
           <InlineSVG styleName="plus"
                      src={require("./plus.svg")}
                      onClick={this.onAddField} />
-        </form>
+        </div>
       </div>
     );
   }
