@@ -10,7 +10,8 @@ export default class ContentEdit extends Component {
   render() {
     return (
       <div className="g-container" styleName="ContentEdit">
-        <div className="g-title">
+        <div className="g-title" styleName="header">
+          <div styleName="back">Back</div>
           20 Best Things You May Be Searching For
         </div>
         <div styleName="content">
