@@ -5,23 +5,39 @@ import InlineSVG from 'svg-inline-react';
 
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
+import {removeSpacesFromString, filterString} from 'models/ModelData';
 
 import styles from './FieldModal.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export default class FieldModal extends Component  {
+export default class FieldModal extends Component {
   state = {
-    valueInput: '',
+    name: '',
+    nameId: '',
+
     suggestionPlaceholder: 'Short Text',
     suggestionValue: '',
     suggestionsVisibility: false
   };
+  field = null;
+  onClose = null;
 
-  onChangeValue = event => {
+
+  componentWillMount() {
+    this.field = this.props.params;
+    this.onClose = this.props.onClose;
     this.setState({
-      valueInput: event.target.value
+      name:   this.field.name,
+      nameId: this.field.nameId
     });
+  }
+
+  onChangeName = event => {
+    let name = event.target.value;
+    let nameId = filterString(removeSpacesFromString(name));
+
+    this.setState({name, nameId});
   };
 
   onSuggestionHover = event => {
@@ -56,13 +72,11 @@ export default class FieldModal extends Component  {
     });
   };
 
-  render() {
-    let camelize = str => {
-      return str.replace(/\W+(.)/g, (match, chr) => {
-        return chr.toUpperCase();
-      });
-    };
+  onSave = () => {
+    this.onClose();
+  };
 
+  render() {
     let inputClasses = classNames({
       'input': true,
       'input suggestions-visible': this.state.suggestionsVisibility
@@ -73,28 +87,29 @@ export default class FieldModal extends Component  {
       'arrow-down arrow-rotated': this.state.suggestionsVisibility
     });
 
+    const field = this.props.params;
+
     return (
       <div styleName="modal">
         <div styleName="modal-inner">
           <div styleName="modal-header">
-            <div styleName="title">Title</div>
-            <div styleName="subtitle">Short Text</div>
+            <div styleName="title">{field.name}</div>
+            <div styleName="subtitle">{field.type}</div>
           </div>
           <div styleName="content">
             <form>
               <div styleName="input-wrapper">
                 <div styleName="label">Name</div>
                 <input styleName="input"
-                       placeholder="Main Title"
-                       onChange={this.onChangeValue}
-                       value={this.state.valueInput} />
+                       onChange={this.onChangeName}
+                       value={this.state.name} />
               </div>
               <div styleName="input-wrapper">
                 <div styleName="label">Field ID</div>
                 <InlineSVG styleName="lock" src={require("./lock.svg")} />
                 <input styleName="input input-readonly"
                        placeholder="mainTitle"
-                       value={camelize(this.state.valueInput)}
+                       value={this.state.nameId}
                        readOnly />
               </div>
               <div styleName="input-wrapper type-wrapper" onBlur={this.onSuggestionBlur}>
@@ -133,10 +148,14 @@ export default class FieldModal extends Component  {
 
               <div styleName="input-wrapper buttons-wrapper">
                 <div styleName="buttons-inner">
-                  <ButtonControl type="green" value="Save" />
+                  <ButtonControl type="green"
+                                 value="Save"
+                                 onClick={this.onSave} />
                 </div>
                 <div styleName="buttons-inner">
-                  <ButtonControl type="gray" value="Cancel" />
+                  <ButtonControl type="gray"
+                                 value="Cancel"
+                                 onClick={this.onClose} />
                 </div>
               </div>
             </form>
