@@ -76,8 +76,7 @@ export default class Model extends Component {
                     <div styleName="hidden-button">TITLE</div>
                     <div styleName="hidden-remove">
                       <InlineSVG styleName="cross"
-                                 src={require("./cross.svg")}
-                                 />
+                                 src={require("./cross.svg")} />
                     </div>
                   </div>
                 </div>
@@ -90,6 +89,7 @@ export default class Model extends Component {
           <input styleName="input"
                  placeholder="Add New Field"
                  value={this.state.fieldName}
+                 autoFocus={true}
                  onChange={this.onFieldNameChange} />
           <InlineSVG styleName="plus"
                      src={require("./plus.svg")}

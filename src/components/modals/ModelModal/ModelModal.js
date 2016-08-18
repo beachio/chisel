@@ -8,23 +8,22 @@ import ButtonControl from '../../elements/ButtonControl/ButtonControl';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ModelModal extends Component  {
-
   state = {
     valueInput: ''
-  }
+  };
 
-  onChangeValue(event) {
+  onChangeValue = event => {
     this.setState({
       valueInput: event.target.value
     });
-  }
+  };
 
   render() {
-    let camelize = (str) => {
+    let camelize = str => {
       return str.replace(/\W+(.)/g, (match, chr) => {
-          return chr.toUpperCase();
+        return chr.toUpperCase();
       });
-    }
+    };
 
     return (
       <div styleName="modal">
@@ -37,10 +36,16 @@ export default class ModelModal extends Component  {
 
             <form>
               <div styleName="input-wrapper">
-                <input styleName="input" placeholder="Name" onChange={this.onChangeValue.bind(this)} value={this.state.valueInput} />
+                <input styleName="input"
+                       placeholder="Name"
+                       onChange={this.onChangeValue}
+                       value={this.state.valueInput} />
               </div>
               <div styleName="input-wrapper">
-                <input styleName="input input-readonly" placeholder="name" value={camelize(this.state.valueInput)} readOnly/>
+                <input styleName="input input-readonly"
+                       placeholder="name"
+                       value={camelize(this.state.valueInput)}
+                       readOnly />
                 <div styleName="label">Field ID</div>
               </div>
 

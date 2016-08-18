@@ -98,6 +98,7 @@ export default class ModelsList extends Component {
           <form styleName="create-new" onSubmit={this.onAddModel}>
             <input styleName="input"
                    value={this.state.modelName}
+                   autoFocus={true}
                    placeholder="Create a new Content Type"
                    onChange={this.onModelNameChange} />
             <InlineSVG styleName="plus"
