@@ -14,8 +14,10 @@ export default class Sites extends Component {
     currentSite: null,
     adding: false,
     editing: false,
-    newSite: null
+    newSiteName: ""
   };
+  newSite = null;
+  activeInput = null;
 
 
   componentWillReceiveProps(nextProps) {
@@ -23,6 +25,9 @@ export default class Sites extends Component {
   }
 
   onClickSite = site => {
+    if (this.state.adding || this.state.editing)
+      return;
+
     this.setState({currentSite: site});
 
     const {setCurrentSite} = this.props;
@@ -33,46 +38,44 @@ export default class Sites extends Component {
     if (this.state.adding)
       return;
 
-    this.setState({adding: true, newSite: new SiteData()});
+    this.newSite = new SiteData();
+    this.setState({adding: true});
   };
 
   onSiteNameChange = event => {
-    let newSite = this.state.newSite;
-    if (newSite) {
-      let str = event.target.value;
-      newSite.name = str;
-      this.setState({newSite});
-    }
+    let newSiteName = event.target.value;
+    this.setState({newSiteName});
   };
 
   onSiteNameBlur = () => {
-    this.onAddOrChangeSite();
+    this.onAddOrUpdateSite();
   };
 
   onKeyPress = target => {
     //Enter pressed
     if (target.charCode == 13) {
-      this.onAddOrChangeSite();
+      this.onAddOrUpdateSite();
     //Esc pressed
     } else if (target.charCode == 27) {
-      this.setState({adding: false, newSite: null});
+      this.setState({adding: false, editing: false, newSiteName: ""});
     }
   };
 
-  onAddOrChangeSite() {
-    if (this.state.newSite && this.state.newSite.name) {
-      let newSite = this.state.newSite;
-      newSite.domain = newSite.name;
-
-      if (checkSiteName(this.state.newSite.name)) {
+  onAddOrUpdateSite() {
+    if ((this.state.adding || this.state.editing) &&
+        this.state.newSiteName &&
+        this.state.newSiteName != this.newSite.name) {
+      if (checkSiteName(this.state.newSiteName)) {
+        this.newSite.name = this.state.newSiteName;
+        this.newSite.domain = this.newSite.name;
         if (this.state.adding) {
           const {addSite} = this.props;
-          addSite(newSite);
+          addSite(this.newSite);
         } else if (this.state.editing) {
           const {updateSite} = this.props;
-          updateSite(newSite);
+          updateSite(this.newSite);
         }
-        this.setState({adding: false, editing: false, newSite: null});
+        this.setState({adding: false, editing: false});
       } else {
         const {showAlert} = this.props;
         let params = {
@@ -82,11 +85,14 @@ export default class Sites extends Component {
         };
         showAlert(params);
       }
+    } else {
+      this.setState({adding: false, editing: false, newSiteName: ""});
     }
   }
 
   onDoubleClickSite(event, site) {
-    this.setState({editing: true, newSite: site});
+    this.newSite = site;
+    this.setState({editing: true, newSiteName: site.name});
   }
 
   render() {
@@ -105,26 +111,36 @@ export default class Sites extends Component {
               if (this.state.currentSite == site)
                 style += " element-active";
 
-              let editing = !!this.state.newSite && site == this.state.newSite;
+              let editing = this.state.editing && site == this.newSite;
+
+              let styleInput = "site-name";
+              let name = site.name;
+              let ref = () => {};
+              if (editing) {
+                styleInput += " site-name-editable";
+                name = this.state.newSiteName;
+                ref = c => this.activeInput = c;
+              }
 
               let key = site.origin && site.origin.id ? site.origin.id : Math.random();
 
               return(
                 <div styleName={style}
+                     onDoubleClick={event => this.onDoubleClickSite(event, site)}
                      onClick={() => this.onClickSite(site)}
                      key={key}>
                   <div styleName="icon">
                     <InlineSVG src={require("./hammer.svg")} />
                   </div>
-                  <input styleName="site-name"
+                  <input styleName={styleInput}
                          readOnly={!editing}
                          autoFocus={editing}
-                         onDoubleClick={event => this.onDoubleClickSite(event, site)}
                          placeholder="Type site name"
-                         value={site.name}
+                         value={name}
                          onBlur={this.onSiteNameBlur}
                          onChange={this.onSiteNameChange}
-                         onKeyPress={this.onKeyPress} />
+                         onKeyPress={this.onKeyPress}
+                         ref={ref} />
                   <a href={`http://${site.domain}`} target="_blank">
                     <InlineSVG styleName="link" src={require("./link.svg")} />
                   </a>
@@ -136,19 +152,23 @@ export default class Sites extends Component {
             this.state.adding &&
               <div styleName="element">
                 <input styleName="site-name"
-                       value={this.state.newSite.name}
+                       value={this.state.newSiteName}
                        placeholder="Type site name"
                        autoFocus={true}
                        onBlur={this.onSiteNameBlur}
                        onChange={this.onSiteNameChange}
-                       onKeyPress={this.onKeyPress}/>
+                       onKeyPress={this.onKeyPress}
+                       ref={c => this.activeInput = c} />
               </div>
           }
         </div>
-        <div styleName="section new-site" onClick={this.onClickAdd}>
-          <InlineSVG src={require("./plus.svg")} />
-          Add new site
-        </div>
+        {
+          !this.state.adding &&
+            <div styleName="section new-site" onClick={this.onClickAdd}>
+              <InlineSVG src={require("./plus.svg")} />
+              Add new site
+            </div>
+        }
       </div>
     );
   }

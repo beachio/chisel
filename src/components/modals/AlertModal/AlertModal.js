@@ -13,7 +13,7 @@ export default class AlertModal extends Component {
 
     return (
       <div styleName="Modal">
-        <div styleName="bg"></div>
+        <div styleName="bg" onClick={onClose}></div>
 
         <div styleName="modal-inner">
           <div styleName="modal-header">
