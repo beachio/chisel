@@ -11,15 +11,16 @@ import {checkFieldName} from 'ducks/models';
 import styles from './FieldModal.sss';
 
 
+const ERROR_TYPE_SAME_NAME = "ERROR_TYPE_SAME_NAME";
+
+
 @CSSModules(styles, {allowMultiple: true})
 export default class FieldModal extends Component {
   state = {
     name: '',
     nameId: '',
 
-    suggestionPlaceholder: 'Short Text',
-    suggestionValue: '',
-    suggestionsVisibility: false
+    error: null
   };
   field = null;
   onClose = null;
@@ -38,7 +39,7 @@ export default class FieldModal extends Component {
     let name = event.target.value;
     let nameId = filterString(removeSpacesFromString(name));
 
-    this.setState({name, nameId});
+    this.setState({name, nameId, error: null});
   };
 
   onSave = () => {
@@ -48,13 +49,7 @@ export default class FieldModal extends Component {
     }
 
     if (this.field.name != this.state.name && !checkFieldName(this.state.name)) {
-      const {showAlert} = this.props;
-      let params = {
-        title: "Warning",
-        description: "This name is already using. Please, select another one.",
-        buttonText: "OK"
-      };
-      showAlert(params);
+      this.setState({error: ERROR_TYPE_SAME_NAME});
       return;
     }
 
@@ -84,6 +79,10 @@ export default class FieldModal extends Component {
                        onChange={this.onChangeName}
                        value={this.state.name} />
               </div>
+              {
+                this.state.error == ERROR_TYPE_SAME_NAME &&
+                  <div styleName="error-same-name">This name is already in use.</div>
+              }
               <div styleName="input-wrapper">
                 <div styleName="label">Field ID</div>
                 <InlineSVG styleName="lock" src={require("./lock.svg")} />
