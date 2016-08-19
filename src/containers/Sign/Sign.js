@@ -3,6 +3,8 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 
+import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
+
 import {loginOrRegister, ERROR_USER_EXISTS, ERROR_WRONG_PASS} from 'ducks/user';
 
 import styles from './Sign.sss';
@@ -52,24 +54,27 @@ export default class Sign extends Component  {
 
     let contents = (
       <div styleName="Sign">
-        <div styleName="title">Welcome to Scrivener</div>
-        <div styleName="subtitle">The best CMS ever! </div>
-
+        <div styleName="title">Welcome to Scriven</div>
+        <div styleName="logo">
+          <img src={require("./logo.png")} />
+        </div>
         <form styleName="form" onSubmit={this.onSubmit}>
           <input styleName="input" type="text" placeholder="Enter email" onChange={this.onEmailChange} />
           <input styleName="input" type="password" placeholder="Enter password" onChange={this.onPasswordChange} />
-          <div styleName="button" onClick={this.onSubmit}>
-            <div styleName="button-inner">Get Started!</div>
+          <div styleName="button">
+            <ButtonControl type="green" value="Log in" onClick={this.onSubmit}/>
           </div>
+        </form>
+        <div styleName="errors">
           {
             authError ==  ERROR_WRONG_PASS &&
-              <div styleName="or">Wrong password!</div>
+              <div styleName="error">Wrong password!</div>
           }
           {
             this.state.emptyFields &&
-              <div styleName="or">You must type both fields</div>
+              <div styleName="error">You must type both fields</div>
           }
-        </form>
+        </div>
       </div>
     );
 
