@@ -69,7 +69,7 @@ export default class FieldModal extends Component {
   render() {
     const field = this.props.params;
 
-    let suggestionsList = [ 'Title', 'Short Text', 'Long Text', 'Something else']
+    let suggestionsList = [ 'Title', 'Short Text', 'Long Text', 'Something else', 'Хутин пуй', 'Газманов', 'Temihren'];
 
     return (
       <div styleName="modal">
