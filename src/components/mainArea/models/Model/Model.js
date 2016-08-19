@@ -401,7 +401,9 @@ export default class Model extends Component {
         <div styleName="header">
           <div styleName="back" onClick={onClose}>Back</div>
           <div styleName="header-name">{model.name}</div>
-          <div styleName="json-fields" onClick={this.onJSONClick}>{this.state.jsonVisibility ? 'Fields' : 'JSON'}</div>
+          <div styleName="json-fields" onClick={this.onJSONClick}>
+            {this.state.jsonVisibility ? 'Fields' : 'JSON'}
+          </div>
           <div styleName="header-description">{model.description}</div>
         </div>
         {content}
