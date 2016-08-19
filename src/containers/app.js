@@ -22,7 +22,7 @@ class App extends React.Component {
     const {nav, user} = this.props;
     const {showAlert, closeAlert, closeModal} = this.props.navActions;
     const {updateField} = this.props.modelActions;
-    
+
     let Page = (
       <div>
         <SiteLoader />
