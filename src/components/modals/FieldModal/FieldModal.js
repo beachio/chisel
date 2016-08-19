@@ -6,6 +6,7 @@ import InlineSVG from 'svg-inline-react';
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {removeSpacesFromString, filterString} from 'models/ModelData';
+import {checkFieldName} from 'ducks/models';
 
 import styles from './FieldModal.sss';
 
@@ -73,6 +74,27 @@ export default class FieldModal extends Component {
   };
 
   onSave = () => {
+    if (!this.state.name) {
+      this.onClose();
+      return;
+    }
+    
+    if (this.field.name != this.state.name && !checkFieldName(this.state.name)) {
+      const {showAlert} = this.props;
+      let params = {
+        title: "Warning",
+        description: "This name is already using. Please, select another one.",
+        buttonText: "OK"
+      };
+      showAlert(params);
+      return;
+    }
+    
+    this.field.name = this.state.name;
+    this.field.nameId = this.state.nameId;
+  
+    const {updateField} = this.props;
+    updateField(this.field);
     this.onClose();
   };
 

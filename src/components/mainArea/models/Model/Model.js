@@ -4,7 +4,7 @@ import InlineSVG from 'svg-inline-react';
 
 import {ModelFieldData} from 'models/ModelData';
 import {checkFieldName} from 'ducks/models';
-import {MODAL_TYPE_ALERT, MODAL_TYPE_FIELD} from 'ducks/nav';
+import {MODAL_TYPE_FIELD} from 'ducks/nav';
 
 import styles from './Model.sss';
 
@@ -23,7 +23,7 @@ export default class Model extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.modalShowing && this.activeInput)
+    if (!nextProps.alertShowing && this.activeInput)
       this.activeInput.focus();
     this.setState({fields: nextProps.model.fields});
   }
@@ -34,7 +34,7 @@ export default class Model extends Component {
   };
 
   onKeyDown = event => {
-    if (this.props.modalShowing)
+    if (this.props.modalShowing || this.props.alertShowing)
       return;
     //Enter pressed
     if (event.keyCode == 13) {
@@ -53,13 +53,13 @@ export default class Model extends Component {
       return;
 
     if (!checkFieldName(this.state.fieldName)) {
-      const {showModal} = this.props;
+      const {showAlert} = this.props;
       let params = {
         title: "Warning",
         description: "This name is already using. Please, select another one.",
         buttonText: "OK"
       };
-      showModal(MODAL_TYPE_ALERT, params);
+      showAlert(params);
       return;
     }
 

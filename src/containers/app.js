@@ -10,7 +10,8 @@ import Sign from 'containers/Sign/Sign';
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import FieldModal from 'components/modals/FieldModal/FieldModal';
 import AlertModal from 'components/modals/AlertModal/AlertModal';
-import {closeModal, MODAL_TYPE_ALERT, MODAL_TYPE_FIELD} from 'ducks/nav';
+import {showAlert, closeAlert, closeModal, MODAL_TYPE_FIELD} from 'ducks/nav';
+import {updateField} from 'ducks/models';
 
 import styles from './app.sss';
 
@@ -19,8 +20,9 @@ import styles from './app.sss';
 class App extends React.Component {
   render() {
     const {nav, user} = this.props;
-    const {closeModal} = this.props.navActions;
-
+    const {showAlert, closeAlert, closeModal} = this.props.navActions;
+    const {updateField} = this.props.modelActions;
+    
     let Page = (
       <div>
         <SiteLoader />
@@ -32,12 +34,16 @@ class App extends React.Component {
         Page = (
           <div>
             {
-              nav.modalShowing && nav.modalType == MODAL_TYPE_ALERT &&
-                <AlertModal params={nav.modalParams} onClose={closeModal} />
+              nav.modalShowing && nav.modalType == MODAL_TYPE_FIELD &&
+              <FieldModal params={nav.modalParams}
+                          onClose={closeModal}
+                          updateField={updateField}
+                          showAlert={showAlert}
+                          alertShowing={nav.alertShowing} />
             }
             {
-              nav.modalShowing && nav.modalType == MODAL_TYPE_FIELD &&
-                <FieldModal params={nav.modalParams} onClose={closeModal} />
+              nav.alertShowing &&
+                <AlertModal params={nav.alertParams} onClose={closeAlert} />
             }
             <Header />
             <div styleName="wrapper-inner">
@@ -76,7 +82,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    navActions: bindActionCreators({closeModal}, dispatch)
+    modelActions: bindActionCreators({updateField}, dispatch),
+    navActions: bindActionCreators({showAlert, closeAlert, closeModal}, dispatch)
   };
 }
 

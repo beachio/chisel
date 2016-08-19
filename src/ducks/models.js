@@ -9,9 +9,10 @@ export const INIT_END               = 'app/models/INIT_END';
 export const SITE_ADD               = 'app/models/SITE_ADD';
 export const SITE_UPDATED           = 'app/models/SITE_UPDATED';
 export const MODEL_ADD              = 'app/models/MODEL_ADD';
+export const MODEL_UPDATED          = 'app/models/MODEL_UPDATED';
 export const FIELD_ADD              = 'app/models/FIELD_ADD';
+export const FIELD_UPDATED          = 'app/models/FIELD_UPDATED';
 
-export const UPDATE_CURRENT_MODELS  = 'app/models/UPDATE_CURRENT_MODELS';
 export const SET_CURRENT_SITE       = 'app/models/SET_CURRENT_SITE';
 export const SET_CURRENT_MODEL      = 'app/models/SET_CURRENT_MODEL';
 
@@ -196,6 +197,20 @@ export function addField(field) {
   };
 }
 
+export function updateField(field) {
+  let fields = store.getState().models.currentModel.fields;
+  for (let _field of fields) {
+    if (field == _field) {
+      field.updateOrigin();
+      field.origin.save();
+      break;
+    }
+  }
+  return {
+    type: FIELD_UPDATED
+  };
+}
+
 //util function
 export function checkFieldName(name) {
   if (!name)
@@ -231,22 +246,19 @@ export default function modelsReducer(state = initialState, action) {
     case SET_CURRENT_SITE:
       return {
         ...state,
-        currentSite:    action.currentSite
+        currentSite:  action.currentSite
       };
 
-    case SITE_UPDATED:
-      return state;
-  
-    case MODEL_ADD:
-      return state;
-  
     case SET_CURRENT_MODEL:
       return {
         ...state,
         currentModel: action.currentModel
       };
   
+    case SITE_UPDATED:
+    case MODEL_ADD:
     case FIELD_ADD:
+    case FIELD_UPDATED:
       return state;
     
     default:
