@@ -12,7 +12,7 @@ export default class DropdownControl extends Component {
     suggestionPlaceholder: 'Short Text',
     suggestionValue: '',
     suggestionsVisibility: false
-  }
+  };
 
   onSuggestionHover = event => {
     this.setState({
@@ -53,11 +53,12 @@ export default class DropdownControl extends Component {
       'arrow-down arrow-rotated': this.state.suggestionsVisibility
     });
 
-    let suggestions = suggestionsList.map((suggestionsItem) => {
+    let suggestions = suggestionsList.map(suggestionsItem => {
       return (
         <div onMouseEnter={this.onSuggestionHover}
              onMouseDown={this.onSuggestionClick}
-             styleName="suggestion">
+             styleName="suggestion"
+             key={suggestionsItem} >
           {suggestionsItem}
         </div>
       )

@@ -67,16 +67,14 @@ export default class FieldModal extends Component {
   };
 
   render() {
-    const field = this.props.params;
-
     let suggestionsList = [ 'Title', 'Short Text', 'Long Text', 'Something else', 'Хутин пуй', 'Газманов', 'Temihren'];
 
     return (
       <div styleName="modal">
         <div styleName="modal-inner">
           <div styleName="modal-header">
-            <div styleName="title">{field.name}</div>
-            <div styleName="subtitle">{field.type}</div>
+            <div styleName="title">{this.field.name}</div>
+            <div styleName="subtitle">{this.field.type}</div>
           </div>
           <div styleName="content">
             <form>
@@ -95,7 +93,7 @@ export default class FieldModal extends Component {
                        readOnly />
               </div>
 
-             <DropdownControl label="Type" suggestionsList={suggestionsList} />
+              <DropdownControl label="Type" suggestionsList={suggestionsList} />
 
               <div styleName="input-wrapper">
                 <div styleName="label">Entry Title</div>
