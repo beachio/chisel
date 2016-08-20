@@ -7,6 +7,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import {removeSpaces, filterSpecials} from 'utils/common';
 import {checkFieldName} from 'utils/data';
+import {FIELD_TYPES} from 'models/ModelData';
 
 import styles from './FieldModal.sss';
 
@@ -62,7 +63,7 @@ export default class FieldModal extends Component {
   };
 
   render() {
-    let suggestionsList = [ 'Title', 'Short Text', 'Long Text', 'Something else', 'Хутин пуй', 'Газманов', 'Temihren'];
+    let suggestionsList = FIELD_TYPES;
 
     return (
       <div styleName="modal">
