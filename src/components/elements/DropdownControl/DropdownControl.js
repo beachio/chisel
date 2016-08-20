@@ -9,15 +9,8 @@ import styles from './DropdownControl.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class DropdownControl extends Component {
   state = {
-    suggestionPlaceholder: 'Short Text',
-    suggestionValue: '',
+    suggestionValue: 'Short Text',
     suggestionsVisibility: false
-  };
-
-  onSuggestionHover = event => {
-    this.setState({
-      suggestionPlaceholder: event.target.innerHTML
-    });
   };
 
   onSuggestionClick = event => {
@@ -29,7 +22,7 @@ export default class DropdownControl extends Component {
 
   onSuggestionInputClick = event => {
     this.setState({
-      suggestionsVisibility: true,
+      suggestionsVisibility: !this.state.suggestionsVisibility,
       suggestionValue: event.target.value
     });
   };
@@ -55,8 +48,7 @@ export default class DropdownControl extends Component {
 
     let suggestions = suggestionsList.map(suggestionsItem => {
       return (
-        <div onMouseEnter={this.onSuggestionHover}
-             onMouseDown={this.onSuggestionClick}
+        <div onMouseDown={this.onSuggestionClick}
              styleName="suggestion"
              key={suggestionsItem} >
           {suggestionsItem}
