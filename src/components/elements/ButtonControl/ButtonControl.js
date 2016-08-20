@@ -12,6 +12,7 @@ export default class ButtonControl extends Component {
 
     let buttonControlClasses = classNames({
       'ButtonControl': true,
+      'ButtonControl-red': type === 'red',
       'ButtonControl-green': type === 'green',
       'ButtonControl-gray': type === 'gray'
     });
