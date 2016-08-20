@@ -5,7 +5,7 @@ import CSSModules from 'react-css-modules';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 
-import {loginOrRegister, ERROR_USER_EXISTS, ERROR_WRONG_PASS} from 'ducks/user';
+import {loginOrRegister, ERROR_WRONG_PASS} from 'ducks/user';
 
 import styles from './Sign.sss';
 
@@ -15,21 +15,29 @@ export default class Sign extends Component  {
   state = {
     email: '',
     password: '',
-    alreadyHasAccount: false,
-    emptyFields: false
+    emptyFields: false,
+    authError: null
   };
+  
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      authError: nextProps.authError
+    });
+  }
 
   onEmailChange = event => {
     this.setState({
       email: event.target.value,
-      emptyFields: false
+      emptyFields: false,
+      authError: null
     });
   };
 
   onPasswordChange = event => {
     this.setState({
       password: event.target.value,
-      emptyFields: false
+      emptyFields: false,
+      authError: null
     });
   };
 
@@ -43,15 +51,7 @@ export default class Sign extends Component  {
     return false;
   };
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      alreadyHasAccount: this.state.alreadyHasAccount || nextProps.authError == ERROR_USER_EXISTS
-    });
-  }
-
   render() {
-    const {authError} = this.props;
-
     let contents = (
       <div styleName="Sign">
         <div styleName="title">Welcome to Scriven</div>
@@ -62,12 +62,12 @@ export default class Sign extends Component  {
           <input styleName="input" type="text" placeholder="Enter email" onChange={this.onEmailChange} />
           <input styleName="input" type="password" placeholder="Enter password" onChange={this.onPasswordChange} />
           <div styleName="button">
-            <ButtonControl type="green" value="Log in" onClick={this.onSubmit}/>
+            <ButtonControl type="green" value="Sign in / Sign up" onClick={this.onSubmit}/>
           </div>
         </form>
         <div styleName="errors">
           {
-            authError ==  ERROR_WRONG_PASS &&
+            this.state.authError ==  ERROR_WRONG_PASS &&
               <div styleName="error">Wrong password!</div>
           }
           {

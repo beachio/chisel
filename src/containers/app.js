@@ -10,7 +10,7 @@ import Sign from 'containers/Sign/Sign';
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import FieldModal from 'components/modals/FieldModal/FieldModal';
 import AlertModal from 'components/modals/AlertModal/AlertModal';
-import {showAlert, closeAlert, closeModal, MODAL_TYPE_FIELD} from 'ducks/nav';
+import {closeAlert, closeModal, MODAL_TYPE_FIELD} from 'ducks/nav';
 import {updateField} from 'ducks/models';
 
 import styles from './app.sss';
@@ -20,7 +20,7 @@ import styles from './app.sss';
 class App extends React.Component {
   render() {
     const {nav, user} = this.props;
-    const {showAlert, closeAlert, closeModal} = this.props.navActions;
+    const {closeAlert, closeModal} = this.props.navActions;
     const {updateField} = this.props.modelActions;
 
     let Page = (
@@ -35,9 +35,9 @@ class App extends React.Component {
           <div>
             {
               nav.modalShowing && nav.modalType == MODAL_TYPE_FIELD &&
-              <FieldModal params={nav.modalParams}
-                          onClose={closeModal}
-                          updateField={updateField} />
+                <FieldModal params={nav.modalParams}
+                            onClose={closeModal}
+                            updateField={updateField} />
             }
             {
               nav.alertShowing &&
@@ -53,7 +53,7 @@ class App extends React.Component {
       } else {
         Page = (
           <div className="container">
-            <Sign />
+            <Sign authError={user.authError} />
             {
               user.fetchingRequest &&
                 <SiteLoader />
@@ -81,7 +81,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     modelActions: bindActionCreators({updateField}, dispatch),
-    navActions: bindActionCreators({showAlert, closeAlert, closeModal}, dispatch)
+    navActions: bindActionCreators({closeAlert, closeModal}, dispatch)
   };
 }
 
