@@ -8,7 +8,7 @@ import ContentList from 'components/mainArea/content/ContentList/ContentList';
 import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import Sharing from 'components/mainArea/sharing/Sharing';
 import Model from 'components/mainArea/models/Model/Model';
-import {addModel, setCurrentModel, addField} from 'ducks/models';
+import {addModel, setCurrentModel, addField, removeField} from 'ducks/models';
 import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, showAlert, closeModel, showModal} from 'ducks/nav';
 
 import styles from './MainArea.sss';
@@ -22,7 +22,7 @@ export default class MainArea extends Component  {
     let Area;
     switch (nav.openedPage) {
       case PAGE_MODELS:
-        const {addModel, setCurrentModel, addField} = this.props.modelsActions;
+        const {addModel, setCurrentModel, addField, removeField} = this.props.modelsActions;
         const {showAlert, closeModel, showModal} = this.props.navActions;
 
         let modelsList = models.currentSite ? models.currentSite.models : [];
@@ -39,6 +39,7 @@ export default class MainArea extends Component  {
             <Model model={models.currentModel}
                    onClose={closeModel}
                    addField={addField}
+                   removeField={removeField}
                    showAlert={showAlert}
                    showModal={showModal}
                    modalShowing={nav.modalShowing}
@@ -77,7 +78,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelsActions:  bindActionCreators({addModel, setCurrentModel, addField}, dispatch),
+    modelsActions:  bindActionCreators({addModel, setCurrentModel, addField, removeField}, dispatch),
     navActions:     bindActionCreators({showAlert, closeModel, showModal}, dispatch)
   };
 }

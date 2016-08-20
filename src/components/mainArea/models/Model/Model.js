@@ -6,6 +6,7 @@ import JSONView from '../../../elements/JSONView/JSONView';
 import {ModelFieldData} from 'models/ModelData';
 import {checkFieldName} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
+import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
 
 import styles from './Model.sss';
 
@@ -79,7 +80,19 @@ export default class Model extends Component {
 
     this.setState({fieldName: ""});
   };
-
+  
+  onRemoveClick(event, field) {
+    event.stopPropagation();
+    const {showAlert, removeField} = this.props;
+    let params = {
+      type: ALERT_TYPE_CONFIRM,
+      title: `Deleting ${field.name} field`,
+      description: "Are you sure?",
+      onConfirm: () => removeField(field)
+    };
+    showAlert(params);
+  }
+  
   onFieldClick = field => {
     const {showModal} = this.props;
     showModal(MODAL_TYPE_FIELD, field);
@@ -119,7 +132,7 @@ export default class Model extends Component {
                     </div>
                     <div styleName="hidden-controls">
                       <div styleName="hidden-button">TITLE</div>
-                      <div styleName="hidden-remove">
+                      <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, field)}>
                         <InlineSVG styleName="cross"
                                    src={require("./cross.svg")} />
                       </div>

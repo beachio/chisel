@@ -12,6 +12,7 @@ export const MODEL_ADD              = 'app/models/MODEL_ADD';
 export const MODEL_UPDATED          = 'app/models/MODEL_UPDATED';
 export const FIELD_ADD              = 'app/models/FIELD_ADD';
 export const FIELD_UPDATED          = 'app/models/FIELD_UPDATED';
+export const FIELD_DELETED          = 'app/models/FIELD_DELETED';
 
 export const SET_CURRENT_SITE       = 'app/models/SET_CURRENT_SITE';
 export const SET_CURRENT_MODEL      = 'app/models/SET_CURRENT_MODEL';
@@ -164,16 +165,22 @@ export function addField(field) {
 }
 
 export function updateField(field) {
-  let fields = store.getState().models.currentModel.fields;
-  for (let _field of fields) {
-    if (field == _field) {
-      field.updateOrigin();
-      field.origin.save();
-      break;
-    }
-  }
+  field.updateOrigin();
+  field.origin.save();
+  
   return {
     type: FIELD_UPDATED
+  };
+}
+
+export function removeField(field) {
+  let fields = store.getState().models.currentModel.fields;
+  fields.splice(fields.indexOf(field), 1);
+  
+  field.origin.destroy();
+  
+  return {
+    type: FIELD_DELETED
   };
 }
 
@@ -208,6 +215,7 @@ export default function modelsReducer(state = initialState, action) {
     case MODEL_ADD:
     case FIELD_ADD:
     case FIELD_UPDATED:
+    case FIELD_DELETED:
       return state;
     
     default:
