@@ -5,8 +5,8 @@ import InlineSVG from 'svg-inline-react';
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
-import {removeSpacesFromString, filterString} from 'models/ModelData';
-import {checkFieldName} from 'ducks/models';
+import {removeSpaces, filterSpecials} from 'utils/common';
+import {checkFieldName} from 'utils/data';
 
 import styles from './FieldModal.sss';
 
@@ -37,7 +37,7 @@ export default class FieldModal extends Component {
 
   onChangeName = event => {
     let name = event.target.value;
-    let nameId = filterString(removeSpacesFromString(name));
+    let nameId = filterSpecials(removeSpaces(name));
 
     this.setState({name, nameId, error: null});
   };

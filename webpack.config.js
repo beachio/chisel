@@ -79,7 +79,8 @@ module.exports = {
       ducks:      'src/ducks',
       middleware: 'src/middleware',
       models:     'src/models',
-      store:      'src/store'
+      store:      'src/store',
+      utils:      'src/utils'
     },
     extensions: ['', '.js', '.jsx']
   },

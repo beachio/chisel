@@ -1,22 +1,7 @@
 import {Parse} from 'parse';
 
+import {removeSpaces, filterSpecials} from 'utils/common';
 
-//utils
-export function removeSpacesFromString(str) {
-  return str.trim().replace(/\s+/g, ' ');
-}
-
-export function filterString(str) {
-  if (str.match(/^\d/))
-    str = '_' + str;
-  return str.replace(/\W/g, "_");
-
-  /*
-  return str.replace(/\W+(.)/g, (match, chr) => {
-    return chr.toUpperCase();
-  });
-  */
-}
 
 export class SiteData {
   static get OriginClass() {return Parse.Object.extend("Site");}
@@ -36,13 +21,13 @@ export class SiteData {
 
   get name() {return this._name;}
   set name(name) {
-    this._name = removeSpacesFromString(name);
+    this._name = removeSpaces(name);
     this.nameId = this._name;
   }
 
   get nameId() {return this._nameId;}
   set nameId(nameId) {
-    this._nameId = filterString(nameId);
+    this._nameId = filterSpecials(nameId);
   }
   
   setOrigin(origin) {
@@ -92,13 +77,13 @@ export class ModelData {
 
   get name() {return this._name;}
   set name(name) {
-    this._name = removeSpacesFromString(name);
+    this._name = removeSpaces(name);
     this.nameId = this._name;
   }
 
   get nameId() {return this._nameId;}
   set nameId(nameId) {
-    this._nameId = filterString(nameId);
+    this._nameId = filterSpecials(nameId);
   }
   
   setOrigin(origin) {
@@ -155,13 +140,13 @@ export class ModelFieldData {
 
   get name() {return this._name;}
   set name(name) {
-    this._name = removeSpacesFromString(name);
+    this._name = removeSpaces(name);
     this.nameId = this._name;
   }
 
   get nameId() {return this._nameId;}
   set nameId(nameId) {
-    this._nameId = filterString(nameId);
+    this._nameId = filterSpecials(nameId);
   }
 
   setOrigin(origin) {

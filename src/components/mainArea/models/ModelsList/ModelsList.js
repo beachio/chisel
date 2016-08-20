@@ -3,7 +3,7 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
 import {ModelData} from 'models/ModelData';
-import {checkModelName} from 'ducks/models';
+import {checkModelName} from 'utils/data';
 
 import styles from './ModelsList.sss';
 

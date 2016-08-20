@@ -1,7 +1,7 @@
 import {Parse} from 'parse';
 
 import {store} from '../index';
-import {removeSpacesFromString, filterString, SiteData, ModelData, ModelFieldData} from 'models/ModelData';
+import {SiteData, ModelData, ModelFieldData} from 'models/ModelData';
 
 
 export const INIT_END               = 'app/models/INIT_END';
@@ -114,23 +114,6 @@ export function addSite(site) {
   };
 }
 
-//util function
-export function checkSiteName(name) {
-  if (!name)
-    return false;
-
-  name = removeSpacesFromString(name);
-  let nameId = filterString(name);
-
-  let sites = store.getState().models.sites;
-  for (let site of sites) {
-    if (site.name == name || site.nameId == nameId)
-      return false;
-  }
-
-  return true;
-}
-
 export function updateSite(site) {
   let sites = store.getState().models.sites;
   for (let _site of sites) {
@@ -158,23 +141,6 @@ export function addModel(model) {
     type: MODEL_ADD,
     model
   };
-}
-
-//util function
-export function checkModelName(name) {
-  if (!name)
-    return false;
-
-  name = removeSpacesFromString(name);
-  let nameId = filterString(name);
-
-  let models = store.getState().models.currentSite.models;
-  for (let model of models) {
-    if (model.name == name || model.nameId == nameId)
-      return false;
-  }
-
-  return true;
 }
 
 export function setCurrentModel(currentModel) {
@@ -209,23 +175,6 @@ export function updateField(field) {
   return {
     type: FIELD_UPDATED
   };
-}
-
-//util function
-export function checkFieldName(name) {
-  if (!name)
-    return false;
-
-  name = removeSpacesFromString(name);
-  let nameId = filterString(name);
-
-  let fields = store.getState().models.currentModel.fields;
-  for (let field of fields) {
-    if (field.name == name || field.nameId == nameId)
-      return false;
-  }
-
-  return true;
 }
 
 const initialState = {

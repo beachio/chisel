@@ -81,13 +81,14 @@ module.exports = {
   resolve: {
     root: path.resolve(__dirname),
     alias: {
+      assets:     'src/assets',
       components: 'src/components',
       containers: 'src/containers',
-      ducks: 'src/ducks',
+      ducks:      'src/ducks',
       middleware: 'src/middleware',
-      models: 'src/models',
-      serverApi: 'src/serverApi',
-      store: 'src/store',
+      models:     'src/models',
+      store:      'src/store',
+      utils:      'src/utils'
     },
     extensions: ['', '.js', '.jsx']
   },

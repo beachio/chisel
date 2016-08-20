@@ -4,7 +4,7 @@ import InlineSVG from 'svg-inline-react';
 import JSONView from '../../../elements/JSONView/JSONView';
 
 import {ModelFieldData} from 'models/ModelData';
-import {checkFieldName} from 'ducks/models';
+import {checkFieldName} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
 
 import styles from './Model.sss';
