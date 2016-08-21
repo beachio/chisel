@@ -9,15 +9,26 @@ import styles from './DropdownControl.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class DropdownControl extends Component {
   state = {
-    suggestionValue: 'Short Text',
+    suggestionValue: '',
     suggestionsVisibility: false
   };
+  suggestionsList = [];
+  suggest = null;
+  
+  componentWillMount() {
+    const {suggestionsList, suggest, current} = this.props;
+    this.suggest = suggest;
+    this.suggestionsList = suggestionsList;
+    this.setState({suggestionValue: current});
+  }
 
   onSuggestionClick = event => {
+    let item = event.target.innerHTML;
     this.setState({
-      suggestionValue: event.target.innerHTML,
+      suggestionValue: item,
       suggestionsVisibility: false
     });
+    this.suggest(item);
   };
 
   onSuggestionInputClick = event => {
@@ -34,7 +45,7 @@ export default class DropdownControl extends Component {
   };
 
   render() {
-    const { label, suggestionsList } = this.props;
+    const {label} = this.props;
 
     let inputClasses = classNames({
       'input': true,
@@ -46,11 +57,11 @@ export default class DropdownControl extends Component {
       'arrow-down arrow-rotated': this.state.suggestionsVisibility
     });
 
-    let suggestions = suggestionsList.map(suggestionsItem => {
+    let Suggestions = this.suggestionsList.map(suggestionsItem => {
       return (
         <div onMouseDown={this.onSuggestionClick}
              styleName="suggestion"
-             key={suggestionsItem} >
+             key={suggestionsItem}>
           {suggestionsItem}
         </div>
       )
@@ -61,14 +72,11 @@ export default class DropdownControl extends Component {
         <div styleName="label">{label}</div>
         <InlineSVG styleName={arrowClasses} src={require("./arrow-down.svg")} />
         <input styleName={inputClasses}
-               placeholder={this.state.suggestionPlaceholder}
                value={this.state.suggestionValue}
                onClick={this.onSuggestionInputClick}
                readOnly />
         <div styleName="suggestions">
-
-          {suggestions}
-
+          {Suggestions}
         </div>
       </div>
     );

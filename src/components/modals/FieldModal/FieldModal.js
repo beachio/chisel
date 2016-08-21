@@ -20,6 +20,7 @@ export default class FieldModal extends Component {
   state = {
     name: '',
     nameId: '',
+    type: '',
 
     error: null
   };
@@ -32,7 +33,8 @@ export default class FieldModal extends Component {
     this.onClose = this.props.onClose;
     this.setState({
       name:   this.field.name,
-      nameId: this.field.nameId
+      nameId: this.field.nameId,
+      type:   this.field.type
     });
   }
 
@@ -41,6 +43,10 @@ export default class FieldModal extends Component {
     let nameId = filterSpecials(removeSpaces(name));
 
     this.setState({name, nameId, error: null});
+  };
+  
+  onChangeType = type => {
+    this.setState({type});
   };
 
   onSave = () => {
@@ -56,9 +62,9 @@ export default class FieldModal extends Component {
 
     this.field.name = this.state.name;
     this.field.nameId = this.state.nameId;
+    this.field.type = this.state.type;
 
-    const {updateField} = this.props;
-    updateField(this.field);
+    this.props.updateField(this.field);
     this.onClose();
   };
 
@@ -93,7 +99,10 @@ export default class FieldModal extends Component {
                        readOnly />
               </div>
 
-              <DropdownControl label="Type" suggestionsList={suggestionsList} />
+              <DropdownControl label="Type"
+                               suggestionsList={suggestionsList}
+                               suggest={this.onChangeType}
+                               current={this.state.type} />
 
               <div styleName="input-wrapper">
                 <div styleName="label">Entry Title</div>

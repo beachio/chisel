@@ -161,7 +161,7 @@ export default class Model extends Component {
     //Enter pressed
     if (event.keyCode == 13) {
       this.updateModel();
-      //Esc pressed
+    //Esc pressed
     } else if (event.keyCode == 27) {
       this.endEdit();
     }
