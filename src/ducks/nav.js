@@ -1,4 +1,5 @@
 import {store} from '../index';
+import {SET_CURRENT_SITE} from './models';
 
 
 export const OPEN_PAGE    = 'app/nav/OPEN_PAGE';
@@ -84,6 +85,7 @@ export default function navReducer(state = initialState, action) {
       return {...state, openedModel: true};
       
     case CLOSE_MODEL:
+    case SET_CURRENT_SITE:
       return {...state, openedModel: false};
   
     case SHOW_ALERT:
