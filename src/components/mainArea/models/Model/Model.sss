@@ -56,15 +56,34 @@
       left: initial
       right: 34px
 
+    &-name,
+    &-description
+      background: none
+      border: 1px solid #ffffff
+      padding: 3px
+      margin: 3px
+  
+      cursor: pointer
+      
     &-name
       font-size: 20px
       color: #666666
       letter-spacing: 0.83px
-
+      
     &-description
       font-size: 12px
       color: #666666
       letter-spacing: 0.46px
+    
+    &-name:hover,
+    &-name-edit,
+    &-description:hover,
+    &-description-edit
+      border: 1px solid #cccccc !important
+      
+    &-name-edit,
+    &-description-edit
+      color: #333333
 
   .list
     display: flex

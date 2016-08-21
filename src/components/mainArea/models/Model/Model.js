@@ -4,7 +4,7 @@ import InlineSVG from 'svg-inline-react';
 import JSONView from '../../../elements/JSONView/JSONView';
 
 import {ModelFieldData} from 'models/ModelData';
-import {checkFieldName} from 'utils/data';
+import {checkModelName, checkFieldName} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
 
@@ -16,13 +16,25 @@ export default class Model extends Component {
   state = {
     fields: [],
     fieldName: "",
-    jsonVisibility: false
+    jsonVisibility: false,
+  
+    name: "",
+    editName: false,
+    description: "",
+    editDescription: false
   };
+  
+  model = null;
   activeInput = null;
 
 
   componentWillMount() {
-    this.setState({fields: this.props.model.fields});
+    this.model = this.props.model;
+    this.setState({
+      name: this.model.name,
+      description: this.model.description,
+      fields: this.props.model.fields
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -35,8 +47,8 @@ export default class Model extends Component {
     let name = event.target.value;
     this.setState({fieldName: name});
   };
-
-  onKeyDown = event => {
+  
+  onAddKeyDown = event => {
     if (this.props.modalShowing || this.props.alertShowing)
       return;
     //Enter pressed
@@ -59,8 +71,7 @@ export default class Model extends Component {
       const {showAlert} = this.props;
       let params = {
         title: "Warning",
-        description: "This name is already using. Please, select another one.",
-        buttonText: "OK"
+        description: "This name is already using. Please, select another one."
       };
       showAlert(params);
       return;
@@ -103,9 +114,101 @@ export default class Model extends Component {
       jsonVisibility: !this.state.jsonVisibility
     });
   };
+  
+  onDoubleClickName = () => {
+    this.setState({editName: true});
+  };
+  
+  onNameChange = event => {
+    let name = event.target.value;
+    this.setState({name});
+  };
+  
+  onNameBlur = () => {
+    this.updateModel(true);
+  };
+  
+  onNameKeyDown = event => {
+    if (this.props.alertShowing)
+      return;
+    
+    //Enter pressed
+    if (event.keyCode == 13) {
+      this.updateModel();
+      //Esc pressed
+    } else if (event.keyCode == 27) {
+      this.endEdit();
+    }
+  };
+  
+  onDoubleClickDescription = () => {
+    this.setState({editDescription: true});
+  };
+  
+  onDescriptionChange = event => {
+    let description = event.target.value;
+    this.setState({description});
+  };
+  
+  onDescriptionBlur = () => {
+    this.updateModel(true);
+  };
+  
+  onDescriptionKeyDown = event => {
+    if (this.props.alertShowing)
+      return;
+    
+    //Enter pressed
+    if (event.keyCode == 13) {
+      this.updateModel();
+      //Esc pressed
+    } else if (event.keyCode == 27) {
+      this.endEdit();
+    }
+  };
+  
+  updateModel(endOnSameName) {
+    if ((this.state.editName && this.state.name != this.model.name) ||
+        (this.state.editDescription && this.state.description != this.model.description)) {
+      if (this.state.editName) {
+        if (checkModelName(this.state.name)) {
+          this.model.name = this.state.name;
+          this.props.updateModel(this.model);
+          this.endEdit();
+        } else {
+          if (endOnSameName && !this.props.alertShowing) {
+            this.endEdit();
+          } else {
+            const {showAlert} = this.props;
+            let params = {
+              title: "Warning",
+              description: "This name is already using. Please, select another one."
+            };
+            showAlert(params);
+          }
+        }
+      } else {
+        this.model.description = this.state.description;
+        this.props.updateModel(this.model);
+        this.endEdit();
+      }
+    } else {
+      this.endEdit();
+    }
+  }
+  
+  endEdit() {
+    this.activeInput = null;
+    this.setState({
+      name: this.model.name,
+      description: this.model.description,
+      editName: false,
+      editDescription: false
+    });
+  }
 
   render() {
-    const {model, onClose} = this.props;
+    const {onClose} = this.props;
 
     let content;
     if (this.state.jsonVisibility) {
@@ -148,7 +251,7 @@ export default class Model extends Component {
                    placeholder="Add New Field"
                    value={this.state.fieldName}
                    autoFocus={true}
-                   onKeyDown={this.onKeyDown}
+                   onKeyDown={this.onAddKeyDown}
                    onChange={this.onFieldNameChange}
                    ref={c => this.activeInput = c} />
             <InlineSVG styleName="plus"
@@ -158,16 +261,37 @@ export default class Model extends Component {
         </div>
       );
     }
+    
+    let nameStyle = "header-name";
+    if (this.state.editName)
+      nameStyle += " header-name-edit";
+    let descriptionStyle = "header-description";
+    if (this.state.editDescription)
+      descriptionStyle += " header-description-edit";
 
     return (
       <div className="g-container" styleName="models">
         <div styleName="header">
           <div styleName="back" onClick={onClose}>Back</div>
-          <div styleName="header-name">{model.name}</div>
+          <input styleName={nameStyle}
+                 value={this.state.name}
+                 readOnly={!this.state.editName}
+                 placeholder="Type model name"
+                 onBlur={this.onNameBlur}
+                 onChange={this.onNameChange}
+                 onKeyDown={this.onNameKeyDown}
+                 onDoubleClick={this.onDoubleClickName} />
           <div styleName="json-fields" onClick={this.onJSONClick}>
             {this.state.jsonVisibility ? 'Fields' : 'JSON'}
           </div>
-          <div styleName="header-description">{model.description}</div>
+          <input styleName={descriptionStyle}
+                 value={this.state.description}
+                 readOnly={!this.state.editDescription}
+                 placeholder="Type model description"
+                 onBlur={this.onDescriptionBlur}
+                 onChange={this.onDescriptionChange}
+                 onKeyDown={this.onDescriptionKeyDown}
+                 onDoubleClick={this.onDoubleClickDescription} />
         </div>
         {content}
       </div>

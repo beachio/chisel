@@ -144,6 +144,15 @@ export function addModel(model) {
   };
 }
 
+export function updateModel(model) {
+  model.updateOrigin();
+  model.origin.save();
+  
+  return {
+    type: MODEL_UPDATED
+  };
+}
+
 export function setCurrentModel(currentModel) {
   return {
     type: SET_CURRENT_MODEL,
@@ -213,6 +222,7 @@ export default function modelsReducer(state = initialState, action) {
   
     case SITE_UPDATED:
     case MODEL_ADD:
+    case MODEL_UPDATED:
     case FIELD_ADD:
     case FIELD_UPDATED:
     case FIELD_DELETED:
