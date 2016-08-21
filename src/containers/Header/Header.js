@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
+import InlineSVG from 'svg-inline-react';
 
 import Menu from 'components/header/Menu/Menu';
 import {openPage} from 'ducks/nav';
@@ -25,6 +26,10 @@ export default class Header extends Component  {
         </a>
         <Menu openedPage={nav.openedPage}
               openPage={openPage} />
+        <div styleName="logout">
+          Log out
+          <InlineSVG styleName="logout-icon" src={require("./logout.svg")} />
+        </div>
       </div>
     );
   }
