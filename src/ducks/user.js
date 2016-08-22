@@ -31,7 +31,7 @@ export function register(email, password) {
         Parse.User.logIn(email, password)
           .then(() => {
             localStorage.setItem('authorization', JSON.stringify({email, password}));
-            let userData = new UserData().init();
+            let userData = new UserData().setOrigin();
             dispatch({
               type: LOGIN_RESPONSE,
               authorized: true,
@@ -60,7 +60,7 @@ export function login(email, password) {
     Parse.User.logIn(email, password)
       .then(() => {
         localStorage.setItem('authorization', JSON.stringify({email, password}));
-        let userData = new UserData().init();
+        let userData = new UserData().setOrigin();
         dispatch({
           type: LOGIN_RESPONSE,
           authorized: true,
@@ -86,7 +86,7 @@ export function loginOrRegister(email, password) {
     Parse.User.logIn(email, password)
       .then(() => {
         localStorage.setItem('authorization', JSON.stringify({email, password}));
-        let userData = new UserData().init();
+        let userData = new UserData().setOrigin();
         dispatch({
           type: LOGIN_RESPONSE,
           authorized: true,
@@ -105,7 +105,7 @@ export function loginOrRegister(email, password) {
             Parse.User.logIn(email, password)
               .then(() => {
                 localStorage.setItem('authorization', JSON.stringify({email, password}));
-                let userData = new UserData().init();
+                let userData = new UserData().setOrigin();
                 dispatch({
                   type: LOGIN_RESPONSE,
                   authorized: true,
@@ -137,7 +137,7 @@ export function getLocalStorage() {
 
       Parse.User.logIn(auth.email, auth.password)
         .then(() => {
-          let userData = new UserData().init();
+          let userData = new UserData().setOrigin();
           dispatch({
             type: LOGIN_RESPONSE,
             localStorageReady: true,

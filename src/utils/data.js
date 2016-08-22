@@ -1,4 +1,7 @@
+import {Parse} from 'parse';
+
 import {store} from '../index';
+import {UserData} from 'models/UserData';
 import {removeSpaces, filterSpecials} from 'utils/common';
 
 
@@ -44,6 +47,39 @@ export function checkFieldName(name) {
   let fields = store.getState().models.currentModel.fields;
   for (let field of fields) {
     if (field.name == name || field.nameId == nameId)
+      return false;
+  }
+  
+  return true;
+}
+
+export function getUser(email) {
+  if (!email)
+    return Promise.reject();
+  
+  return new Promise((resolve, reject) => {
+    new Parse.Query(Parse.User)
+      .equalTo("email", email)
+      .first()
+      .then(user_o => {
+        if (user_o)
+          resolve(new UserData().setOrigin(user_o));
+        else
+          reject();
+      }, reject)
+  });
+}
+
+export function checkCollaboration(user) {
+  if (!user)
+    return false;
+  
+  if (user.origin == Parse.User.current())
+    return false;
+  
+  let collabs = store.getState().models.currentSite.collaborations;
+  for (let collab of collabs) {
+    if (collab.user.origin.id == user.origin.id)
       return false;
   }
   

@@ -8,7 +8,7 @@ import ContentList from 'components/mainArea/content/ContentList/ContentList';
 import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import Sharing from 'components/mainArea/sharing/Sharing';
 import Model from 'components/mainArea/models/Model/Model';
-import {addModel, updateModel, setCurrentModel, addField, removeField} from 'ducks/models';
+import {addCollaboration, addModel, updateModel, setCurrentModel, addField, removeField} from 'ducks/models';
 import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, showAlert, closeModel, showModal} from 'ducks/nav';
 
 import styles from './MainArea.sss';
@@ -18,13 +18,12 @@ import styles from './MainArea.sss';
 export default class MainArea extends Component  {
   render() {
     const {models, nav} = this.props;
+    const {addCollaboration, addModel, setCurrentModel, updateModel, addField, removeField} = this.props.modelsActions;
+    const {showAlert, closeModel, showModal} = this.props.navActions;
 
     let Area;
     switch (nav.openedPage) {
       case PAGE_MODELS:
-        const {addModel, setCurrentModel, updateModel, addField, removeField} = this.props.modelsActions;
-        const {showAlert, closeModel, showModal} = this.props.navActions;
-
         let modelsList = models.currentSite ? models.currentSite.models : [];
         Area = (
           <ModelsList models={modelsList}
@@ -58,7 +57,11 @@ export default class MainArea extends Component  {
 
       case PAGE_SHARING:
         Area = (
-          <Sharing />
+          <Sharing collaborations={models.currentSite.collaborations}
+                   owner={models.currentSite.owner}
+                   addCollaboration={addCollaboration}
+                   showAlert={showAlert}
+                   alertShowing={nav.alertShowing} />
         );
     }
 
@@ -79,7 +82,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelsActions:  bindActionCreators({addModel, updateModel, setCurrentModel, addField, removeField}, dispatch),
+    modelsActions:  bindActionCreators({addCollaboration, addModel, updateModel, setCurrentModel, addField, removeField}, dispatch),
     navActions:     bindActionCreators({showAlert, closeModel, showModal}, dispatch)
   };
 }

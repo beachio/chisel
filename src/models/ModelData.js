@@ -9,14 +9,16 @@ export class SiteData {
   origin = null;
   
   domain = "";
-  owner = null;
-  collaborations = [];
-
+  
   //setter
   _name = "";
   _nameId = "";
   
+  //links
+  owner = null;
+
   //children
+  collaborations = [];
   models = [];
 
   get name() {return this._name;}
@@ -33,11 +35,9 @@ export class SiteData {
   setOrigin(origin) {
     this.origin = origin;
   
-    if (origin.get('name'))           this.name           = origin.get('name');
-    if (origin.get('nameId'))         this.nameId         = origin.get('nameId');
-    if (origin.get('domain'))         this.domain         = origin.get('domain');
-    if (origin.get('owner'))          this.owner          = origin.get('owner');
-    if (origin.get('collaborations')) this.collaborations = origin.get('collaborations');
+    if (origin.get('name'))   this.name   = origin.get('name');
+    if (origin.get('nameId')) this.nameId = origin.get('nameId');
+    if (origin.get('domain')) this.domain = origin.get('domain');
     
     return this;
   }
@@ -46,11 +46,11 @@ export class SiteData {
     if (!this.origin)
       this.origin = new SiteData.OriginClass;
   
-    this.origin.set("name",           this.name);
-    this.origin.set("nameId",         this.nameId);
-    this.origin.set("domain",         this.domain);
-    this.origin.set("owner",          this.owner);
-    this.origin.set("collaborations", this.collaborations);
+    this.origin.set("name",   this.name);
+    this.origin.set("nameId", this.nameId);
+    this.origin.set("domain", this.domain);
+  
+    this.origin.set("owner",  this.owner.origin);
   }
 }
 

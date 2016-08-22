@@ -1,13 +1,78 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
-import Gravatar from 'react-gravatar'
+import Gravatar from 'react-gravatar';
+
+import {ROLE_ADMIN, ROLE_EDITOR, CollaborationData} from 'models/UserData';
+import {getUser, checkCollaboration} from 'utils/data';
 
 import styles from './Sharing.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
 export default class Sharing extends Component {
+  state = {
+    collaborations: [],
+    input: ""
+  };
+  owner = null;
+  activeInput = null;
+  
+  
+  componentWillMount() {
+    const {collaborations, owner} = this.props;
+    this.owner = owner;
+    this.setState({collaborations});
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.alertShowing && this.activeInput)
+      this.activeInput.focus();
+    this.setState({collaborations: nextProps.collaborations});
+    if (nextProps.collaborations != this.state.collaborations)
+      this.setState({input: ""});
+  }
+  
+  onInputChange = event => {
+    let input = event.target.value;
+    this.setState({input});
+  };
+  
+  onKeyDown = event => {
+    if (this.props.alertShowing)
+      return;
+    //Enter pressed
+    if (event.keyCode == 13) {
+      this.onAddCollaboration();
+      //Esc pressed
+    } else if (event.keyCode == 27) {
+      this.setState({input: ""});
+    }
+  };
+  
+  onAddCollaboration = event => {
+    getUser(this.state.input)
+      .catch(() => {
+        let params = {
+          title: "Error",
+          description: "The user does not exists.",
+          buttonText: "OK"
+        };
+        this.props.showAlert(params);
+      })
+      .then(user => {
+        if (!checkCollaboration(user))
+          return;
+  
+        let collab = new CollaborationData();
+        collab.user = user;
+        this.props.addCollaboration(collab);
+  
+        this.setState({input: ""});
+      });
+  };
+  
+  
   render() {
     return (
       <div styleName="wrapper">
@@ -17,35 +82,59 @@ export default class Sharing extends Component {
           </div>
           <div>
             <div styleName="list">
-
               <div styleName="list-item">
                 <div styleName="avatar">
-                  <Gravatar email="hello@keiransell.com" styleName="gravatar"/>
+                  <Gravatar email={this.owner.email} styleName="gravatar"/>
                 </div>
                 <div styleName="type">
-                  <div styleName="name">Keir Ansell</div>
-                  <div styleName="email">hello@keiransell.com</div>
+                  <div styleName="name">{this.owner.firstName} {this.owner.lastName}</div>
+                  <div styleName="email">{this.owner.email}</div>
                 </div>
                 <div styleName="owner">
                   OWNER
                 </div>
               </div>
-
-              <div styleName="list-item">
-                <div styleName="avatar">
-                  <Gravatar email="stevebschofield@gmail.com" styleName="gravatar"/>
-                </div>
-                <div styleName="type">
-                  <div styleName="name">Steve Schofield</div>
-                  <div styleName="email">stevebschofield@gmail.com</div>
-                </div>
-              </div>
-
+              {
+                this.state.collaborations.map(collaboration => {
+                  return(
+                    <div styleName="list-item" key={collaboration.user.email}>
+                      <div styleName="avatar">
+                        <Gravatar email={collaboration.user.email} styleName="gravatar"/>
+                      </div>
+                      <div styleName="type">
+                        <div styleName="name">{collaboration.user.firstName} {collaboration.user.lastName}</div>
+                        <div styleName="email">{collaboration.user.email}</div>
+                      </div>
+                      {
+                        collaboration.role == ROLE_ADMIN &&
+                          <div styleName="owner">
+                            ADMIN
+                          </div>
+                      }
+                      {
+                        collaboration.role == ROLE_EDITOR &&
+                          <div styleName="owner">
+                            EDITOR
+                          </div>
+                      }
+                    </div>
+                  );
+                })
+              }
             </div>
-            <form styleName="create-new">
-              <input styleName="input" placeholder="Enter one or more emails" />
-              <InlineSVG styleName="users" src={require("./users.svg")} />
-            </form>
+            
+            <div styleName="create-new">
+              <input styleName="input"
+                     placeholder="Enter one or more emails"
+                     value={this.state.input}
+                     autoFocus={true}
+                     onChange={this.onInputChange}
+                     onKeyDown={this.onKeyDown}
+                     ref={c => this.activeInput = c} />
+              <InlineSVG styleName="users"
+                         src={require("./users.svg")}
+                         onClick={this.onAddModel} />
+            </div>
 
             <div styleName="footer">
               If the recipient doesn’t yet have a Scrivener account, they will be sent an invitation to join.
