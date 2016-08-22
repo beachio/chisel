@@ -20,29 +20,32 @@ export const SET_CURRENT_SITE   = 'app/models/SET_CURRENT_SITE';
 export const SET_CURRENT_MODEL  = 'app/models/SET_CURRENT_MODEL';
 
 
-function requestSites(sites_o, sites) {
+function requestCollaborationsPre() {
   return new Promise((resolve, reject) => {
-    new Parse.Query(SiteData.OriginClass)
+    new Parse.Query(CollaborationData.OriginClass)
+      .equalTo("user", Parse.User.current())
       .find()
-      .then(_sites_o => {
-        Array.prototype.push.apply(sites_o, _sites_o);
-      
-        for (let site_o of sites_o) {
-          let owner_o = site_o.get('owner');
-          if (owner_o.id != Parse.User.current().id)
-            continue;
-        
-          let site = new SiteData().setOrigin(site_o);
-          site.owner = new UserData().setOrigin(owner_o);
-          sites.push(site);
+      .then(collabs => {
+        let sites = [];
+        for (let collab of collabs) {
+          sites.push(collab.get('site'));
         }
-      
-        resolve();
+        
+        resolve(sites);
       }, reject);
   });
 }
 
-function requestCollaborations(sites_o, sites) {
+function requestUserSites() {
+  return new Promise((resolve, reject) => {
+    new Parse.Query(SiteData.OriginClass)
+      .equalTo("owner", Parse.User.current())
+      .find()
+      .then(resolve, reject);
+  });
+}
+
+function requestCollaborationsPost(sites_o, sites) {
   return new Promise((resolve, reject) => {
     new Parse.Query(CollaborationData.OriginClass)
       .containedIn("site", sites_o)
@@ -51,6 +54,7 @@ function requestCollaborations(sites_o, sites) {
         for (let collab_o of collabs_o) {
           let collab = new CollaborationData().setOrigin(collab_o);
           
+          //WARNING: uncontrolled async operations
           collab_o.get('user')
             .fetch()
             .then(user_o => {
@@ -125,17 +129,39 @@ export function init() {
   return dispatch => {
     let sites_o = [];
     let sites = [];
+    
     let models_o = [];
     let models = [];
-    
-    requestSites(sites_o, sites)
-      .then(() =>
-        Promise.all([
-          requestCollaborations(sites_o, sites),
+  
+    requestCollaborationsPre()
+      .then(_sites => {
+        sites_o = _sites;
+        return requestUserSites();
+      })
+      .then(_sites => {
+        sites_o = sites_o.concat(_sites);
+        
+        for (let site_o of sites_o) {
+          let site = new SiteData().setOrigin(site_o);
+          
+          //WARNING: uncontrolled async operations
+          site_o.get('owner')
+            .fetch()
+            .then(owner_o => {
+              let owner = new UserData().setOrigin(owner_o);
+              site.owner = owner;
+            });
+          
+          sites.push(site);
+        }
+      })
+      .then(() => {
+        return Promise.all([
+          requestCollaborationsPost(sites_o, sites),
           requestModels(sites_o, sites, models_o, models)
             .then(() => requestFields(models_o, models))
-        ])
-      )
+        ]);
+      })
       .then(() =>
         dispatch({
           type: INIT_END,
