@@ -17,13 +17,15 @@ export default class Model extends Component {
     fields: [],
     fieldName: "",
     jsonVisibility: false,
-  
+
     name: "",
     editName: false,
     description: "",
-    editDescription: false
+    editDescription: false,
+    nameInputWidth: 0,
+    descriptionInputWidth: 0
   };
-  
+
   model = null;
   activeInput = null;
 
@@ -43,11 +45,18 @@ export default class Model extends Component {
     this.setState({fields: nextProps.model.fields});
   }
 
+  componentDidMount() {
+    this.setState({
+      nameInputWidth: this.refs.name.value.length,
+      descriptionInputWidth: this.refs.description.value.length
+    })
+  }
+
   onFieldNameChange = event => {
     let name = event.target.value;
     this.setState({fieldName: name});
   };
-  
+
   onAddKeyDown = event => {
     if (this.props.modalShowing || this.props.alertShowing)
       return;
@@ -91,7 +100,7 @@ export default class Model extends Component {
 
     this.setState({fieldName: ""});
   };
-  
+
   onRemoveClick(event, field) {
     event.stopPropagation();
     const {showAlert, removeField} = this.props;
@@ -103,7 +112,7 @@ export default class Model extends Component {
     };
     showAlert(params);
   }
-  
+
   onFieldClick = field => {
     const {showModal} = this.props;
     showModal(MODAL_TYPE_FIELD, field);
@@ -114,24 +123,28 @@ export default class Model extends Component {
       jsonVisibility: !this.state.jsonVisibility
     });
   };
-  
-  onDoubleClickName = () => {
+
+  onEditClickName = () => {
     this.setState({editName: true});
+    this.refs.name.focus();
   };
-  
+
   onNameChange = event => {
     let name = event.target.value;
-    this.setState({name});
+    this.setState({
+      name,
+      nameInputWidth: event.target.value.length
+    });
   };
-  
+
   onNameBlur = () => {
     this.updateModel(true);
   };
-  
+
   onNameKeyDown = event => {
     if (this.props.alertShowing)
       return;
-    
+
     //Enter pressed
     if (event.keyCode == 13) {
       this.updateModel();
@@ -140,24 +153,28 @@ export default class Model extends Component {
       this.endEdit();
     }
   };
-  
-  onDoubleClickDescription = () => {
+
+  onEditClickDescription = () => {
     this.setState({editDescription: true});
+    this.refs.description.focus(); 
   };
-  
+
   onDescriptionChange = event => {
     let description = event.target.value;
-    this.setState({description});
+    this.setState({
+      description,
+      descriptionInputWidth: event.target.value.length
+    });
   };
-  
+
   onDescriptionBlur = () => {
     this.updateModel(true);
   };
-  
+
   onDescriptionKeyDown = event => {
     if (this.props.alertShowing)
       return;
-    
+
     //Enter pressed
     if (event.keyCode == 13) {
       this.updateModel();
@@ -166,7 +183,7 @@ export default class Model extends Component {
       this.endEdit();
     }
   };
-  
+
   updateModel(endOnSameName) {
     if ((this.state.editName && this.state.name != this.model.name) ||
         (this.state.editDescription && this.state.description != this.model.description)) {
@@ -196,7 +213,7 @@ export default class Model extends Component {
       this.endEdit();
     }
   }
-  
+
   endEdit() {
     this.activeInput = null;
     this.setState({
@@ -261,7 +278,7 @@ export default class Model extends Component {
         </div>
       );
     }
-    
+
     let nameStyle = "header-name";
     if (this.state.editName)
       nameStyle += " header-name-edit";
@@ -273,25 +290,39 @@ export default class Model extends Component {
       <div className="g-container" styleName="models">
         <div styleName="header">
           <div styleName="back" onClick={onClose}>Back</div>
-          <input styleName={nameStyle}
-                 value={this.state.name}
-                 readOnly={!this.state.editName}
-                 placeholder="Type model name"
-                 onBlur={this.onNameBlur}
-                 onChange={this.onNameChange}
-                 onKeyDown={this.onNameKeyDown}
-                 onDoubleClick={this.onDoubleClickName} />
+          <div styleName="header-wrapper">
+            <input size={this.state.nameInputWidth}
+                   ref="name"
+                   styleName={nameStyle}
+                   value={this.state.name}
+                   readOnly={!this.state.editName}
+                   placeholder="Type model name"
+                   onBlur={this.onNameBlur}
+                   onChange={this.onNameChange}
+                   onKeyDown={this.onNameKeyDown} />
+            <div styleName="edit"
+                 onClick={this.onEditClickName} >
+              edit
+            </div>
+          </div>
+          <div styleName="header-wrapper">
+            <input size={this.state.descriptionInputWidth}
+                   ref="description"
+                   styleName={descriptionStyle}
+                   value={this.state.description}
+                   readOnly={!this.state.editDescription}
+                   placeholder="Type model description"
+                   onBlur={this.onDescriptionBlur}
+                   onChange={this.onDescriptionChange}
+                   onKeyDown={this.onDescriptionKeyDown}/>
+            <div styleName="edit"
+                 onClick={this.onEditClickDescription} >
+              edit
+            </div>
+          </div>
           <div styleName="json-fields" onClick={this.onJSONClick}>
             {this.state.jsonVisibility ? 'Fields' : 'JSON'}
           </div>
-          <input styleName={descriptionStyle}
-                 value={this.state.description}
-                 readOnly={!this.state.editDescription}
-                 placeholder="Type model description"
-                 onBlur={this.onDescriptionBlur}
-                 onChange={this.onDescriptionChange}
-                 onKeyDown={this.onDescriptionKeyDown}
-                 onDoubleClick={this.onDoubleClickDescription} />
         </div>
         {content}
       </div>

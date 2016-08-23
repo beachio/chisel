@@ -8,8 +8,10 @@ import styles from './SiteLoader.sss';
 export default class SiteLoader extends Component  {
   render() {
     return (
-      <div styleName="loader">
-        <img src={require("./loader.gif")} />
+      <div styleName="loader-wrapper">
+        <div styleName="loader">
+          <div styleName="loader-inner"></div>
+        </div>
       </div>
     );
   }

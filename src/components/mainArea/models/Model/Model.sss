@@ -40,6 +40,31 @@
     justify-content: center
     align-items: center
 
+    &-wrapper
+      width: 80%
+      position: relative
+
+      .header-name,
+      .header-description
+        text-align: center
+
+      &:hover .edit
+        opacity: 0.999
+
+    .edit
+      font-size: 12px
+      color: #b1b1b1
+      font-weight: 600
+      display: inline-block
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      margin-left: 5px
+      cursor: pointer
+      opacity: 0.001
+      transition: opacity 0.2s ease
+      will-change: opacity
+
     .back,
     .json-fields
       font-size: 13px
@@ -60,27 +85,27 @@
     &-description
       background: none
       border: 1px solid #ffffff
-      padding: 3px
-      margin: 3px
-  
+      outline: none
       cursor: pointer
-      
+
     &-name
       font-size: 20px
       color: #666666
       letter-spacing: 0.83px
-      
+      line-height: 27px
+
     &-description
       font-size: 12px
       color: #666666
       letter-spacing: 0.46px
-    
-    &-name:hover,
+      line-height: 17px
+
+    /*&-name:focus,
     &-name-edit,
-    &-description:hover,
+    &-description:focus,
     &-description-edit
-      border: 1px solid #cccccc !important
-      
+      border: 1px solid #cccccc !important*/
+
     &-name-edit,
     &-description-edit
       color: #333333
