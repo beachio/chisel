@@ -1,7 +1,7 @@
 import {Parse} from 'parse';
 
 import {store} from '../index';
-import {UserData, CollaborationData} from 'models/UserData';
+import {UserData, CollaborationData, ROLE_ADMIN} from 'models/UserData';
 import {SiteData, ModelData, ModelFieldData} from 'models/ModelData';
 
 
@@ -134,12 +134,12 @@ export function init() {
     let models = [];
   
     requestCollaborationsPre()
-      .then(_sites => {
-        sites_o = _sites;
+      .then(sitesCollab_o => {
+        sites_o = sitesCollab_o;
         return requestUserSites();
       })
-      .then(_sites => {
-        sites_o = sites_o.concat(_sites);
+      .then(sitesUser_o => {
+        sites_o = sites_o.concat(sitesUser_o);
         
         for (let site_o of sites_o) {
           let site = new SiteData().setOrigin(site_o);
@@ -154,10 +154,9 @@ export function init() {
           
           sites.push(site);
         }
-      })
-      .then(() => {
+
         return Promise.all([
-          requestCollaborationsPost(sites_o, sites),
+          requestCollaborationsPost(sitesUser_o, sites),
           requestModels(sites_o, sites, models_o, models)
             .then(() => requestFields(models_o, models))
         ]);
@@ -172,9 +171,23 @@ export function init() {
 }
 
 export function setCurrentSite(currentSite) {
+  let userData = store.getState().user.userData;
+  let isOwner = userData.origin.id == currentSite.owner.origin.id;
+
+  let checkIsAdmin = () => {
+    for (let collab of currentSite.collaborations) {
+      if (collab.user.origin.id == userData.origin.id && collab.role == ROLE_ADMIN)
+        return true;
+    }
+    return false;
+  };
+  let isAdmin = checkIsAdmin();
+
   return {
     type: SET_CURRENT_SITE,
-    currentSite
+    currentSite,
+    isOwner,
+    isAdmin
   };
 }
 
@@ -287,7 +300,10 @@ export function removeField(field) {
 const initialState = {
   sites: [],
   currentSite: null,
-  currentModel: null
+  currentModel: null,
+
+  isOwner: false,
+  isAdmin: false
 };
 
 export default function modelsReducer(state = initialState, action) {
@@ -302,7 +318,9 @@ export default function modelsReducer(state = initialState, action) {
     case SET_CURRENT_SITE:
       return {
         ...state,
-        currentSite:  action.currentSite
+        currentSite:  action.currentSite,
+        isOwner: action.isOwner,
+        isAdmin: action.isAdmin
       };
 
     case SET_CURRENT_MODEL:

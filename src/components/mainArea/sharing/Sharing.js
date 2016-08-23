@@ -15,13 +15,13 @@ export default class Sharing extends Component {
     collaborations: [],
     input: ""
   };
-  owner = null;
   activeInput = null;
+  isOwner = false;
+  isAdmin = false;
   
   
   componentWillMount() {
-    const {collaborations, owner} = this.props;
-    this.owner = owner;
+    const {collaborations} = this.props;
     this.setState({collaborations});
   }
   
@@ -74,6 +74,8 @@ export default class Sharing extends Component {
   
   
   render() {
+    const {owner, isOwner, isAdmin} = this.props;
+
     return (
       <div styleName="wrapper">
         <div className="g-container" styleName="Sharing">
@@ -84,11 +86,11 @@ export default class Sharing extends Component {
             <div styleName="list">
               <div styleName="list-item">
                 <div styleName="avatar">
-                  <Gravatar email={this.owner.email} styleName="gravatar"/>
+                  <Gravatar email={owner.email} styleName="gravatar"/>
                 </div>
                 <div styleName="type">
-                  <div styleName="name">{this.owner.firstName} {this.owner.lastName}</div>
-                  <div styleName="email">{this.owner.email}</div>
+                  <div styleName="name">{owner.firstName} {owner.lastName}</div>
+                  <div styleName="email">{owner.email}</div>
                 </div>
                 <div styleName="owner">
                   OWNER
@@ -102,7 +104,7 @@ export default class Sharing extends Component {
                         <Gravatar email={collaboration.user.email} styleName="gravatar"/>
                       </div>
                       <div styleName="type">
-                        <div styleName="name">{collaboration.user.firstName} {collaboration.user.lastName}</div>
+                        <div styleName="name">{collaboration.user.firstName} {collaboration.user.lastName} </div>
                         <div styleName="email">{collaboration.user.email}</div>
                       </div>
                       {
@@ -122,56 +124,62 @@ export default class Sharing extends Component {
                 })
               }
             </div>
-            
-            <div styleName="create-new">
-              <input styleName="input"
-                     placeholder="Enter one or more emails"
-                     value={this.state.input}
-                     autoFocus={true}
-                     onChange={this.onInputChange}
-                     onKeyDown={this.onKeyDown}
-                     ref={c => this.activeInput = c} />
-              <InlineSVG styleName="users"
-                         src={require("./users.svg")}
-                         onClick={this.onAddModel} />
-            </div>
 
-            <div styleName="footer">
-              If the recipient doesn’t yet have a Scrivener account, they will be sent an invitation to join.
-            </div>
+            {
+              (isOwner || isAdmin) &&
+                <div>
+                  <div styleName="create-new">
+                    <input styleName="input"
+                           placeholder="Enter one or more emails"
+                           value={this.state.input}
+                           autoFocus={true}
+                           onChange={this.onInputChange}
+                           onKeyDown={this.onKeyDown}
+                           ref={c => this.activeInput = c}/>
+                    <InlineSVG styleName="users"
+                               src={require("./users.svg")}
+                               onClick={this.onAddModel}/>
+                  </div>
+                  <div styleName="footer">
+                    If the recipient doesn’t yet have a Scrivener account, they will be sent an invitation to join.
+                  </div>
+                </div>
+            }
           </div>
         </div>
-
-        <div styleName="import">
-          <div className="g-title" styleName="title">
-            Import Contacts
-          </div>
-
-          <div styleName="description">
-            If you would like to invite your contacts, select the service below.
-          </div>
-
-          <div styleName="contacts">
-            <div styleName="contacts-item">
-              <div styleName="icon-wrapper">
-                <InlineSVG styleName="icon" src={require("./slack.svg")} />
+        {
+          (isOwner || isAdmin) &&
+            <div styleName="import">
+              <div className="g-title" styleName="title">
+                Import Contacts
               </div>
-              Slack
-            </div>
-            <div styleName="contacts-item">
-              <div styleName="icon-wrapper">
-                <InlineSVG styleName="icon" src={require("./github.svg")} />
+
+              <div styleName="description">
+                If you would like to invite your contacts, select the service below.
               </div>
-              Github
-            </div>
-            <div styleName="contacts-item">
-              <div styleName="icon-wrapper">
-                <InlineSVG styleName="icon icon-bucket" src={require("./bitbucket.svg")} />
+
+              <div styleName="contacts">
+                <div styleName="contacts-item">
+                  <div styleName="icon-wrapper">
+                    <InlineSVG styleName="icon" src={require("./slack.svg")} />
+                  </div>
+                  Slack
+                </div>
+                <div styleName="contacts-item">
+                  <div styleName="icon-wrapper">
+                    <InlineSVG styleName="icon" src={require("./github.svg")} />
+                  </div>
+                  Github
+                </div>
+                <div styleName="contacts-item">
+                  <div styleName="icon-wrapper">
+                    <InlineSVG styleName="icon icon-bucket" src={require("./bitbucket.svg")} />
+                  </div>
+                  Bitbucket
+                </div>
               </div>
-              Bitbucket
             </div>
-          </div>
-        </div>
+        }
       </div>
     );
   }

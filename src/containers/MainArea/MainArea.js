@@ -21,7 +21,11 @@ export default class MainArea extends Component  {
     const {addCollaboration, addModel, setCurrentModel, updateModel, addField, removeField} = this.props.modelsActions;
     const {showAlert, closeModel, showModal} = this.props.navActions;
 
-    let Area = (<div></div>);
+    let Area = (
+      <div>
+        Create site to start working
+      </div>
+    );
     switch (nav.openedPage) {
       case PAGE_MODELS:
         if (models.currentSite) {
@@ -59,6 +63,8 @@ export default class MainArea extends Component  {
         Area = (
           <Sharing collaborations={models.currentSite.collaborations}
                    owner={models.currentSite.owner}
+                   isOwner={models.isOwner}
+                   isAdmin={models.isAdmin}
                    addCollaboration={addCollaboration}
                    showAlert={showAlert}
                    alertShowing={nav.alertShowing} />
