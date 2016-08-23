@@ -21,6 +21,8 @@ export default class MainArea extends Component  {
     const {addCollaboration, addModel, setCurrentModel, updateModel, addField, removeField} = this.props.modelsActions;
     const {showAlert, closeModel, showModal} = this.props.navActions;
 
+    let isEditable = models.isOwner || models.isAdmin;
+
     let Area = (
       <div>
         Create site to start working
@@ -34,7 +36,8 @@ export default class MainArea extends Component  {
                         setCurrentModel={setCurrentModel}
                         addModel={addModel}
                         showAlert={showAlert}
-                        alertShowing={nav.alertShowing} />
+                        alertShowing={nav.alertShowing}
+                        isEditable={isEditable} />
           );
         }
         if (nav.openedModel)
@@ -47,7 +50,8 @@ export default class MainArea extends Component  {
                    showAlert={showAlert}
                    showModal={showModal}
                    modalShowing={nav.modalShowing}
-                   alertShowing={nav.alertShowing}/>
+                   alertShowing={nav.alertShowing}
+                   isEditable={isEditable} />
           );
 
         break;
@@ -63,11 +67,10 @@ export default class MainArea extends Component  {
         Area = (
           <Sharing collaborations={models.currentSite.collaborations}
                    owner={models.currentSite.owner}
-                   isOwner={models.isOwner}
-                   isAdmin={models.isAdmin}
                    addCollaboration={addCollaboration}
                    showAlert={showAlert}
-                   alertShowing={nav.alertShowing} />
+                   alertShowing={nav.alertShowing}
+                   isEditable={isEditable} />
         );
     }
 

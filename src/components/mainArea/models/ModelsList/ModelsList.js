@@ -85,6 +85,8 @@ export default class ModelsList extends Component {
   };
 
   render() {
+    const {isEditable} = this.props;
+
     return (
       <div className="g-container" styleName="models">
         <div className="g-title">
@@ -128,18 +130,21 @@ export default class ModelsList extends Component {
               })
             }
           </div>
-          <div styleName="create-new">
-            <input styleName="input"
-                   value={this.state.modelName}
-                   autoFocus={true}
-                   placeholder="Create a new Content Type"
-                   onChange={this.onModelNameChange}
-                   onKeyDown={this.onKeyDown}
-                   ref={c => this.activeInput = c} />
-            <InlineSVG styleName="plus"
-                       src={require("./plus.svg")}
-                       onClick={this.onAddModel} />
-          </div>
+          {
+            isEditable &&
+              <div styleName="create-new">
+                <input styleName="input"
+                       value={this.state.modelName}
+                       autoFocus={true}
+                       placeholder="Create a new Content Type"
+                       onChange={this.onModelNameChange}
+                       onKeyDown={this.onKeyDown}
+                       ref={c => this.activeInput = c} />
+                <InlineSVG styleName="plus"
+                           src={require("./plus.svg")}
+                           onClick={this.onAddModel} />
+              </div>
+          }
         </div>
       </div>
     );

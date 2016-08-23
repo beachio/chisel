@@ -30,8 +30,9 @@ function requestCollaborationsPre() {
         for (let collab of collabs) {
           sites.push(collab.get('site'));
         }
-        
-        resolve(sites);
+
+        Parse.Object.fetchAllIfNeeded(sites)
+          .then(() => resolve(sites), reject);
       }, reject);
   });
 }

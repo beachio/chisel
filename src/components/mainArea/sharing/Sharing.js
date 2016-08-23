@@ -74,7 +74,7 @@ export default class Sharing extends Component {
   
   
   render() {
-    const {owner, isOwner, isAdmin} = this.props;
+    const {owner, isEditable} = this.props;
 
     return (
       <div styleName="wrapper">
@@ -126,7 +126,7 @@ export default class Sharing extends Component {
             </div>
 
             {
-              (isOwner || isAdmin) &&
+              isEditable &&
                 <div>
                   <div styleName="create-new">
                     <input styleName="input"
@@ -148,7 +148,7 @@ export default class Sharing extends Component {
           </div>
         </div>
         {
-          (isOwner || isAdmin) &&
+          isEditable &&
             <div styleName="import">
               <div className="g-title" styleName="title">
                 Import Contacts

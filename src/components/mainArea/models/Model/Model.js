@@ -114,8 +114,9 @@ export default class Model extends Component {
   }
 
   onFieldClick = field => {
-    const {showModal} = this.props;
-    showModal(MODAL_TYPE_FIELD, field);
+    const {showModal, isEditable} = this.props;
+    if (isEditable)
+      showModal(MODAL_TYPE_FIELD, field);
   };
 
   onJSONClick = () => {
@@ -225,7 +226,7 @@ export default class Model extends Component {
   }
 
   render() {
-    const {onClose} = this.props;
+    const {onClose, isEditable} = this.props;
 
     let content;
     if (this.state.jsonVisibility) {
@@ -250,31 +251,36 @@ export default class Model extends Component {
                       <div styleName="list-item-name">{field.name}</div>
                       <div styleName="list-item-type">{field.type}</div>
                     </div>
-                    <div styleName="hidden-controls">
-                      <div styleName="hidden-button">TITLE</div>
-                      <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, field)}>
-                        <InlineSVG styleName="cross"
-                                   src={require("./cross.svg")} />
-                      </div>
-                    </div>
+                    {
+                      isEditable &&
+                        <div styleName="hidden-controls">
+                          <div styleName="hidden-button">TITLE</div>
+                          <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, field)}>
+                            <InlineSVG styleName="cross"
+                                       src={require("./cross.svg")}/>
+                          </div>
+                        </div>
+                    }
                   </div>
                 );
               })
             }
           </div>
-
-          <div styleName="create-new">
-            <input styleName="input"
-                   placeholder="Add New Field"
-                   value={this.state.fieldName}
-                   autoFocus={true}
-                   onKeyDown={this.onAddKeyDown}
-                   onChange={this.onFieldNameChange}
-                   ref={c => this.activeInput = c} />
-            <InlineSVG styleName="plus"
-                       src={require("./plus.svg")}
-                       onClick={this.onAddField} />
-          </div>
+          {
+            isEditable &&
+              <div styleName="create-new">
+                <input styleName="input"
+                       placeholder="Add New Field"
+                       value={this.state.fieldName}
+                       autoFocus={true}
+                       onKeyDown={this.onAddKeyDown}
+                       onChange={this.onFieldNameChange}
+                       ref={c => this.activeInput = c}/>
+                <InlineSVG styleName="plus"
+                           src={require("./plus.svg")}
+                           onClick={this.onAddField}/>
+              </div>
+          }
         </div>
       );
     }
