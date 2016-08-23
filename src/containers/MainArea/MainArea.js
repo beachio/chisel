@@ -10,6 +10,7 @@ import Sharing from 'components/mainArea/sharing/Sharing';
 import Model from 'components/mainArea/models/Model/Model';
 import {addCollaboration, addModel, updateModel, setCurrentModel, addField, removeField} from 'ducks/models';
 import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, showAlert, closeModel, showModal} from 'ducks/nav';
+import InlineSVG from 'svg-inline-react';
 
 import styles from './MainArea.sss';
 
@@ -24,8 +25,10 @@ export default class MainArea extends Component  {
     let isEditable = models.isOwner || models.isAdmin;
 
     let Area = (
-      <div>
-        Create site to start working
+      <div styleName="start-working">
+        <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
+        Add new site to start working
+        <div styleName="hint">Find "Add new site" button at sidebar</div>
       </div>
     );
     switch (nav.openedPage) {
