@@ -18,7 +18,7 @@ export default class Sign extends Component  {
     emptyFields: false,
     authError: null
   };
-  
+
   componentWillReceiveProps(nextProps) {
     this.setState({
       authError: nextProps.authError
@@ -65,6 +65,7 @@ export default class Sign extends Component  {
             <ButtonControl type="green" value="Sign in / Sign up" onClick={this.onSubmit}/>
           </div>
         </form>
+
         <div styleName="errors">
           {
             this.state.authError ==  ERROR_WRONG_PASS &&
