@@ -112,7 +112,18 @@ export class ModelData {
   }
 
   setTableName() {
-    this.tableName = `content___${this.site.nameId}___${this.nameId}`;
+    this.tableName = `content__${this.site.nameId}__${this.nameId}`;
+  }
+
+  toJSON() {
+    return {
+      name:         this.name,
+      nameId:       this.nameId,
+      description:  this.description,
+      tableName:    this.tableName,
+      color:        this.color,
+      fields:       this.fields
+    };
   }
 }
 
@@ -182,5 +193,14 @@ export class ModelFieldData {
     this.origin.set("color",  this.color);
   
     this.origin.set("model",  this.model.origin);
+  }
+
+  toJSON() {
+    return {
+      name:   this.name,
+      nameId: this.nameId,
+      type:   this.type,
+      color:  this.color
+    };
   }
 }

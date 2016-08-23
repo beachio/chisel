@@ -4,7 +4,7 @@ import InlineSVG from 'svg-inline-react';
 import JSONView from '../../../elements/JSONView/JSONView';
 
 import {ModelFieldData} from 'models/ModelData';
-import {checkModelName, checkFieldName} from 'utils/data';
+import {checkModelName, checkFieldName, modelToJSON} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
 
@@ -231,7 +231,7 @@ export default class Model extends Component {
     let content;
     if (this.state.jsonVisibility) {
       content = (
-        <JSONView />
+        <JSONView content={modelToJSON(this.model)} />
       )
     } else {
       content = (

@@ -85,3 +85,7 @@ export function checkCollaboration(user) {
   
   return true;
 }
+
+export function modelToJSON(model) {
+  return JSON.stringify(model, null, 2);
+}
