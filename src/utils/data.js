@@ -22,9 +22,9 @@ export function checkSiteName(name) {
 }
 
 export function checkModelName(name) {
-  if (!name)
+  if (!name || !store.getState().models.currentSite)
     return false;
-  
+
   name = removeSpaces(name);
   let nameId = filterSpecials(name);
   
@@ -38,7 +38,7 @@ export function checkModelName(name) {
 }
 
 export function checkFieldName(name) {
-  if (!name)
+  if (!name || !store.getState().models.currentModel)
     return false;
   
   name = removeSpaces(name);

@@ -21,18 +21,18 @@ export default class MainArea extends Component  {
     const {addCollaboration, addModel, setCurrentModel, updateModel, addField, removeField} = this.props.modelsActions;
     const {showAlert, closeModel, showModal} = this.props.navActions;
 
-    let Area;
+    let Area = (<div></div>);
     switch (nav.openedPage) {
       case PAGE_MODELS:
-        let modelsList = models.currentSite ? models.currentSite.models : [];
-        Area = (
-          <ModelsList models={modelsList}
-                      setCurrentModel={setCurrentModel}
-                      addModel={addModel}
-                      showAlert={showAlert}
-                      alertShowing={nav.alertShowing} />
-        );
-
+        if (models.currentSite) {
+          Area = (
+            <ModelsList models={models.currentSite.models}
+                        setCurrentModel={setCurrentModel}
+                        addModel={addModel}
+                        showAlert={showAlert}
+                        alertShowing={nav.alertShowing} />
+          );
+        }
         if (nav.openedModel)
           Area = (
             <Model model={models.currentModel}

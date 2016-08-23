@@ -92,13 +92,15 @@ export default class ModelsList extends Component {
         </div>
         <div>
           <div styleName="list">
-            <div styleName="list-item list-header">
-              <div styleName="colorLabel"></div>
-              <div styleName="type"></div>
-              <div styleName="fields">FIELDS</div>
-              <div styleName="updated">UPDATED</div>
-            </div>
-
+            {
+              this.state.models.length > 0 &&
+                <div styleName="list-item list-header">
+                  <div styleName="colorLabel"></div>
+                  <div styleName="type"></div>
+                  <div styleName="fields">FIELDS</div>
+                  <div styleName="updated">UPDATED</div>
+                </div>
+            }
             {
               this.state.models.map(model => {
                 let updatedDate = model.origin.updatedAt;
