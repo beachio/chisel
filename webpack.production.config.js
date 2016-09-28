@@ -1,18 +1,14 @@
-'use strict';
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const StatsPlugin = require('stats-webpack-plugin');
 
-var path = require('path');
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var StatsPlugin = require('stats-webpack-plugin');
 
 module.exports = {
-  entry: [
-    'whatwg-fetch',
-    path.join(__dirname, 'src/index.js')
-  ],
+  entry: ['src/index.js'],
   output: {
-    path: path.join(__dirname, '/dist/'),
+    path: 'dist',
     filename: '[name]-[hash].min.js',
     publicPath: '/'
   },
@@ -55,7 +51,6 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel',
-        include: path.join(__dirname, 'client'),
         exclude: /node_modules/
       },
       {
@@ -69,7 +64,6 @@ module.exports = {
           'postcss-loader?parser=sugarss'
         ])
       },
-
       {
         test: /^((?!\.global).)*\.sss$/,
         loader: ExtractTextPlugin.extract('style-loader', [

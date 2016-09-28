@@ -1,15 +1,13 @@
-'use strict';
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-var path = require('path');
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   devtool: 'eval-source-map',
   entry: [
-    'whatwg-fetch',
     'webpack-hot-middleware/client?reload=true',
-    path.join(__dirname, 'src/index.js')
+    'src'
   ],
   output: {
     path: path.join(__dirname, '/dist/'),
@@ -68,7 +66,8 @@ module.exports = {
           'css-loader?modules&localIdentName==[name]---[local]---[hash:base64:5]&importLoaders=1',
           'postcss-loader?parser=sugarss'
         ]
-    }]
+      }
+    ]
   },
   resolve: {
     root: path.resolve(__dirname),
