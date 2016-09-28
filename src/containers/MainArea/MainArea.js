@@ -16,7 +16,7 @@ import styles from './MainArea.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export default class MainArea extends Component  {
+export class MainArea extends Component  {
   render() {
     const {models, nav} = this.props;
     const {addCollaboration, addModel, setCurrentModel, updateModel, addField, removeField} = this.props.modelsActions;

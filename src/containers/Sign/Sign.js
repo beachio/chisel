@@ -11,7 +11,7 @@ import styles from './Sign.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export default class Sign extends Component  {
+export class Sign extends Component  {
   state = {
     email: '',
     password: '',

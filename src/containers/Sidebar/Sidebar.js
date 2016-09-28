@@ -13,7 +13,7 @@ import styles from './Sidebar.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export default class Sidebar extends Component {
+export class Sidebar extends Component {
   render() {
     const {models, nav, user} = this.props;
     const {setCurrentSite, addSite, updateSite} = this.props.modelsActions;

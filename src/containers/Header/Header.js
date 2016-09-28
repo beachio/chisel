@@ -12,7 +12,7 @@ import styles from './Header.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export default class Header extends Component  {
+export class Header extends Component  {
   render() {
     const {nav} = this.props;
     const {openPage} = this.props.navActions;
