@@ -1,6 +1,6 @@
 {
   "name": "scrivener",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Parse CMS",
   "main": "dist/scrivener.js",
   "files": [
@@ -8,19 +8,19 @@
     "dist"
   ],
   "scripts": {
-    "start": "NODE_ENV=development node ./build/server.js",
+    "start": "node ./build/server.js",
     "lint": "eslint .",
     "bundle": "webpack --config=webpack.dev.config.js",
-    "build": "rimraf dist && cross-env NODE_ENV=production webpack --config ./build/webpack.prod.config.js --progress --profile --colors"
+    "build": "rimraf dist && webpack --config ./build/webpack.prod.config.js --progress --profile --colors"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Nes-si/Scrivener.git"
+    "url": "https://github.com/beachio/scriven"
   },
-  "author": "Nikita Golovin <golovin.nik@gmail.com>",
-  "license": "MIT",
+  "author": "Beach.io <beach.io>",
+  "license": "Proprietary",
   "bugs": {
-    "url": "https://github.com/Nes-si/Scrivener/issues"
+    "url": "https://github.com/beachio/scriven/issues"
   },
   "homepage": "http://beach.io",
   "devDependencies": {
