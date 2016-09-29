@@ -1,24 +1,18 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const merge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StatsPlugin = require('stats-webpack-plugin');
 
+const baseWebpackConfig = require('./webpack.base.config');
 
-module.exports = {
-  entry: ['index'],
+
+module.exports = merge(baseWebpackConfig, {
   output: {
-    path: 'dist',
     filename: '[name]-[hash].min.js',
     publicPath: '/'
   },
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new HtmlWebpackPlugin({
-      template: 'src/index.tpl.html',
-      inject: 'body',
-      filename: 'index.html'
-    }),
     new ExtractTextPlugin('[name]-[hash].min.css'),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
@@ -29,33 +23,14 @@ module.exports = {
     new StatsPlugin('webpack.stats.json', {
       source: false,
       modules: false
-    }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     })
   ],
   module: {
     loaders: [
       {
-        test: /\.(png|jpg|gif)$/,
-        loader: 'url-loader?limit=8192'
-      },
-      {
-        test: /\.(ttf|woff|eot|css)$/,
-        loader: 'file-loader'
-      },
-      {
-        test: /\.svg$/,
-        loader: 'svg-inline'
-      },
-      {
         test: /\.js$/,
         loader: 'babel',
         exclude: /node_modules/
-      },
-      {
-        test: /\.json?$/,
-        loader: 'json'
       },
       {
         test: /\.global\.sss$/,
@@ -71,17 +46,5 @@ module.exports = {
           'postcss-loader?parser=sugarss'
         ])
     }]
-  },
-  resolve: {
-    modulesDirectories: ['src', 'node_modules'],
-    extensions: ['', '.js', '.jsx']
-  },
-  postcss: function () {
-    return [
-      require('autoprefixer')(),
-      require('postcss-nested-props')(),
-      require('precss')(),
-      require('postcss-font-magician')()
-    ];
   }
-};
+});
