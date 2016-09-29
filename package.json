@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node ./build/server.js",
     "lint": "eslint .",
-    "bundle": "webpack --config=webpack.dev.config.js",
+    "bundle": "rimraf dist && webpack --config ./build/webpack.dev.config.js",
     "build": "rimraf dist && webpack --config ./build/webpack.prod.config.js --progress --profile --colors"
   },
   "repository": {
