@@ -7,7 +7,7 @@ module.exports = {
   devtool: 'eval-source-map',
   entry: [
     'webpack-hot-middleware/client?reload=true',
-    'src'
+    'index'
   ],
   output: {
     path: path.join(__dirname, '/dist/'),
@@ -44,7 +44,6 @@ module.exports = {
       {
         test: /\.js$/,
         loaders: ['react-hot', 'babel'],
-        include: path.join(__dirname, 'src'),
         exclude: /node_modules/
       },
       {
@@ -70,17 +69,7 @@ module.exports = {
     ]
   },
   resolve: {
-    root: path.resolve(__dirname),
-    alias: {
-      assets:     'src/assets',
-      components: 'src/components',
-      containers: 'src/containers',
-      ducks:      'src/ducks',
-      middleware: 'src/middleware',
-      models:     'src/models',
-      store:      'src/store',
-      utils:      'src/utils'
-    },
+    modulesDirectories: ['src', 'node_modules'],
     extensions: ['', '.js', '.jsx']
   },
   postcss: function () {

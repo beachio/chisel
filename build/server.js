@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
-const config = require('./webpack.config');
+const config = require('./webpack.dev.config');
 
 
 let app = new express();
@@ -15,7 +15,7 @@ app.use(webpackDevMiddleware(compiler,
 app.use(webpackHotMiddleware(compiler));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '../index.html');
 });
 
 app.listen(port, error => {

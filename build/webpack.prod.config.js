@@ -6,7 +6,7 @@ const StatsPlugin = require('stats-webpack-plugin');
 
 
 module.exports = {
-  entry: ['src/index.js'],
+  entry: ['index'],
   output: {
     path: 'dist',
     filename: '[name]-[hash].min.js',
@@ -73,17 +73,7 @@ module.exports = {
     }]
   },
   resolve: {
-    root: path.resolve(__dirname),
-    alias: {
-      assets:     'src/assets',
-      components: 'src/components',
-      containers: 'src/containers',
-      ducks:      'src/ducks',
-      middleware: 'src/middleware',
-      models:     'src/models',
-      store:      'src/store',
-      utils:      'src/utils'
-    },
+    modulesDirectories: ['src', 'node_modules'],
     extensions: ['', '.js', '.jsx']
   },
   postcss: function () {
