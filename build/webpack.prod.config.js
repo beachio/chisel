@@ -1,4 +1,3 @@
-const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -8,12 +7,8 @@ const baseWebpackConfig = require('./webpack.base.config');
 
 
 module.exports = merge(baseWebpackConfig, {
-  output: {
-    filename: '[name]-[hash].min.js',
-    publicPath: '/'
-  },
   plugins: [
-    new ExtractTextPlugin('[name]-[hash].min.css'),
+    new ExtractTextPlugin('[name].min.css'),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
         warnings: false,

@@ -4,11 +4,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 
 module.exports = {
-  entry: [
-    'index'
-  ],
+  entry: ['index'],
   output: {
-    path: path.join(__dirname, '../dist/')
+    path: path.join(__dirname, '../dist/'),
+    filename: '[name].js',
+    publicPath: '/'
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -40,7 +40,7 @@ module.exports = {
   },
   resolve: {
     modulesDirectories: ['src', 'node_modules'],
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js']
   },
   postcss: function () {
     return [

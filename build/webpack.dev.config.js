@@ -7,13 +7,7 @@ const baseWebpackConfig = require('./webpack.base.config');
 
 module.exports = merge(baseWebpackConfig, {
   devtool: 'eval-source-map',
-  entry: [
-    'webpack-hot-middleware/client?reload=true'
-  ],
-  output: {
-    filename: '[name].js',
-    publicPath: '/'
-  },
+  entry: ['webpack-hot-middleware/client?reload=true'],
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
