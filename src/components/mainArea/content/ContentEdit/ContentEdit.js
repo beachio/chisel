@@ -27,8 +27,8 @@ export default class ContentEdit extends Component {
               bannerImage
             </div>
             <div styleName="image">
-              <form styleName="fileUpload" enctype="multipart/form-data" method="post">
-               <input styleName="fileUpload-input" type="file" />
+              <form styleName="fileUpload" encType="multipart/form-data" method="post">
+                <input styleName="fileUpload-input" type="file" />
               </form>
             </div>
           </div>
