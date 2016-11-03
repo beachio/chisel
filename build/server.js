@@ -7,20 +7,30 @@ const config = require('./webpack.dev.config');
 
 
 let app = new express();
-let port = 3000;
+let port = process.env.PORT || 3000;
 
 let compiler = webpack(config);
-app.use(webpackDevMiddleware(compiler,
-  {noInfo: true, publicPath: config.output.publicPath}));
+app.use(webpackDevMiddleware(compiler, {
+  publicPath: config.output.publicPath,
+  stats: {
+    colors: true,
+    chunks: false
+  }
+}));
 app.use(webpackHotMiddleware(compiler));
 
+// serve pure static assets
+app.use('/', express.static('./static'));
+
+/*
 app.get("/", (req, res) => {
   res.sendFile(__dirname + '../index.html');
 });
+*/
 
 app.listen(port, error => {
   if (error)
     console.error(error);
   else
-    console.info("==> Listening on port %s, open http://localhost:%s/", port, port);
+    console.info("==> Listening at http://localhost:%s/", port);
 });

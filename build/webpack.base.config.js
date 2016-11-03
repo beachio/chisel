@@ -21,20 +21,28 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.(png|jpg|gif)$/,
-        loader: 'url-loader?limit=8192'
-      },
-      {
         test: /\.svg$/,
         loader: 'svg-inline'
       },
       {
-        test: /\.(ttf|woff|eot|css)$/,
-        loader: 'file-loader'
-      },
-      {
         test: /\.json?$/,
         loader: 'json'
+      },
+      {
+        test: /\.(png|jpe?g|gif)(\?.*)?$/,
+        loader: 'url',
+        query: {
+          limit: 3000,
+          name: 'assets/images/[name].[hash:7].[ext]'
+        }
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url',
+        query: {
+          limit: 3000,
+          name: 'assets/fonts/[name].[hash:7].[ext]'
+        }
       }
     ]
   },
@@ -44,10 +52,10 @@ module.exports = {
   },
   postcss: function () {
     return [
+      require('postcss-flexibility'),
+      require('postcss-flexbugs-fixes'),
       require('autoprefixer')(),
-      require('postcss-nested-props')(),
-      require('precss')(),
-      require('postcss-font-magician')()
+      require('precss')()
     ];
   }
 };

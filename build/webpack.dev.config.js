@@ -20,6 +20,14 @@ module.exports = merge(baseWebpackConfig, {
         exclude: /node_modules/
       },
       {
+        test: /\.css$/,
+        loaders: [
+          'style-loader',
+          'css-loader',
+          'postcss-loader'
+        ]
+      },
+      {
         test: /\.global\.sss$/,
         loaders: [
           'style-loader',
