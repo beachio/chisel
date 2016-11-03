@@ -5,10 +5,8 @@ import {openModel} from 'ducks/nav';
 export const structure = store => next => action => {
   next(action);
   
-  if (action.type == INIT_END_models) {
-    let currentSite = action.sites.length ? action.sites[0] : null;
-    next(setCurrentSite(currentSite));
-  }
+  if (action.type == INIT_END_models && action.sites.length)
+    next(setCurrentSite(action.sites[0]));
   
   if (action.type == SITE_ADD)
     next(setCurrentSite(action.site));
