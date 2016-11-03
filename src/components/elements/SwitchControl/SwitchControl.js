@@ -7,11 +7,16 @@ import styles from './SwitchControl.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class SwitchControl extends Component {
   render() {
-    const {title} = this.props;
+    const {title, checked, onChange} = this.props;
 
     return (
       <div styleName="SwitchControl">
-        <input type="checkbox" styleName="checkbox" id="checkbox" />
+        <input type="checkbox"
+               styleName="checkbox"
+               id="checkbox"
+               checked={checked}
+               onChange={onChange}
+        />
         <label styleName="label" htmlFor="checkbox">{title}</label>
       </div>
     );

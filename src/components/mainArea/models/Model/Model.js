@@ -252,9 +252,12 @@ export default class Model extends Component {
                       <div styleName="list-item-type">{field.type}</div>
                     </div>
                     {
+                      field.isTitle &&
+                        <div styleName="title-button">TITLE</div>
+                    }
+                    {
                       isEditable &&
                         <div styleName="hidden-controls">
-                          <div styleName="hidden-button">TITLE</div>
                           <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, field)}>
                             <InlineSVG styleName="cross"
                                        src={require("./cross.svg")}/>

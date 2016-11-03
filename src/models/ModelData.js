@@ -152,6 +152,7 @@ export class ModelFieldData {
   
   type = FIELD_TYPE_SHORT_TEXT;
   color = "rgba(0, 0, 0, 1)";
+  isTitle = false;
 
   //setter
   _name = "";
@@ -175,10 +176,11 @@ export class ModelFieldData {
   setOrigin(origin) {
     this.origin = origin;
     
-    if (origin.get('name'))   this.name   = origin.get('name');
-    if (origin.get('nameId')) this.nameId = origin.get('nameId');
-    if (origin.get('type'))   this.type   = origin.get('type');
-    if (origin.get('color'))  this.color  = origin.get('color');
+    if (origin.get('name'))     this.name     = origin.get('name');
+    if (origin.get('nameId'))   this.nameId   = origin.get('nameId');
+    if (origin.get('type'))     this.type     = origin.get('type');
+    if (origin.get('color'))    this.color    = origin.get('color');
+    if (origin.get('isTitle'))  this.isTitle  = true;
     
     return this;
   }
@@ -187,20 +189,22 @@ export class ModelFieldData {
     if (!this.origin)
       this.origin = new ModelFieldData.OriginClass;
     
-    this.origin.set("name",   this.name);
-    this.origin.set("nameId", this.nameId);
-    this.origin.set("type",   this.type);
-    this.origin.set("color",  this.color);
+    this.origin.set("name",     this.name);
+    this.origin.set("nameId",   this.nameId);
+    this.origin.set("type",     this.type);
+    this.origin.set("color",    this.color);
+    this.origin.set("isTitle",  this.isTitle);
   
     this.origin.set("model",  this.model.origin);
   }
 
   toJSON() {
     return {
-      name:   this.name,
-      nameId: this.nameId,
-      type:   this.type,
-      color:  this.color
+      name:     this.name,
+      nameId:   this.nameId,
+      type:     this.type,
+      color:    this.color,
+      isTitle:  this.isTitle
     };
   }
 }

@@ -21,6 +21,7 @@ export default class FieldModal extends Component {
     name: '',
     nameId: '',
     type: '',
+    isTitle: '',
 
     error: null
   };
@@ -32,9 +33,10 @@ export default class FieldModal extends Component {
     this.field = this.props.params;
     this.onClose = this.props.onClose;
     this.setState({
-      name:   this.field.name,
-      nameId: this.field.nameId,
-      type:   this.field.type
+      name:     this.field.name,
+      nameId:   this.field.nameId,
+      type:     this.field.type,
+      isTitle:  this.field.isTitle
     });
   }
 
@@ -48,6 +50,11 @@ export default class FieldModal extends Component {
   onChangeType = type => {
     this.setState({type});
   };
+  
+  onChangeIsTitle = event => {
+    let isTitle = event.target.checked;
+    this.setState({isTitle});
+  };
 
   onSave = () => {
     if (!this.state.name) {
@@ -60,9 +67,10 @@ export default class FieldModal extends Component {
       return;
     }
 
-    this.field.name = this.state.name;
-    this.field.nameId = this.state.nameId;
-    this.field.type = this.state.type;
+    this.field.name     = this.state.name;
+    this.field.nameId   = this.state.nameId;
+    this.field.type     = this.state.type;
+    this.field.isTitle  = this.state.isTitle;
 
     this.props.updateField(this.field);
     this.onClose();
@@ -107,7 +115,7 @@ export default class FieldModal extends Component {
               <div styleName="input-wrapper">
                 <div styleName="label">Entry Title</div>
                 <div styleName="switch">
-                  <SwitchControl />
+                  <SwitchControl checked={this.state.isTitle} onChange={this.onChangeIsTitle} />
                 </div>
               </div>
 
