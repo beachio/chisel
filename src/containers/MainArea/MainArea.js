@@ -22,7 +22,7 @@ export class MainArea extends Component  {
     const {models, content, nav} = this.props;
     const {addCollaboration, addModel, setCurrentModel, updateModel, addField, removeField} = this.props.modelsActions;
     const {addItem, updateItem, setCurrentItem} = this.props.contentActions;
-    const {showAlert, closeModel, showModal} = this.props.navActions;
+    const {showAlert, closeModel, closeContentItem, showModal} = this.props.navActions;
 
     let isEditable = models.isOwner || models.isAdmin;
 
@@ -111,7 +111,7 @@ function mapDispatchToProps(dispatch) {
   return {
     modelsActions:  bindActionCreators({addCollaboration, addModel, updateModel, setCurrentModel, addField, removeField}, dispatch),
     contentActions: bindActionCreators({addItem, updateItem, setCurrentItem}, dispatch),
-    navActions:     bindActionCreators({showAlert, closeModel, showModal}, dispatch)
+    navActions:     bindActionCreators({showAlert, closeModel, closeContentItem, showModal}, dispatch)
   };
 }
 

@@ -7,12 +7,35 @@ import styles from './ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentEdit extends Component {
+  state = {
+    title: "",
+    color: "rgba(0, 0, 0, 1)",
+    fields: new Map()
+  };
+  item = null;
+  
+  componentWillMount() {
+    this.item = this.props.item;
+    this.setState({
+      title:   this.item.title,
+      color:   this.item.color,
+      fields:  this.item.fields
+    });
+  }
+  
+  onTitleChange = event => {
+    let title = event.target.value;
+    this.setState({title});
+  };
+  
   render() {
+    const {onClose, isEditable} = this.props;
+    
     return (
       <div className="g-container" styleName="ContentEdit">
         <div className="g-title" styleName="header">
-          <div styleName="back">Back</div>
-          20 Best Things You May Be Searching For
+          <div styleName="back" onClick={onClose}>Back</div>
+          {this.state.title}
         </div>
         <div styleName="content">
           <div styleName="field">
