@@ -1,6 +1,6 @@
 import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOCAL_STORAGE_RESPONSE} from 'ducks/user';
-import {init as initModels, INIT_END as INIT_MODELS_END} from 'ducks/models';
-import {init as initContent} from 'ducks/content';
+import {init as init_models, INIT_END as INIT_END_models} from 'ducks/models';
+import {init as init_content} from 'ducks/content';
 
 
 export const initialization = store => next => action => {
@@ -8,9 +8,9 @@ export const initialization = store => next => action => {
 
   if ((action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE || LOCAL_STORAGE_RESPONSE) &&
       action.authorized) {
-    next(initModels());
+    next(init_models());
   }
   
-  if (action.type == INIT_MODELS_END)
-    next(initContent());
+  if (action.type == INIT_END_models)
+    next(init_content());
 };

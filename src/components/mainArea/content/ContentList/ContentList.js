@@ -64,11 +64,13 @@ export default class ContentList extends Component {
     addItem(item);
     
     this.setState({itemTitle: ""});
+    
+    this.onItemClick(item);
   };
   
   onItemClick = item => {
-    const {setCurrentContentItem} = this.props;
-    setCurrentContentItem(item);
+    const {setCurrentItem} = this.props;
+    setCurrentItem(item);
   };
   
   render() {
@@ -89,7 +91,6 @@ export default class ContentList extends Component {
                   <div styleName="updated">UPDATED</div>
                 </div>
             }
-  
             {
               this.state.items.map(item => {
                 let updatedDate = item.origin.updatedAt;
