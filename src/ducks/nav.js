@@ -2,13 +2,15 @@ import {store} from '../index';
 import {SET_CURRENT_SITE} from './models';
 
 
-export const OPEN_PAGE    = 'app/nav/OPEN_PAGE';
-export const OPEN_MODEL   = 'app/nav/OPEN_MODEL';
-export const CLOSE_MODEL  = 'app/nav/CLOSE_MODEL';
-export const SHOW_ALERT   = 'app/nav/SHOW_ALERT';
-export const CLOSE_ALERT  = 'app/nav/CLOSE_ALERT';
-export const SHOW_MODAL   = 'app/nav/SHOW_MODAL';
-export const CLOSE_MODAL  = 'app/nav/CLOSE_MODAL';
+export const OPEN_PAGE          = 'app/nav/OPEN_PAGE';
+export const OPEN_MODEL         = 'app/nav/OPEN_MODEL';
+export const CLOSE_MODEL        = 'app/nav/CLOSE_MODEL';
+export const OPEN_CONTENT_ITEM  = 'app/nav/OPEN_CONTENT_ITEM';
+export const CLOSE_CONTENT_ITEM = 'app/nav/CLOSE_CONTENT_ITEM';
+export const SHOW_ALERT         = 'app/nav/SHOW_ALERT';
+export const CLOSE_ALERT        = 'app/nav/CLOSE_ALERT';
+export const SHOW_MODAL         = 'app/nav/SHOW_MODAL';
+export const CLOSE_MODAL        = 'app/nav/CLOSE_MODAL';
 
 export const PAGE_MODELS    = 'app/nav/pages/PAGE_MODELS';
 export const PAGE_CONTENT   = 'app/nav/pages/PAGE_CONTENT';
@@ -37,6 +39,18 @@ export function closeModel() {
     type: CLOSE_MODEL
   };
 }
+
+export function openContentItem() {
+  return {
+    type: OPEN_CONTENT_ITEM
+  };
+}
+export function closeContentItem() {
+  return {
+    type: CLOSE_CONTENT_ITEM
+  };
+}
+
 
 export function showAlert(params) {
   return {
@@ -68,6 +82,8 @@ const initialState = {
 
   openedModel: false,
   
+  openedContentItem: false,
+  
   alertShowing: false,
   alertParams: null,
 
@@ -87,6 +103,12 @@ export default function navReducer(state = initialState, action) {
     case CLOSE_MODEL:
     case SET_CURRENT_SITE:
       return {...state, openedModel: false};
+  
+    case OPEN_CONTENT_ITEM:
+      return {...state, openedContentItem: true};
+  
+    case CLOSE_CONTENT_ITEM:
+      return {...state, openedContentItem: false};
   
     case SHOW_ALERT:
       return {...state, alertShowing: true, alertParams: action.params};

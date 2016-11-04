@@ -9,7 +9,8 @@ import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import Sharing from 'components/mainArea/sharing/Sharing';
 import Model from 'components/mainArea/models/Model/Model';
 import {addCollaboration, addModel, updateModel, setCurrentModel, addField, removeField} from 'ducks/models';
-import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, showAlert, closeModel, showModal} from 'ducks/nav';
+import {addItem, updateItem, setCurrentItem} from 'ducks/content';
+import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, showAlert, closeModel, closeContentItem, showModal} from 'ducks/nav';
 import InlineSVG from 'svg-inline-react';
 
 import styles from './MainArea.sss';
@@ -18,8 +19,9 @@ import styles from './MainArea.sss';
 @CSSModules(styles, {allowMultiple: true})
 export class MainArea extends Component  {
   render() {
-    const {models, nav} = this.props;
+    const {models, content, nav} = this.props;
     const {addCollaboration, addModel, setCurrentModel, updateModel, addField, removeField} = this.props.modelsActions;
+    const {addItem, updateItem, setCurrentItem} = this.props.contentActions;
     const {showAlert, closeModel, showModal} = this.props.navActions;
 
     let isEditable = models.isOwner || models.isAdmin;
@@ -33,7 +35,7 @@ export class MainArea extends Component  {
     );
     switch (nav.openedPage) {
       case PAGE_MODELS:
-        if (models.currentSite) {
+        if (models.currentSite)
           Area = (
             <ModelsList models={models.currentSite.models}
                         setCurrentModel={setCurrentModel}
@@ -42,7 +44,7 @@ export class MainArea extends Component  {
                         alertShowing={nav.alertShowing}
                         isEditable={isEditable} />
           );
-        }
+        
         if (nav.openedModel)
           Area = (
             <Model model={models.currentModel}
@@ -60,9 +62,21 @@ export class MainArea extends Component  {
         break;
 
       case PAGE_CONTENT:
-        Area = (
-          <ContentEdit />
-        );
+        if (models.currentSite)
+          Area = (
+            <ContentList items={content.items}
+                         setCurrentItem={setCurrentItem}
+                         addItem={addItem}
+                         isEditable={isEditable}/>
+          );
+  
+        if (nav.openedContentItem)
+          Area = (
+            <ContentEdit item={content.currentItem}
+                         onClose={closeContentItem}
+                         updateItem={updateItem}
+                         isEditable={isEditable} />
+          );
 
         break;
 
@@ -87,14 +101,16 @@ export class MainArea extends Component  {
 
 function mapStateToProps(state) {
   return {
-    models: state.models,
-    nav:    state.nav
+    models:   state.models,
+    content:  state.content,
+    nav:      state.nav
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     modelsActions:  bindActionCreators({addCollaboration, addModel, updateModel, setCurrentModel, addField, removeField}, dispatch),
+    contentActions: bindActionCreators({addItem, updateItem, setCurrentItem}, dispatch),
     navActions:     bindActionCreators({showAlert, closeModel, showModal}, dispatch)
   };
 }
