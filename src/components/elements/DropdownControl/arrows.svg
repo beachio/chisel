@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="21px" viewBox="0 0 12 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M1236,422.6 C1236,422.6 1241.6,428.200001 1241.6,428.200001 C1242,428.600001 1242.4,428.200001 1242.4,428.200001 L1248,422.6 C1248,422.6 1248,421 1246.4,421 L1242,425.800001 C1242,425.800001 1237.77355,421.189331 1237.60517,421.005639 C1236,421 1236,422.6 1236,422.6 Z M1236,414.6 C1236,414.6 1241.6,409 1241.6,409 C1242,408.6 1242.4,409 1242.4,409 L1248,414.6 C1248,414.6 1248,416.2 1246.4,416.2 L1242,411.4 C1242,411.4 1237.77355,416.010669 1237.60517,416.194362 C1236,416.2 1236,414.6 1236,414.6 Z" id="path-1"></path>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="12.0000005" height="19.2000008" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+    </defs>
+    <g id="Scrivener" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Short-Text" transform="translate(-1236.000000, -408.000000)" stroke="#666666" stroke-width="6">
+            <use id="Icon" mask="url(#mask-2)" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>

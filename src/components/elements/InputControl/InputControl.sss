@@ -1,0 +1,65 @@
+.InputControl
+  width: 100%
+  text-align: left
+
+  display: flex
+  flex-flow: column nowrap
+
+  position: relative
+
+.label
+  font-weight: 600
+  font-size: 13px
+  color: #666666
+  letter-spacing: 0.5px
+  line-height: 30px
+  position: relative
+
+  transition: color 0.2s ease
+  will-change: color
+
+.input-big
+  font-size: 18px
+  letter-spacing: 0.69px
+  color: #666666
+  line-height: 30px
+  width: 100%
+  border: none
+  outline: none
+  margin-top: -6px
+  padding-bottom: 5px
+  border-bottom: 1px solid #CCCCCC
+
+  transition: border-color 0.2s ease
+  will-change: border-color
+  order: 2
+
+  &:focus
+    border-color: #5CA6DC
+
+  &:focus + .label
+    color: #5DAD47
+
+.lock
+  position: absolute
+  height: 24px
+  width: 16px
+  top: 38px
+  right: 12px
+
+.input
+  background: #FFFFFF
+  border: 1px solid #CCCCCC
+  box-shadow: inset 0px 1px 2px 0px rgba(0,0,0,0.10)
+  border-radius: 3px
+  line-height: 34px
+  padding: 0 9px
+  margin-top: 0px
+  outline: none
+  font-size: 13px
+  color: #999999
+  letter-spacing: 0.5px
+  order: 2
+
+  &-readOnly
+    background: #EFEFEF

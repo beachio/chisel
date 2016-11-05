@@ -77,6 +77,9 @@
     width: 100%
     text-align: left
 
+    display: flex
+    flex-flow: column nowrap
+
     &-title
       font-weight: 600
       font-size: 13px
@@ -84,6 +87,9 @@
       letter-spacing: 0.5px
       line-height: 30px
       position: relative
+
+      transition: color 0.2s ease
+      will-change: color
 
     .link
       position: absolute
@@ -104,6 +110,16 @@
       margin-top: -6px
       padding-bottom: 5px
       border-bottom: 1px solid #CCCCCC
+
+      transition: border-color 0.2s ease
+      will-change: border-color
+      order: 2
+
+      &:focus
+        border-color: #5CA6DC
+
+      &:focus + .field-title
+        color: #5DAD47
 
     .image
       height: 106px
@@ -167,7 +183,9 @@
         border: 1px solid #979797
 
       &:checked + &-label:before
-        background-color: #D8D8D8
+        height: 12px;
+        width: 12px;
+        border: 5px solid #5CA6DC;
 
       & + &-label:before,
       &:checked + &-label:before

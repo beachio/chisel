@@ -5,6 +5,7 @@ import InlineSVG from 'svg-inline-react';
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
+import InputControl from 'components/elements/InputControl/InputControl';
 import {removeSpaces, filterSpecials} from 'utils/common';
 import {checkFieldName} from 'utils/data';
 import {FIELD_TYPES} from 'models/ModelData';
@@ -46,11 +47,11 @@ export default class FieldModal extends Component {
 
     this.setState({name, nameId, error: null});
   };
-  
+
   onChangeType = type => {
     this.setState({type});
   };
-  
+
   onChangeIsTitle = event => {
     let isTitle = event.target.checked;
     this.setState({isTitle});
@@ -89,25 +90,27 @@ export default class FieldModal extends Component {
           <div styleName="content">
             <form>
               <div styleName="input-wrapper">
-                <div styleName="label">Name</div>
-                <input styleName="input"
-                       onChange={this.onChangeName}
-                       value={this.state.name} />
+                <InputControl label="Name"
+                              placeholder="Main Title"
+                              onChange={this.onChangeName}
+                              value={this.state.name} />
               </div>
+
               {
                 this.state.error == ERROR_TYPE_SAME_NAME &&
                   <div styleName="error-same-name">This name is already in use.</div>
               }
+
               <div styleName="input-wrapper">
-                <div styleName="label">Field ID</div>
-                <InlineSVG styleName="lock" src={require("./lock.svg")} />
-                <input styleName="input input-readonly"
-                       placeholder="mainTitle"
-                       value={this.state.nameId}
-                       readOnly />
+                <InputControl label="Field ID"
+                              placeholder="main_title"
+                              type="readOnly"
+                              value={this.state.nameId}
+                              readOnly="readOnly" />
               </div>
 
-              <DropdownControl label="Type"
+              <DropdownControl 
+                               label="Type"
                                suggestionsList={suggestionsList}
                                suggest={this.onChangeType}
                                current={this.state.type} />

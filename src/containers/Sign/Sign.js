@@ -54,10 +54,10 @@ export class Sign extends Component  {
   render() {
     let contents = (
       <div styleName="Sign">
-        <div styleName="title">Welcome to Scriven</div>
         <div styleName="logo">
           <img src={require("./logo.png")} />
         </div>
+        <div styleName="title">Welcome to Scriven</div>
         <form styleName="form" onSubmit={this.onSubmit}>
           <input styleName="input" type="text" placeholder="Enter email" onChange={this.onEmailChange} />
           <input styleName="input" type="password" placeholder="Enter password" onChange={this.onPasswordChange} />

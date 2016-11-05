@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
+import InputControl from '../../../elements/InputControl/InputControl';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {FIELD_TYPE_SHORT_TEXT, FIELD_TYPE_LONG_TEXT, FIELD_TYPE_REFERENCE, FIELD_TYPE_REFERENCES,
@@ -16,12 +17,12 @@ export default class ContentEdit extends Component {
     slug: "",
     color: "rgba(0, 0, 0, 1)",
     fields: new Map(),
-  
+
     editTitle: false,
     titleInputWidth: 0
   };
   item = null;
-  
+
   componentWillMount() {
     this.item = this.props.item;
     this.setState({
@@ -31,12 +32,12 @@ export default class ContentEdit extends Component {
       fields: this.item.fields
     });
   }
-  
+
   onEditClickTitle = () => {
     this.setState({editTitle: true});
     this.refs.name.focus();
   };
-  
+
   onTitleChange = event => {
     let title = event.target.value;
     this.setState({
@@ -44,16 +45,16 @@ export default class ContentEdit extends Component {
       nameInputWidth: event.target.value.length
     });
   };
-  
+
   onSlugChange = event => {
     let slug = event.target.value;
     this.setState({slug});
   };
-  
+
   onTitleBlur = () => {
     this.endEdit();
   };
-  
+
   onTitleKeyDown = event => {
     //Enter pressed
     if (event.keyCode == 13) {
@@ -64,31 +65,31 @@ export default class ContentEdit extends Component {
       this.endEdit();
     }
   };
-  
+
   endEdit() {
     this.setState({editTitle: false});
   }
-    
+
   onClose = () => {
     this.onSave();
     this.props.onClose();
   };
-  
+
   onSave() {
     if (!this.state.title)
       return;
-    
+
     this.item.title = this.state.title;
     this.item.slug  = this.state.slug;
     this.item.color = this.state.color;
     this.item.fields = this.state.fields;
-  
+
     this.props.updateItem(this.item);
   }
-  
+
   generateElement(field, value) {
     let inner;
-    
+
     switch (field.type) {
       case FIELD_TYPE_SHORT_TEXT:
         inner = (
@@ -97,7 +98,7 @@ export default class ContentEdit extends Component {
           </div>
         );
         break;
-  
+
       case FIELD_TYPE_LONG_TEXT:
         inner = (
           <textarea styleName="textarea">
@@ -105,7 +106,7 @@ export default class ContentEdit extends Component {
         );
         break;
     }
-    
+
     return (
       <div styleName="field" key={field.nameId}>
         <div styleName="field-title">
@@ -115,7 +116,7 @@ export default class ContentEdit extends Component {
       </div>
     );
   }
-  
+
   generateContent() {
     let content = [];
     for (let [field, value] of this.state.fields) {
@@ -128,19 +129,19 @@ export default class ContentEdit extends Component {
       </div>
     );
   }
-  
+
   render() {
     const {isEditable} = this.props;
-  
+
     let titleStyle = "header-title";
     if (this.state.editTitle)
       titleStyle += " header-title-edit";
-    
+
     let content = this.generateContent();
-    
+
     return (
       <div className="g-container" styleName="ContentEdit">
-        
+
         <div styleName="header">
           <div styleName="back" onClick={this.onClose}>Back</div>
           <div styleName="header-wrapper">
@@ -159,17 +160,18 @@ export default class ContentEdit extends Component {
             </div>
           </div>
         </div>
-        
+
         <div styleName="content">
+
           <div styleName="field">
-            <div styleName="field-title">slug</div>
-            <input styleName="title-input"
-                   placeholder="Type slug"
-                   readOnly={!isEditable}
-                   onChange={this.onSlugChange}
-                   value={this.state.slug} />
+            <InputControl label="slug"
+                          type="big"
+                          placeholder="Type slug"
+                          readOnly={!isEditable}
+                          value={this.state.slug}
+                          onChange={this.onSlugChange} />
           </div>
-          
+
           <div styleName="field">
             <div styleName="field-title">
               bannerImage
@@ -180,7 +182,7 @@ export default class ContentEdit extends Component {
               </form>
             </div>
           </div>
-          
+
           <div styleName="field">
             <div styleName="field-title">
               showAuthor
