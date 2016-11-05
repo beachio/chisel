@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
+import _ from 'lodash/core';
 
 import styles from './SwitchControl.sss';
 
@@ -8,16 +9,16 @@ import styles from './SwitchControl.sss';
 export default class SwitchControl extends Component {
   render() {
     const {title, checked, onChange} = this.props;
-
+    let id = _.uniqueId('switch_');
     return (
       <div styleName="SwitchControl">
         <input type="checkbox"
                styleName="checkbox"
-               id="checkbox"
+               id={id}
                checked={checked}
                onChange={onChange}
         />
-        <label styleName="label" htmlFor="checkbox">{title}</label>
+        <label styleName="label" htmlFor={id}>{title}</label>
       </div>
     );
   }

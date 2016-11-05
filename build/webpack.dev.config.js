@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 const baseWebpackConfig = require('./webpack.base.config');
 
@@ -9,6 +10,10 @@ module.exports = merge(baseWebpackConfig, {
   devtool: 'eval-source-map',
   entry: ['webpack-hot-middleware/client?reload=true'],
   plugins: [
+    new LodashModuleReplacementPlugin({
+      'collections': true,
+      'shorthands': true
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ],
