@@ -51,10 +51,11 @@ export default class ContentList extends Component {
     if (!this.state.itemTitle)
       return;
     
-    const {addItem} = this.props;
+    const {addItem, models} = this.props;
     
     let item = new ContentItemData();
     item.title = this.state.itemTitle;
+    item.model = models[0];
     
     let red   = Math.floor(Math.random() * 256);
     let green = Math.floor(Math.random() * 256);

@@ -39,7 +39,7 @@ export class ContentItemData {
       if (field.nameId == "title" || field.nameId == "color")
         continue;
       let value = this.fields.get(value);
-      this.origin.set(field.nameId, "test");
+      this.origin.set(field.nameId, value);
     }
   
     this.origin.set("model",  this.model.origin);

@@ -67,6 +67,7 @@ export class MainArea extends Component  {
             <ContentList items={content.items}
                          setCurrentItem={setCurrentItem}
                          addItem={addItem}
+                         models={models.currentSite.models}
                          isEditable={isEditable}/>
           );
   

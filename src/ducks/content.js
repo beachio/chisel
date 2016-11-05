@@ -50,10 +50,6 @@ export function init() {
 }
 
 export function addItem(item) {
-  let currentSite = store.getState().models.currentSite;
-  let model = currentSite.models[0];
-  
-  item.model = model;
   item.updateOrigin();
   item.origin.save();
   
