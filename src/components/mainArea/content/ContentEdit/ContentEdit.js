@@ -1,11 +1,13 @@
 import React, {Component, PropTypes} from 'react';
+import {Parse} from 'parse';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
-import InputControl from '../../../elements/InputControl/InputControl';
+import _ from 'lodash/core';
 
+import InputControl from '../../../elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {FIELD_TYPE_SHORT_TEXT, FIELD_TYPE_LONG_TEXT, FIELD_TYPE_REFERENCE, FIELD_TYPE_REFERENCES,
-  FIELD_TYPE_ASSET, FIELD_TYPE_INTEGER, FIELD_TYPE_FLOAT, FIELD_TYPE_DATE, FIELD_TYPE_BOOLEAN, FIELD_TYPE_JSON} from 'models/ModelData';
+  FIELD_TYPE_IMAGE, FIELD_TYPE_INTEGER, FIELD_TYPE_FLOAT, FIELD_TYPE_DATE, FIELD_TYPE_BOOLEAN, FIELD_TYPE_JSON} from 'models/ModelData';
 
 import styles from './ContentEdit.sss';
 
@@ -102,6 +104,24 @@ export default class ContentEdit extends Component {
     let value = parseFloat(str);
     this.setState({fields: this.state.fields.set(field, value)});
   }
+  
+  onChange_INTEGER(event, field) {
+    let str = event.target.value;
+    let value = parseInt(str);
+    this.setState({fields: this.state.fields.set(field, value)});
+  }
+  
+  onChange_BOOLEAN(value, field) {
+    this.setState({fields: this.state.fields.set(field, value)});
+  }
+  
+  onChange_IMAGE(event, field) {
+    let file = event.target.files[0];
+    let parseFile = new Parse.File(field.nameId, file);
+    parseFile.save().then(() => {
+      this.setState({fields: this.state.fields.set(field, parseFile)});
+    });
+  }
 
   generateElement(field, value) {
     let inner;
@@ -143,7 +163,64 @@ export default class ContentEdit extends Component {
           </div>
         );
         break;
-      
+  
+      case FIELD_TYPE_INTEGER:
+        if (value)
+          
+        inner = (
+          <div styleName="input-wrapper">
+            <input styleName="input"
+                   ref={field.nameId}
+                   value={value}
+                   onChange={e => this.onChange_INTEGER(e, field)} />
+          </div>
+        );
+        break;
+  
+      case FIELD_TYPE_BOOLEAN:
+        if (!value)
+          value = false;
+        let id1 = _.uniqueId('radio1_');
+        let id2 = _.uniqueId('radio2_');
+        inner = (
+          <div styleName="radio-wrapper">
+            <div styleName="radio-button">
+              <input styleName="radio"
+                     type="radio"
+                     id={id1}
+                     name="radio"
+                     checked={value}
+                     onChange={e => this.onChange_BOOLEAN(true, field)} />
+              <label styleName="radio-label" htmlFor={id1}>Yes</label>
+            </div>
+            <div styleName="radio-button">
+              <input styleName="radio"
+                     type="radio"
+                     id={id2}
+                     name="radio"
+                     checked={!value}
+                     onChange={e => this.onChange_BOOLEAN(false, field)} />
+              <label styleName="radio-label" htmlFor={id2}>No</label>
+            </div>
+          </div>
+        );
+        break;
+  
+      case FIELD_TYPE_IMAGE:
+        let imgStyle = {};
+        if (value)
+          imgStyle = {backgroundImage: `url(${value.url()})`};
+        
+        inner = (
+          <div styleName="image" style={imgStyle}>
+            <div styleName="fileUpload">
+              <input styleName="fileUpload-input"
+                     type="file"
+                     onChange={e => this.onChange_IMAGE(e, field)} />
+            </div>
+          </div>
+        );
+        break;
     }
 
     return (
@@ -206,7 +283,6 @@ export default class ContentEdit extends Component {
         </div>
 
         <div styleName="content">
-
           <div styleName="field">
             <InputControl label="slug"
                           type="big"
@@ -215,44 +291,6 @@ export default class ContentEdit extends Component {
                           value={this.state.slug}
                           onChange={this.onSlugChange} />
           </div>
-
-          <div styleName="field">
-            <div styleName="field-title">
-              bannerImage
-            </div>
-            <div styleName="image">
-              <form styleName="fileUpload" encType="multipart/form-data" method="post">
-                <input styleName="fileUpload-input" type="file" />
-              </form>
-            </div>
-          </div>
-
-          <div styleName="field">
-            <div styleName="field-title">
-              showAuthor
-            </div>
-            <div styleName="radio-wrapper">
-              <div styleName="radio-button">
-                <input styleName="radio" type="radio" id="radio01" name="radio"/>
-                <label styleName="radio-label" htmlFor="radio01">Yes</label>
-              </div>
-              <div styleName="radio-button">
-                <input styleName="radio" type="radio" id="radio02" name="radio" />
-                <label styleName="radio-label" htmlFor="radio02">No</label>
-              </div>
-            </div>
-          </div>
-
-          <div styleName="field">
-            <div styleName="field-title">
-              Authors
-            </div>
-            <div styleName="input-wrapper">
-              <input styleName="input" placeholder="Steve Schofield"/>
-              <input styleName="input" placeholder="Boris Adimov"/>
-            </div>
-          </div>
-
           {content}
         </div>
       </div>

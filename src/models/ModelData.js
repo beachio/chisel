@@ -133,7 +133,7 @@ export const FIELD_TYPE_SHORT_TEXT  = "Short Text";
 export const FIELD_TYPE_LONG_TEXT   = "Long Text";
 export const FIELD_TYPE_REFERENCE   = "Reference";
 export const FIELD_TYPE_REFERENCES  = "References";
-export const FIELD_TYPE_ASSET       = "Asset";
+export const FIELD_TYPE_IMAGE       = "Image";
 export const FIELD_TYPE_INTEGER     = "Number Int";
 export const FIELD_TYPE_FLOAT       = "Number";
 export const FIELD_TYPE_DATE        = "Date/time";
@@ -141,7 +141,7 @@ export const FIELD_TYPE_BOOLEAN     = "Boolean";
 export const FIELD_TYPE_JSON        = "JSON";
 
 export const FIELD_TYPES = [FIELD_TYPE_SHORT_TEXT, FIELD_TYPE_LONG_TEXT, FIELD_TYPE_REFERENCE, FIELD_TYPE_REFERENCES,
-  FIELD_TYPE_ASSET, FIELD_TYPE_INTEGER, FIELD_TYPE_FLOAT, FIELD_TYPE_DATE, FIELD_TYPE_BOOLEAN, FIELD_TYPE_JSON];
+  FIELD_TYPE_IMAGE, FIELD_TYPE_INTEGER, FIELD_TYPE_FLOAT, FIELD_TYPE_DATE, FIELD_TYPE_BOOLEAN, FIELD_TYPE_JSON];
 
 
 
