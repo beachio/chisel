@@ -86,25 +86,64 @@ export default class ContentEdit extends Component {
 
     this.props.updateItem(this.item);
   }
+  
+  onChange_SHORT_TEXT(event, field) {
+    let value = event.target.value;
+    this.setState({fields: this.state.fields.set(field, value)});
+  }
+  
+  onChange_LONG_TEXT(event, field) {
+    let value = event.target.value;
+    this.setState({fields: this.state.fields.set(field, value)});
+  }
+  
+  onChange_FLOAT(event, field) {
+    let str = event.target.value;
+    let value = parseFloat(str);
+    this.setState({fields: this.state.fields.set(field, value)});
+  }
 
   generateElement(field, value) {
     let inner;
 
     switch (field.type) {
       case FIELD_TYPE_SHORT_TEXT:
+        if (!value)
+          value = "";
         inner = (
           <div styleName="input-wrapper">
-            <input styleName="input" />
+            <input styleName="input"
+                   ref={field.nameId}
+                   value={value}
+                   onChange={e => this.onChange_SHORT_TEXT(e, field)} />
           </div>
         );
         break;
-
+  
       case FIELD_TYPE_LONG_TEXT:
+        if (!value)
+          value = "";
         inner = (
-          <textarea styleName="textarea">
-          </textarea>
+          <textarea styleName="textarea"
+                    ref={field.nameId}
+                    value={value}
+                    onChange={e => this.onChange_LONG_TEXT(e, field)} />
         );
         break;
+  
+      case FIELD_TYPE_FLOAT:
+        if (!value)
+          value = 0;
+        inner = (
+          <div styleName="input-wrapper">
+            <input styleName="input"
+                   ref={field.nameId}
+                   value={value}
+                   onChange={e => this.onChange_FLOAT(e, field)} />
+          </div>
+        );
+        break;
+      
     }
 
     return (
