@@ -2,6 +2,7 @@ import {Parse} from 'parse';
 
 import {store} from '../index';
 import {ContentItemData} from 'models/ContentData';
+import {getRandomColor} from 'utils/common';
 
 
 export const INIT_END           = 'app/content/INIT_END';
@@ -49,7 +50,14 @@ export function init() {
   };
 }
 
-export function addItem(item) {
+export function addItem(title) {
+  let item = new ContentItemData();
+  item.title = title;
+  item.color = getRandomColor();
+  
+  let models = store.getState().models.currentSite.models;
+  item.model = models[0];
+  
   item.updateOrigin();
   item.origin.save();
   

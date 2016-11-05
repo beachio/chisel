@@ -2,8 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
-import {ContentItemData} from 'models/ContentData';
-
 import styles from './ContentList.sss';
 
 
@@ -51,22 +49,9 @@ export default class ContentList extends Component {
     if (!this.state.itemTitle)
       return;
     
-    const {addItem, models} = this.props;
-    
-    let item = new ContentItemData();
-    item.title = this.state.itemTitle;
-    item.model = models[0];
-    
-    let red   = Math.floor(Math.random() * 256);
-    let green = Math.floor(Math.random() * 256);
-    let blue  = Math.floor(Math.random() * 256);
-    item.color = `rgba(${red}, ${green}, ${blue}, 1)`;
-    
-    addItem(item);
-    
+    const {addItem} = this.props;
+    addItem(this.state.itemTitle);
     this.setState({itemTitle: ""});
-    
-    this.onItemClick(item);
   };
   
   onItemClick = item => {
