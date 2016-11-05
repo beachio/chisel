@@ -159,6 +159,11 @@ export default class ContentEdit extends Component {
               edit
             </div>
           </div>
+          <div styleName="header-wrapper">
+            <div styleName="header-model">
+              {this.item.model.name}
+            </div>
+          </div>
         </div>
 
         <div styleName="content">
