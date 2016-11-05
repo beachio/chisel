@@ -52,11 +52,12 @@ export function init() {
 
 export function addItem(title) {
   let item = new ContentItemData();
-  item.title = title;
-  item.color = getRandomColor();
   
   let models = store.getState().models.currentSite.models;
   item.model = models[0];
+  
+  item.title = title;
+  item.color = getRandomColor();
   
   item.updateOrigin();
   item.origin.save();

@@ -11,7 +11,6 @@ export class ContentItemData {
   
   //setter
   _titleField = null;
-  _title = "";
   _slug = "";
   
   //links
@@ -20,11 +19,11 @@ export class ContentItemData {
   
   get titleField() {return this._titleField;}
   
-  get title() {return this._title;}
+  get title() {return this.fields.get(this._titleField);}
   set title(title) {
-    this._title = removeSpaces(title);
-    this.fields.set(this._titleField, this._title);
-    this.slug = this._title;
+    title = removeSpaces(title);
+    this.fields.set(this.titleField, title);
+    this.slug = title;
   }
   
   get slug() {return this._slug;}
@@ -62,7 +61,7 @@ export class ContentItemData {
       this.fields.set(field, value);
   
       if (field.isTitle)
-        this._title = value;
+        this._titleField = field;
     }
     
     return this;
@@ -75,13 +74,12 @@ export class ContentItemData {
     this.origin.set("slug",   this.slug);
     this.origin.set("color",  this.color);
   
-    for (let field of this.model.fields) {
+    for (let [field, value] of this.fields) {
       if (field.nameId == "color" || field.nameId == "slug")
         continue;
-      let value = this.fields.get(value);
       this.origin.set(field.nameId, value);
     }
-  
+    
     this.origin.set("model",  this.model.origin);
   }
 }
