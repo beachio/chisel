@@ -11,6 +11,7 @@ import styles from './ContentEdit.sss';
 export default class ContentEdit extends Component {
   state = {
     title: "",
+    slug: "",
     color: "rgba(0, 0, 0, 1)",
     fields: new Map(),
   
@@ -23,6 +24,7 @@ export default class ContentEdit extends Component {
     this.item = this.props.item;
     this.setState({
       title:  this.item.title,
+      slug:   this.item.slug,
       color:  this.item.color,
       fields: this.item.fields
     });
@@ -41,8 +43,13 @@ export default class ContentEdit extends Component {
     });
   };
   
+  onSlugChange = event => {
+    let slug = event.target.value;
+    this.setState({slug});
+  };
+  
   onTitleBlur = () => {
-    //this.updateModel(true);
+    this.endEdit();
   };
   
   onTitleKeyDown = event => {
@@ -57,10 +64,7 @@ export default class ContentEdit extends Component {
   };
   
   endEdit() {
-    //this.activeInput = null;
-    this.setState({
-      editTitle: false
-    });
+    this.setState({editTitle: false});
   }
     
   onClose = () => {
@@ -73,6 +77,7 @@ export default class ContentEdit extends Component {
       return;
     
     this.item.title = this.state.title;
+    this.item.slug  = this.state.slug;
     this.item.color = this.state.color;
     this.item.fields = this.state.fields;
   
@@ -110,10 +115,12 @@ export default class ContentEdit extends Component {
         
         <div styleName="content">
           <div styleName="field">
-            <div styleName="field-title">
-              slug
-            </div>
-            <input styleName="title-input" placeholder="Post"/>
+            <div styleName="field-title">slug</div>
+            <input styleName="title-input"
+                   placeholder="Type slug"
+                   readOnly={!isEditable}
+                   onChange={this.onSlugChange}
+                   value={this.state.slug} />
           </div>
           
           <div styleName="field">
