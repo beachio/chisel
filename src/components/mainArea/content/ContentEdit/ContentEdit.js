@@ -3,6 +3,8 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
+import {FIELD_TYPE_SHORT_TEXT, FIELD_TYPE_LONG_TEXT, FIELD_TYPE_REFERENCE, FIELD_TYPE_REFERENCES,
+  FIELD_TYPE_ASSET, FIELD_TYPE_INTEGER, FIELD_TYPE_FLOAT, FIELD_TYPE_DATE, FIELD_TYPE_BOOLEAN, FIELD_TYPE_JSON} from 'models/ModelData';
 
 import styles from './ContentEdit.sss';
 
@@ -84,12 +86,57 @@ export default class ContentEdit extends Component {
     this.props.updateItem(this.item);
   }
   
+  generateElement(field, value) {
+    let inner;
+    
+    switch (field.type) {
+      case FIELD_TYPE_SHORT_TEXT:
+        inner = (
+          <div styleName="input-wrapper">
+            <input styleName="input" />
+          </div>
+        );
+        break;
+  
+      case FIELD_TYPE_LONG_TEXT:
+        inner = (
+          <textarea styleName="textarea">
+          </textarea>
+        );
+        break;
+    }
+    
+    return (
+      <div styleName="field" key={field.nameId}>
+        <div styleName="field-title">
+          {field.name}
+        </div>
+        {inner}
+      </div>
+    );
+  }
+  
+  generateContent() {
+    let content = [];
+    for (let [field, value] of this.state.fields) {
+      let elm = this.generateElement(field, value);
+      content.push(elm);
+    }
+    return (
+      <div>
+        {content}
+      </div>
+    );
+  }
+  
   render() {
     const {isEditable} = this.props;
   
     let titleStyle = "header-title";
     if (this.state.editTitle)
       titleStyle += " header-title-edit";
+    
+    let content = this.generateContent();
     
     return (
       <div className="g-container" styleName="ContentEdit">
@@ -133,16 +180,7 @@ export default class ContentEdit extends Component {
               </form>
             </div>
           </div>
-
-          <div styleName="field">
-            <div styleName="field-title">
-              body
-              <InlineSVG styleName="link" src={require("./link.svg")} />
-            </div>
-            <textarea styleName="textarea" placeholder="This is a post">
-            </textarea>
-          </div>
-
+          
           <div styleName="field">
             <div styleName="field-title">
               showAuthor
@@ -169,14 +207,7 @@ export default class ContentEdit extends Component {
             </div>
           </div>
 
-          <div styleName="field">
-            <div styleName="field-title">
-              footerComponent
-            </div>
-            <div styleName="input-wrapper">
-              <input styleName="input" placeholder="Footer"/>
-            </div>
-          </div>
+          {content}
         </div>
       </div>
     );
