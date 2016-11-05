@@ -8,7 +8,7 @@ import DropdownControl from 'components/elements/DropdownControl/DropdownControl
 import InputControl from 'components/elements/InputControl/InputControl';
 import {removeSpaces, filterSpecials} from 'utils/common';
 import {checkFieldName} from 'utils/data';
-import {FIELD_TYPES} from 'models/ModelData';
+import {FIELD_TYPES, FIELD_TYPE_SHORT_TEXT} from 'models/ModelData';
 
 import styles from './FieldModal.sss';
 
@@ -114,13 +114,16 @@ export default class FieldModal extends Component {
                                suggestionsList={suggestionsList}
                                suggest={this.onChangeType}
                                current={this.state.type} />
-
-              <div styleName="input-wrapper">
-                <div styleName="label">Entry Title</div>
-                <div styleName="switch">
-                  <SwitchControl checked={this.state.isTitle} onChange={this.onChangeIsTitle} />
-                </div>
-              </div>
+  
+              {
+                this.state.type == FIELD_TYPE_SHORT_TEXT &&
+                  <div styleName="input-wrapper">
+                    <div styleName="label">Entry Title</div>
+                    <div styleName="switch">
+                      <SwitchControl checked={this.state.isTitle} onChange={this.onChangeIsTitle}/>
+                    </div>
+                  </div>
+              }
 
               <div styleName="input-wrapper buttons-wrapper">
                 <div styleName="buttons-inner">
