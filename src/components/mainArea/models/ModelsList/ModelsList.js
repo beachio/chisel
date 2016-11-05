@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
-import {ModelData} from 'models/ModelData';
 import {checkModelName} from 'utils/data';
 
 import styles from './ModelsList.sss';
@@ -65,16 +64,7 @@ export default class ModelsList extends Component {
     }
 
     const {addModel} = this.props;
-
-    let model = new ModelData();
-    model.name = this.state.modelName;
-
-    let red   = Math.floor(Math.random() * 256);
-    let green = Math.floor(Math.random() * 256);
-    let blue  = Math.floor(Math.random() * 256);
-    model.color = `rgba(${red}, ${green}, ${blue}, 1)`;
-
-    addModel(model);
+    addModel(this.state.modelName);
 
     this.setState({modelName: ""});
   };

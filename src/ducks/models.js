@@ -3,6 +3,7 @@ import {Parse} from 'parse';
 import {store} from '../index';
 import {UserData, CollaborationData, ROLE_ADMIN} from 'models/UserData';
 import {SiteData, ModelData, ModelFieldData} from 'models/ModelData';
+import {getRandomColor} from 'utils/common';
 
 
 export const INIT_END           = 'app/models/INIT_END';
@@ -234,11 +235,15 @@ export function addCollaboration(collab) {
   };
 }
 
-export function addModel(model) {
+export function addModel(name) {
+  let model = new ModelData();
+  model.name = name;
+  model.color = getRandomColor();
+  
   let currentSite = store.getState().models.currentSite;
   currentSite.models.push(model);
-
   model.site = currentSite;
+  
   model.setTableName();
   model.updateOrigin();
   model.origin.save();
@@ -265,11 +270,18 @@ export function setCurrentModel(currentModel) {
   };
 }
 
-export function addField(field) {
+export function addField(name) {
+  let field = new ModelFieldData();
+  field.name = name;
+  field.color = getRandomColor();
+  
   let currentModel = store.getState().models.currentModel;
   currentModel.fields.push(field);
-
   field.model = currentModel;
+  
+  if (currentModel.fields.length == 1)
+    field.isTitle = true;
+  
   field.updateOrigin();
   field.origin.save();
   

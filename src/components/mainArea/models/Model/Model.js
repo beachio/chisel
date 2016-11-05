@@ -3,7 +3,6 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import JSONView from '../../../elements/JSONView/JSONView';
 
-import {ModelFieldData} from 'models/ModelData';
 import {checkModelName, checkFieldName, modelToJSON} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
@@ -87,16 +86,7 @@ export default class Model extends Component {
     }
 
     const {addField} = this.props;
-
-    let field = new ModelFieldData();
-    field.name = this.state.fieldName;
-
-    let red   = Math.floor(Math.random() * 256);
-    let green = Math.floor(Math.random() * 256);
-    let blue  = Math.floor(Math.random() * 256);
-    field.color = `rgba(${red}, ${green}, ${blue}, 1)`;
-
-    addField(field);
+    addField(this.state.fieldName);
 
     this.setState({fieldName: ""});
   };
