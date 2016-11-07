@@ -286,7 +286,8 @@ export function addField(name) {
   field.origin.save();
   
   return {
-    type: FIELD_ADD
+    type: FIELD_ADD,
+    field
   };
 }
 
@@ -295,7 +296,8 @@ export function updateField(field) {
   field.origin.save();
   
   return {
-    type: FIELD_UPDATED
+    type: FIELD_UPDATED,
+    field
   };
 }
 
@@ -306,7 +308,8 @@ export function removeField(field) {
   field.origin.destroy();
   
   return {
-    type: FIELD_DELETED
+    type: FIELD_DELETED,
+    field
   };
 }
 

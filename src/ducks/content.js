@@ -3,6 +3,7 @@ import {Parse} from 'parse';
 import {store} from '../index';
 import {ContentItemData} from 'models/ContentData';
 import {getRandomColor} from 'utils/common';
+import {getContentForModel} from 'utils/data';
 
 
 export const INIT_END           = 'app/content/INIT_END';
@@ -84,6 +85,18 @@ export function setCurrentItem(currentItem) {
   };
 }
 
+export function updateModel(model) {
+  return dispatch => {
+    let items = getContentForModel(model);
+    for (let item of items) {
+      item.model = model;
+      dispatch({
+        type: ITEM_UPDATED
+      });
+    }
+  }
+}
+
 const initialState = {
   items: [],
   currentItem: null
@@ -104,6 +117,9 @@ export default function contentReducer(state = initialState, action) {
         ...state,
         items
       };
+      
+    case ITEM_UPDATED:
+      return state;
   
     case SET_CURRENT_ITEM:
       return {

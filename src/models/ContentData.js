@@ -35,6 +35,7 @@ export class ContentItemData {
   set model(model) {
     this._model = model;
     
+    let title = this.title;
     this.fields = new Map();
     for (let field of this.model.fields) {
       this.fields.set(field, null);
@@ -42,6 +43,8 @@ export class ContentItemData {
       if (field.isTitle)
         this._titleField = field;
     }
+    if (title)
+      this.title = title;
   }
   
   get OriginClass() {

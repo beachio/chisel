@@ -89,3 +89,13 @@ export function checkCollaboration(user) {
 export function modelToJSON(model) {
   return JSON.stringify(model, null, 2);
 }
+
+export function getContentForModel(model) {
+  let items = store.getState().content.items;
+  let res = [];
+  for (let item of items) {
+    if (item.model == model)
+      res.push(item);
+  }
+  return res;
+}
