@@ -12,11 +12,11 @@ export default class ContentList extends Component {
     itemTitle: ""
   };
   activeInput = null;
-  
+
   componentWillMount() {
     this.setState({items: this.props.items});
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (!nextProps.alertShowing && this.activeInput)
       this.activeInput.focus();
@@ -24,12 +24,12 @@ export default class ContentList extends Component {
     if (nextProps.items != this.state.items)
       this.setState({itemTitle: ""});
   }
-  
+
   onItemTitleChange = event => {
     let title = event.target.value;
     this.setState({itemTitle: title});
   };
-  
+
   onKeyDown = event => {
     if (this.props.alertShowing)
       return;
@@ -41,83 +41,133 @@ export default class ContentList extends Component {
       this.setState({itemTitle: ""});
     }
   };
-  
+
   onAddItem = event => {
     if (event)
       event.preventDefault();
-    
+
     if (!this.state.itemTitle)
       return;
-    
+
     const {addItem} = this.props;
     addItem(this.state.itemTitle);
     this.setState({itemTitle: ""});
   };
-  
+
   onItemClick = item => {
     const {setCurrentItem} = this.props;
     setCurrentItem(item);
   };
-  
+
   render() {
     const {isEditable} = this.props;
-    
+
+    var eye = (
+      <img styleName="eye" src={require("./eye.png")} />
+    );
+
+    /// вхуячь сюда условие
+    // if ( ) {
+    //   eye = (
+    //     <img styleName="eye eye-gray" src={require("./eye-gray.png")} />
+    //   );
+    // }
+
     return (
       <div className="g-container" styleName="ContentList">
         <div className="g-title">
           Content
         </div>
-        <div>
-          <div styleName="list">
+        <div styleName="content-wrapper">
+          <div styleName="filters">
+            <div styleName="filters-item">
+              <div styleName="filters-title">
+                Content Types
+              </div>
+
+              <div styleName="filters-type">
+                Post
+                { eye }
+              </div>
+
+              <div styleName="filters-type">
+                Page
+                { eye }
+              </div>
+
+              <div styleName="filters-type">
+                Gallery
+                { eye }
+              </div>
+            </div>
+            <div styleName="filters-item">
+              <div styleName="filters-title filters-status">
+                Status
+              </div>
+
+              <div styleName="filters-type">
+                Published
+                { eye }
+              </div>
+
+              <div styleName="filters-type">
+                Draft
+                { eye }
+              </div>
+            </div>
+          </div>
+          <div styleName="content">
+            <div styleName="list">
+              {
+                this.state.items.length > 0 &&
+                  <div styleName="list-item list-header">
+                    <div styleName="colorLabel"></div>
+                    <div styleName="type"></div>
+                    <div styleName="updated">UPDATED</div>
+                  </div>
+              }
+              {
+                this.state.items.map(item => {
+                  let updatedDate = item.origin.updatedAt;
+                  if (!updatedDate)
+                    updatedDate = new Date();
+                  let updatedStr = updatedDate.toLocaleString("en-US",
+                    {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
+
+                  let colorStyle = {background: item.color};
+                  let key = item.origin && item.origin.id ? item.origin.id : Math.random();
+
+                  return(
+                    <div styleName="list-item"
+                         key={key}
+                         onClick={() => this.onItemClick(item)} >
+                      <div styleName="colorLabel" style={colorStyle}></div>
+                      <div styleName="type">
+                        <div styleName="name">{item.title}</div>
+                        <div styleName="description">{item.model.name}</div>
+                      </div>
+                      <div styleName="updated">{updatedStr}</div>
+                    </div>
+                  );
+                })
+              }
+            </div>
             {
-              this.state.items.length > 0 &&
-                <div styleName="list-item list-header">
-                  <div styleName="colorLabel"></div>
-                  <div styleName="type"></div>
-                  <div styleName="updated">UPDATED</div>
+              isEditable &&
+                <div styleName="create-new">
+                  <input styleName="input"
+                         placeholder="Create a new Content Type"
+                         value={this.state.itemTitle}
+                         autoFocus={true}
+                         onChange={this.onItemTitleChange}
+                         onKeyDown={this.onKeyDown}
+                         ref={c => this.activeInput = c} />
+                  <InlineSVG styleName="plus"
+                             src={require("./plus.svg")}
+                             onClick={this.onAddItem} />
                 </div>
             }
-            {
-              this.state.items.map(item => {
-                let updatedDate = item.origin.updatedAt;
-                if (!updatedDate)
-                  updatedDate = new Date();
-                let updatedStr = updatedDate.toLocaleString("en-US",
-                  {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
-      
-                let colorStyle = {background: item.color};
-                let key = item.origin && item.origin.id ? item.origin.id : Math.random();
-      
-                return(
-                  <div styleName="list-item"
-                       key={key}
-                       onClick={() => this.onItemClick(item)} >
-                    <div styleName="colorLabel" style={colorStyle}></div>
-                    <div styleName="type">
-                      <div styleName="name">{item.title}</div>
-                      <div styleName="description">{item.model.name}</div>
-                    </div>
-                    <div styleName="updated">{updatedStr}</div>
-                  </div>
-                );
-              })
-            }
           </div>
-          {
-            isEditable &&
-              <div styleName="create-new">
-                <input styleName="input"
-                       placeholder="Create a new Content Type"
-                       value={this.state.itemTitle}
-                       autoFocus={true}
-                       onChange={this.onItemTitleChange}
-                       onKeyDown={this.onKeyDown}
-                       ref={c => this.activeInput = c} />
-                <InlineSVG styleName="plus"
-                           src={require("./plus.svg")}
-                           onClick={this.onAddItem} />
-              </div>
-          }
         </div>
       </div>
     );

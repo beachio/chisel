@@ -90,33 +90,33 @@ export default class ContentEdit extends Component {
 
     this.props.updateItem(this.item);
   }
-  
+
   onChange_SHORT_TEXT(event, field) {
     let value = event.target.value;
     this.setState({fields: this.state.fields.set(field, value)});
   }
-  
+
   onChange_LONG_TEXT(event, field) {
     let value = event.target.value;
     this.setState({fields: this.state.fields.set(field, value)});
   }
-  
+
   onChange_FLOAT(event, field) {
     let str = event.target.value;
     let value = parseFloat(str);
     this.setState({fields: this.state.fields.set(field, value)});
   }
-  
+
   onChange_INTEGER(event, field) {
     let str = event.target.value;
     let value = parseInt(str);
     this.setState({fields: this.state.fields.set(field, value)});
   }
-  
+
   onChange_BOOLEAN(value, field) {
     this.setState({fields: this.state.fields.set(field, value)});
   }
-  
+
   onChange_IMAGE(event, field) {
     let file = event.target.files[0];
     let parseFile = new Parse.File(field.nameId, file);
@@ -148,7 +148,7 @@ export default class ContentEdit extends Component {
           </div>
         );
         break;
-  
+
       case FIELD_TYPE_LONG_TEXT:
         if (!value)
           value = "";
@@ -159,7 +159,7 @@ export default class ContentEdit extends Component {
                     onChange={e => this.onChange_LONG_TEXT(e, field)} />
         );
         break;
-  
+
       case FIELD_TYPE_FLOAT:
         if (!value)
           value = 0;
@@ -172,7 +172,7 @@ export default class ContentEdit extends Component {
           </div>
         );
         break;
-  
+
       case FIELD_TYPE_INTEGER:
         if (!value)
           value = 0;
@@ -185,7 +185,7 @@ export default class ContentEdit extends Component {
           </div>
         );
         break;
-  
+
       case FIELD_TYPE_BOOLEAN:
         if (!value)
           value = false;
@@ -214,12 +214,12 @@ export default class ContentEdit extends Component {
           </div>
         );
         break;
-  
+
       case FIELD_TYPE_IMAGE:
         let imgStyle = {};
         if (value)
           imgStyle = {backgroundImage: `url(${value.url()})`};
-        
+
         inner = (
           <div styleName="image" style={imgStyle}>
             <div styleName="fileUpload">
@@ -304,7 +304,6 @@ export default class ContentEdit extends Component {
             </div>
           </div>
         </div>
-
         <div styleName="content">
           <div styleName="field">
             <InputControl label="slug"

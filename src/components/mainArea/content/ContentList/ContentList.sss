@@ -90,3 +90,64 @@
       right: 15px
       width: 14px
       height: 14px
+
+  .content-wrapper
+    display: flex
+    flex-flow: row nowrap
+    justify-content: space-between
+
+  .content
+    flex: 0 0 80%
+
+  .filters
+    flex: 0 0 16%
+    padding: 0 0 0 18px
+
+    &-item
+      margin-top: 15px
+      text-align: left
+
+    &-title
+      font-weight: 600
+      font-size: 13px
+      color: #666666
+      letter-spacing: 0.5px
+
+    &-type
+      margin-top: 15px
+
+      font-weight: 300
+      font-size: 13px
+      color: #666666
+      letter-spacing: 0.5px
+
+      display: flex
+      flex-flow: row nowrap
+      justify-content: space-between
+      align-items: center
+
+      cursor: pointer
+
+      transition: color 0.2s ease
+      will-change: color
+
+      &:hover
+        .eye
+          opacity: 1
+
+    &-type.filters-typeHidden
+      color: #CCCCCC
+
+    .eye
+      width: 20px
+      height: 11px
+
+      opacity: 0
+      transition: opacity 0.2s ease
+      will-change: opacity
+
+      &-gray
+        opacity: 1
+
+    &-status
+      margin-top: 27px
