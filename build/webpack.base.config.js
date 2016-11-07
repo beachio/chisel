@@ -12,9 +12,10 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.tpl.html',
-      inject: 'body',
-      filename: 'index.html'
+      template: 'src/index.pug',
+      inject: true,
+      filename: 'index.html',
+      chunksSortMode: 'dependency'
     }),
     new webpack.optimize.OccurenceOrderPlugin()
   ],
@@ -27,6 +28,10 @@ module.exports = {
       {
         test: /\.json?$/,
         loader: 'json'
+      },
+      {
+        test: /\.pug$/,
+        loader: 'pug'
       },
       {
         test: /\.(png|jpe?g|gif)(\?.*)?$/,
