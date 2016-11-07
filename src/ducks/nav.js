@@ -95,7 +95,11 @@ const initialState = {
 export default function navReducer(state = initialState, action) {
   switch (action.type) {
     case OPEN_PAGE:
-      return {...state, openedPage: action.pageType};
+      return {
+        ...state,
+        openedPage: action.pageType,
+        openedContentItem: false,
+        openedModel: false};
   
     case OPEN_MODEL:
       return {...state, openedModel: true};
