@@ -99,14 +99,21 @@ export default function navReducer(state = initialState, action) {
         ...state,
         openedPage: action.pageType,
         openedContentItem: false,
-        openedModel: false};
+        openedModel: false
+      };
   
     case OPEN_MODEL:
       return {...state, openedModel: true};
       
     case CLOSE_MODEL:
-    case SET_CURRENT_SITE:
       return {...state, openedModel: false};
+    
+    case SET_CURRENT_SITE:
+      return {
+        ...state,
+        openedModel: false,
+        openedContentItem: false
+      };
   
     case OPEN_CONTENT_ITEM:
       return {...state, openedContentItem: true};
@@ -121,7 +128,12 @@ export default function navReducer(state = initialState, action) {
       return {...state, alertShowing: false};
 
     case SHOW_MODAL:
-      return {...state, modalShowing: true, modalType: action.modalType, modalParams: action.params};
+      return {
+        ...state,
+        modalShowing: true,
+        modalType: action.modalType,
+        modalParams: action.params
+      };
 
     case CLOSE_MODAL:
       return {...state, modalShowing: false};
