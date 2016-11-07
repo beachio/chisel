@@ -2,6 +2,7 @@ import {Parse} from 'parse';
 
 import {store} from '../index';
 import {ContentItemData} from 'models/ContentData';
+import {FIELD_ADD, FIELD_UPDATED, FIELD_DELETED} from 'ducks/models';
 import {getRandomColor} from 'utils/common';
 import {getContentForModel} from 'utils/data';
 
@@ -85,18 +86,6 @@ export function setCurrentItem(currentItem) {
   };
 }
 
-export function updateModel(model) {
-  return dispatch => {
-    let items = getContentForModel(model);
-    for (let item of items) {
-      item.model = model;
-      dispatch({
-        type: ITEM_UPDATED
-      });
-    }
-  }
-}
-
 const initialState = {
   items: [],
   currentItem: null
@@ -127,6 +116,15 @@ export default function contentReducer(state = initialState, action) {
         currentItem: action.currentItem,
       };
       
+    case FIELD_ADD:
+    case FIELD_UPDATED:
+    case FIELD_DELETED:
+      let model = action.field.model;
+      let modelItems = getContentForModel(model);
+      for (let item of modelItems) {
+        item.model = model;
+      }
+      return state;
     default:
       return state;
   }
