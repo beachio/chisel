@@ -4,6 +4,7 @@ import {store} from '../index';
 import {UserData, CollaborationData, ROLE_ADMIN} from 'models/UserData';
 import {SiteData, ModelData, ModelFieldData} from 'models/ModelData';
 import {getRandomColor} from 'utils/common';
+import {LOGOUT} from './user';
 
 
 export const INIT_END           = 'app/models/INIT_END';
@@ -353,6 +354,15 @@ export default function modelsReducer(state = initialState, action) {
     case FIELD_UPDATED:
     case FIELD_DELETED:
       return state;
+    
+    case LOGOUT:
+      return {
+        ...state,
+        currentModel: null,
+        currentSite: null,
+        isOwner: false,
+        isAdmin: false
+      };
     
     default:
       return state;

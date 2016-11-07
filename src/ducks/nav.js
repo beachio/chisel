@@ -1,5 +1,5 @@
-import {store} from '../index';
 import {SET_CURRENT_SITE} from './models';
+import {LOGOUT} from './user';
 
 
 export const OPEN_PAGE          = 'app/nav/OPEN_PAGE';
@@ -109,6 +109,7 @@ export default function navReducer(state = initialState, action) {
       return {...state, openedModel: false};
     
     case SET_CURRENT_SITE:
+    case LOGOUT:
       return {
         ...state,
         openedModel: false,

@@ -3,6 +3,7 @@ import {Parse} from 'parse';
 import {store} from '../index';
 import {ContentItemData} from 'models/ContentData';
 import {FIELD_ADD, FIELD_UPDATED, FIELD_DELETED} from 'ducks/models';
+import {LOGOUT} from './user';
 import {getRandomColor} from 'utils/common';
 import {getContentForModel} from 'utils/data';
 
@@ -125,6 +126,13 @@ export default function contentReducer(state = initialState, action) {
         item.model = model;
       }
       return state;
+    
+    case LOGOUT:
+      return {
+        ...state,
+        currentItem: null
+      };
+      
     default:
       return state;
   }
