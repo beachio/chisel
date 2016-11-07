@@ -165,8 +165,8 @@ export default class ContentEdit extends Component {
         break;
   
       case FIELD_TYPE_INTEGER:
-        if (value)
-          
+        if (!value)
+          value = 0;
         inner = (
           <div styleName="input-wrapper">
             <input styleName="input"
