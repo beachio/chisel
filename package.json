@@ -70,6 +70,7 @@
     "react": "^15.2.0",
     "react-css-modules": "^3.7.6",
     "react-dom": "^15.2.0",
+    "react-flatpickr": "^1.1.0",
     "react-gravatar": "^2.4.5",
     "react-redux": "^4.4.5",
     "redux": "^3.5.1",

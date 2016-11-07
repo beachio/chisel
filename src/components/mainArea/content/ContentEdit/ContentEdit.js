@@ -3,6 +3,8 @@ import {Parse} from 'parse';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import _ from 'lodash/core';
+import 'flatpickr/dist/flatpickr.material_green.min.css';
+import Flatpickr from 'react-flatpickr';
 
 import InputControl from '../../../elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
@@ -122,6 +124,13 @@ export default class ContentEdit extends Component {
       this.setState({fields: this.state.fields.set(field, parseFile)});
     });
   }
+  
+  onChange_DATE(dateStr, field) {
+    if (dateStr) {
+      let date = new Date(dateStr);
+      this.setState({fields: this.state.fields.set(field, date)});
+    }
+  }
 
   generateElement(field, value) {
     let inner;
@@ -218,6 +227,20 @@ export default class ContentEdit extends Component {
                      type="file"
                      onChange={e => this.onChange_IMAGE(e, field)} />
             </div>
+          </div>
+        );
+        break;
+  
+      case FIELD_TYPE_DATE:
+        if (!value)
+          value = new Date();
+        inner = (
+          <div styleName="input-wrapper">
+            <Flatpickr data-enable-time
+                       value={value}
+                       data-alt-input="true"
+                       data-alt-format="F j, Y h:i K"
+                       onChange={(obj, str, ins) => this.onChange_DATE(str, field)} />
           </div>
         );
         break;
