@@ -7,6 +7,7 @@ export class ContentItemData {
   origin = null;
   
   color = "rgba(0, 0, 0, 1)";
+  published = false;
   fields = new Map();
   
   //setter
@@ -56,8 +57,9 @@ export class ContentItemData {
   setOrigin(origin) {
     this.origin = origin;
     
-    if (origin.get('slug'))   this.slug   = origin.get('slug');
-    if (origin.get('color'))  this.color  = origin.get('color');
+    if (origin.get('__slug'))       this.slug       = origin.get('__slug');
+    if (origin.get('__published'))  this.published  = origin.get('__published');
+    if (origin.get('__color'))      this.color      = origin.get('__color');
     
     for (let field of this.model.fields) {
       let value = origin.get(field.nameId);
@@ -74,12 +76,13 @@ export class ContentItemData {
     if (!this.origin)
       this.origin = new this.OriginClass;
     
-    this.origin.set("slug",   this.slug);
-    this.origin.set("color",  this.color);
+    this.origin.set("__slug",       this.slug);
+    this.origin.set("__published",  this.published);
+    this.origin.set("__color",      this.color);
   
     for (let [field, value] of this.fields) {
-      if (field.nameId == "color" || field.nameId == "slug")
-        continue;
+      //if (field.nameId == "color" || field.nameId == "slug")
+        //continue;
       this.origin.set(field.nameId, value);
     }
     
