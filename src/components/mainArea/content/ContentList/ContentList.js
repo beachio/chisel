@@ -5,11 +5,19 @@ import InlineSVG from 'svg-inline-react';
 import styles from './ContentList.sss';
 
 
+const STATUS_ALL        = "STATUS_ALL";
+const STATUS_DRAFT      = "STATUS_DRAFT";
+const STATUS_PUBLISHED  = "STATUS_PUBLISHED";
+
+
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentList extends Component {
   state = {
     items: [],
-    itemTitle: ""
+    itemTitle: "",
+    
+    activeModel: null,
+    activeStatus: STATUS_ALL
   };
   activeInput = null;
 
@@ -58,21 +66,34 @@ export default class ContentList extends Component {
     const {setCurrentItem} = this.props;
     setCurrentItem(item);
   };
+  
+  onModelClick = (model = null) => {
+    this.setState({activeModel: model});
+  };
+  
+  onStatusClick = status => {
+    this.setState({activeStatus: status});
+  };
+  
+  getModelEye(model = null) {
+    if (model == this.state.activeModel)
+      return <img styleName="eye eye-gray" src={require("./eye-gray.png")} />;
+    return <img styleName="eye"
+                src={require("./eye.png")}
+                onClick={() => this.onModelClick(model)} />;
+  }
+  
+  getStatusEye(status) {
+    if (status == this.state.activeStatus)
+      return <img styleName="eye eye-gray" src={require("./eye-gray.png")} />;
+    return <img styleName="eye"
+                src={require("./eye.png")}
+                onClick={() => this.onStatusClick(status)} />;
+  }
 
   render() {
-    const {isEditable} = this.props;
-
-    var eye = (
-      <img styleName="eye" src={require("./eye.png")} />
-    );
-
-    /// вхуячь сюда условие
-    // if ( ) {
-    //   eye = (
-    //     <img styleName="eye eye-gray" src={require("./eye-gray.png")} />
-    //   );
-    // }
-
+    const {isEditable, models} = this.props;
+  
     return (
       <div className="g-container" styleName="ContentList">
         <div className="g-title">
@@ -84,35 +105,38 @@ export default class ContentList extends Component {
               <div styleName="filters-title">
                 Content Types
               </div>
-
               <div styleName="filters-type">
-                Post
-                { eye }
+                All
+                {this.getModelEye()}
               </div>
-
-              <div styleName="filters-type">
-                Page
-                { eye }
-              </div>
-
-              <div styleName="filters-type">
-                Gallery
-                { eye }
-              </div>
+              {
+                models.map(model => {
+                  let key = model.origin && model.origin.id ? model.origin.id : Math.random();
+                  
+                  return(
+                    <div styleName="filters-type" key={key}>
+                      {model.name}
+                      {this.getModelEye(model)}
+                    </div>
+                  );
+                })
+              }
             </div>
             <div styleName="filters-item">
               <div styleName="filters-title filters-status">
                 Status
               </div>
-
+              <div styleName="filters-type">
+                All
+                {this.getStatusEye(STATUS_ALL)}
+              </div>
               <div styleName="filters-type">
                 Published
-                { eye }
+                {this.getStatusEye(STATUS_PUBLISHED)}
               </div>
-
               <div styleName="filters-type">
                 Draft
-                { eye }
+                {this.getStatusEye(STATUS_DRAFT)}
               </div>
             </div>
           </div>
@@ -128,6 +152,12 @@ export default class ContentList extends Component {
               }
               {
                 this.state.items.map(item => {
+                  if (this.state.activeModel && item.model != this.state.activeModel)
+                    return;
+                  if (this.state.activeStatus != STATUS_ALL &&
+                      (this.state.activeStatus == STATUS_PUBLISHED) != item.published)
+                    return;
+                  
                   let updatedDate = item.origin.updatedAt;
                   if (!updatedDate)
                     updatedDate = new Date();
