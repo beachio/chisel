@@ -5,6 +5,9 @@ import InlineSVG from 'svg-inline-react';
 import _ from 'lodash/core';
 import 'flatpickr/dist/flatpickr.material_green.min.css';
 import Flatpickr from 'react-flatpickr';
+import TimePicker from 'rc-time-picker';
+import 'rc-time-picker/assets/index.css';
+import moment from 'moment';
 
 import InputControl from '../../../elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
@@ -128,8 +131,18 @@ export default class ContentEdit extends Component {
   onChange_DATE(dateStr, field) {
     if (dateStr) {
       let date = new Date(dateStr);
+      let oldDate = this.state.fields.get(field);
+      date.setHours(oldDate.getHours());
+      date.setMinutes(oldDate.getMinutes());
       this.setState({fields: this.state.fields.set(field, date)});
     }
+  }
+  
+  onChange_TIME(time, field) {
+    let date = this.state.fields.get(field);
+    date.setHours(time.hour());
+    date.setMinutes(time.minute());
+    this.setState({fields: this.state.fields.set(field, date)});
   }
 
   generateElement(field, value) {
@@ -232,15 +245,20 @@ export default class ContentEdit extends Component {
         break;
   
       case FIELD_TYPE_DATE:
-        if (!value)
-          value = new Date();
+        let time = moment();
+        if (value) {
+          time.hour(value.getHours());
+          time.minute(value.getMinutes());
+        }
         inner = (
           <div styleName="input-wrapper">
-            <Flatpickr data-enable-time
-                       value={value}
+            <Flatpickr value={value}
                        data-alt-input="true"
-                       data-alt-format="F j, Y h:i K"
+                       data-alt-format="F j, Y"
                        onChange={(obj, str, ins) => this.onChange_DATE(str, field)} />
+            <TimePicker showSecond={false}
+                        value={time}
+                        onChange={e => this.onChange_TIME(e, field)} />
           </div>
         );
         break;
