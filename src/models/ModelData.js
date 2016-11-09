@@ -151,7 +151,7 @@ export const FIELD_TYPE_JSON        = "JSON";
 export const FIELD_TYPES = [FIELD_TYPE_SHORT_TEXT, FIELD_TYPE_LONG_TEXT, FIELD_TYPE_REFERENCE, FIELD_TYPE_REFERENCES,
   FIELD_TYPE_IMAGE, FIELD_TYPE_INTEGER, FIELD_TYPE_FLOAT, FIELD_TYPE_DATE, FIELD_TYPE_BOOLEAN, FIELD_TYPE_JSON];
 
-export const FIELD_NAMES_RESERVED = ['__slug', '__color'];
+export const FIELD_NAMES_RESERVED = ['t__slug', 't__color', 't__published', 't__model'];
 
 
 export class ModelFieldData {

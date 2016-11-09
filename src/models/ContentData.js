@@ -57,9 +57,9 @@ export class ContentItemData {
   setOrigin(origin) {
     this.origin = origin;
     
-    if (origin.get('__slug'))       this.slug       = origin.get('__slug');
-    if (origin.get('__published'))  this.published  = origin.get('__published');
-    if (origin.get('__color'))      this.color      = origin.get('__color');
+    if (origin.get('t__slug'))       this.slug       = origin.get('t__slug');
+    if (origin.get('t__published'))  this.published  = origin.get('t__published');
+    if (origin.get('t__color'))      this.color      = origin.get('t__color');
     
     for (let field of this.model.fields) {
       let value = origin.get(field.nameId);
@@ -76,16 +76,14 @@ export class ContentItemData {
     if (!this.origin)
       this.origin = new this.OriginClass;
     
-    this.origin.set("__slug",       this.slug);
-    this.origin.set("__published",  this.published);
-    this.origin.set("__color",      this.color);
+    this.origin.set("t__slug",       this.slug);
+    this.origin.set("t__published",  this.published);
+    this.origin.set("t__color",      this.color);
   
     for (let [field, value] of this.fields) {
-      //if (field.nameId == "color" || field.nameId == "slug")
-        //continue;
       this.origin.set(field.nameId, value);
     }
     
-    this.origin.set("model",  this.model.origin);
+    this.origin.set("t__model",  this.model.origin);
   }
 }
