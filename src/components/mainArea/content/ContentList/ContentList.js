@@ -78,17 +78,13 @@ export default class ContentList extends Component {
   getModelEye(model = null) {
     if (model == this.state.activeModel)
       return <img styleName="eye eye-gray" src={require("./eye-gray.png")} />;
-    return <img styleName="eye"
-                src={require("./eye.png")}
-                onClick={() => this.onModelClick(model)} />;
+    return <img styleName="eye" src={require("./eye.png")} />;
   }
   
   getStatusEye(status) {
     if (status == this.state.activeStatus)
       return <img styleName="eye eye-gray" src={require("./eye-gray.png")} />;
-    return <img styleName="eye"
-                src={require("./eye.png")}
-                onClick={() => this.onStatusClick(status)} />;
+    return <img styleName="eye" src={require("./eye.png")} />;
   }
 
   render() {
@@ -105,7 +101,7 @@ export default class ContentList extends Component {
               <div styleName="filters-title">
                 Content Types
               </div>
-              <div styleName="filters-type">
+              <div styleName="filters-type" onClick={() => this.onModelClick()}>
                 All
                 {this.getModelEye()}
               </div>
@@ -114,7 +110,7 @@ export default class ContentList extends Component {
                   let key = model.origin && model.origin.id ? model.origin.id : Math.random();
                   
                   return(
-                    <div styleName="filters-type" key={key}>
+                    <div styleName="filters-type" key={key} onClick={() => this.onModelClick(model)}>
                       {model.name}
                       {this.getModelEye(model)}
                     </div>
@@ -126,15 +122,15 @@ export default class ContentList extends Component {
               <div styleName="filters-title filters-status">
                 Status
               </div>
-              <div styleName="filters-type">
+              <div styleName="filters-type" onClick={() => this.onStatusClick(STATUS_ALL)}>
                 All
                 {this.getStatusEye(STATUS_ALL)}
               </div>
-              <div styleName="filters-type">
+              <div styleName="filters-type" onClick={() => this.onStatusClick(STATUS_PUBLISHED)}>
                 Published
                 {this.getStatusEye(STATUS_PUBLISHED)}
               </div>
-              <div styleName="filters-type">
+              <div styleName="filters-type" onClick={() => this.onStatusClick(STATUS_DRAFT)}>
                 Draft
                 {this.getStatusEye(STATUS_DRAFT)}
               </div>
