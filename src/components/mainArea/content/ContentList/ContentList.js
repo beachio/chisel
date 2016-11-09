@@ -16,7 +16,7 @@ export default class ContentList extends Component {
     items: [],
     itemTitle: "",
     
-    activeModel: null,
+    activeModels: new Set(),
     activeStatus: STATUS_ALL
   };
   activeInput = null;
@@ -44,7 +44,7 @@ export default class ContentList extends Component {
     //Enter pressed
     if (event.keyCode == 13) {
       this.onAddItem();
-      //Esc pressed
+    //Esc pressed
     } else if (event.keyCode == 27) {
       this.setState({itemTitle: ""});
     }
@@ -67,28 +67,27 @@ export default class ContentList extends Component {
     setCurrentItem(item);
   };
   
-  onModelClick = (model = null) => {
-    this.setState({activeModel: model});
+  onModelClick = model => {
+    let models = this.state.activeModels;
+    if (models.has(model))
+      models.delete(model);
+    else
+      models.add(model);
+    this.setState({activeModels: models});
   };
   
   onStatusClick = status => {
-    this.setState({activeStatus: status});
+    if (this.state.activeStatus == status)
+      this.setState({activeStatus: STATUS_ALL});
+    else
+      this.setState({activeStatus: status});
   };
-  
-  getModelEye(model = null) {
-    if (model == this.state.activeModel)
-      return <img styleName="eye eye-gray" src={require("./eye-gray.png")} />;
-    return <img styleName="eye" src={require("./eye.png")} />;
-  }
-  
-  getStatusEye(status) {
-    if (status == this.state.activeStatus)
-      return <img styleName="eye eye-gray" src={require("./eye-gray.png")} />;
-    return <img styleName="eye" src={require("./eye.png")} />;
-  }
-
+    
   render() {
     const {isEditable, models} = this.props;
+  
+    let eyeDisabled = <img styleName="eye" src={require("./eye-gray.png")} />;
+    let eyeEnabled = <img styleName="eye eye-active" src={require("./eye.png")} />;
   
     return (
       <div className="g-container" styleName="ContentList">
@@ -101,18 +100,21 @@ export default class ContentList extends Component {
               <div styleName="filters-title">
                 Content Types
               </div>
-              <div styleName="filters-type" onClick={() => this.onModelClick()}>
-                All
-                {this.getModelEye()}
-              </div>
               {
                 models.map(model => {
                   let key = model.origin && model.origin.id ? model.origin.id : Math.random();
                   
+                  let eye = eyeDisabled;
+                  let styleName = "filters-type filters-typeHidden";
+                  if (this.state.activeModels.has(model)) {
+                    eye = eyeEnabled;
+                    styleName = "filters-type";
+                  }
+                  
                   return(
-                    <div styleName="filters-type" key={key} onClick={() => this.onModelClick(model)}>
+                    <div styleName={styleName} key={key} onClick={() => this.onModelClick(model)}>
                       {model.name}
-                      {this.getModelEye(model)}
+                      {eye}
                     </div>
                   );
                 })
@@ -122,17 +124,15 @@ export default class ContentList extends Component {
               <div styleName="filters-title filters-status">
                 Status
               </div>
-              <div styleName="filters-type" onClick={() => this.onStatusClick(STATUS_ALL)}>
-                All
-                {this.getStatusEye(STATUS_ALL)}
-              </div>
-              <div styleName="filters-type" onClick={() => this.onStatusClick(STATUS_PUBLISHED)}>
+              <div styleName={this.state.activeStatus == STATUS_PUBLISHED ? "filters-type" : "filters-type filters-typeHidden"}
+                   onClick={() => this.onStatusClick(STATUS_PUBLISHED)}>
                 Published
-                {this.getStatusEye(STATUS_PUBLISHED)}
+                {this.state.activeStatus == STATUS_PUBLISHED ? eyeEnabled : eyeDisabled}
               </div>
-              <div styleName="filters-type" onClick={() => this.onStatusClick(STATUS_DRAFT)}>
+              <div styleName={this.state.activeStatus == STATUS_DRAFT ? "filters-type" : "filters-type filters-typeHidden"}
+                   onClick={() => this.onStatusClick(STATUS_DRAFT)}>
                 Draft
-                {this.getStatusEye(STATUS_DRAFT)}
+                {this.state.activeStatus == STATUS_DRAFT ? eyeEnabled : eyeDisabled}
               </div>
             </div>
           </div>
@@ -148,7 +148,7 @@ export default class ContentList extends Component {
               }
               {
                 this.state.items.map(item => {
-                  if (this.state.activeModel && item.model != this.state.activeModel)
+                  if (this.state.activeModels.size && !this.state.activeModels.has(item.model))
                     return;
                   if (this.state.activeStatus != STATUS_ALL &&
                       (this.state.activeStatus == STATUS_PUBLISHED) != item.published)
