@@ -9,12 +9,8 @@ export default class ContainerComponent extends Component {
     const { title, children, onClickBack, description, onClickJSON, JSONName } = this.props;
 
     let back;
+    let json;
     let headerStyles = 'header';
-    let json = (
-      <div styleName="json-fields" onClick={onClickJSON}>
-        {JSONName}
-      </div>
-    );
 
     if (description)
       headerStyles = 'header header-description';
@@ -23,6 +19,14 @@ export default class ContainerComponent extends Component {
       back = (
         <div styleName='back' onClick={ onClickBack }>
           Back
+        </div>
+      );
+    }
+
+    if (JSONName || onClickJSON) {
+      json = (
+        <div styleName="json-fields" onClick={onClickJSON}>
+          {JSONName}
         </div>
       );
     }
