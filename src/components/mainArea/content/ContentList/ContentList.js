@@ -2,6 +2,9 @@ import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
+import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
+import {getModelByName} from 'utils/data';
+
 import styles from './ContentList.sss';
 
 
@@ -17,12 +20,17 @@ export default class ContentList extends Component {
     itemTitle: "",
     
     activeModels: new Set(),
-    activeStatus: STATUS_ALL
+    activeStatus: STATUS_ALL,
+    
+    currentModel: null
   };
   activeInput = null;
 
   componentWillMount() {
-    this.setState({items: this.props.items});
+    this.setState({
+      items: this.props.items,
+      currentModel: this.props.models[0]
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,6 +40,11 @@ export default class ContentList extends Component {
     if (nextProps.items != this.state.items)
       this.setState({itemTitle: ""});
   }
+  
+  onChangeModel = name => {
+    let model = getModelByName(name);
+    this.setState({currentModel: model});
+  };
 
   onItemTitleChange = event => {
     let title = event.target.value;
@@ -58,7 +71,7 @@ export default class ContentList extends Component {
       return;
 
     const {addItem} = this.props;
-    addItem(this.state.itemTitle);
+    addItem(this.state.itemTitle, this.state.currentModel);
     this.setState({itemTitle: ""});
   };
 
@@ -181,7 +194,11 @@ export default class ContentList extends Component {
             {
               isEditable &&
                 <div styleName="create-new">
-                  <input styleName="input"
+                  <DropdownControl styleName="input inputModel"
+                                   suggestionsList={models.map(m => m.name)}
+                                   suggest={this.onChangeModel}
+                                   current={this.state.currentModel.name} />
+                  <input styleName="input inputName"
                          placeholder="Create a new Content Type"
                          value={this.state.itemTitle}
                          autoFocus={true}

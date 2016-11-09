@@ -53,11 +53,14 @@ export function init() {
   };
 }
 
-export function addItem(title) {
+export function addItem(title, model = null) {
   let item = new ContentItemData();
   
   let models = store.getState().models.currentSite.models;
-  item.model = models[0];
+  if (model)
+    item.model = model;
+  else
+    item.model = models[0];
   
   item.title = title;
   item.color = getRandomColor();

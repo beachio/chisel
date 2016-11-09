@@ -131,3 +131,15 @@ export function getContentForModel(model) {
   }
   return res;
 }
+
+export function getModelByName(name) {
+  let site = store.getState().models.currentSite;
+  if (!site)
+    return;
+  let models = site.models;
+  for (let model of models) {
+    if (model.name == name)
+      return model;
+  }
+  return null;
+}
