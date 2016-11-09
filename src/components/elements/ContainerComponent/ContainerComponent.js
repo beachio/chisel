@@ -6,10 +6,15 @@ import styles from './ContainerComponent.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class ContainerComponent extends Component {
   render() {
-    const { title, children, onClickBack, description } = this.props;
+    const { title, children, onClickBack, description, onClickJSON, JSONName } = this.props;
 
     let back;
     let headerStyles = 'header';
+    let json = (
+      <div styleName="json-fields" onClick={onClickJSON}>
+        {JSONName}
+      </div>
+    );
 
     if (description)
       headerStyles = 'header header-description';
@@ -34,6 +39,8 @@ export default class ContainerComponent extends Component {
               { description }
             </div>
           </div>
+
+          { json }
         </div>
         <div styleName='content'>
           { children }

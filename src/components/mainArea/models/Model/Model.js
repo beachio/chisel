@@ -3,6 +3,8 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import JSONView from '../../../elements/JSONView/JSONView';
 
+import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
+
 import {checkModelName, checkFieldName, getAlertForNameError, modelToJSON} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
@@ -144,7 +146,7 @@ export default class Model extends Component {
 
   onEditClickDescription = () => {
     this.setState({editDescription: true});
-    this.refs.description.focus(); 
+    this.refs.description.focus();
   };
 
   onDescriptionChange = event => {
@@ -278,10 +280,14 @@ export default class Model extends Component {
     let descriptionStyle = "header-description";
     if (this.state.editDescription)
       descriptionStyle += " header-description-edit";
-
     return (
-      <div className="g-container" styleName="models">
-        <div styleName="header">
+      <ContainerComponent title={this.state.name}
+                          description={this.state.description}
+                          onClickBack={onClose}
+                          onClickJSON={this.onJSONClick}
+                          JSONName={this.state.jsonVisibility ? 'Fields' : 'JSON'}>
+
+        {/* <div styleName="header">
           <div styleName="back" onClick={onClose}>Back</div>
           <div styleName="header-wrapper">
             <input size={this.state.nameInputWidth}
@@ -316,9 +322,9 @@ export default class Model extends Component {
           <div styleName="json-fields" onClick={this.onJSONClick}>
             {this.state.jsonVisibility ? 'Fields' : 'JSON'}
           </div>
-        </div>
+        </div> */}
         {content}
-      </div>
+      </ContainerComponent>
     );
   }
 }
