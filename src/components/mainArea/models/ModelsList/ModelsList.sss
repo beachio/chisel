@@ -1,97 +1,96 @@
-.models
-  padding-bottom: 65px
+.content
+  padding: 0 10%
   text-align: center
 
-  .list
+.list
+  display: flex
+  flex-flow: column nowrap
+  width: 100%
+  margin: 0 auto
+
+  &-item
     display: flex
-    flex-flow: column nowrap
-    width: 80%
-    margin: 0 auto
-    margin-top: 22px
-
-    &-item
-      display: flex
-      flex-flow: row nowrap
-      align-items: center
-      position: relative
-      cursor: pointer
-
-      margin-top: 3px
-      margin-bottom: 3px
-      padding: 5px
-
-      .colorLabel
-        margin-right: 10px
-        height: 20px
-        width: 20px
-        border-radius: 100%
-        position: absolute
-        left: -25px
-        top: 50%
-        transform: translateY(-50%)
-
-      .type
-        position: relative
-        flex: 0 0 70%
-
-      .name,
-      .description,
-      .fields,
-      .updated
-        font-size: 13px
-        color: #666666
-        letter-spacing: 0.5px
-        text-align: left
-
-      .name
-        font-weight: 600
-
-      .description
-        letter-spacing: 0.46px
-
-      .fields,
-      .updated
-        flex: 0 0 15%
-
-
-    &-header
-      margin-bottom: 5px
-
-      &:hover
-        background: initial
-
-      .colorLabel
-        visibility: hidden
-
-      .fields,
-      .updated
-        color: #999999
-
-
-  .create-new
-    width: 80%
+    flex-flow: row nowrap
+    align-items: center
     position: relative
-    margin: 0 auto
-    margin-top: 9px
+    cursor: pointer
 
-    .input
-      background: #FFFFFF
-      border: 1px solid #CCCCCC
-      box-shadow: inset 0px 1px 2px 0px rgba(0,0,0,0.10)
-      border-radius: 2px
-      line-height: 34px
-      width: 100%
-      padding: 0 40px 0 9px
-      outline: none
+    margin-top: 3px
+    margin-bottom: 3px
+    padding: 5px
 
-      font-size: 13px
-      color: #333333
-      letter-spacing: 0.5px
-
-    .plus
+    .colorLabel
+      margin-right: 10px
+      height: 20px
+      width: 20px
+      border-radius: 100%
       position: absolute
+      left: -25px
       top: 50%
       transform: translateY(-50%)
-      right: 15px
-      width: 14px
-      height: 14px
+
+    .type
+      position: relative
+      flex: 0 0 70%
+
+    .name,
+    .description,
+    .fields,
+    .updated
+      font-size: 13px
+      color: #666666
+      letter-spacing: 0.5px
+      text-align: left
+
+    .name
+      font-weight: 600
+
+    .description
+      letter-spacing: 0.46px
+
+    .fields,
+    .updated
+      flex: 0 0 15%
+
+
+  &-header
+    margin-bottom: 5px
+
+    &:hover
+      background: initial
+
+    .colorLabel
+      visibility: hidden
+
+    .fields,
+    .updated
+      color: #999999
+
+
+.create-new
+  width: 100%
+  position: relative
+  margin: 0 auto
+  margin-top: 9px
+
+  .input
+    background: #FFFFFF
+    border: 1px solid #CCCCCC
+    box-shadow: inset 0px 1px 2px 0px rgba(0,0,0,0.10)
+    border-radius: 2px
+    line-height: 34px
+    width: 100%
+    padding: 0 40px 0 9px
+    outline: none
+
+    font-size: 13px
+    color: #333333
+    letter-spacing: 0.5px
+
+  .plus
+    position: absolute
+    top: 50%
+    transform: translateY(-50%)
+    right: 15px
+    width: 14px
+    height: 14px

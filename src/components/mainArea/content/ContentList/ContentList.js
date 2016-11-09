@@ -7,6 +7,7 @@ import {getModelByName} from 'utils/data';
 
 import styles from './ContentList.sss';
 
+import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 
 const STATUS_ALL        = "STATUS_ALL";
 const STATUS_DRAFT      = "STATUS_DRAFT";
@@ -18,7 +19,7 @@ export default class ContentList extends Component {
   state = {
     items: [],
     itemTitle: "",
-    
+
     activeModels: new Set(),
     activeStatus: STATUS_ALL,
     
@@ -79,7 +80,7 @@ export default class ContentList extends Component {
     const {setCurrentItem} = this.props;
     setCurrentItem(item);
   };
-  
+
   onModelClick = model => {
     let models = this.state.activeModels;
     if (models.has(model))
@@ -88,25 +89,22 @@ export default class ContentList extends Component {
       models.add(model);
     this.setState({activeModels: models});
   };
-  
+
   onStatusClick = status => {
     if (this.state.activeStatus == status)
       this.setState({activeStatus: STATUS_ALL});
     else
       this.setState({activeStatus: status});
   };
-    
+
   render() {
     const {isEditable, models} = this.props;
-  
+
     let eyeDisabled = <img styleName="eye" src={require("./eye-gray.png")} />;
     let eyeEnabled = <img styleName="eye eye-active" src={require("./eye.png")} />;
-  
+
     return (
-      <div className="g-container" styleName="ContentList">
-        <div className="g-title">
-          Content
-        </div>
+      <ContainerComponent title="Content">
         <div styleName="content-wrapper">
           <div styleName="filters">
             <div styleName="filters-item">
@@ -116,14 +114,14 @@ export default class ContentList extends Component {
               {
                 models.map(model => {
                   let key = model.origin && model.origin.id ? model.origin.id : Math.random();
-                  
+
                   let eye = eyeDisabled;
                   let styleName = "filters-type filters-typeHidden";
                   if (this.state.activeModels.has(model)) {
                     eye = eyeEnabled;
                     styleName = "filters-type";
                   }
-                  
+
                   return(
                     <div styleName={styleName} key={key} onClick={() => this.onModelClick(model)}>
                       {model.name}
@@ -149,7 +147,7 @@ export default class ContentList extends Component {
               </div>
             </div>
           </div>
-          <div styleName="content">
+          <div styleName="list-wrapper">
             <div styleName="list">
               {
                 this.state.items.length > 0 &&
@@ -166,7 +164,7 @@ export default class ContentList extends Component {
                   if (this.state.activeStatus != STATUS_ALL &&
                       (this.state.activeStatus == STATUS_PUBLISHED) != item.published)
                     return;
-                  
+
                   let updatedDate = item.origin.updatedAt;
                   if (!updatedDate)
                     updatedDate = new Date();
@@ -212,7 +210,7 @@ export default class ContentList extends Component {
             }
           </div>
         </div>
-      </div>
+      </ContainerComponent>
     );
   }
 }

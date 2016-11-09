@@ -3,6 +3,7 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
 import {checkModelName, getAlertForNameError} from 'utils/data';
+import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 
 import styles from './ModelsList.sss';
 
@@ -74,11 +75,8 @@ export default class ModelsList extends Component {
     const {isEditable} = this.props;
 
     return (
-      <div className="g-container" styleName="models">
-        <div className="g-title">
-          Models
-        </div>
-        <div>
+      <ContainerComponent title='Models'>
+        <div styleName="content">
           <div styleName="list">
             {
               this.state.models.length > 0 &&
@@ -132,7 +130,7 @@ export default class ModelsList extends Component {
               </div>
           }
         </div>
-      </div>
+      </ContainerComponent>
     );
   }
 }
