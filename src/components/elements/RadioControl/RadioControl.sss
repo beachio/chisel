@@ -1,0 +1,41 @@
+.RadioControl
+  display: flex
+  flex-flow: row nowrap
+  align-items: center
+
+.radio
+  display: none
+
+  &-button
+    margin-right: 26px
+
+  &-label
+    cursor: pointer
+    position: relative
+    padding-left: 30px
+
+    font-weight: 600
+    font-size: 13px
+    color: #CCCCCC
+    letter-spacing: 0.5px
+
+  &-label:before
+    content: ''
+    position: absolute
+    left: 0
+    top: 50%
+    transform: translateY(-50%)
+    height: 20px
+    width: 20px
+    border-radius: 50%
+    background: #fff
+    border: 1px solid #979797
+
+  &:checked + &-label:before
+    height: 12px
+    width: 12px
+    border: 5px solid #5CA6DC
+
+  & + &-label:before,
+  &:checked + &-label:before
+    transition: background 0.1s ease
