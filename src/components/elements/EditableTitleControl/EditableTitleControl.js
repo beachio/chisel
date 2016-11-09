@@ -4,6 +4,8 @@ import CSSModules from 'react-css-modules';
 import styles from './EditableTitleControl.sss';
 
 
+const MIN_WIDTH = 10;
+
 @CSSModules(styles, {allowMultiple: true})
 export default class EditableTitleControl extends Component {
   state = {
@@ -12,32 +14,37 @@ export default class EditableTitleControl extends Component {
     width: 0
   };
   
-  componentWillMount() {
-    this.setState({text: this.props.text});
+  
+  setText(text) {
+    let width = text.length;
+    if (!width)
+      width = this.props.placeholder ? this.props.placeholder.length : MIN_WIDTH;
+    if (width < MIN_WIDTH)
+      width = MIN_WIDTH;
+    width *= 1.1;
+  
+    this.setState({text, width});
   }
   
-  componentDidMount() {
-    this.setState({width: this.refs.input.value.length});
+  componentWillMount() {
+    this.setText(this.props.text);
   }
   
   componentWillReceiveProps(nextProps) {
-    this.setState({text: nextProps.text});
+    this.setText(nextProps.text);
   }
-  
+    
   onEditClick = () => {
     this.setState({editing: true});
     this.refs.input.focus();
   };
   
   onChange = event => {
-    let text = event.target.value;
-    this.setState({
-      text,
-      width: event.target.value.length
-    });
+    this.setText(event.target.value);
   };
   
   onBlur = () => {
+    this.setState({editing: false});
     this.props.cancel();
   };
   
