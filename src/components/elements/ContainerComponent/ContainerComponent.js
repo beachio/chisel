@@ -23,7 +23,7 @@ export default class ContainerComponent extends Component {
       );
     }
 
-    if (JSONName || onClickJSON) {
+    if (JSONName && onClickJSON) {
       json = (
         <div styleName="json-fields" onClick={onClickJSON}>
           {JSONName}
