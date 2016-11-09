@@ -3,6 +3,7 @@ import {Parse} from 'parse';
 import {store} from '../index';
 import {UserData} from 'models/UserData';
 import {removeSpaces, filterSpecials} from 'utils/common';
+import {FIELD_NAMES_RESERVED} from 'models/ModelData';
 
 
 export function checkSiteName(name) {
@@ -21,9 +22,14 @@ export function checkSiteName(name) {
   return true;
 }
 
+export const NAME_CORRECT             = 0;
+export const NAME_ERROR_NAME_EXIST    = 1;
+export const NAME_ERROR_NAME_RESERVED = 2;
+export const NAME_ERROR_OTHER         = 3;
+
 export function checkModelName(name) {
   if (!name || !store.getState().models.currentSite)
-    return false;
+    return NAME_ERROR_OTHER;
 
   name = removeSpaces(name);
   let nameId = filterSpecials(name);
@@ -31,26 +37,52 @@ export function checkModelName(name) {
   let models = store.getState().models.currentSite.models;
   for (let model of models) {
     if (model.name == name || model.nameId == nameId)
-      return false;
+      return NAME_ERROR_NAME_EXIST;
   }
   
-  return true;
+  return NAME_CORRECT;
 }
 
 export function checkFieldName(name) {
   if (!name || !store.getState().models.currentModel)
-    return false;
+    return NAME_ERROR_OTHER;
   
   name = removeSpaces(name);
   let nameId = filterSpecials(name);
   
+  //name reserved
+  for (let resName of FIELD_NAMES_RESERVED) {
+    if (resName == name || resName == nameId)
+      return NAME_ERROR_NAME_RESERVED;
+  }
+  
+  //name already exists
   let fields = store.getState().models.currentModel.fields;
   for (let field of fields) {
     if (field.name == name || field.nameId == nameId)
-      return false;
+      return NAME_ERROR_NAME_EXIST;
   }
   
-  return true;
+  return NAME_CORRECT;
+}
+
+export function getAlertForNameError(error) {
+  switch (error) {
+    case NAME_ERROR_NAME_EXIST: return {
+      title: "Warning",
+      description: "This name is already using. Please, select another one."
+    };
+  
+    case NAME_ERROR_NAME_RESERVED: return {
+      title: "Warning",
+      description: "This name is reserved. Please, select another one."
+    };
+  
+    default: return {
+      title: "Error",
+      description: "Unknown error."
+    };
+  }
 }
 
 export function getUser(email) {

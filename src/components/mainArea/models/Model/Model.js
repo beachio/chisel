@@ -3,7 +3,7 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import JSONView from '../../../elements/JSONView/JSONView';
 
-import {checkModelName, checkFieldName, modelToJSON} from 'utils/data';
+import {checkModelName, checkFieldName, getAlertForNameError, modelToJSON} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
 
@@ -75,13 +75,10 @@ export default class Model extends Component {
     if (!this.state.fieldName)
       return;
 
-    if (!checkFieldName(this.state.fieldName)) {
+    let error = checkFieldName(this.state.fieldName);
+    if (error) {
       const {showAlert} = this.props;
-      let params = {
-        title: "Warning",
-        description: "This name is already using. Please, select another one."
-      };
-      showAlert(params);
+      showAlert(getAlertForNameError(error));
       return;
     }
 
@@ -179,7 +176,8 @@ export default class Model extends Component {
     if ((this.state.editName && this.state.name != this.model.name) ||
         (this.state.editDescription && this.state.description != this.model.description)) {
       if (this.state.editName) {
-        if (checkModelName(this.state.name)) {
+        let error = checkModelName(this.state.name);
+        if (!error) {
           this.model.name = this.state.name;
           this.props.updateModel(this.model);
           this.endEdit();
@@ -188,11 +186,7 @@ export default class Model extends Component {
             this.endEdit();
           } else {
             const {showAlert} = this.props;
-            let params = {
-              title: "Warning",
-              description: "This name is already using. Please, select another one."
-            };
-            showAlert(params);
+            showAlert(getAlertForNameError(error));
           }
         }
       } else {

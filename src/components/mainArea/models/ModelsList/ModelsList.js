@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
-import {checkModelName} from 'utils/data';
+import {checkModelName, getAlertForNameError} from 'utils/data';
 
 import styles from './ModelsList.sss';
 
@@ -52,14 +52,10 @@ export default class ModelsList extends Component {
     if (!this.state.modelName)
       return;
 
-    if (!checkModelName(this.state.modelName)) {
+    let error = checkModelName(this.state.modelName);
+    if (error) {
       const {showAlert} = this.props;
-      let params = {
-        title: "Warning",
-        description: "This name is already using. Please, select another one.",
-        buttonText: "OK"
-      };
-      showAlert(params);
+      showAlert(getAlertForNameError(error));
       return;
     }
 

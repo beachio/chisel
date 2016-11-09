@@ -7,13 +7,11 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import InputControl from 'components/elements/InputControl/InputControl';
 import {removeSpaces, filterSpecials} from 'utils/common';
-import {checkFieldName} from 'utils/data';
+import {checkFieldName, NAME_ERROR_NAME_EXIST, NAME_ERROR_NAME_RESERVED} from 'utils/data';
 import {FIELD_TYPES, FIELD_TYPE_SHORT_TEXT} from 'models/ModelData';
 
 import styles from './FieldModal.sss';
 
-
-const ERROR_TYPE_SAME_NAME = "ERROR_TYPE_SAME_NAME";
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -63,9 +61,12 @@ export default class FieldModal extends Component {
       return;
     }
 
-    if (this.field.name != this.state.name && !checkFieldName(this.state.name)) {
-      this.setState({error: ERROR_TYPE_SAME_NAME});
-      return;
+    if (this.field.name != this.state.name) {
+      let error = checkFieldName(this.state.name);
+      if (error) {
+        this.setState({error});
+        return;
+      }
     }
 
     this.field.name     = this.state.name;
@@ -97,8 +98,12 @@ export default class FieldModal extends Component {
               </div>
 
               {
-                this.state.error == ERROR_TYPE_SAME_NAME &&
+                this.state.error == NAME_ERROR_NAME_EXIST &&
                   <div styleName="error-same-name">This name is already in use.</div>
+              }
+              {
+                this.state.error == NAME_ERROR_NAME_RESERVED &&
+                  <div styleName="error-same-name">This name is reserved.</div>
               }
 
               <div styleName="input-wrapper">
