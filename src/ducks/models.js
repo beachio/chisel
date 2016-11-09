@@ -2,7 +2,7 @@ import {Parse} from 'parse';
 
 import {store} from '../index';
 import {UserData, CollaborationData, ROLE_ADMIN} from 'models/UserData';
-import {SiteData, ModelData, ModelFieldData} from 'models/ModelData';
+import {SiteData, ModelData, ModelFieldData, FIELD_TYPE_SHORT_TEXT} from 'models/ModelData';
 import {getRandomColor} from 'utils/common';
 import {LOGOUT} from './user';
 
@@ -271,6 +271,12 @@ export function setCurrentModel(currentModel) {
   };
 }
 
+function changeTitleField(field, value = true) {
+  field.isTitle = value;
+  field.updateOrigin();
+  field.origin.save();
+}
+
 export function addField(name) {
   let field = new ModelFieldData();
   field.name = name;
@@ -280,11 +286,11 @@ export function addField(name) {
   currentModel.fields.push(field);
   field.model = currentModel;
   
-  if (currentModel.fields.length == 1)
-    field.isTitle = true;
-  
   field.updateOrigin();
   field.origin.save();
+  
+  if (!currentModel.hasTitle() && field.type == FIELD_TYPE_SHORT_TEXT)
+    changeTitleField(field);
   
   return {
     type: FIELD_ADD,
@@ -295,6 +301,33 @@ export function addField(name) {
 export function updateField(field) {
   field.updateOrigin();
   field.origin.save();
+  
+  if (field.isTitle) {
+    //if current field is title, remove other titles
+    if (field.type == FIELD_TYPE_SHORT_TEXT) {
+      for (let tempField of field.model.fields) {
+        if (tempField != field && tempField.isTitle)
+          changeTitleField(tempField, false);
+      }
+    } else {
+      changeTitleField(field, false);
+    }
+  }
+  
+  if (!field.model.hasTitle()) {
+    let titleSet = false;
+    //first we check other fields to make title
+    for (let tempField of field.model.fields) {
+      if (tempField != field && tempField.type == FIELD_TYPE_SHORT_TEXT) {
+        changeTitleField(tempField);
+        titleSet = true;
+        break;
+      }
+    }
+    //if we can't, we try to make title current field
+    if (!titleSet && field.type == FIELD_TYPE_SHORT_TEXT)
+      changeTitleField(field);
+  }
   
   return {
     type: FIELD_UPDATED,
@@ -307,6 +340,15 @@ export function removeField(field) {
   fields.splice(fields.indexOf(field), 1);
   
   field.origin.destroy();
+  
+  if (!field.model.hasTitle()) {
+    for (let tempField of field.model.fields) {
+      if (tempField.type == FIELD_TYPE_SHORT_TEXT) {
+        changeTitleField(tempField);
+        break;
+      }
+    }
+  }
   
   return {
     type: FIELD_DELETED,
