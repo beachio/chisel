@@ -1,67 +1,66 @@
-.ContentList
-  padding-bottom: 65px
-  text-align: center
+.content-wrapper
+  width: 100%
+  display: flex
+  flex-flow: row nowrap
+  justify-content: space-between
 
-  .list
+.list-wrapper
+  flex: 0 0 80%
+
+.list
+  display: flex
+  flex-flow: column nowrap
+  width: 80%
+  margin: 0 auto
+
+  &-item
     display: flex
-    flex-flow: column nowrap
-    width: 80%
-    margin: 0 auto
-    margin-top: 22px
+    flex-flow: row nowrap
+    align-items: center
+    position: relative
+    cursor: pointer
 
-    &-item
-      display: flex
-      flex-flow: row nowrap
-      align-items: center
+    margin-top: 3px
+    margin-bottom: 3px
+    padding: 5px
+
+    &:first-child
+      margin-top: 0
+      padding-top: 0
+
+    .colorLabel
+      margin-right: 10px
+      height: 20px
+      width: 20px
+      border-radius: 100%
+      position: absolute
+      left: -25px
+      top: 50%
+      transform: translateY(-50%)
+
+    .type
       position: relative
-      cursor: pointer
+      flex: 0 0 85%
 
-      margin-top: 3px
-      margin-bottom: 3px
-      padding: 5px
+    .name,
+    .description,
+    .updated
+      font-size: 13px
+      color: #666666
+      letter-spacing: 0.5px
+      text-align: left
 
-      .colorLabel
-        margin-right: 10px
-        height: 20px
-        width: 20px
-        border-radius: 100%
-        position: absolute
-        left: -25px
-        top: 50%
-        transform: translateY(-50%)
+    .name
+      font-weight: 600
 
-      .type
-        position: relative
-        flex: 0 0 85%
+    .description
+      letter-spacing: 0.46px
 
-      .name,
-      .description,
-      .updated
-        font-size: 13px
-        color: #666666
-        letter-spacing: 0.5px
-        text-align: left
-
-      .name
-        font-weight: 600
-
-      .description
-        letter-spacing: 0.46px
-
-      .updated
-        flex: 0 0 15%
+    .updated
+      flex: 0 0 15%
 
 
-    &-header
-      margin-bottom: 5px
-
-      .colorLabel
-        visibility: hidden
-
-      .fields,
-      .updated
-        color: #999999
-
+  &-header
 
   .create-new
     width: 80%
@@ -79,9 +78,9 @@
       padding: 0 40px 0 9px
       outline: none
 
-      font-size: 13px
+    .fields,
+    .updated
       color: #999999
-      letter-spacing: 0.5px
 
     .inputModel
       width: 30%
@@ -97,63 +96,86 @@
       width: 14px
       height: 14px
 
-  .content-wrapper
+
+.create-new
+  width: 80%
+  position: relative
+  margin: 0 auto
+  margin-top: 9px
+
+  .input
+    background: #FFFFFF
+    border: 1px solid #CCCCCC
+    box-shadow: inset 0px 1px 2px 0px rgba(0,0,0,0.10)
+    border-radius: 2px
+    line-height: 34px
+    width: 100%
+    padding: 0 40px 0 9px
+    outline: none
+
+    font-size: 13px
+    color: #999999
+    letter-spacing: 0.5px
+
+  .plus
+    position: absolute
+    top: 50%
+    transform: translateY(-50%)
+    right: 15px
+    width: 14px
+    height: 14px
+
+.filters
+  flex: 0 0 16%
+  padding: 0 0 0 18px
+
+  &-item
+    margin-top: 15px
+    text-align: left
+
+    &:first-child
+      margin-top: 0
+
+  &-title
+    font-weight: 600
+    font-size: 13px
+    color: #666666
+    letter-spacing: 0.5px
+
+  &-type
+    margin-top: 15px
+
+    font-weight: 300
+    font-size: 13px
+    color: #666666
+    letter-spacing: 0.5px
+
     display: flex
     flex-flow: row nowrap
     justify-content: space-between
+    align-items: center
 
-  .content
-    flex: 0 0 80%
+    cursor: pointer
 
-  .filters
-    flex: 0 0 16%
-    padding: 0 0 0 18px
+    transition: color 0.2s ease
+    will-change: color
 
-    &-item
-      margin-top: 15px
-      text-align: left
-
-    &-title
-      font-weight: 600
-      font-size: 13px
-      color: #666666
-      letter-spacing: 0.5px
-
-    &-type
-      margin-top: 15px
-
-      font-weight: 300
-      font-size: 13px
-      color: #666666
-      letter-spacing: 0.5px
-
-      display: flex
-      flex-flow: row nowrap
-      justify-content: space-between
-      align-items: center
-
-      cursor: pointer
-
-      transition: color 0.2s ease
-      will-change: color
-
-      &:hover
-        .eye
-          opacity: 1
-
-    &-type.filters-typeHidden
-      color: #CCCCCC
-
-    .eye
-      width: 20px
-      height: 11px
-
-      opacity: 0
-      transition: opacity 0.2s ease
-      will-change: opacity
-
-      &-active
+    &:hover
+      .eye
         opacity: 1
 
-    &-status
-      margin-top: 27px
+  &-type.filters-typeHidden
+    color: #a7a7a7
+
+  .eye
+    width: 20px
+    height: 11px
+    opacity: 0
+    transition: opacity 0.2s ease
+    will-change: opacity
+
+    &-active
+      opacity: 1
+
+  &-status
+    margin-top: 27px

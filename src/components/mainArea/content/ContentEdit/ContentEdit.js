@@ -11,6 +11,7 @@ import moment from 'moment';
 
 import InputControl from '../../../elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
+
 import {FIELD_TYPE_SHORT_TEXT, FIELD_TYPE_LONG_TEXT, FIELD_TYPE_REFERENCE, FIELD_TYPE_REFERENCES,
   FIELD_TYPE_IMAGE, FIELD_TYPE_INTEGER, FIELD_TYPE_FLOAT, FIELD_TYPE_DATE, FIELD_TYPE_BOOLEAN, FIELD_TYPE_JSON} from 'models/ModelData';
 
@@ -127,7 +128,7 @@ export default class ContentEdit extends Component {
       this.setState({fields: this.state.fields.set(field, parseFile)});
     });
   }
-  
+
   onChange_DATE(dateStr, field) {
     if (dateStr) {
       let date = new Date(dateStr);
@@ -137,7 +138,7 @@ export default class ContentEdit extends Component {
       this.setState({fields: this.state.fields.set(field, date)});
     }
   }
-  
+
   onChange_TIME(time, field) {
     let date = this.state.fields.get(field);
     date.setHours(time.hour());
@@ -243,7 +244,7 @@ export default class ContentEdit extends Component {
           </div>
         );
         break;
-  
+
       case FIELD_TYPE_DATE:
         let time = moment();
         if (value) {
@@ -298,7 +299,6 @@ export default class ContentEdit extends Component {
 
     return (
       <div className="g-container" styleName="ContentEdit">
-
         <div styleName="header">
           <div styleName="back" onClick={this.onClose}>Back</div>
           <div styleName="header-wrapper">
