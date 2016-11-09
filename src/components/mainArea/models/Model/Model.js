@@ -4,7 +4,7 @@ import InlineSVG from 'svg-inline-react';
 import JSONView from '../../../elements/JSONView/JSONView';
 
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
-
+import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
 import {checkModelName, checkFieldName, getAlertForNameError, modelToJSON} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
@@ -17,40 +17,20 @@ export default class Model extends Component {
   state = {
     fields: [],
     fieldName: "",
-    jsonVisibility: false,
-
-    name: "",
-    editName: false,
-    description: "",
-    editDescription: false,
-    nameInputWidth: 0,
-    descriptionInputWidth: 0
+    jsonVisibility: false
   };
-
   model = null;
   activeInput = null;
 
-
   componentWillMount() {
     this.model = this.props.model;
-    this.setState({
-      name: this.model.name,
-      description: this.model.description,
-      fields: this.props.model.fields
-    });
+    this.setState({fields: this.props.model.fields});
   }
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.alertShowing && this.activeInput)
       this.activeInput.focus();
     this.setState({fields: nextProps.model.fields});
-  }
-
-  componentDidMount() {
-    this.setState({
-      nameInputWidth: this.refs.name.value.length,
-      descriptionInputWidth: this.refs.description.value.length
-    })
   }
 
   onFieldNameChange = event => {
@@ -113,106 +93,41 @@ export default class Model extends Component {
       jsonVisibility: !this.state.jsonVisibility
     });
   };
-
-  onEditClickName = () => {
-    this.setState({editName: true});
-    this.refs.name.focus();
-  };
-
-  onNameChange = event => {
-    let name = event.target.value;
-    this.setState({
-      name,
-      nameInputWidth: event.target.value.length
-    });
-  };
-
-  onNameBlur = () => {
-    this.updateModel(true);
-  };
-
-  onNameKeyDown = event => {
-    if (this.props.alertShowing)
-      return;
-
-    //Enter pressed
-    if (event.keyCode == 13) {
-      this.updateModel();
-      //Esc pressed
-    } else if (event.keyCode == 27) {
-      this.endEdit();
-    }
-  };
-
-  onEditClickDescription = () => {
-    this.setState({editDescription: true});
-    this.refs.description.focus();
-  };
-
-  onDescriptionChange = event => {
-    let description = event.target.value;
-    this.setState({
-      description,
-      descriptionInputWidth: event.target.value.length
-    });
-  };
-
-  onDescriptionBlur = () => {
-    this.updateModel(true);
-  };
-
-  onDescriptionKeyDown = event => {
-    if (this.props.alertShowing)
-      return;
-
-    //Enter pressed
-    if (event.keyCode == 13) {
-      this.updateModel();
-    //Esc pressed
-    } else if (event.keyCode == 27) {
-      this.endEdit();
-    }
-  };
-
-  updateModel(endOnSameName) {
-    if ((this.state.editName && this.state.name != this.model.name) ||
-        (this.state.editDescription && this.state.description != this.model.description)) {
-      if (this.state.editName) {
-        let error = checkModelName(this.state.name);
-        if (!error) {
-          this.model.name = this.state.name;
-          this.props.updateModel(this.model);
-          this.endEdit();
-        } else {
-          if (endOnSameName && !this.props.alertShowing) {
-            this.endEdit();
-          } else {
-            const {showAlert} = this.props;
-            showAlert(getAlertForNameError(error));
-          }
-        }
-      } else {
-        this.model.description = this.state.description;
+  
+  updateModelName = name => {
+    if (name != this.model.name) {
+      let error = checkModelName(this.state.name);
+      if (!error) {
+        this.model.name = this.state.name;
         this.props.updateModel(this.model);
         this.endEdit();
+      } else {
+        if (false && !this.props.alertShowing) {
+          this.endEdit();
+        } else {
+          const {showAlert} = this.props;
+          showAlert(getAlertForNameError(error));
+        }
       }
     } else {
       this.endEdit();
     }
-  }
+  };
+  
+  updateModelDescription = description => {
+    if (description != this.model.description) {
+      this.model.description = description;
+      this.props.updateModel(this.model);
+      this.endEdit();
+    }
+  };
 
   endEdit() {
     this.activeInput = null;
-    this.setState({
-      name: this.model.name,
-      description: this.model.description,
-      editName: false,
-      editDescription: false
-    });
   }
 
   render() {
-    const {onClose, isEditable} = this.props;
+    const {onClose, isEditable, alertShowing} = this.props;
 
     let content;
     if (this.state.jsonVisibility) {
@@ -274,55 +189,29 @@ export default class Model extends Component {
       );
     }
 
-    let nameStyle = "header-name";
-    if (this.state.editName)
-      nameStyle += " header-name-edit";
-    let descriptionStyle = "header-description";
-    if (this.state.editDescription)
-      descriptionStyle += " header-description-edit";
+    let titles = (
+      <div>
+        <EditableTitleControl text={this.model.name}
+                              placeholder={"Model name"}
+                              alertShowing={alertShowing}
+                              update={this.updateModelName}
+                              cancel={this.endEdit} />
+        <EditableTitleControl text={this.model.description}
+                              placeholder={"Model description"}
+                              isSmall={true}
+                              alertShowing={alertShowing}
+                              update={this.updateModelDescription}
+                              cancel={this.endEdit} />
+      </div>
+    );
+    
     return (
-      <ContainerComponent title={this.state.name}
-                          description={this.state.description}
+      <ContainerComponent hasTitle2={true}
+                          titles={titles}
                           onClickBack={onClose}
-                          onClickJSON={this.onJSONClick}
-                          JSONName={this.state.jsonVisibility ? 'Fields' : 'JSON'}>
-
-        {/* <div styleName="header">
-          <div styleName="back" onClick={onClose}>Back</div>
-          <div styleName="header-wrapper">
-            <input size={this.state.nameInputWidth}
-                   ref="name"
-                   styleName={nameStyle}
-                   value={this.state.name}
-                   readOnly={!this.state.editName}
-                   placeholder="Type model name"
-                   onBlur={this.onNameBlur}
-                   onChange={this.onNameChange}
-                   onKeyDown={this.onNameKeyDown} />
-            <div styleName="edit"
-                 onClick={this.onEditClickName} >
-              edit
-            </div>
-          </div>
-          <div styleName="header-wrapper">
-            <input size={this.state.descriptionInputWidth}
-                   ref="description"
-                   styleName={descriptionStyle}
-                   value={this.state.description}
-                   readOnly={!this.state.editDescription}
-                   placeholder="Type model description"
-                   onBlur={this.onDescriptionBlur}
-                   onChange={this.onDescriptionChange}
-                   onKeyDown={this.onDescriptionKeyDown}/>
-            <div styleName="edit"
-                 onClick={this.onEditClickDescription} >
-              edit
-            </div>
-          </div>
-          <div styleName="json-fields" onClick={this.onJSONClick}>
-            {this.state.jsonVisibility ? 'Fields' : 'JSON'}
-          </div>
-        </div> */}
+                          onClickRLink={this.onJSONClick}
+                          rLinkTitle={this.state.jsonVisibility ? 'Fields' : 'JSON'}
+                          alertShowing={alertShowing}>
         {content}
       </ContainerComponent>
     );

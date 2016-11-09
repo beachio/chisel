@@ -6,48 +6,35 @@ import styles from './ContainerComponent.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class ContainerComponent extends Component {
   render() {
-    const { title, children, onClickBack, description, onClickJSON, JSONName } = this.props;
-
-    let back;
-    let json;
+    const {haveTitle2, title, titles, children, onClickBack, onClickRLink, rLinkTitle} = this.props;
+    
     let headerStyles = 'header';
-
-    if (description)
-      headerStyles = 'header header-description';
-
-    if (onClickBack) {
-      back = (
-        <div styleName='back' onClick={ onClickBack }>
-          Back
-        </div>
-      );
-    }
-
-    if (JSONName && onClickJSON) {
-      json = (
-        <div styleName="json-fields" onClick={onClickJSON}>
-          {JSONName}
-        </div>
-      );
-    }
-
+    if (haveTitle2)
+      headerStyles = 'header header-double';
+  
+    let titlesCmp = titles;
+    if (title)
+      titlesCmp = <div styleName="title">{title}</div>;
+    
     return (
       <div styleName='ContainerComponent'>
         <div styleName={headerStyles}>
-          { back }
-          <div>
-            <div styleName='title'>
-              { title }
-            </div>
-            <div styleName="description">
-              { description }
-            </div>
-          </div>
-
-          { json }
+          {
+            onClickBack &&
+              <div styleName='back' onClick={onClickBack}>
+                Back
+              </div>
+          }
+          {titlesCmp}
+          {
+            rLinkTitle && onClickRLink &&
+              <div styleName="json-fields" onClick={onClickRLink}>
+                {rLinkTitle}
+              </div>
+          }
         </div>
         <div styleName='content'>
-          { children }
+          {children}
         </div>
       </div>
     );

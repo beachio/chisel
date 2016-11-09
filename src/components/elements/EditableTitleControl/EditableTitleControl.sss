@@ -1,0 +1,44 @@
+.wrapper
+  width: 80%
+  position: relative
+  
+  &:hover .edit
+    opacity: 0.99
+  
+  .input
+    background: none
+    border: 1px solid #ffffff
+    outline: none
+    cursor: pointer
+    
+    font-size: 20px
+    color: #666666
+    letter-spacing: 0.83px
+    line-height: 27px
+    text-align: center
+  
+  .input-small
+    font-size: 12px
+    letter-spacing: 0.46px
+    line-height: 17px
+    
+  .input:focus,
+  .input-editing
+    border: 1px solid #cccccc !important
+  
+  .input-editing
+    color: #333333
+    
+  .edit
+    font-size: 12px
+    color: #b1b1b1
+    font-weight: 600
+    display: inline-block
+    position: absolute
+    top: 50%
+    transform: translateY(-50%)
+    margin-left: 5px
+    cursor: pointer
+    opacity: 0.01
+    transition: opacity 0.2s ease
+    will-change: opacity
