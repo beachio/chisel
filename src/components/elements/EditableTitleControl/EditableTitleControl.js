@@ -4,7 +4,7 @@ import CSSModules from 'react-css-modules';
 import styles from './EditableTitleControl.sss';
 
 
-const MIN_WIDTH = 10;
+const MIN_TEXT = '1234567890';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class EditableTitleControl extends Component {
@@ -13,25 +13,37 @@ export default class EditableTitleControl extends Component {
     editing: false,
     width: 0
   };
+  testTextElm = null;
   
   
   setText(text) {
-    let width = text.length;
-    if (!width)
-      width = this.props.placeholder ? this.props.placeholder.length : MIN_WIDTH;
-    if (width < MIN_WIDTH)
-      width = MIN_WIDTH;
-    width *= 1.1;
-  
+    let wText = text;
+    if (!wText)
+      wText = this.props.placeholder;
+    if (!wText || wText.length < MIN_TEXT.length)
+      wText = MIN_TEXT;
+    
+    this.testTextElm.innerText = wText;
+    let width = this.testTextElm.clientWidth * 1.1;
+    
     this.setState({text, width});
-  }
-  
-  componentWillMount() {
-    this.setText(this.props.text);
   }
   
   componentWillReceiveProps(nextProps) {
     this.setText(nextProps.text);
+  }
+  
+  componentDidMount() {
+    this.testTextElm = document.createElement('div');
+    this.testTextElm.style.fontSize = this.props.isSmall ? '12px' : '20px';
+    this.testTextElm.style.opacity = '.01';
+    this.testTextElm.style.position = 'absolute';
+    this.testTextElm.style.top = '0';
+    this.testTextElm.style.left = '0';
+    this.testTextElm.style.zIndex = '-1';
+    document.body.appendChild(this.testTextElm);
+  
+    this.setText(this.props.text);
   }
     
   onEditClick = () => {
@@ -66,17 +78,17 @@ export default class EditableTitleControl extends Component {
   render() {
     const {placeholder, isSmall} = this.props;
   
-    let style = "input";
+    let styleName = "input";
     if (this.state.editing)
-      style += " input-editing";
+      styleName += " input-editing";
     if (isSmall)
-      style += " input-small";
+      styleName += " input-small";
     
     return (
       <div styleName="wrapper">
-        <input size={this.state.width}
+        <input style={{width: this.state.width + 'px'}}
                ref="input"
-               styleName={style}
+               styleName={styleName}
                value={this.state.text}
                readOnly={!this.state.editing}
                placeholder={placeholder}
