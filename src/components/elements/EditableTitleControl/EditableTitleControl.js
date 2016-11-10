@@ -35,8 +35,10 @@ export default class EditableTitleControl extends Component {
   }
     
   onEditClick = () => {
-    this.setState({editing: true});
-    this.refs.input.focus();
+    this.setState(
+      {editing: true},
+      () => this.refs.input.focus()
+    );
   };
   
   onChange = event => {
