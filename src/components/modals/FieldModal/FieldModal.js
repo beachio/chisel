@@ -54,7 +54,11 @@ export default class FieldModal extends Component {
   };
 
   onChangeType = type => {
-    this.setState({type, appList: FIELD_TYPES.get(type)});
+    this.setState({
+      type,
+      appList: FIELD_TYPES.get(type),
+      appearance: FIELD_TYPES.get(type)[0]
+    });
   };
   
   onChangeAppearance = appearance => {
