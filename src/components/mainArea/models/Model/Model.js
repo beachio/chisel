@@ -150,7 +150,7 @@ export default class Model extends Component {
                     <div styleName="list-item-color" style={colorStyle}></div>
                     <div styleName="list-item-text">
                       <div styleName="list-item-name">{field.name}</div>
-                      <div styleName="list-item-type">{field.type}</div>
+                      <div styleName="list-item-type">{field.type} — {field.appearance}</div>
                     </div>
                     {
                       field.isTitle &&

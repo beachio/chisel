@@ -20,10 +20,14 @@ export default class FieldModal extends Component {
     name: '',
     nameId: '',
     type: '',
+    appearance: '',
     isTitle: '',
 
-    error: null
+    error: null,
+  
+    appList: []
   };
+  typeList = Array.from(FIELD_TYPES.keys());
   field = null;
   onClose = null;
 
@@ -32,10 +36,13 @@ export default class FieldModal extends Component {
     this.field = this.props.params;
     this.onClose = this.props.onClose;
     this.setState({
-      name:     this.field.name,
-      nameId:   this.field.nameId,
-      type:     this.field.type,
-      isTitle:  this.field.isTitle
+      name:       this.field.name,
+      nameId:     this.field.nameId,
+      type:       this.field.type,
+      appearance: this.field.appearance,
+      isTitle:    this.field.isTitle,
+  
+      appList:    FIELD_TYPES.get(this.field.type)
     });
   }
 
@@ -47,7 +54,11 @@ export default class FieldModal extends Component {
   };
 
   onChangeType = type => {
-    this.setState({type});
+    this.setState({type, appList: FIELD_TYPES.get(type)});
+  };
+  
+  onChangeAppearance = appearance => {
+    this.setState({appearance});
   };
 
   onChangeIsTitle = event => {
@@ -69,18 +80,17 @@ export default class FieldModal extends Component {
       }
     }
 
-    this.field.name     = this.state.name;
-    this.field.nameId   = this.state.nameId;
-    this.field.type     = this.state.type;
-    this.field.isTitle  = this.state.isTitle;
+    this.field.name       = this.state.name;
+    this.field.nameId     = this.state.nameId;
+    this.field.type       = this.state.type;
+    this.field.appearance = this.state.appearance;
+    this.field.isTitle    = this.state.isTitle;
 
     this.props.updateField(this.field);
     this.onClose();
   };
 
   render() {
-    let suggestionsList = FIELD_TYPES;
-
     return (
       <div styleName="modal">
         <div styleName="modal-inner">
@@ -114,11 +124,15 @@ export default class FieldModal extends Component {
                               readOnly="readOnly" />
               </div>
 
-              <DropdownControl 
-                               label="Type"
-                               suggestionsList={suggestionsList}
+              <DropdownControl label="Type"
+                               suggestionsList={this.typeList}
                                suggest={this.onChangeType}
                                current={this.state.type} />
+  
+              <DropdownControl label="Appearance"
+                               suggestionsList={this.state.appList}
+                               suggest={this.onChangeAppearance}
+                               current={this.state.appearance} />
   
               {
                 this.state.type == FIELD_TYPE_SHORT_TEXT &&

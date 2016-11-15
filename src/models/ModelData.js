@@ -139,17 +139,81 @@ export class ModelData {
 
 export const FIELD_TYPE_SHORT_TEXT  = "Short Text";
 export const FIELD_TYPE_LONG_TEXT   = "Long Text";
-export const FIELD_TYPE_REFERENCE   = "Reference";
-export const FIELD_TYPE_REFERENCES  = "References";
-export const FIELD_TYPE_IMAGE       = "Image";
 export const FIELD_TYPE_INTEGER     = "Number Int";
 export const FIELD_TYPE_FLOAT       = "Number";
-export const FIELD_TYPE_DATE        = "Date/time";
 export const FIELD_TYPE_BOOLEAN     = "Boolean";
+export const FIELD_TYPE_DATE        = "Date/time";
+export const FIELD_TYPE_IMAGE       = "Image";
 export const FIELD_TYPE_JSON        = "JSON";
+export const FIELD_TYPE_REFERENCE   = "Reference";
+export const FIELD_TYPE_REFERENCES  = "References";
 
-export const FIELD_TYPES = [FIELD_TYPE_SHORT_TEXT, FIELD_TYPE_LONG_TEXT, FIELD_TYPE_REFERENCE, FIELD_TYPE_REFERENCES,
-  FIELD_TYPE_IMAGE, FIELD_TYPE_INTEGER, FIELD_TYPE_FLOAT, FIELD_TYPE_DATE, FIELD_TYPE_BOOLEAN, FIELD_TYPE_JSON];
+
+export const FIELD_APPEARANCE__SHORT_TEXT__SINGLE   = "Single line";
+export const FIELD_APPEARANCE__SHORT_TEXT__SLUG     = "Slug";
+export const FIELD_APPEARANCE__SHORT_TEXT__URL      = "URL";
+export const FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN = "Dropdown";
+export const FIELD_APPEARANCE__SHORT_TEXT__RADIO    = "Radio buttons";
+
+export const FIELD_APPEARANCE__LONG_TEXT__SINGLE    = "Single line";
+export const FIELD_APPEARANCE__LONG_TEXT__MULTI     = "Multi-line";
+export const FIELD_APPEARANCE__LONG_TEXT__WYSIWIG   = "WYSIWYG";
+
+export const FIELD_APPEARANCE__INTEGER__DECIMAL     = "Decimal";
+export const FIELD_APPEARANCE__INTEGER__RATING      = "Rating";
+
+export const FIELD_APPEARANCE__FLOAT__DECIMAL       = "Decimal";
+
+export const FIELD_APPEARANCE__BOOLEAM__RADIO       = "Radio buttons";
+export const FIELD_APPEARANCE__BOOLEAM__SWITCH      = "Switch";
+
+export const FIELD_APPEARANCE__DATE__DATE           = "Date & time";
+
+export const FIELD_APPEARANCE__MEDIA__MEDIA         = "Media";
+
+export const FIELD_APPEARANCE__JSON__JSON           = "Date & time";
+
+export const FIELD_APPEARANCE__REFERENCE__DATE      = "Reference";
+
+
+export const FIELD_TYPES = new Map([
+  [FIELD_TYPE_SHORT_TEXT, [
+    FIELD_APPEARANCE__SHORT_TEXT__SINGLE,
+    FIELD_APPEARANCE__SHORT_TEXT__SLUG,
+    FIELD_APPEARANCE__SHORT_TEXT__URL,
+    FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN,
+    FIELD_APPEARANCE__SHORT_TEXT__RADIO,
+  ]],
+  [FIELD_TYPE_LONG_TEXT, [
+    FIELD_APPEARANCE__LONG_TEXT__SINGLE,
+    FIELD_APPEARANCE__LONG_TEXT__MULTI,
+    FIELD_APPEARANCE__LONG_TEXT__WYSIWIG
+  ]],
+  [FIELD_TYPE_INTEGER, [
+    FIELD_APPEARANCE__INTEGER__DECIMAL,
+    FIELD_APPEARANCE__INTEGER__RATING
+  ]],
+  [FIELD_TYPE_FLOAT, [
+    FIELD_APPEARANCE__FLOAT__DECIMAL
+  ]],
+  [FIELD_TYPE_BOOLEAN, [
+    FIELD_APPEARANCE__BOOLEAM__RADIO,
+    FIELD_APPEARANCE__BOOLEAM__SWITCH
+  ]],
+  [FIELD_TYPE_DATE, [
+    FIELD_APPEARANCE__DATE__DATE
+  ]],
+  [FIELD_TYPE_IMAGE, [
+    FIELD_APPEARANCE__MEDIA__MEDIA
+  ]],
+  [FIELD_TYPE_JSON, [
+    FIELD_APPEARANCE__JSON__JSON
+  ]],
+  [FIELD_TYPE_REFERENCE, [
+    FIELD_APPEARANCE__REFERENCE__DATE
+  ]]
+]);
+
 
 export const FIELD_NAMES_RESERVED = ['t__slug', 't__color', 't__published', 't__model'];
 
@@ -160,6 +224,7 @@ export class ModelFieldData {
   origin = null;
 
   type = FIELD_TYPE_SHORT_TEXT;
+  appearance = FIELD_APPEARANCE__SHORT_TEXT__SINGLE;
   color = "rgba(0, 0, 0, 1)";
   isTitle = false;
 
@@ -185,11 +250,12 @@ export class ModelFieldData {
   setOrigin(origin) {
     this.origin = origin;
 
-    if (origin.get('name'))     this.name     = origin.get('name');
-    if (origin.get('nameId'))   this.nameId   = origin.get('nameId');
-    if (origin.get('type'))     this.type     = origin.get('type');
-    if (origin.get('color'))    this.color    = origin.get('color');
-    if (origin.get('isTitle'))  this.isTitle  = true;
+    if (origin.get('name'))       this.name       = origin.get('name');
+    if (origin.get('nameId'))     this.nameId     = origin.get('nameId');
+    if (origin.get('type'))       this.type       = origin.get('type');
+    if (origin.get('appearance')) this.appearance = origin.get('appearance');
+    if (origin.get('color'))      this.color      = origin.get('color');
+    if (origin.get('isTitle'))    this.isTitle    = true;
 
     return this;
   }
@@ -197,21 +263,25 @@ export class ModelFieldData {
   updateOrigin() {
     if (!this.origin)
       this.origin = new ModelFieldData.OriginClass;
-    this.origin.set("name",     this.name);
-    this.origin.set("nameId",   this.nameId);
-    this.origin.set("type",     this.type);
-    this.origin.set("color",    this.color);
-    this.origin.set("isTitle",  this.isTitle);
-    this.origin.set("model",  this.model.origin);
+    
+    this.origin.set("name",       this.name);
+    this.origin.set("nameId",     this.nameId);
+    this.origin.set("type",       this.type);
+    this.origin.set("appearance", this.appearance);
+    this.origin.set("color",      this.color);
+    this.origin.set("isTitle",    this.isTitle);
+    
+    this.origin.set("model",    this.model.origin);
   }
 
   toJSON() {
     return {
-      name:     this.name,
-      nameId:   this.nameId,
-      type:     this.type,
-      color:    this.color,
-      isTitle:  this.isTitle
+      name:       this.name,
+      nameId:     this.nameId,
+      type:       this.type,
+      appearance: this.appearance,
+      color:      this.color,
+      isTitle:    this.isTitle
     };
   }
 }
