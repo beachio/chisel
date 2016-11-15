@@ -4,7 +4,7 @@ import CSSModules from 'react-css-modules';
 import styles from './EditableTitleControl.sss';
 
 
-const MIN_TEXT = '12345';
+const MIN_TEXT = 'WWWW';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class EditableTitleControl extends Component {
@@ -14,17 +14,20 @@ export default class EditableTitleControl extends Component {
     width: 0
   };
   testTextElm = null;
+  minTextWidth = 0;
 
 
   setText(text) {
     let wText = text;
     if (!wText)
       wText = this.props.placeholder;
-    if (!wText || wText.length < MIN_TEXT.length)
+    if (!wText)
       wText = MIN_TEXT;
 
     this.testTextElm.innerText = wText;
     let width = this.testTextElm.clientWidth * 1.1;
+    if (width < this.minTextWidth)
+      width = this.minTextWidth;
 
     this.setState({text, width});
   }
@@ -35,13 +38,19 @@ export default class EditableTitleControl extends Component {
 
   componentDidMount() {
     this.testTextElm = document.createElement('div');
-    this.testTextElm.style.fontSize = this.props.isSmall ? '12px' : '20px';
-    this.testTextElm.style.opacity = '.01';
-    this.testTextElm.style.position = 'absolute';
-    this.testTextElm.style.top = '0';
-    this.testTextElm.style.left = '0';
-    this.testTextElm.style.zIndex = '-1';
+    let style = {
+      fontSize: this.props.isSmall ? '12px' : '20px',
+      opacity: '.01',
+      position: 'absolute',
+      top: '0',
+      left: '0',
+      zIndex:'-1',
+    };
+    Object.assign(this.testTextElm.style, style);
     document.body.appendChild(this.testTextElm);
+  
+    this.testTextElm.innerText = MIN_TEXT;
+    this.minTextWidth = this.testTextElm.clientWidth * 1.1;
 
     this.setText(this.props.text);
   }
