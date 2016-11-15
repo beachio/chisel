@@ -91,12 +91,14 @@ export default class FieldModal extends Component {
   };
 
   render() {
+    let headName = this.state.name.length ? this.state.name : '?';
+    
     return (
       <div styleName="modal">
         <div styleName="modal-inner">
           <div styleName="modal-header">
-            <div styleName="title">{this.field.name}</div>
-            <div styleName="subtitle">{this.field.type}</div>
+            <div styleName="title">{headName}</div>
+            <div styleName="subtitle">{this.state.type} — {this.state.appearance}</div>
           </div>
           <div styleName="content">
             <form>
