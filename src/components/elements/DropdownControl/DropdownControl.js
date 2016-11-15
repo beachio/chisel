@@ -13,13 +13,25 @@ export default class DropdownControl extends Component {
     suggestionsVisibility: false
   };
   suggestionsList = [];
-  suggest = null;
+  onSuggest = null;
 
   componentWillMount() {
     const {suggestionsList, suggest, current} = this.props;
-    this.suggest = suggest;
+    this.onSuggest = suggest;
     this.suggestionsList = suggestionsList;
-    this.setState({suggestionValue: current});
+    this.setCurrent(current);
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    this.suggestionsList = nextProps.suggestionsList;
+    this.setCurrent(nextProps.current);
+  }
+  
+  setCurrent(cur) {
+    if (this.suggestionsList.indexOf(cur) == -1)
+      this.setState({suggestionValue: this.suggestionsList[0]});
+    else
+      this.setState({suggestionValue: cur});
   }
 
   onSuggestionClick = event => {
@@ -28,7 +40,7 @@ export default class DropdownControl extends Component {
       suggestionValue: item,
       suggestionsVisibility: false
     });
-    this.suggest(item);
+    this.onSuggest(item);
   };
 
   onSuggestionInputClick = event => {
@@ -45,7 +57,7 @@ export default class DropdownControl extends Component {
   };
 
   render() {
-    const { label, type } = this.props;
+    const {label, type} = this.props;
 
     let wrapperClasses = classNames({
       'input-wrapper type-wrapper': type === undefined,
@@ -72,21 +84,14 @@ export default class DropdownControl extends Component {
       )
     });
 
-
-    let icon = (
-      <InlineSVG styleName={arrowClasses} src={require("./arrow-down.svg")} />
-    );
-
-    if (type === 'big') {
-      icon = (
-        <InlineSVG styleName="arrows" src={require("./arrows.svg")} />
-      );
-    }
+    let icon = <InlineSVG styleName={arrowClasses} src={require("./arrow-down.svg")} />;
+    if (type === 'big')
+      icon = <InlineSVG styleName="arrows" src={require("./arrows.svg")} />;
 
     return (
-      <div styleName={ wrapperClasses } onBlur={this.onSuggestionBlur}>
+      <div styleName={wrapperClasses} onBlur={this.onSuggestionBlur}>
         <div styleName="label">{label}</div>
-        { icon }
+        {icon}
         <input styleName={inputClasses}
                value={this.state.suggestionValue}
                onClick={this.onSuggestionInputClick}
