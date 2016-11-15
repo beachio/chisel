@@ -164,8 +164,8 @@ export const FIELD_APPEARANCE__INTEGER__RATING      = "Rating";
 
 export const FIELD_APPEARANCE__FLOAT__DECIMAL       = "Decimal";
 
-export const FIELD_APPEARANCE__BOOLEAM__RADIO       = "Radio buttons";
-export const FIELD_APPEARANCE__BOOLEAM__SWITCH      = "Switch";
+export const FIELD_APPEARANCE__BOOLEAN__RADIO       = "Radio buttons";
+export const FIELD_APPEARANCE__BOOLEAN__SWITCH      = "Switch";
 
 export const FIELD_APPEARANCE__DATE__DATE           = "Date & time";
 
@@ -197,8 +197,8 @@ export const FIELD_TYPES = new Map([
     FIELD_APPEARANCE__FLOAT__DECIMAL
   ]],
   [FIELD_TYPE_BOOLEAN, [
-    FIELD_APPEARANCE__BOOLEAM__RADIO,
-    FIELD_APPEARANCE__BOOLEAM__SWITCH
+    FIELD_APPEARANCE__BOOLEAN__RADIO,
+    FIELD_APPEARANCE__BOOLEAN__SWITCH
   ]],
   [FIELD_TYPE_DATE, [
     FIELD_APPEARANCE__DATE__DATE
