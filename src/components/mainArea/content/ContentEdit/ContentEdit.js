@@ -11,9 +11,9 @@ import moment from 'moment';
 
 import InputControl from '../../../elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
+import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 
-import {FIELD_TYPE_SHORT_TEXT, FIELD_TYPE_LONG_TEXT, FIELD_TYPE_REFERENCE, FIELD_TYPE_REFERENCES,
-  FIELD_TYPE_IMAGE, FIELD_TYPE_INTEGER, FIELD_TYPE_FLOAT, FIELD_TYPE_DATE, FIELD_TYPE_BOOLEAN, FIELD_TYPE_JSON} from 'models/ModelData';
+import * as ftps from 'models/ModelData';
 
 import styles from './ContentEdit.sss';
 
@@ -142,119 +142,217 @@ export default class ContentEdit extends Component {
     let inner;
 
     switch (field.type) {
-      case FIELD_TYPE_SHORT_TEXT:
+      case ftps.FIELD_TYPE_SHORT_TEXT:
         if (!value)
           value = "";
-        inner = (
-          <div styleName="input-wrapper">
-            <input styleName="input"
-                   ref={field.nameId}
-                   value={value}
-                   onChange={e => this.onChange_SHORT_TEXT(e, field)} />
-          </div>
-        );
+        
+        switch (field.appearance) {
+          case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
+            inner = (
+              <div styleName="input-wrapper">
+                <input styleName="input"
+                       ref={field.nameId}
+                       value={value}
+                       onChange={e => this.onChange_SHORT_TEXT(e, field)} />
+              </div>
+            );
+            break;
+  
+          case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
+            inner = (
+              <div styleName="input-wrapper">
+                <input styleName="input"
+                       ref={field.nameId}
+                       value={value}
+                       onChange={e => this.onChange_SHORT_TEXT(e, field)} />
+              </div>
+            );
+            break;
+  
+          case ftps.FIELD_APPEARANCE__SHORT_TEXT__URL:
+            inner = (
+              <div styleName="input-wrapper">
+                <input styleName="input"
+                       ref={field.nameId}
+                       value={value}
+                       onChange={e => this.onChange_SHORT_TEXT(e, field)} />
+              </div>
+            );
+            break;
+        }
         break;
 
-      case FIELD_TYPE_LONG_TEXT:
+      case ftps.FIELD_TYPE_LONG_TEXT:
         if (!value)
           value = "";
-        inner = (
-          <textarea styleName="textarea"
-                    ref={field.nameId}
-                    value={value}
-                    onChange={e => this.onChange_LONG_TEXT(e, field)} />
-        );
+  
+        switch (field.appearance) {
+          case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
+            inner = (
+              <div styleName="input-wrapper">
+                <input styleName="input"
+                       ref={field.nameId}
+                       value={value}
+                       onChange={e => this.onChange_LONG_TEXT(e, field)} />
+              </div>
+            );
+            break;
+  
+          case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
+            inner = (
+              <textarea styleName="textarea"
+                        ref={field.nameId}
+                        value={value}
+                        onChange={e => this.onChange_LONG_TEXT(e, field)} />
+            );
+            break;
+  
+          case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
+            inner = (
+              <textarea styleName="textarea"
+                        ref={field.nameId}
+                        value={value}
+                        onChange={e => this.onChange_LONG_TEXT(e, field)} />
+            );
+            break;
+        }
         break;
 
-      case FIELD_TYPE_FLOAT:
+      case ftps.FIELD_TYPE_FLOAT:
         if (!value)
           value = 0;
-        inner = (
-          <div styleName="input-wrapper">
-            <input styleName="input"
-                   ref={field.nameId}
-                   value={value}
-                   onChange={e => this.onChange_FLOAT(e, field)} />
-          </div>
-        );
+  
+        switch (field.appearance) {
+          case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
+            inner = (
+              <div styleName="input-wrapper">
+                <input styleName="input"
+                       ref={field.nameId}
+                       value={value}
+                       onChange={e => this.onChange_FLOAT(e, field)} />
+              </div>
+            );
+            break;
+        }
         break;
 
-      case FIELD_TYPE_INTEGER:
+      case ftps.FIELD_TYPE_INTEGER:
         if (!value)
           value = 0;
-        inner = (
-          <div styleName="input-wrapper">
-            <input styleName="input"
-                   ref={field.nameId}
-                   value={value}
-                   onChange={e => this.onChange_INTEGER(e, field)} />
-          </div>
-        );
+  
+        switch (field.appearance) {
+          case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
+            inner = (
+              <div styleName="input-wrapper">
+                <input styleName="input"
+                       ref={field.nameId}
+                       value={value}
+                       onChange={e => this.onChange_INTEGER(e, field)}/>
+              </div>
+            );
+            break;
+  
+          case ftps.FIELD_APPEARANCE__INTEGER__RATING:
+            inner = (
+              <div styleName="input-wrapper">
+                <input styleName="input"
+                       ref={field.nameId}
+                       value={value}
+                       onChange={e => this.onChange_INTEGER(e, field)}/>
+              </div>
+            );
+            break;
+        }
         break;
 
-      case FIELD_TYPE_BOOLEAN:
+      case ftps.FIELD_TYPE_BOOLEAN:
         if (!value)
           value = false;
-        let id1 = _.uniqueId('radio1_');
-        let id2 = _.uniqueId('radio2_');
-        inner = (
-          <div styleName="radio-wrapper">
-            <div styleName="radio-button">
-              <input styleName="radio"
-                     type="radio"
-                     id={id1}
-                     name="radio"
-                     checked={value}
-                     onChange={e => this.onChange_BOOLEAN(true, field)} />
-              <label styleName="radio-label" htmlFor={id1}>Yes</label>
-            </div>
-            <div styleName="radio-button">
-              <input styleName="radio"
-                     type="radio"
-                     id={id2}
-                     name="radio"
-                     checked={!value}
-                     onChange={e => this.onChange_BOOLEAN(false, field)} />
-              <label styleName="radio-label" htmlFor={id2}>No</label>
-            </div>
-          </div>
-        );
-        break;
-
-      case FIELD_TYPE_IMAGE:
-        let imgStyle = {};
-        if (value)
-          imgStyle = {backgroundImage: `url(${value.url()})`};
-
-        inner = (
-          <div styleName="image" style={imgStyle}>
-            <div styleName="fileUpload">
-              <input styleName="fileUpload-input"
-                     type="file"
-                     onChange={e => this.onChange_IMAGE(e, field)} />
-            </div>
-          </div>
-        );
-        break;
-
-      case FIELD_TYPE_DATE:
-        let time = moment();
-        if (value) {
-          time.hour(value.getHours());
-          time.minute(value.getMinutes());
+  
+        switch (field.appearance) {
+          case ftps.FIELD_APPEARANCE__BOOLEAN__RADIO:
+            let id1 = _.uniqueId('radio1_');
+            let id2 = _.uniqueId('radio2_');
+            inner = (
+              <div styleName="radio-wrapper">
+                <div styleName="radio-button">
+                  <input styleName="radio"
+                         type="radio"
+                         id={id1}
+                         name="radio"
+                         checked={value}
+                         onChange={e => this.onChange_BOOLEAN(true, field)} />
+                  <label styleName="radio-label" htmlFor={id1}>Yes</label>
+                </div>
+                <div styleName="radio-button">
+                  <input styleName="radio"
+                         type="radio"
+                         id={id2}
+                         name="radio"
+                         checked={!value}
+                         onChange={e => this.onChange_BOOLEAN(false, field)} />
+                  <label styleName="radio-label" htmlFor={id2}>No</label>
+                </div>
+              </div>
+            );
+            break;
+  
+          case ftps.FIELD_APPEARANCE__BOOLEAN__SWITCH:
+            inner = (
+              <div styleName="switch-wrapper">
+                <SwitchControl checked={value} onChange={v => this.onChange_BOOLEAN(v, field)}/>
+              </div>
+            );
+            break;
         }
-        inner = (
-          <div styleName="input-wrapper">
-            <Flatpickr value={value}
-                       data-alt-input="true"
-                       data-alt-format="F j, Y"
-                       onChange={(obj, str, ins) => this.onChange_DATE(str, field)} />
-            <TimePicker showSecond={false}
-                        value={time}
-                        onChange={e => this.onChange_TIME(e, field)} />
-          </div>
-        );
         break;
+
+      case ftps.FIELD_TYPE_IMAGE:
+        switch (field.appearance) {
+          case ftps.FIELD_APPEARANCE__MEDIA__MEDIA:
+            let imgStyle = {};
+            if (value)
+              imgStyle = {backgroundImage: `url(${value.url()})`};
+  
+            inner = (
+              <div styleName="image" style={imgStyle}>
+                <div styleName="fileUpload">
+                  <input styleName="fileUpload-input"
+                         type="file"
+                         onChange={e => this.onChange_IMAGE(e, field)} />
+                </div>
+              </div>
+            );
+            break;
+        }
+        break;
+        
+      case ftps.FIELD_TYPE_DATE:
+        switch (field.appearance) {
+          case ftps.FIELD_APPEARANCE__DATE__DATE:
+            if (!value)
+              value = new Date();
+            
+            let time = moment();
+            if (value) {
+              time.hour(value.getHours());
+              time.minute(value.getMinutes());
+            }
+            inner = (
+              <div styleName="input-wrapper">
+                <Flatpickr value={value}
+                           data-alt-input="true"
+                           data-alt-format="F j, Y"
+                           onChange={(obj, str, ins) => this.onChange_DATE(str, field)} />
+                <TimePicker showSecond={false}
+                            value={time}
+                            onChange={e => this.onChange_TIME(e, field)} />
+              </div>
+            );
+            break;
+        }
+        break;
+        
     }
 
     return (
