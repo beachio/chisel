@@ -215,7 +215,7 @@ export const FIELD_TYPES = new Map([
 ]);
 
 
-export const FIELD_NAMES_RESERVED = ['t__slug', 't__color', 't__published', 't__model'];
+export const FIELD_NAMES_RESERVED = ['t__color', 't__published', 't__model'];
 
 
 export class ModelFieldData {

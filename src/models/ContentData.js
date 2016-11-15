@@ -1,6 +1,6 @@
 import {Parse} from 'parse';
 
-import {removeSpaces, filterSpecials} from 'utils/common';
+import {removeSpaces} from 'utils/common';
 
 
 export class ContentItemData {
@@ -12,7 +12,6 @@ export class ContentItemData {
   
   //setter
   _titleField = null;
-  _slug = "";
   
   //links
   _model = null;
@@ -24,12 +23,6 @@ export class ContentItemData {
   set title(title) {
     title = removeSpaces(title);
     this.fields.set(this.titleField, title);
-    this.slug = title;
-  }
-  
-  get slug() {return this._slug;}
-  set slug(slug) {
-    this._slug = filterSpecials(slug);
   }
   
   get model() {return this._model;}
@@ -57,7 +50,6 @@ export class ContentItemData {
   setOrigin(origin) {
     this.origin = origin;
     
-    if (origin.get('t__slug'))       this.slug       = origin.get('t__slug');
     if (origin.get('t__published'))  this.published  = origin.get('t__published');
     if (origin.get('t__color'))      this.color      = origin.get('t__color');
     
@@ -76,7 +68,6 @@ export class ContentItemData {
     if (!this.origin)
       this.origin = new this.OriginClass;
     
-    this.origin.set("t__slug",       this.slug);
     this.origin.set("t__published",  this.published);
     this.origin.set("t__color",      this.color);
   

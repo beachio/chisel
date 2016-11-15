@@ -22,7 +22,6 @@ import styles from './ContentEdit.sss';
 export default class ContentEdit extends Component {
   state = {
     title: "",
-    slug: "",
     color: "rgba(0, 0, 0, 1)",
     fields: new Map(),
 
@@ -35,7 +34,6 @@ export default class ContentEdit extends Component {
     this.item = this.props.item;
     this.setState({
       title:  this.item.title,
-      slug:   this.item.slug,
       color:  this.item.color,
       fields: this.item.fields
     });
@@ -52,11 +50,6 @@ export default class ContentEdit extends Component {
       title,
       nameInputWidth: event.target.value.length
     });
-  };
-
-  onSlugChange = event => {
-    let slug = event.target.value;
-    this.setState({slug});
   };
 
   onTitleBlur = () => {
@@ -88,7 +81,6 @@ export default class ContentEdit extends Component {
       return;
 
     this.item.title = this.state.title;
-    this.item.slug  = this.state.slug;
     this.item.color = this.state.color;
     this.item.fields = this.state.fields;
 
@@ -323,14 +315,6 @@ export default class ContentEdit extends Component {
           </div>
         </div>
         <div styleName="content">
-          <div styleName="field">
-            <InputControl label="slug"
-                          type="big"
-                          placeholder="Type slug"
-                          readOnly={!isEditable}
-                          value={this.state.slug}
-                          onChange={this.onSlugChange} />
-          </div>
           {content}
         </div>
       </div>
