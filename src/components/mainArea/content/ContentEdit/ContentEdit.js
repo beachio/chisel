@@ -456,20 +456,24 @@ export default class ContentEdit extends Component {
     return (
       <div styleName="content">
         <div styleName="field-title">
-          is published: {this.item.published ? 'yes' : 'no'}
+          Status: {this.item.published ? 'Published' : 'Draft'}
         </div>
 
         {content}
 
-        {
-          !this.item.published &&
-            <ButtonControl color="red"
-                           value="Publish"
-                           onClick={this.onPublish} />
-        }
-        <ButtonControl color="gray"
-                       value="Discard changes"
-                       onClick={this.onDiscard} />
+        <div styleName="buttons-wrapper">
+          <div styleName="button-publish">
+            {
+              !this.item.published &&
+                <ButtonControl color="green"
+                               value="Publish"
+                               onClick={this.onPublish} />
+            }
+          </div>
+          <ButtonControl color="gray"
+                         value="Discard changes"
+                         onClick={this.onDiscard} />
+        </div>
       </div>
     );
   }
