@@ -6,7 +6,6 @@ import _ from 'lodash/core';
 import 'flatpickr/dist/flatpickr.material_green.min.css';
 import Flatpickr from 'react-flatpickr';
 import TimePicker from 'rc-time-picker';
-import Formsy from 'formsy-react';
 import 'rc-time-picker/assets/index.css';
 import moment from 'moment';
 
@@ -29,6 +28,7 @@ export default class ContentEdit extends Component {
     fields: new Map()
   };
   item = null;
+  fieldsErrors = new Map();
 
   componentWillMount() {
     this.item = this.props.item;
@@ -67,8 +67,15 @@ export default class ContentEdit extends Component {
   };
 
   onPublish = () => {
+    if (!this.validate())
+      return;
+
     this.item.published = true;
     this.onClose();
+  };
+
+  validate() {
+    return true;
   };
 
   onChange_SHORT_TEXT(event, field) {
@@ -339,12 +346,20 @@ export default class ContentEdit extends Component {
 
     }
 
+    let error = this.fieldsErrors.get(field);
+
     return (
       <div styleName="field" key={field.nameId}>
         <div styleName="field-title">
           {field.name}
         </div>
         {inner}
+        {
+          error &&
+            <div styleName="field-error">
+              {error}
+            </div>
+        }
       </div>
     );
   }
@@ -360,7 +375,9 @@ export default class ContentEdit extends Component {
         <div styleName="field-title">
           is published: {this.item.published ? 'yes' : 'no'}
         </div>
+
         {content}
+
         {
           !this.item.published &&
             <ButtonControl color="red"

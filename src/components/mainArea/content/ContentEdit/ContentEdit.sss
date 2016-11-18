@@ -14,7 +14,8 @@
   display: flex
   flex-flow: column nowrap
 
-  &-title
+  &-title,
+  &-error
     font-weight: 600
     font-size: 13px
     color: #CCCCCC
@@ -24,6 +25,9 @@
 
     transition: color 0.2s ease
     will-change: color
+
+  &-error
+    color: #DD5555
 
   .link
     position: absolute
