@@ -8,6 +8,7 @@ import {getModelByName} from 'utils/data';
 import styles from './ContentList.sss';
 
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
+import InputControl from 'components/elements/InputControl/InputControl';
 
 const STATUS_ALL        = "STATUS_ALL";
 const STATUS_DRAFT      = "STATUS_DRAFT";
@@ -198,17 +199,17 @@ export default class ContentList extends Component {
                                      current={this.state.currentModel.name} />
                   </div>
                   <div styleName="create-new">
-                    <input styleName="input inputName"
-                           placeholder="Create a new Content Type"
-                           value={this.state.itemTitle}
-                           autoFocus={true}
-                           onChange={this.onItemTitleChange}
-                           onKeyDown={this.onKeyDown}
-                           ref={c => this.activeInput = c} />
+                    <InputControl styleName="input inputName"
+                                  placeholder="Create a new Content Type"
+                                  value={this.state.itemTitle}
+                                  autoFocus={true}
+                                  onChange={this.onItemTitleChange}
+                                  onKeyDown={this.onKeyDown}
+                                  inputRef={c => this.activeInput = c} />
 
                     <InlineSVG styleName="plus"
                                src={require("./plus.svg")}
-                              onClick={this.onAddItem} />
+                               onClick={this.onAddItem} />
                   </div>
                 </div>
             }
