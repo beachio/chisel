@@ -61,7 +61,7 @@ export default class AlertModal extends Component {
             {
               this.type == ALERT_TYPE_ALERT &&
                 <div styleName="button">
-                  <ButtonControl type="green"
+                  <ButtonControl color="green"
                                  value="OK"
                                  onClick={onClose} />
                 </div>
@@ -70,12 +70,12 @@ export default class AlertModal extends Component {
               this.type == ALERT_TYPE_CONFIRM &&
                 <div styleName="buttons-wrapper">
                   <div styleName="buttons-inner">
-                    <ButtonControl type="red"
+                    <ButtonControl color="red"
                                    value="Yes"
                                    onClick={this.onConfirm} />
                   </div>
                   <div styleName="buttons-inner">
-                    <ButtonControl type="gray"
+                    <ButtonControl color="gray"
                                    value="No"
                                    onClick={onClose} />
                   </div>

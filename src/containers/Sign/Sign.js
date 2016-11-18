@@ -62,7 +62,9 @@ export class Sign extends Component  {
           <input styleName="input" type="text" placeholder="Enter email" onChange={this.onEmailChange} />
           <input styleName="input" type="password" placeholder="Enter password" onChange={this.onPasswordChange} />
           <div styleName="button">
-            <ButtonControl type="green" value="Sign in / Sign up" onClick={this.onSubmit}/>
+            <ButtonControl color="green"
+                           value="Sign in / Sign up"
+                           onClick={this.onSubmit} />
           </div>
         </form>
 

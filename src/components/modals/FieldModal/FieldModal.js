@@ -156,12 +156,12 @@ export default class FieldModal extends Component {
 
               <div styleName="input-wrapper buttons-wrapper">
                 <div styleName="buttons-inner">
-                  <ButtonControl type="green"
+                  <ButtonControl color="green"
                                  value="Save"
                                  onClick={this.onSave} />
                 </div>
                 <div styleName="buttons-inner">
-                  <ButtonControl type="gray"
+                  <ButtonControl color="gray"
                                  value="Cancel"
                                  onClick={this.onClose} />
                 </div>

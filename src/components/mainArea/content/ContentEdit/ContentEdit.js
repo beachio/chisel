@@ -363,11 +363,11 @@ export default class ContentEdit extends Component {
         {content}
         {
           !this.item.published &&
-            <ButtonControl type="red"
                            value="Publish"
                            onClick={this.onPublish} />
+            <ButtonControl color="red"
         }
-        <ButtonControl type="gray"
+        <ButtonControl color="gray"
                        value="Discard changes"
                        onClick={this.onDiscard} />
       </div>

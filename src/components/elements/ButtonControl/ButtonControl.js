@@ -8,19 +8,21 @@ import styles from './ButtonControl.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class ButtonControl extends Component {
   render() {
-    const {value, type, onClick} = this.props;
+    let {value, color, onClick, type} = this.props;
+    if (!type)
+      type = 'button';
 
     let buttonControlClasses = classNames({
       'ButtonControl': true,
-      'ButtonControl-red': type === 'red',
-      'ButtonControl-green': type === 'green',
-      'ButtonControl-gray': type === 'gray'
+      'ButtonControl-red': color === 'red',
+      'ButtonControl-green': color === 'green',
+      'ButtonControl-gray': color === 'gray'
     });
 
     return (
-      <div styleName={buttonControlClasses} onClick={onClick}>
+      <button styleName={buttonControlClasses} onClick={onClick} type={type}>
         {value || 'Clear'}
-      </div>
+      </button>
     );
   }
 }
