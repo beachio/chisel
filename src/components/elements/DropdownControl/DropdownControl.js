@@ -21,12 +21,12 @@ export default class DropdownControl extends Component {
     this.suggestionsList = suggestionsList;
     this.setCurrent(current);
   }
-  
+
   componentWillReceiveProps(nextProps) {
     this.suggestionsList = nextProps.suggestionsList;
     this.setCurrent(nextProps.current);
   }
-  
+
   setCurrent(cur) {
     if (this.suggestionsList.indexOf(cur) == -1)
       this.setState({suggestionValue: this.suggestionsList[0]});
@@ -91,13 +91,15 @@ export default class DropdownControl extends Component {
     return (
       <div styleName={wrapperClasses} onBlur={this.onSuggestionBlur}>
         <div styleName="label">{label}</div>
-        {icon}
-        <input styleName={inputClasses}
-               value={this.state.suggestionValue}
-               onClick={this.onSuggestionInputClick}
-               readOnly />
-        <div styleName="suggestions">
-          {Suggestions}
+        <div styleName="input-wrapper">
+          {icon}
+          <input styleName={inputClasses}
+                 value={this.state.suggestionValue}
+                 onClick={this.onSuggestionInputClick}
+                 readOnly />
+          <div styleName="suggestions">
+            {Suggestions}
+          </div>
         </div>
       </div>
     );
