@@ -6,6 +6,7 @@ import _ from 'lodash/core';
 import 'flatpickr/dist/flatpickr.material_green.min.css';
 import Flatpickr from 'react-flatpickr';
 import TimePicker from 'rc-time-picker';
+import Formsy from 'formsy-react';
 import 'rc-time-picker/assets/index.css';
 import moment from 'moment';
 
@@ -34,12 +35,12 @@ export default class ContentEdit extends Component {
     this.setState({
       title:  this.item.title,
       color:  this.item.color,
-      fields: this.item.fields
+      fields: new Map(this.item.fields)
     });
   }
 
   updateItemTitle = title => {
-    setState({title});
+    this.setState({title});
   };
 
   endEdit() {
@@ -60,6 +61,15 @@ export default class ContentEdit extends Component {
 
     this.props.updateItem(this.item);
   }
+
+  onDiscard = () => {
+    this.setState({fields: new Map(this.item.fields)});
+  };
+
+  onPublish = () => {
+    this.item.published = true;
+    this.onClose();
+  };
 
   onChange_SHORT_TEXT(event, field) {
     let value = event.target.value;
@@ -347,7 +357,19 @@ export default class ContentEdit extends Component {
     }
     return (
       <div styleName="content">
+        <div styleName="field-title">
+          is published: {this.item.published ? 'yes' : 'no'}
+        </div>
         {content}
+        {
+          !this.item.published &&
+            <ButtonControl type="red"
+                           value="Publish"
+                           onClick={this.onPublish} />
+        }
+        <ButtonControl type="gray"
+                       value="Discard changes"
+                       onClick={this.onDiscard} />
       </div>
     );
   }
