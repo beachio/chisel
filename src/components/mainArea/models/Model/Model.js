@@ -210,8 +210,7 @@ export default class Model extends Component {
                           titles={titles}
                           onClickBack={onClose}
                           onClickRLink={this.onJSONClick}
-                          rLinkTitle={this.state.jsonVisibility ? 'Fields' : 'JSON'}
-                          alertShowing={alertShowing}>
+                          rLinkTitle={this.state.jsonVisibility ? 'Fields' : 'JSON'} >
         {content}
       </ContainerComponent>
     );

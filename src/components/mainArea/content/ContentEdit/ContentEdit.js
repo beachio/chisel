@@ -9,9 +9,11 @@ import TimePicker from 'rc-time-picker';
 import 'rc-time-picker/assets/index.css';
 import moment from 'moment';
 
-import InputControl from '../../../elements/InputControl/InputControl';
+import InputControl from 'components/elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
+import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
+import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 
 import * as ftps from 'models/ModelData';
 
@@ -23,10 +25,7 @@ export default class ContentEdit extends Component {
   state = {
     title: "",
     color: "rgba(0, 0, 0, 1)",
-    fields: new Map(),
-
-    editTitle: false,
-    titleInputWidth: 0
+    fields: new Map()
   };
   item = null;
 
@@ -39,36 +38,11 @@ export default class ContentEdit extends Component {
     });
   }
 
-  onEditClickTitle = () => {
-    this.setState({editTitle: true});
-    this.refs.name.focus();
-  };
-
-  onTitleChange = event => {
-    let title = event.target.value;
-    this.setState({
-      title,
-      nameInputWidth: event.target.value.length
-    });
-  };
-
-  onTitleBlur = () => {
-    this.endEdit();
-  };
-
-  onTitleKeyDown = event => {
-    //Enter pressed
-    if (event.keyCode == 13) {
-      this.onSave();
-      this.endEdit();
-    //Esc pressed
-    } else if (event.keyCode == 27) {
-      this.endEdit();
-    }
+  updateItemTitle = title => {
+    setState({title});
   };
 
   endEdit() {
-    this.setState({editTitle: false});
   }
 
   onClose = () => {
@@ -372,7 +346,7 @@ export default class ContentEdit extends Component {
       content.push(elm);
     }
     return (
-      <div>
+      <div styleName="content">
         {content}
       </div>
     );
@@ -381,41 +355,25 @@ export default class ContentEdit extends Component {
   render() {
     const {isEditable} = this.props;
 
-    let titleStyle = "header-title";
-    if (this.state.editTitle)
-      titleStyle += " header-title-edit";
-
     let content = this.generateContent();
 
-    return (
-      <div className="g-container" styleName="ContentEdit">
-        <div styleName="header">
-          <div styleName="back" onClick={this.onClose}>Back</div>
-          <div styleName="header-wrapper">
-            <input size={this.state.nameInputWidth}
-                   ref="name"
-                   styleName={titleStyle}
-                   value={this.state.title}
-                   readOnly={!this.state.editTitle}
-                   placeholder="Type title"
-                   onBlur={this.onTitleBlur}
-                   onChange={this.onTitleChange}
-                   onKeyDown={this.onTitleKeyDown} />
-            <div styleName="edit"
-                 onClick={this.onEditClickTitle} >
-              edit
-            </div>
-          </div>
-          <div styleName="header-wrapper">
-            <div styleName="header-model">
-              {this.item.model.name}
-            </div>
-          </div>
-        </div>
-        <div styleName="content">
-          {content}
-        </div>
+    let titles = (
+      <div>
+        <EditableTitleControl text={this.state.title}
+                              placeholder={"Item title"}
+                              update={this.updateItemTitle}
+                              cancel={this.endEdit} />
+        <EditableTitleControl text={this.item.model.name}
+                              isSmall={true} />
       </div>
+    );
+
+    return (
+      <ContainerComponent hasTitle2={true}
+                          titles={titles}
+                          onClickBack={this.onClose}>
+        {content}
+      </ContainerComponent>
     );
   }
 }
