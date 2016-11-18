@@ -57,7 +57,7 @@ export default class DropdownControl extends Component {
   };
 
   render() {
-    const {label, type} = this.props;
+    const { label, type } = this.props;
 
     let wrapperClasses = classNames({
       'input-wrapper type-wrapper': type === undefined,
@@ -88,9 +88,16 @@ export default class DropdownControl extends Component {
     if (type === 'big')
       icon = <InlineSVG styleName="arrows" src={require("./arrows.svg")} />;
 
+    let labelEl;
+    if (label) {
+      labelEl = (
+        <div styleName="label">{label}</div>
+      );
+    }
+
     return (
       <div styleName={wrapperClasses} onBlur={this.onSuggestionBlur}>
-        <div styleName="label">{label}</div>
+        {labelEl}
         <div styleName="input-wrapper">
           {icon}
           <input styleName={inputClasses}

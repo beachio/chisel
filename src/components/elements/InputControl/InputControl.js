@@ -7,7 +7,7 @@ import styles from './InputControl.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class InputControl extends Component {
   render() {
-    const { label, type, value, placeholder, onChange, readOnly} = this.props;
+    const { label, type, value, placeholder, onChange, readOnly, autoFocus, onKeyDown } = this.props;
     let inputValue = value;
     let inputPlaceholder = placeholder;
 
@@ -27,8 +27,10 @@ export default class InputControl extends Component {
         <input type="text"
                styleName={inputStyles}
                value={ inputValue }
+               autoFocus={autoFocus}
                placeholder={ inputPlaceholder }
                onChange={ onChange }
+               onKeyDown={ onKeyDown }
                readOnly={ readOnly } />
         <label styleName="label"> {label} </label>
       </div>

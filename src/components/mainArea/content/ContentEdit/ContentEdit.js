@@ -119,7 +119,7 @@ export default class ContentEdit extends Component {
       case ftps.FIELD_TYPE_SHORT_TEXT:
         if (!value)
           value = "";
-        
+
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
             inner = (
@@ -131,7 +131,7 @@ export default class ContentEdit extends Component {
               </div>
             );
             break;
-  
+
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
             inner = (
               <div styleName="input-wrapper">
@@ -142,7 +142,7 @@ export default class ContentEdit extends Component {
               </div>
             );
             break;
-  
+
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__URL:
             inner = (
               <div styleName="input-wrapper">
@@ -159,7 +159,7 @@ export default class ContentEdit extends Component {
       case ftps.FIELD_TYPE_LONG_TEXT:
         if (!value)
           value = "";
-  
+
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
             inner = (
@@ -171,7 +171,7 @@ export default class ContentEdit extends Component {
               </div>
             );
             break;
-  
+
           case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
             inner = (
               <textarea styleName="textarea"
@@ -180,7 +180,7 @@ export default class ContentEdit extends Component {
                         onChange={e => this.onChange_LONG_TEXT(e, field)} />
             );
             break;
-  
+
           case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
             inner = (
               <textarea styleName="textarea"
@@ -195,7 +195,7 @@ export default class ContentEdit extends Component {
       case ftps.FIELD_TYPE_FLOAT:
         if (!value)
           value = 0;
-  
+
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
             inner = (
@@ -213,7 +213,7 @@ export default class ContentEdit extends Component {
       case ftps.FIELD_TYPE_INTEGER:
         if (!value)
           value = 0;
-  
+
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
             inner = (
@@ -225,7 +225,7 @@ export default class ContentEdit extends Component {
               </div>
             );
             break;
-  
+
           case ftps.FIELD_APPEARANCE__INTEGER__RATING:
             inner = (
               <div styleName="input-wrapper">
@@ -242,7 +242,7 @@ export default class ContentEdit extends Component {
       case ftps.FIELD_TYPE_BOOLEAN:
         if (!value)
           value = false;
-  
+
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__BOOLEAN__RADIO:
             let id1 = _.uniqueId('radio1_');
@@ -270,7 +270,7 @@ export default class ContentEdit extends Component {
               </div>
             );
             break;
-  
+
           case ftps.FIELD_APPEARANCE__BOOLEAN__SWITCH:
             inner = (
               <div styleName="switch-wrapper">
@@ -287,7 +287,7 @@ export default class ContentEdit extends Component {
             let imgStyle = {};
             if (value)
               imgStyle = {backgroundImage: `url(${value.url()})`};
-  
+
             inner = (
               <div styleName="image" style={imgStyle}>
                 <div styleName="fileUpload">
@@ -300,13 +300,13 @@ export default class ContentEdit extends Component {
             break;
         }
         break;
-        
+
       case ftps.FIELD_TYPE_DATE:
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__DATE__DATE:
             if (!value)
               value = new Date();
-            
+
             let time = moment();
             if (value) {
               time.hour(value.getHours());
@@ -326,7 +326,7 @@ export default class ContentEdit extends Component {
             break;
         }
         break;
-        
+
     }
 
     return (

@@ -24,7 +24,7 @@ export default class FieldModal extends Component {
     isTitle: '',
 
     error: null,
-  
+
     appList: []
   };
   typeList = Array.from(FIELD_TYPES.keys());
@@ -41,7 +41,7 @@ export default class FieldModal extends Component {
       type:       this.field.type,
       appearance: this.field.appearance,
       isTitle:    this.field.isTitle,
-  
+
       appList:    FIELD_TYPES.get(this.field.type)
     });
   }
@@ -60,7 +60,7 @@ export default class FieldModal extends Component {
       appearance: FIELD_TYPES.get(type)[0]
     });
   };
-  
+
   onChangeAppearance = appearance => {
     this.setState({appearance});
   };
@@ -96,7 +96,7 @@ export default class FieldModal extends Component {
 
   render() {
     let headName = this.state.name.length ? this.state.name : '?';
-    
+
     return (
       <div styleName="modal">
         <div styleName="modal-inner">
@@ -130,16 +130,20 @@ export default class FieldModal extends Component {
                               readOnly="readOnly" />
               </div>
 
-              <DropdownControl label="Type"
-                               suggestionsList={this.typeList}
-                               suggest={this.onChangeType}
-                               current={this.state.type} />
-  
-              <DropdownControl label="Appearance"
-                               suggestionsList={this.state.appList}
-                               suggest={this.onChangeAppearance}
-                               current={this.state.appearance} />
-  
+              <div styleName="input-wrapper">
+                <DropdownControl label="Type"
+                                 suggestionsList={this.typeList}
+                                 suggest={this.onChangeType}
+                                 current={this.state.type} />
+              </div>
+
+              <div>
+                <DropdownControl label="Appearance"
+                                 suggestionsList={this.state.appList}
+                                 suggest={this.onChangeAppearance}
+                                 current={this.state.appearance} />
+              </div>
+
               {
                 this.state.type == FIELD_TYPE_SHORT_TEXT &&
                   <div styleName="input-wrapper">

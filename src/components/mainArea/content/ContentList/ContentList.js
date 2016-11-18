@@ -22,7 +22,7 @@ export default class ContentList extends Component {
 
     activeModels: new Set(),
     activeStatus: STATUS_ALL,
-    
+
     currentModel: null
   };
   activeInput = null;
@@ -41,7 +41,7 @@ export default class ContentList extends Component {
     if (nextProps.items != this.state.items)
       this.setState({itemTitle: ""});
   }
-  
+
   onChangeModel = name => {
     let model = getModelByName(name);
     this.setState({currentModel: model});
@@ -191,21 +191,25 @@ export default class ContentList extends Component {
             </div>
             {
               isEditable &&
-                <div styleName="create-new">
-                  <DropdownControl styleName="input inputModel"
-                                   suggestionsList={models.map(m => m.name)}
-                                   suggest={this.onChangeModel}
-                                   current={this.state.currentModel.name} />
-                  <input styleName="input inputName"
-                         placeholder="Create a new Content Type"
-                         value={this.state.itemTitle}
-                         autoFocus={true}
-                         onChange={this.onItemTitleChange}
-                         onKeyDown={this.onKeyDown}
-                         ref={c => this.activeInput = c} />
-                  <InlineSVG styleName="plus"
-                             src={require("./plus.svg")}
-                             onClick={this.onAddItem} />
+                <div styleName="inputs-wrapper">
+                  <div styleName="dropdown-wrapper">
+                    <DropdownControl suggestionsList={models.map(m => m.name)}
+                                     suggest={this.onChangeModel}
+                                     current={this.state.currentModel.name} />
+                  </div>
+                  <div styleName="create-new">
+                    <input styleName="input inputName"
+                           placeholder="Create a new Content Type"
+                           value={this.state.itemTitle}
+                           autoFocus={true}
+                           onChange={this.onItemTitleChange}
+                           onKeyDown={this.onKeyDown}
+                           ref={c => this.activeInput = c} />
+
+                    <InlineSVG styleName="plus"
+                               src={require("./plus.svg")}
+                              onClick={this.onAddItem} />
+                  </div>
                 </div>
             }
           </div>
