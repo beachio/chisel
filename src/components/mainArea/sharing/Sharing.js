@@ -6,6 +6,8 @@ import Gravatar from 'react-gravatar';
 import {ROLE_ADMIN, ROLE_EDITOR, CollaborationData} from 'models/UserData';
 import {getUser, checkCollaboration} from 'utils/data';
 
+import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
+
 import styles from './Sharing.sss';
 
 
@@ -18,13 +20,13 @@ export default class Sharing extends Component {
   activeInput = null;
   isOwner = false;
   isAdmin = false;
-  
-  
+
+
   componentWillMount() {
     const {collaborations} = this.props;
     this.setState({collaborations});
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (!nextProps.alertShowing && this.activeInput)
       this.activeInput.focus();
@@ -32,12 +34,12 @@ export default class Sharing extends Component {
     if (nextProps.collaborations != this.state.collaborations)
       this.setState({input: ""});
   }
-  
+
   onInputChange = event => {
     let input = event.target.value;
     this.setState({input});
   };
-  
+
   onKeyDown = event => {
     if (this.props.alertShowing)
       return;
@@ -49,7 +51,7 @@ export default class Sharing extends Component {
       this.setState({input: ""});
     }
   };
-  
+
   onAddCollaboration = event => {
     getUser(this.state.input)
       .catch(() => {
@@ -63,25 +65,22 @@ export default class Sharing extends Component {
       .then(user => {
         if (!checkCollaboration(user))
           return;
-  
+
         let collab = new CollaborationData();
         collab.user = user;
         this.props.addCollaboration(collab);
-  
+
         this.setState({input: ""});
       });
   };
-  
-  
+
+
   render() {
     const {owner, isEditable} = this.props;
 
     return (
       <div styleName="wrapper">
-        <div className="g-container" styleName="Sharing">
-          <div className="g-title">
-            Collaborators
-          </div>
+        <ContainerComponent title="Collaborators">
           <div>
             <div styleName="list">
               <div styleName="list-item">
@@ -146,7 +145,7 @@ export default class Sharing extends Component {
                 </div>
             }
           </div>
-        </div>
+        </ContainerComponent>
         {
           isEditable &&
             <div styleName="import">
