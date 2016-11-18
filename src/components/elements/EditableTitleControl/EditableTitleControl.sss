@@ -2,14 +2,10 @@
   /*width: 80%*/
   position: relative
 
-  &:hover .edit
-    opacity: 0.99
-
   .input
     background: none
     border: 1px solid #ffffff
     outline: none
-    cursor: pointer
 
     font-size: 20px
     color: #666666
@@ -22,11 +18,8 @@
     letter-spacing: 0.46px
     line-height: 17px
 
-  .input:focus,
   .input-editing
     border-bottom: 1px solid #cccccc !important
-
-  .input-editing
     color: #333333
 
   .edit
@@ -42,3 +35,15 @@
     opacity: 0.01
     transition: opacity 0.2s ease
     will-change: opacity
+
+    visibility: hidden
+
+.wrapper-hover
+  .input
+    cursor: pointer
+
+  .edit
+    visibility: visible
+
+.wrapper-hover:hover .edit
+  opacity: 0.99

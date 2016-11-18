@@ -15,6 +15,7 @@ export default class EditableTitleControl extends Component {
   };
   testTextElm = null;
   minTextWidth = 0;
+  editable = false;
 
 
   setText(text) {
@@ -53,9 +54,14 @@ export default class EditableTitleControl extends Component {
     this.minTextWidth = this.testTextElm.clientWidth * 1.1;
 
     this.setText(this.props.text);
+
+    this.editable = !!this.props.update;
   }
 
   onEditClick = () => {
+    if (!this.editable)
+      return;
+
     this.setState(
       {editing: true},
       () => this.refs.input.focus()
@@ -67,12 +73,15 @@ export default class EditableTitleControl extends Component {
   };
 
   onBlur = () => {
+    if (!this.editable)
+      return;
+
     this.setState({editing: false});
     this.props.cancel();
   };
 
   onKeyDown = event => {
-    if (this.props.alertShowing)
+    if (this.props.alertShowing || !this.editable)
       return;
 
     //Enter pressed
@@ -87,19 +96,24 @@ export default class EditableTitleControl extends Component {
   render() {
     const {placeholder, isSmall} = this.props;
 
-    let styleName = "input";
-    if (this.state.editing)
-      styleName += " input-editing";
+    let wrapperStyle = "wrapper";
+    if (this.editable)
+      wrapperStyle += " wrapper-hover";
+
+    let editable = this.editable && this.state.editing;
+    let inputStyle = "input";
+    if (editable)
+      inputStyle += " input-editing";
     if (isSmall)
-      styleName += " input-small";
+      inputStyle += " input-small";
 
     return (
-      <div styleName="wrapper">
+      <div styleName={wrapperStyle}>
         <input style={{width: this.state.width + 'px'}}
                ref="input"
-               styleName={styleName}
+               styleName={inputStyle}
                value={this.state.text}
-               readOnly={!this.state.editing}
+               readOnly={!editable}
                placeholder={placeholder}
                onBlur={this.onBlur}
                onChange={this.onChange}
