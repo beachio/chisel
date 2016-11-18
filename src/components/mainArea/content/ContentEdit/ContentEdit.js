@@ -14,6 +14,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
+import {filterSpecials} from 'utils/common';
 
 import * as ftps from 'models/ModelData';
 
@@ -91,9 +92,26 @@ export default class ContentEdit extends Component {
               break;
 
             case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
+              if (!value)
+                break;
+
+              let slug = filterSpecials(value);
+              if (slug !== value)
+                error = "Slug must not contain special symbols!";
               break;
 
             case ftps.FIELD_APPEARANCE__SHORT_TEXT__URL:
+              if (!value)
+                break;
+
+              let pattern = new RegExp('^(https?:\\/\\/)' + // protocol
+                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+                '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+                '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+                '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+              if (!pattern.test(value))
+                error = "You must type a valid URL!";
               break;
           }
           break;
@@ -466,7 +484,7 @@ export default class ContentEdit extends Component {
 
         <div styleName="buttons-wrapper">
             {
-              !this.item.published &&
+              ///!this.item.published &&
                 <div styleName="button-publish">
                   <ButtonControl color="green"
                                  value="Publish"
