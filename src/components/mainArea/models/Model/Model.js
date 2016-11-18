@@ -4,6 +4,7 @@ import InlineSVG from 'svg-inline-react';
 import JSONView from '../../../elements/JSONView/JSONView';
 
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
+import InputControl from 'components/elements/InputControl/InputControl';
 import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
 import {checkModelName, checkFieldName, getAlertForNameError, modelToJSON} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
@@ -136,7 +137,7 @@ export default class Model extends Component {
       )
     } else {
       content = (
-        <div>
+        <div styleName="model-wrapper">
           <div styleName="list">
             {
               this.state.fields.map(field => {
@@ -172,16 +173,15 @@ export default class Model extends Component {
           </div>
           {
             isEditable &&
-              <div styleName="create-new">
-                <input styleName="input"
-                       placeholder="Add New Field"
-                       value={this.state.fieldName}
-                       autoFocus={true}
-                       onKeyDown={this.onAddKeyDown}
-                       onChange={this.onFieldNameChange}
-                       inputRef={c => this.activeInput = c}
-                       icon="plus"
-                       onIconClick={this.onAddField} />
+              <div styleName="input-wrapper">
+                <InputControl placeholder="Add New Field"
+                              value={this.state.fieldName}
+                              autoFocus={true}
+                              onKeyDown={this.onAddKeyDown}
+                              onChange={this.onFieldNameChange}
+                              inputRef={c => this.activeInput = c}
+                              icon="plus"
+                              onIconClick={this.onAddField} />
               </div>
           }
         </div>

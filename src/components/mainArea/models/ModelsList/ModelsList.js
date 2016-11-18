@@ -4,6 +4,7 @@ import InlineSVG from 'svg-inline-react';
 
 import {checkModelName, getAlertForNameError} from 'utils/data';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
+import InputControl from 'components/elements/InputControl/InputControl';
 
 import styles from './ModelsList.sss';
 
@@ -116,17 +117,15 @@ export default class ModelsList extends Component {
           </div>
           {
             isEditable &&
-              <div styleName="create-new">
-                <input styleName="input"
-                       value={this.state.modelName}
-                       autoFocus={true}
-                       placeholder="Create a new Content Type"
-                       onChange={this.onModelNameChange}
-                       onKeyDown={this.onKeyDown}
-                       ref={c => this.activeInput = c} />
-                <InlineSVG styleName="plus"
-                           src={require("./plus.svg")}
-                           onClick={this.onAddModel} />
+              <div styleName="input-wrapper">
+                <InputControl value={this.state.modelName}
+                              autoFocus={true}
+                              placeholder="Create a new Content Type"
+                              onChange={this.onModelNameChange}
+                              onKeyDown={this.onKeyDown}
+                              inputRef={c => this.activeInput = c}
+                              icon="plus"
+                              onIconClick={this.onAddModel} />
               </div>
           }
         </div>
