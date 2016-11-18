@@ -67,15 +67,98 @@ export default class ContentEdit extends Component {
   };
 
   onPublish = () => {
-    if (!this.validate())
+    if (!this.validate()) {
+      this.forceUpdate();
       return;
+    }
 
     this.item.published = true;
     this.onClose();
   };
 
   validate() {
-    return true;
+    let total = 0;
+
+    for (let [field, value] of this.state.fields) {
+      let error = null;
+
+      switch (field.type) {
+        case ftps.FIELD_TYPE_SHORT_TEXT:
+          switch (field.appearance) {
+            case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
+              if (!value && field.isTitle)
+                error = "Title must be!";
+              break;
+
+            case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
+              break;
+
+            case ftps.FIELD_APPEARANCE__SHORT_TEXT__URL:
+              break;
+          }
+          break;
+
+        case ftps.FIELD_TYPE_LONG_TEXT:
+          switch (field.appearance) {
+            case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
+              break;
+
+            case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
+              break;
+
+            case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
+              break;
+          }
+          break;
+
+        case ftps.FIELD_TYPE_FLOAT:
+          switch (field.appearance) {
+            case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
+              break;
+          }
+          break;
+
+        case ftps.FIELD_TYPE_INTEGER:
+          switch (field.appearance) {
+            case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
+              break;
+
+            case ftps.FIELD_APPEARANCE__INTEGER__RATING:
+              break;
+          }
+          break;
+
+        case ftps.FIELD_TYPE_BOOLEAN:
+          switch (field.appearance) {
+            case ftps.FIELD_APPEARANCE__BOOLEAN__RADIO:
+              break;
+
+            case ftps.FIELD_APPEARANCE__BOOLEAN__SWITCH:
+              break;
+          }
+          break;
+
+        case ftps.FIELD_TYPE_IMAGE:
+          switch (field.appearance) {
+            case ftps.FIELD_APPEARANCE__MEDIA__MEDIA:
+              break;
+          }
+          break;
+
+        case ftps.FIELD_TYPE_DATE:
+          switch (field.appearance) {
+            case ftps.FIELD_APPEARANCE__DATE__DATE:
+              break;
+          }
+          break;
+      }
+
+      this.fieldsErrors.set(field, error);
+      if (error)
+        total++;
+    }
+
+    return !total;
   };
 
   onChange_SHORT_TEXT(event, field) {
