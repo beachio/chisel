@@ -7,6 +7,7 @@ import {ROLE_ADMIN, ROLE_EDITOR, CollaborationData} from 'models/UserData';
 import {getUser, checkCollaboration} from 'utils/data';
 
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
+import InputControl from 'components/elements/InputControl/InputControl';
 
 import styles from './Sharing.sss';
 
@@ -81,7 +82,7 @@ export default class Sharing extends Component {
     return (
       <div styleName="wrapper">
         <ContainerComponent title="Collaborators">
-          <div>
+          <div styleName="sharing-wrapper">
             <div styleName="list">
               <div styleName="list-item">
                 <div styleName="avatar">
@@ -126,19 +127,17 @@ export default class Sharing extends Component {
 
             {
               isEditable &&
-                <div>
-                  <div styleName="create-new">
-                    <input styleName="input"
-                           placeholder="Enter one or more emails"
-                           value={this.state.input}
-                           autoFocus={true}
-                           onChange={this.onInputChange}
-                           onKeyDown={this.onKeyDown}
-                           ref={c => this.activeInput = c}/>
-                    <InlineSVG styleName="users"
-                               src={require("./users.svg")}
-                               onClick={this.onAddModel}/>
-                  </div>
+                <div styleName="input-wrapper">
+                  <InputControl placeholder="Enter one or more emails"
+                                value={this.state.input}
+                                autoFocus={true}
+                                onChange={this.onInputChange}
+                                onKeyDown={this.onKeyDown}
+                                icon="users"
+                                onIconClick={this.onAddCollaboration}
+                                inputRef={c => this.activeInput = c}/>
+
+
                   <div styleName="footer">
                     If the recipient doesn’t yet have a Scrivener account, they will be sent an invitation to join.
                   </div>

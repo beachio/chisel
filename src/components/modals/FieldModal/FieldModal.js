@@ -126,6 +126,7 @@ export default class FieldModal extends Component {
                 <InputControl label="Field ID"
                               placeholder="main_title"
                               type="readOnly"
+                              icon="lock"
                               value={this.state.nameId}
                               readOnly="readOnly" />
               </div>

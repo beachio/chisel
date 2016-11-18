@@ -93,7 +93,7 @@ export default class Model extends Component {
       jsonVisibility: !this.state.jsonVisibility
     });
   };
-  
+
   updateModelName = name => {
     if (name != this.model.name) {
       let error = checkModelName(this.state.name);
@@ -113,7 +113,7 @@ export default class Model extends Component {
       this.endEdit();
     }
   };
-  
+
   updateModelDescription = description => {
     if (description != this.model.description) {
       this.model.description = description;
@@ -179,10 +179,9 @@ export default class Model extends Component {
                        autoFocus={true}
                        onKeyDown={this.onAddKeyDown}
                        onChange={this.onFieldNameChange}
-                       ref={c => this.activeInput = c}/>
-                <InlineSVG styleName="plus"
-                           src={require("./plus.svg")}
-                           onClick={this.onAddField}/>
+                       inputRef={c => this.activeInput = c}
+                       icon="plus"
+                       onIconClick={this.onAddField} />
               </div>
           }
         </div>
@@ -204,7 +203,7 @@ export default class Model extends Component {
                               cancel={this.endEdit} />
       </div>
     );
-    
+
     return (
       <ContainerComponent hasTitle2={true}
                           titles={titles}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="15px" height="16px" viewBox="0 0 15 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
+    <title>users outline contacts</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Scrivener" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1---Scrivener---Sharing" transform="translate(-1115.000000, -309.000000)" fill="#6D9EE1">
+            <g id="Collaborators" transform="translate(240.000000, 60.000000)">
+                <g id="Textfield-Invite" transform="translate(300.000000, 240.000000)">
+                    <g id="users-outline-contacts" transform="translate(575.000000, 9.000000)">
+                        <g id="Layer_1">
+                            <path d="M0.5,16 L2.5,16 L11.95,16 C12.8,16 13.5,15.35 13.5,14.5 L13.5,8.5 L14.5,8.5 C14.8,8.5 15,8.3 15,8 L15,5.5 L15,3 C15,2.7 14.8,2.5 14.5,2.5 L13.5,2.5 L13.5,1.5 C13.5,0.65 12.8,0 11.95,0 L2.5,0 L0.5,0 C0.2,0 0,0.2 0,0.5 L0,15.5 C0,15.8 0.2,16 0.5,16 L0.5,16 Z M14,7.5 L13.5,7.5 L13.5,6 L14,6 L14,7.5 L14,7.5 Z M14,3.5 L14,5 L13.5,5 L13.5,3.5 L14,3.5 L14,3.5 Z M12.5,1.5 L12.5,14.5 C12.5,14.8 12.25,15 11.95,15 L3,15 L3,1 L11.95,1 C12.25,1 12.5,1.2 12.5,1.5 L12.5,1.5 Z M1,1 L2,1 L2,15 L1,15 L1,1 L1,1 Z" id="Shape"></path>
+                            <path d="M4.5,11.5 L11,11.5 C11.3,11.5 11.5,11.3 11.5,11 L11.5,9.5 C11.5,9.3 11.4,9.15 11.25,9.05 L9.55,8.05 C9.8,7.7 10,7.25 10,6.75 L10,6.25 C10,5 9,4 7.75,4 C6.5,4 5.5,5 5.5,6.25 L5.5,6.75 C5.5,7.25 5.65,7.7 5.95,8.05 L4.25,9.05 C4.1,9.15 4,9.3 4,9.5 L4,11 C4,11.3 4.2,11.5 4.5,11.5 L4.5,11.5 Z M6.5,6.25 C6.5,5.55 7.05,5 7.75,5 C8.45,5 9,5.55 9,6.25 L9,6.75 C9,7.15 8.8,7.55 8.5,7.75 L8.5,7.75 C8.25,7.9 8,8 7.75,8 C7.5,8 7.25,7.9 7.05,7.75 L7.05,7.75 C6.75,7.5 6.55,7.15 6.55,6.75 L6.55,6.25 L6.5,6.25 Z M5,9.8 L6.75,8.75 C7.05,8.9 7.4,9 7.75,9 C8.1,9 8.45,8.9 8.75,8.75 L10.5,9.8 L10.5,10.5 L5,10.5 L5,9.8 L5,9.8 Z" id="Shape"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
-import InlineSVG from 'svg-inline-react';
 
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import {getModelByName} from 'utils/data';
@@ -152,7 +151,7 @@ export default class ContentList extends Component {
             <div styleName="list">
               {
                 this.state.items.length > 0 &&
-                  <div styleName="list-item list-header">
+                  <div styleName="list-item">
                     <div styleName="colorLabel"></div>
                     <div styleName="type"></div>
                     <div styleName="updated">UPDATED</div>
@@ -198,19 +197,14 @@ export default class ContentList extends Component {
                                      suggest={this.onChangeModel}
                                      current={this.state.currentModel.name} />
                   </div>
-                  <div styleName="create-new">
-                    <InputControl styleName="input inputName"
-                                  placeholder="Create a new Content Type"
-                                  value={this.state.itemTitle}
-                                  autoFocus={true}
-                                  onChange={this.onItemTitleChange}
-                                  onKeyDown={this.onKeyDown}
-                                  inputRef={c => this.activeInput = c} />
-
-                    <InlineSVG styleName="plus"
-                               src={require("./plus.svg")}
-                               onClick={this.onAddItem} />
-                  </div>
+                  <InputControl placeholder="Create a new Content Type"
+                                value={this.state.itemTitle}
+                                autoFocus={true}
+                                icon="plus"
+                                onIconClick={this.onAddItem}
+                                onChange={this.onItemTitleChange}
+                                onKeyDown={this.onKeyDown}
+                                inputRef={c => this.activeInput = c} />
                 </div>
             }
           </div>
