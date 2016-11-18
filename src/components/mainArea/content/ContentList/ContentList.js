@@ -197,14 +197,16 @@ export default class ContentList extends Component {
                                      suggest={this.onChangeModel}
                                      current={this.state.currentModel.name} />
                   </div>
-                  <InputControl placeholder="Create a new Content Type"
-                                value={this.state.itemTitle}
-                                autoFocus={true}
-                                icon="plus"
-                                onIconClick={this.onAddItem}
-                                onChange={this.onItemTitleChange}
-                                onKeyDown={this.onKeyDown}
-                                inputRef={c => this.activeInput = c} />
+                  <div styleName="input-wrapper">
+                    <InputControl placeholder="Create a new Content Type"
+                                  value={this.state.itemTitle}
+                                  autoFocus={true}
+                                  icon="plus"
+                                  onIconClick={this.onAddItem}
+                                  onChange={this.onItemTitleChange}
+                                  onKeyDown={this.onKeyDown}
+                                  inputRef={c => this.activeInput = c} />
+                  </div>
                 </div>
             }
           </div>
