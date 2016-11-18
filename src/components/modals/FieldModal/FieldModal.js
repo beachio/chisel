@@ -138,7 +138,7 @@ export default class FieldModal extends Component {
                                  current={this.state.type} />
               </div>
 
-              <div>
+              <div styleName="input-wrapper">
                 <DropdownControl label="Appearance"
                                  suggestionsList={this.state.appList}
                                  suggest={this.onChangeAppearance}
