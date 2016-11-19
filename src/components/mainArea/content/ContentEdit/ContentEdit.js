@@ -78,7 +78,7 @@ export default class ContentEdit extends Component {
   };
 
   validate() {
-    let total = 0;
+    let isValid = true;
 
     for (let [field, value] of this.state.fields) {
       let error = null;
@@ -139,6 +139,8 @@ export default class ContentEdit extends Component {
         case ftps.FIELD_TYPE_INTEGER:
           switch (field.appearance) {
             case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
+              if (Math.floor(value) != parseFloat(value))
+                error = "You must type an integer value!";
               break;
 
             case ftps.FIELD_APPEARANCE__INTEGER__RATING:
@@ -173,10 +175,10 @@ export default class ContentEdit extends Component {
 
       this.fieldsErrors.set(field, error);
       if (error)
-        total++;
+        isValid = false;
     }
 
-    return !total;
+    return isValid;
   };
 
   onChange_SHORT_TEXT(event, field) {
@@ -197,7 +199,7 @@ export default class ContentEdit extends Component {
 
   onChange_INTEGER(event, field) {
     let str = event.target.value;
-    let value = parseInt(str);
+    let value = parseFloat(str);
     this.setState({fields: this.state.fields.set(field, value)});
   }
 
