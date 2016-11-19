@@ -158,7 +158,7 @@ export default class ContentEdit extends Component {
           }
           break;
 
-        case ftps.FIELD_TYPE_IMAGE:
+        case ftps.FIELD_TYPE_MEDIA:
           switch (field.appearance) {
             case ftps.FIELD_APPEARANCE__MEDIA__MEDIA:
               break;
@@ -207,7 +207,7 @@ export default class ContentEdit extends Component {
     this.setState({fields: this.state.fields.set(field, value)});
   }
 
-  onChange_IMAGE(event, field) {
+  onChange_MEDIA(event, field) {
     let file = event.target.files[0];
     let parseFile = new Parse.File(field.nameId, file);
     parseFile.save().then(() => {
@@ -401,7 +401,7 @@ export default class ContentEdit extends Component {
         }
         break;
 
-      case ftps.FIELD_TYPE_IMAGE:
+      case ftps.FIELD_TYPE_MEDIA:
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__MEDIA__MEDIA:
             let imgStyle = {};
@@ -413,7 +413,7 @@ export default class ContentEdit extends Component {
                 <div styleName="fileUpload">
                   <input styleName="fileUpload-input"
                          type="file"
-                         onChange={e => this.onChange_IMAGE(e, field)} />
+                         onChange={e => this.onChange_MEDIA(e, field)} />
                 </div>
               </div>
             );

@@ -5,6 +5,7 @@ import models from './models';
 import content from './content';
 import nav from './nav';
 import user from './user';
+import media from './media';
 
 
 export default combineReducers({
@@ -12,5 +13,6 @@ export default combineReducers({
   models,
   content,
   nav,
-  user
+  user,
+  media
 });

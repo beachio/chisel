@@ -143,7 +143,7 @@ export const FIELD_TYPE_INTEGER     = "Number Int";
 export const FIELD_TYPE_FLOAT       = "Number";
 export const FIELD_TYPE_BOOLEAN     = "Boolean";
 export const FIELD_TYPE_DATE        = "Date/time";
-export const FIELD_TYPE_IMAGE       = "Image";
+export const FIELD_TYPE_MEDIA       = "Media";
 export const FIELD_TYPE_JSON        = "JSON";
 export const FIELD_TYPE_REFERENCE   = "Reference";
 export const FIELD_TYPE_REFERENCES  = "References";
@@ -203,7 +203,7 @@ export const FIELD_TYPES = new Map([
   [FIELD_TYPE_DATE, [
     FIELD_APPEARANCE__DATE__DATE
   ]],
-  [FIELD_TYPE_IMAGE, [
+  [FIELD_TYPE_MEDIA, [
     FIELD_APPEARANCE__MEDIA__MEDIA
   ]],
   [FIELD_TYPE_JSON, [
