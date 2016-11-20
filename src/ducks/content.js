@@ -11,6 +11,7 @@ import {getContentForModel} from 'utils/data';
 export const INIT_END           = 'app/content/INIT_END';
 export const ITEM_ADD           = 'app/content/ITEM_ADD';
 export const ITEM_UPDATED       = 'app/content/ITEM_UPDATED';
+export const ITEM_DELETED       = 'app/content/ITEM_DELETED';
 export const SET_CURRENT_ITEM   = 'app/content/SET_CURRENT_ITEM';
 
 function requestContentItems(model, items) {
@@ -90,6 +91,18 @@ export function setCurrentItem(currentItem) {
   };
 }
 
+export function deleteItem(item) {
+  let items = store.getState().content.items;
+  items.splice(items.indexOf(item), 1);
+  
+  item.origin.destroy();
+  
+  return {
+    type: ITEM_DELETED,
+    item
+  };
+}
+
 const initialState = {
   items: [],
   currentItem: null
@@ -112,6 +125,7 @@ export default function contentReducer(state = initialState, action) {
       };
       
     case ITEM_UPDATED:
+    case ITEM_DELETED:
       return state;
   
     case SET_CURRENT_ITEM:

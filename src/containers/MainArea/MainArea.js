@@ -9,7 +9,7 @@ import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import Sharing from 'components/mainArea/sharing/Sharing';
 import Model from 'components/mainArea/models/Model/Model';
 import {addCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField} from 'ducks/models';
-import {addItem, updateItem, setCurrentItem} from 'ducks/content';
+import {addItem, updateItem, setCurrentItem, deleteItem} from 'ducks/content';
 import {addMediaItem, removeMediaItem} from 'ducks/media';
 import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, showAlert, closeModel, closeContentItem, showModal} from 'ducks/nav';
 import InlineSVG from 'svg-inline-react';
@@ -71,6 +71,8 @@ export class MainArea extends Component  {
                          models={models.currentSite.models}
                          setCurrentItem={setCurrentItem}
                          addItem={addItem}
+                         deleteItem={deleteItem}
+                         showAlert={showAlert}
                          isEditable={isEditable}/>
           );
   
@@ -115,7 +117,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     modelsActions:  bindActionCreators({addCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField}, dispatch),
-    contentActions: bindActionCreators({addItem, updateItem, setCurrentItem}, dispatch),
+    contentActions: bindActionCreators({addItem, updateItem, setCurrentItem, deleteItem}, dispatch),
     navActions:     bindActionCreators({showAlert, closeModel, closeContentItem, showModal}, dispatch),
     mediaActions:   bindActionCreators({addMediaItem, removeMediaItem}, dispatch)
   };

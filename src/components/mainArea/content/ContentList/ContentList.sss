@@ -40,6 +40,10 @@
     margin-top: 3px
     margin-bottom: 3px
     padding: 5px
+  
+    &:hover
+      .hidden-controls
+        opacity: 0.999
 
     &:first-child
       margin-top: 0
@@ -131,3 +135,22 @@
 
   &-status
     margin-top: 27px
+    
+.hidden
+  &-controls
+    opacity: 0.001
+    transition: opacity 0.1s ease
+    will-change: opacity
+    
+    display: flex
+    flex-flow: row nowrap
+    align-items: center
+  
+  &-remove
+    margin-left: 25px
+    height: 24px
+    width: 24px
+  
+  .cross
+    height: 24px
+    width: 24px

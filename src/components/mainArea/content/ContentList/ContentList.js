@@ -1,13 +1,15 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
+import InlineSVG from 'svg-inline-react';
 
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
+import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
+import InputControl from 'components/elements/InputControl/InputControl';
 import {getModelByName} from 'utils/data';
+import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
 
 import styles from './ContentList.sss';
 
-import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
-import InputControl from 'components/elements/InputControl/InputControl';
 
 const STATUS_ALL        = "STATUS_ALL";
 const STATUS_DRAFT      = "STATUS_DRAFT";
@@ -95,6 +97,19 @@ export default class ContentList extends Component {
       this.setState({activeStatus: STATUS_ALL});
     else
       this.setState({activeStatus: status});
+  };
+  
+  onRemoveClick = (event, item) => {
+    event.stopPropagation();
+    const {showAlert, deleteItem} = this.props;
+    
+    let params = {
+      type: ALERT_TYPE_CONFIRM,
+      title: `Deleting ${item.name}`,
+      description: "Are you sure?",
+      onConfirm: () => deleteItem(item)
+    };
+    showAlert(params);
   };
 
   render() {
@@ -184,6 +199,15 @@ export default class ContentList extends Component {
                         <div styleName="description">{item.model.name}</div>
                       </div>
                       <div styleName="updated">{updatedStr}</div>
+                      {
+                        isEditable &&
+                        <div styleName="hidden-controls">
+                          <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, item)}>
+                            <InlineSVG styleName="cross"
+                                       src={require("./cross.svg")}/>
+                          </div>
+                        </div>
+                      }
                     </div>
                   );
                 })
