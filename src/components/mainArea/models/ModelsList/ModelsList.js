@@ -5,6 +5,7 @@ import InlineSVG from 'svg-inline-react';
 import {checkModelName, getAlertForNameError} from 'utils/data';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
+import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
 
 import styles from './ModelsList.sss';
 
@@ -71,6 +72,19 @@ export default class ModelsList extends Component {
     const {setCurrentModel} = this.props;
     setCurrentModel(model);
   };
+  
+  onRemoveClick = (event, model) => {
+    event.stopPropagation();
+    const {showAlert, deleteModel} = this.props;
+  
+    let params = {
+      type: ALERT_TYPE_CONFIRM,
+      title: `Deleting ${model.name} model`,
+      description: "Are you sure?",
+      onConfirm: () => deleteModel(model)
+    };
+    showAlert(params);
+  };
 
   render() {
     const {isEditable} = this.props;
@@ -110,6 +124,15 @@ export default class ModelsList extends Component {
                     </div>
                     <div styleName="fields">{model.fields.length}</div>
                     <div styleName="updated">{updatedStr}</div>
+                    {
+                      isEditable &&
+                        <div styleName="hidden-controls">
+                          <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, model)}>
+                            <InlineSVG styleName="cross"
+                                       src={require("./cross.svg")}/>
+                          </div>
+                        </div>
+                    }
                   </div>
                 );
               })

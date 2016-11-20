@@ -14,6 +14,7 @@ export const SITE_UPDATED       = 'app/models/SITE_UPDATED';
 export const COLLABORATION_ADD  = 'app/models/COLLABORATION_ADD';
 export const MODEL_ADD          = 'app/models/MODEL_ADD';
 export const MODEL_UPDATED      = 'app/models/MODEL_UPDATED';
+export const MODEL_DELETED      = 'app/models/MODEL_DELETED';
 export const FIELD_ADD          = 'app/models/FIELD_ADD';
 export const FIELD_UPDATED      = 'app/models/FIELD_UPDATED';
 export const FIELD_DELETED      = 'app/models/FIELD_DELETED';
@@ -271,6 +272,18 @@ export function setCurrentModel(currentModel) {
   };
 }
 
+export function deleteModel(model) {
+  let models = store.getState().models.currentSite.models;
+  models.splice(models.indexOf(model), 1);
+  
+  model.origin.destroy();
+  
+  return {
+    type: MODEL_DELETED,
+    model
+  };
+}
+
 function changeTitleField(field, value = true) {
   field.isTitle = value;
   field.updateOrigin();
@@ -392,6 +405,7 @@ export default function modelsReducer(state = initialState, action) {
     case COLLABORATION_ADD:
     case MODEL_ADD:
     case MODEL_UPDATED:
+    case MODEL_DELETED:
     case FIELD_ADD:
     case FIELD_UPDATED:
     case FIELD_DELETED:
