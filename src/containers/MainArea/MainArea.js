@@ -94,7 +94,7 @@ export class MainArea extends Component  {
                    addCollaboration={addCollaboration}
                    showAlert={showAlert}
                    alertShowing={nav.alertShowing}
-                   isEditable={isEditable} />
+                   isEditable={models.isOwner} />
         );
     }
 

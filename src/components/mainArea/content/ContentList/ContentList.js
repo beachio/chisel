@@ -201,12 +201,12 @@ export default class ContentList extends Component {
                       <div styleName="updated">{updatedStr}</div>
                       {
                         isEditable &&
-                        <div styleName="hidden-controls">
-                          <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, item)}>
-                            <InlineSVG styleName="cross"
-                                       src={require("./cross.svg")}/>
+                          <div styleName="hidden-controls">
+                            <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, item)}>
+                              <InlineSVG styleName="cross"
+                                         src={require("./cross.svg")}/>
+                            </div>
                           </div>
-                        </div>
                       }
                     </div>
                   );

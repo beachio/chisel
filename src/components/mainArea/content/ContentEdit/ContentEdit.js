@@ -235,6 +235,8 @@ export default class ContentEdit extends Component {
   }
 
   generateElement(field, value) {
+    const {isEditable} = this.props;
+    
     let inner;
 
     switch (field.type) {
@@ -249,6 +251,7 @@ export default class ContentEdit extends Component {
                 <input styleName="input"
                        ref={field.nameId}
                        value={value}
+                       readOnly={!isEditable}
                        onChange={e => this.onChange_SHORT_TEXT(e, field)} />
               </div>
             );
@@ -260,6 +263,7 @@ export default class ContentEdit extends Component {
                 <input styleName="input"
                        ref={field.nameId}
                        value={value}
+                       readOnly={!isEditable}
                        onChange={e => this.onChange_SHORT_TEXT(e, field)} />
               </div>
             );
@@ -271,6 +275,7 @@ export default class ContentEdit extends Component {
                 <input styleName="input"
                        ref={field.nameId}
                        value={value}
+                       readOnly={!isEditable}
                        onChange={e => this.onChange_SHORT_TEXT(e, field)} />
               </div>
             );
@@ -289,6 +294,7 @@ export default class ContentEdit extends Component {
                 <input styleName="input"
                        ref={field.nameId}
                        value={value}
+                       readOnly={!isEditable}
                        onChange={e => this.onChange_LONG_TEXT(e, field)} />
               </div>
             );
@@ -299,6 +305,7 @@ export default class ContentEdit extends Component {
               <textarea styleName="textarea"
                         ref={field.nameId}
                         value={value}
+                        readOnly={!isEditable}
                         onChange={e => this.onChange_LONG_TEXT(e, field)} />
             );
             break;
@@ -308,6 +315,7 @@ export default class ContentEdit extends Component {
               <textarea styleName="textarea"
                         ref={field.nameId}
                         value={value}
+                        readOnly={!isEditable}
                         onChange={e => this.onChange_LONG_TEXT(e, field)} />
             );
             break;
@@ -325,6 +333,7 @@ export default class ContentEdit extends Component {
                 <input styleName="input"
                        ref={field.nameId}
                        value={value}
+                       readOnly={!isEditable}
                        onChange={e => this.onChange_FLOAT(e, field)} />
               </div>
             );
@@ -343,6 +352,7 @@ export default class ContentEdit extends Component {
                 <input styleName="input"
                        ref={field.nameId}
                        value={value}
+                       readOnly={!isEditable}
                        onChange={e => this.onChange_INTEGER(e, field)}/>
               </div>
             );
@@ -354,6 +364,7 @@ export default class ContentEdit extends Component {
                 <input styleName="input"
                        ref={field.nameId}
                        value={value}
+                       readOnly={!isEditable}
                        onChange={e => this.onChange_INTEGER(e, field)}/>
               </div>
             );
@@ -437,11 +448,13 @@ export default class ContentEdit extends Component {
             inner = (
               <div styleName="input-wrapper">
                 <Flatpickr value={value}
+                           data-click-opens={isEditable}
                            data-alt-input="true"
                            data-alt-format="F j, Y"
                            onChange={(obj, str, ins) => this.onChange_DATE(str, field)} />
                 <TimePicker showSecond={false}
                             value={time}
+                            disabled={!isEditable}
                             onChange={e => this.onChange_TIME(e, field)} />
               </div>
             );
@@ -470,11 +483,14 @@ export default class ContentEdit extends Component {
   }
 
   generateContent() {
+    const {isEditable} = this.props;
+    
     let content = [];
     for (let [field, value] of this.state.fields) {
       let elm = this.generateElement(field, value);
       content.push(elm);
     }
+    
     return (
       <div styleName="content">
         <div styleName="field-title status">
@@ -485,20 +501,23 @@ export default class ContentEdit extends Component {
         </div>
 
         {content}
-
-        <div styleName="buttons-wrapper">
-            {
-              ///!this.item.published &&
+  
+        {
+          isEditable &&
+            <div styleName="buttons-wrapper">
+              {
+                ///!this.item.published &&
                 <div styleName="button-publish">
                   <ButtonControl color="green"
                                  value="Publish"
-                                 onClick={this.onPublish} />
+                                 onClick={this.onPublish}/>
                 </div>
-            }
-          <ButtonControl color="gray"
-                         value="Discard changes"
-                         onClick={this.onDiscard} />
-        </div>
+              }
+              <ButtonControl color="gray"
+                             value="Discard changes"
+                             onClick={this.onDiscard}/>
+            </div>
+        }
       </div>
     );
   }
@@ -512,7 +531,7 @@ export default class ContentEdit extends Component {
       <div>
         <EditableTitleControl text={this.state.title}
                               placeholder={"Item title"}
-                              update={this.updateItemTitle}
+                              update={isEditable ? this.updateItemTitle : null}
                               cancel={this.endEdit} />
         <EditableTitleControl text={this.item.model.name}
                               isSmall={true} />

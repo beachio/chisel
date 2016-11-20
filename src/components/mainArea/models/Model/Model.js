@@ -143,9 +143,13 @@ export default class Model extends Component {
               this.state.fields.map(field => {
                 let colorStyle = {background: field.color};
                 let key = field.origin && field.origin.id ? field.origin.id : Math.random();
+                
+                let style = "list-item";
+                if (isEditable)
+                  style += " list-item_pointer";
 
                 return (
-                  <div styleName="list-item"
+                  <div styleName={style}
                        key={key}
                        onClick={() => this.onFieldClick(field)}>
                     <div styleName="list-item-color" style={colorStyle}></div>
@@ -193,13 +197,13 @@ export default class Model extends Component {
         <EditableTitleControl text={this.model.name}
                               placeholder={"Model name"}
                               alertShowing={alertShowing}
-                              update={this.updateModelName}
+                              update={isEditable ? this.updateModelName : null}
                               cancel={this.endEdit} />
         <EditableTitleControl text={this.model.description}
                               placeholder={"Model description"}
                               isSmall={true}
                               alertShowing={alertShowing}
-                              update={this.updateModelDescription}
+                              update={isEditable ? this.updateModelDescription : null}
                               cancel={this.endEdit} />
       </div>
     );
