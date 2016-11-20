@@ -25,7 +25,7 @@ export class MediaItemData {
   
   updateOrigin() {
     if (!this.origin)
-      this.origin = new MediaStorageData.OriginClass;
+      this.origin = new MediaItemData.OriginClass;
     
     this.origin.set("name", this.name);
     this.origin.set("type", this.type);

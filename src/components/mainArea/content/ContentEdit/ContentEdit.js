@@ -14,7 +14,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
-import {filterSpecials} from 'utils/common';
+import {filterSpecials, trimFileExt} from 'utils/common';
 
 import * as ftps from 'models/ModelData';
 
@@ -208,9 +208,11 @@ export default class ContentEdit extends Component {
   }
 
   onChange_MEDIA(event, field) {
+    const {addMediaItem} = this.props;
     let file = event.target.files[0];
-    let parseFile = new Parse.File(field.nameId, file);
+    let parseFile = new Parse.File(file.name, file, file.type);
     parseFile.save().then(() => {
+      addMediaItem(parseFile, trimFileExt(file.name), file.type);
       this.setState({fields: this.state.fields.set(field, parseFile)});
     });
   }

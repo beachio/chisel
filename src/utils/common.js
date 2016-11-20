@@ -24,3 +24,11 @@ export function getRandomColor() {
   let blue  = Math.floor(Math.random() * 256);
   return `rgba(${red}, ${green}, ${blue}, 1)`;
 }
+
+export function trimFileExt(name) {
+  let ind = name.lastIndexOf('.');
+  if (ind > 0)
+    return name.slice(0, ind);
+  else
+    return name;
+}

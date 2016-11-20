@@ -35,7 +35,7 @@ export function init() {
   };
 }
 
-export function add(file, type, name) {
+export function addMediaItem(file, name, type) {
   let item = new MediaItemData();
   
   item.file = file;
@@ -52,7 +52,7 @@ export function add(file, type, name) {
   };
 }
 
-export function removeField(item) {
+export function removeMediaItem(item) {
   item.origin.destroy();
   
   return {
@@ -66,6 +66,7 @@ const initialState = {
 };
 
 export default function mediaReducer(state = initialState, action) {
+  let items;
   switch (action.type) {
     case INIT_END:
       return {
@@ -74,7 +75,7 @@ export default function mediaReducer(state = initialState, action) {
       };
   
     case ITEM_ADD:
-      let items = state.items;
+      items = state.items;
       items.push(action.item);
       return {
         ...state,
@@ -82,7 +83,7 @@ export default function mediaReducer(state = initialState, action) {
       };
   
     case ITEM_DELETE:
-      let items = state.items;
+      items = state.items;
       items.splice(items.indexOf(action.item), 1);
       return {
         ...state,
