@@ -1,51 +1,51 @@
 .SwitchControl
 
-.checkbox
-  vertical-align: top
-  margin: 0 3px 0 0
-
-.label
-  font-weight: 600
-  font-size: 13px
-  color: #666666
-  letter-spacing: 0.5px
-  user-select: none
-
-.checkbox + .label
-  cursor: pointer
-
-.checkbox:not(checked)
-  position: absolute
-  opacity: 0
-
-.checkbox:not(checked) + .label
-  position: relative
-  padding: 0 0 0 102px
-
-.checkbox:not(checked) + .label:before
-  content: ''
-  position: absolute
-  top: -5px
-  left: 0px
-  width: 58px
-  height: 28px
-  border-radius: 100px
-  background: #D8D8D8
-
-.checkbox:not(checked) + .label:after
-  content: ''
-  position: absolute
-  top: -5px
-  left: 0px
-  width: 28px
-  height: 28px
-  border-radius: 100%
-  background: #FFF
-  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.50)
-  transition: all .2s
-
-.checkbox:checked + .label:before
-  background: #4990E2
-
-.checkbox:checked + .label:after
-  left: 30px
+  .checkbox
+    vertical-align: top
+    margin: 0 3px 0 0
+  
+  .label
+    font-weight: 600
+    font-size: 13px
+    color: #666666
+    letter-spacing: 0.5px
+    user-select: none
+  
+  .checkbox + .label
+    cursor: pointer
+  
+  .checkbox:not(checked)
+    position: absolute
+    opacity: 0
+  
+  .checkbox:not(checked) + .label
+    position: relative
+    padding: 0 0 0 102px
+  
+  .checkbox:not(checked) + .label:before
+    content: ''
+    position: absolute
+    top: -5px
+    left: 0px
+    width: 58px
+    height: 28px
+    border-radius: 100px
+    background: #D8D8D8
+  
+  .checkbox:not(checked) + .label:after
+    content: ''
+    position: absolute
+    top: -5px
+    left: 0px
+    width: 28px
+    height: 28px
+    border-radius: 100%
+    background: #FFF
+    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.50)
+    transition: all .2s
+  
+  .checkbox:checked + .label:before
+    background: #4990E2
+  
+  .checkbox:checked + .label:after
+    left: 30px

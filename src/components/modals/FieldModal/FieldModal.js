@@ -65,8 +65,7 @@ export default class FieldModal extends Component {
     this.setState({appearance});
   };
 
-  onChangeIsTitle = event => {
-    let isTitle = event.target.checked;
+  onChangeIsTitle = isTitle => {
     this.setState({isTitle});
   };
 

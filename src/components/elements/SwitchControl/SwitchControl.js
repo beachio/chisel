@@ -7,18 +7,23 @@ import styles from './SwitchControl.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class SwitchControl extends Component {
+  id = '0';
+  
+  componentWillMount() {
+    this.id = _.uniqueId('switch_');
+  }
+  
   render() {
     const {title, checked, onChange} = this.props;
-    let id = _.uniqueId('switch_');
     return (
       <div styleName="SwitchControl">
         <input type="checkbox"
                styleName="checkbox"
-               id={id}
+               id={this.id}
                checked={checked}
-               onChange={onChange}
+               onChange={e => onChange(e.target.checked)}
         />
-        <label styleName="label" htmlFor={id}>{title}</label>
+        <label styleName="label" htmlFor={this.id}>{title}</label>
       </div>
     );
   }
