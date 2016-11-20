@@ -139,6 +139,8 @@ export default class ContentEdit extends Component {
         case ftps.FIELD_TYPE_INTEGER:
           switch (field.appearance) {
             case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
+              if (!value)
+                value = 0;
               if (Math.floor(value) != parseFloat(value))
                 error = "You must type an integer value!";
               break;
