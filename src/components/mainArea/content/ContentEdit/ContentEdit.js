@@ -407,9 +407,10 @@ export default class ContentEdit extends Component {
             break;
 
           case ftps.FIELD_APPEARANCE__BOOLEAN__SWITCH:
+            let onChange = v => this.onChange_BOOLEAN(v, field);
             inner = (
               <div styleName="switch-wrapper">
-                <SwitchControl checked={value} onChange={v => this.onChange_BOOLEAN(v, field)}/>
+                <SwitchControl checked={value} onChange={isEditable ? onChange : null}/>
               </div>
             );
             break;

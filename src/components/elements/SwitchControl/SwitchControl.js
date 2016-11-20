@@ -13,15 +13,21 @@ export default class SwitchControl extends Component {
     this.id = _.uniqueId('switch_');
   }
   
+  onChange = e => {
+    const {onChange} = this.props;
+    if (onChange)
+      onChange(e.target.checked);
+  };
+  
   render() {
-    const {title, checked, onChange} = this.props;
+    const {title, checked} = this.props;
     return (
       <div styleName="SwitchControl">
         <input type="checkbox"
                styleName="checkbox"
                id={this.id}
                checked={checked}
-               onChange={e => onChange(e.target.checked)}
+               onChange={this.onChange}
         />
         <label styleName="label" htmlFor={this.id}>{title}</label>
       </div>
