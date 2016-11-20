@@ -224,11 +224,14 @@ export function updateSite(site) {
   };
 }
 
-export function addCollaboration(collab) {
-  let currentSite = store.getState().models.currentSite;
-  currentSite.collaborations.push(collab);
+export function addCollaboration(user) {
+  let collab = new CollaborationData();
+  collab.user = user;
   
+  let currentSite = store.getState().models.currentSite;
   collab.site = currentSite;
+  
+  currentSite.collaborations.push(collab);
   collab.updateOrigin();
   collab.origin.save();
   

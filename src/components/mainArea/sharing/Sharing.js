@@ -4,7 +4,7 @@ import InlineSVG from 'svg-inline-react';
 import Gravatar from 'react-gravatar';
 
 import {ROLE_ADMIN, ROLE_EDITOR, CollaborationData} from 'models/UserData';
-import {getUser, checkCollaboration} from 'utils/data';
+import {getUser, checkCollaboration, COLLAB_CORRECT, COLLAB_ERROR_EXIST, COLLAB_ERROR_SELF} from 'utils/data';
 
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
@@ -55,6 +55,35 @@ export default class Sharing extends Component {
 
   onAddCollaboration = event => {
     getUser(this.state.input)
+      .then(user => {
+        let params;
+        let error = checkCollaboration(user);
+        
+        switch (error) {
+          case COLLAB_CORRECT:
+            this.props.addCollaboration(user);
+            this.setState({input: ""});
+            break;
+            
+          case COLLAB_ERROR_SELF:
+            params = {
+              title: "Error",
+              description: "You are trying to add yourself!",
+              buttonText: "OK"
+            };
+            this.props.showAlert(params);
+            break;
+  
+          case COLLAB_ERROR_EXIST:
+            params = {
+              title: "Error",
+              description: "This user is also exist",
+              buttonText: "OK"
+            };
+            this.props.showAlert(params);
+            break;
+        }
+      })
       .catch(() => {
         let params = {
           title: "Error",
@@ -62,19 +91,8 @@ export default class Sharing extends Component {
           buttonText: "OK"
         };
         this.props.showAlert(params);
-      })
-      .then(user => {
-        if (!checkCollaboration(user))
-          return;
-
-        let collab = new CollaborationData();
-        collab.user = user;
-        this.props.addCollaboration(collab);
-
-        this.setState({input: ""});
       });
   };
-
 
   render() {
     const {owner, isEditable} = this.props;

@@ -102,20 +102,24 @@ export function getUser(email) {
   });
 }
 
+export const COLLAB_CORRECT     = 0;
+export const COLLAB_ERROR_EXIST = 1;
+export const COLLAB_ERROR_SELF  = 2;
+
 export function checkCollaboration(user) {
   if (!user)
-    return false;
+    return COLLAB_ERROR_EXIST;
   
-  if (user.origin == Parse.User.current())
-    return false;
+  if (user.email == Parse.User.current().get('email'))
+    return COLLAB_ERROR_SELF;
   
   let collabs = store.getState().models.currentSite.collaborations;
   for (let collab of collabs) {
     if (collab.user.origin.id == user.origin.id)
-      return false;
+      return COLLAB_ERROR_EXIST;
   }
   
-  return true;
+  return COLLAB_CORRECT;
 }
 
 export function modelToJSON(model) {
