@@ -20,7 +20,7 @@ import EditableTitleControl from 'components/elements/EditableTitleControl/Edita
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {filterSpecials, trimFileExt} from 'utils/common';
-import {MODAL_TYPE_MEDIA} from 'ducks/nav';
+import {MODAL_TYPE_MEDIA, MODAL_TYPE_WYSIWYG} from 'ducks/nav';
 import {store} from 'index';
 
 import * as ftps from 'models/ModelData';
@@ -205,6 +205,8 @@ export default class ContentEdit extends Component {
     this.setState({fields: this.state.fields.set(field, value)});
   }
 
+
+
   onChange_FLOAT(event, field) {
     let str = event.target.value;
     let value = parseFloat(str);
@@ -252,6 +254,10 @@ export default class ContentEdit extends Component {
       let item = items[items.length - 1];
       this.setState({fields: this.state.fields.set(field, item)});
     });
+  }
+
+  onShowWysiwygModal(field) {
+    this.props.showModal(MODAL_TYPE_WYSIWYG, field);
   }
 
   generateElement(field, value) {
@@ -340,9 +346,10 @@ export default class ContentEdit extends Component {
             title = (
               <div styleName="field-title">
                 {field.name}
-                <a href="#" styleName="link">
+                <div styleName="link"
+                     onClick={() => this.onShowWysiwygModal(field)} >
                   <InlineSVG styleName="link-icon" src={require('./link.svg')}/>
-                </a>
+                </div>
               </div>
             );
             inner = (
