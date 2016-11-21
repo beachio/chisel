@@ -47,24 +47,18 @@
     color: red
 
 
-  .media
+  .reference
     display: flex
-    flex-flow: row nowrap
-    align-items: flex-start
-
-    overflow-x: scroll
-    min-height: 190px
+    flex-flow: column nowrap
 
     &-item
       position: relative
-      overflow: hidden
-
-      display: flex
-      flex-flow: column nowrap
-      flex: 0 0 310px
-
+      padding: 11px 38px
+      margin-top: 10px
+      font-size: 24px;
+      color: #666666;
+      letter-spacing: 0.54px;
       cursor: pointer
-      margin-right: 25px
 
       background: rgba(255,255,255,0.80)
       border: 2px solid #DDDDDD
@@ -74,13 +68,13 @@
       transition: border-color 0.2s ease
       will-change: border-color
 
-      &:last-child
-        margin-right: 0
+      &:first-child
+        margin-top: 0
 
       &:hover
         border-color: #6D9EE1
 
-      &.media-chosen
+      &.reference-chosen
         border-color: #6D9EE1
 
         &:after
@@ -92,14 +86,3 @@
           position: absolute
           top: 10px
           right: 10px
-
-    &-header
-      font-size: 24px
-      color: #666666
-      letter-spacing: 0.54px
-
-      padding: 11px 38px
-
-    &-content
-      height: 108px
-      background: url('./image-3.jpg') no-repeat center center / cover

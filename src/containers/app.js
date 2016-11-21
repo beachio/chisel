@@ -10,6 +10,7 @@ import Sign from 'containers/Sign/Sign';
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import FieldModal from 'components/modals/FieldModal/FieldModal';
 import MediaModal from 'components/modals/MediaModal/MediaModal';
+import ReferenceModal from 'components/modals/ReferenceModal/ReferenceModal';
 import AlertModal from 'components/modals/AlertModal/AlertModal';
 import {closeAlert, closeModal, MODAL_TYPE_FIELD} from 'ducks/nav';
 import {updateField} from 'ducks/models';
