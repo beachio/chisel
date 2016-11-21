@@ -93,6 +93,29 @@ export default class Sharing extends Component {
         this.props.showAlert(params);
       });
   };
+  
+  onRoleClick(e, index) {
+    e.stopPropagation();
+    
+    let collaborations = this.state.collaborations;
+    let collab = collaborations[index];
+    if (collab.role == ROLE_ADMIN)
+      collab.role = ROLE_EDITOR;
+    else if (collab.role == ROLE_EDITOR)
+      collab.role = ROLE_ADMIN;
+    
+    this.setState({collaborations});
+    this.props.updateCollaboration(collab);
+  }
+  
+  onDeleteClick(e, collab) {
+    e.stopPropagation();
+    
+    let collaborations = this.state.collaborations;
+    collaborations.splice(collaborations.indexOf(collab), 1);
+    this.setState({collaborations});
+    this.props.deleteCollaboration(collab);
+  }
 
   render() {
     const {owner, isEditable} = this.props;
@@ -110,12 +133,12 @@ export default class Sharing extends Component {
                   <div styleName="name">{owner.firstName} {owner.lastName}</div>
                   <div styleName="email">{owner.email}</div>
                 </div>
-                <div styleName="owner">
+                <div styleName="role">
                   OWNER
                 </div>
               </div>
               {
-                this.state.collaborations.map(collaboration => {
+                this.state.collaborations.map((collaboration, index) => {
                   return(
                     <div styleName="list-item" key={collaboration.user.email}>
                       <div styleName="avatar">
@@ -125,16 +148,16 @@ export default class Sharing extends Component {
                         <div styleName="name">{collaboration.user.firstName} {collaboration.user.lastName} </div>
                         <div styleName="email">{collaboration.user.email}</div>
                       </div>
+                      <div styleName="role" onClick={event => this.onRoleClick(event, index)}>
+                        {collaboration.role == ROLE_ADMIN ? "ADMIN" : "EDITOR"}
+                      </div>
                       {
-                        collaboration.role == ROLE_ADMIN &&
-                          <div styleName="owner">
-                            ADMIN
-                          </div>
-                      }
-                      {
-                        collaboration.role == ROLE_EDITOR &&
-                          <div styleName="owner">
-                            EDITOR
+                        isEditable &&
+                          <div styleName="hidden-controls">
+                            <div styleName="hidden-remove" onClick={event => this.onDeleteClick(event, collaboration)}>
+                              <InlineSVG styleName="cross"
+                                         src={require("./cross.svg")}/>
+                            </div>
                           </div>
                       }
                     </div>

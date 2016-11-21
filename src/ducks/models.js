@@ -7,20 +7,22 @@ import {getRandomColor} from 'utils/common';
 import {LOGOUT} from './user';
 
 
-export const INIT_END           = 'app/models/INIT_END';
+export const INIT_END             = 'app/models/INIT_END';
 
-export const SITE_ADD           = 'app/models/SITE_ADD';
-export const SITE_UPDATED       = 'app/models/SITE_UPDATED';
-export const COLLABORATION_ADD  = 'app/models/COLLABORATION_ADD';
-export const MODEL_ADD          = 'app/models/MODEL_ADD';
-export const MODEL_UPDATED      = 'app/models/MODEL_UPDATED';
-export const MODEL_DELETED      = 'app/models/MODEL_DELETED';
-export const FIELD_ADD          = 'app/models/FIELD_ADD';
-export const FIELD_UPDATED      = 'app/models/FIELD_UPDATED';
-export const FIELD_DELETED      = 'app/models/FIELD_DELETED';
+export const SITE_ADD             = 'app/models/SITE_ADD';
+export const SITE_UPDATED         = 'app/models/SITE_UPDATED';
+export const COLLABORATION_ADD    = 'app/models/COLLABORATION_ADD';
+export const COLLABORATION_UPDATE = 'app/models/COLLABORATION_UPDATE';
+export const COLLABORATION_DELETE = 'app/models/COLLABORATION_DELETE';
+export const MODEL_ADD            = 'app/models/MODEL_ADD';
+export const MODEL_UPDATED        = 'app/models/MODEL_UPDATED';
+export const MODEL_DELETED        = 'app/models/MODEL_DELETED';
+export const FIELD_ADD            = 'app/models/FIELD_ADD';
+export const FIELD_UPDATED        = 'app/models/FIELD_UPDATED';
+export const FIELD_DELETED        = 'app/models/FIELD_DELETED';
 
-export const SET_CURRENT_SITE   = 'app/models/SET_CURRENT_SITE';
-export const SET_CURRENT_MODEL  = 'app/models/SET_CURRENT_MODEL';
+export const SET_CURRENT_SITE     = 'app/models/SET_CURRENT_SITE';
+export const SET_CURRENT_MODEL    = 'app/models/SET_CURRENT_MODEL';
 
 
 function requestCollaborationsPre() {
@@ -211,14 +213,9 @@ export function addSite(site) {
 }
 
 export function updateSite(site) {
-  let sites = store.getState().models.sites;
-  for (let _site of sites) {
-    if (site == _site) {
-      site.updateOrigin();
-      site.origin.save();
-      break;
-    }
-  }
+  site.updateOrigin();
+  site.origin.save();
+  
   return {
     type: SITE_UPDATED
   };
@@ -237,6 +234,26 @@ export function addCollaboration(user) {
   
   return {
     type: COLLABORATION_ADD
+  };
+}
+
+export function updateCollaboration(collab) {
+  collab.updateOrigin();
+  collab.origin.save();
+  
+  return {
+    type: COLLABORATION_UPDATE
+  };
+}
+
+export function deleteCollaboration(collab) {
+  let collabs = store.getState().models.currentSite.collaborations;
+  collabs.splice(collabs.indexOf(collab), 1);
+  
+  collab.origin.destroy();
+  
+  return {
+    type: COLLABORATION_DELETE
   };
 }
 
@@ -406,6 +423,8 @@ export default function modelsReducer(state = initialState, action) {
   
     case SITE_UPDATED:
     case COLLABORATION_ADD:
+    case COLLABORATION_UPDATE:
+    case COLLABORATION_DELETE:
     case MODEL_ADD:
     case MODEL_UPDATED:
     case MODEL_DELETED:
