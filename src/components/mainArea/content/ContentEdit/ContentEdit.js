@@ -471,11 +471,13 @@ export default class ContentEdit extends Component {
               inner = (
                 <div styleName="media">
                   <div styleName="media-buttons">
-                    <input type="file"
-                           styleName="media-button media-upload"
-                           onClick={e => this.onMediaNew(e, field)}>
+                    <div type="file" styleName="media-button media-upload">
                       Upload New
-                    </input>
+                      <input styleName='media-hidden'
+                             type="file"
+                             onChange={e => this.onMediaNew(e, field)}
+                             />
+                    </div>
                     <div styleName="media-button media-insert"
                          onClick={() => this.onMediaChoose(field)}>
                       Insert Existing

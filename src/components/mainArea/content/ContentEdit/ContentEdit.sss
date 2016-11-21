@@ -182,7 +182,6 @@
 
   &-buttons
     flex: 0 0 100%
-
     display: flex
     flex-flow: row nowrap
 
@@ -202,6 +201,7 @@
     will-change: border-color
 
     cursor: pointer
+    position: relative
 
     &:hover
       border-color: #258BF8
@@ -212,6 +212,14 @@
 
   &-insert
     padding: 9px 30px 10px 20px
+
+  &-hidden
+    width: 100%
+    height: 100%
+    opacity: 0
+    position: absolute
+    left: 0
+    top: 0
 
   &-item
     position: relative
