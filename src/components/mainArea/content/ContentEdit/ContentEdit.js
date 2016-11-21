@@ -332,6 +332,9 @@ export default class ContentEdit extends Component {
             title = (
               <div styleName="field-title">
                 {field.name}
+                <a href="#" styleName="link">
+                  <InlineSVG styleName="link-icon" src={require('./link.svg')}/>
+                </a>
               </div>
             );
             inner = (
@@ -505,13 +508,13 @@ export default class ContentEdit extends Component {
 
   generateContent() {
     const {isEditable} = this.props;
-    
+
     let content = [];
     for (let [field, value] of this.state.fields) {
       let elm = this.generateElement(field, value);
       content.push(elm);
     }
-    
+
     return (
       <div styleName="content">
         <div styleName="field-title status">
@@ -522,7 +525,7 @@ export default class ContentEdit extends Component {
         </div>
 
         {content}
-  
+
         {
           isEditable &&
             <div styleName="buttons-wrapper">
