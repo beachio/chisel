@@ -452,7 +452,7 @@ export default class ContentEdit extends Component {
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__MEDIA__MEDIA:
 
-            if (!value && value.file) {
+            if (value && value.file) {
               let imgStyle = {backgroundImage: `url(${value.file.url()})`};
               inner = (
                 <div styleName="media">
@@ -473,10 +473,9 @@ export default class ContentEdit extends Component {
                   <div styleName="media-buttons">
                     <div type="file" styleName="media-button media-upload">
                       Upload New
-                      <input styleName='media-hidden'
+                      <input styleName="media-hidden"
                              type="file"
-                             onChange={e => this.onMediaNew(e, field)}
-                             />
+                             onChange={e => this.onMediaNew(e, field)} />
                     </div>
                     <div styleName="media-button media-insert"
                          onClick={() => this.onMediaChoose(field)}>
