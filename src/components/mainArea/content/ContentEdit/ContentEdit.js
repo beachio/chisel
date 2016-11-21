@@ -521,9 +521,19 @@ export default class ContentEdit extends Component {
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__REFERENCE__REFERENCE:
             inner = (
-              <div styleName="media">
-                <div styleName="media-button media-insert">
-                  Insert Existing
+              <div styleName="reference">
+                <div styleName="reference-buttons">
+                  <div styleName="reference-button reference-new">
+                    Create new entry
+                  </div>
+                  <div styleName="reference-button reference-insert">
+                    Insert Existing Entry
+                  </div>
+                </div>
+
+                <div styleName="reference-item">
+                  <input type="text" placeholder="My Reference Title" value="My Reference Title" />
+                  <InlineSVG styleName="reference-cross" src={require('./cross.svg')}/>
                 </div>
               </div>
             );
