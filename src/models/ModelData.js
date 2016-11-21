@@ -173,7 +173,7 @@ export const FIELD_APPEARANCE__MEDIA__MEDIA         = "Media";
 
 export const FIELD_APPEARANCE__JSON__JSON           = "Date & time";
 
-export const FIELD_APPEARANCE__REFERENCE__DATE      = "Reference";
+export const FIELD_APPEARANCE__REFERENCE__REFERENCE = "Reference";
 
 
 export const FIELD_TYPES = new Map([
@@ -210,7 +210,7 @@ export const FIELD_TYPES = new Map([
     FIELD_APPEARANCE__JSON__JSON
   ]],
   [FIELD_TYPE_REFERENCE, [
-    FIELD_APPEARANCE__REFERENCE__DATE
+    FIELD_APPEARANCE__REFERENCE__REFERENCE
   ]]
 ]);
 

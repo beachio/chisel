@@ -517,6 +517,20 @@ export default class ContentEdit extends Component {
         }
         break;
 
+      case ftps.FIELD_TYPE_REFERENCE:
+        switch (field.appearance) {
+          case ftps.FIELD_APPEARANCE__REFERENCE__REFERENCE:
+            inner = (
+              <div styleName="media">
+                <div styleName="media-button media-insert">
+                  Insert Existing
+                </div>
+              </div>
+            );
+            break;
+        }
+        break;
+
     }
 
     let error = this.fieldsErrors.get(field);
