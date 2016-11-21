@@ -82,6 +82,7 @@ export class MainArea extends Component  {
                          onClose={closeContentItem}
                          updateItem={updateItem}
                          addMediaItem={addMediaItem}
+                         showModal={showModal}
                          isEditable={isEditable} />
           );
 

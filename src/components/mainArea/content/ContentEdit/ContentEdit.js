@@ -20,6 +20,8 @@ import EditableTitleControl from 'components/elements/EditableTitleControl/Edita
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {filterSpecials, trimFileExt} from 'utils/common';
+import {MODAL_TYPE_MEDIA} from 'ducks/nav';
+import {store} from 'index';
 
 import * as ftps from 'models/ModelData';
 
@@ -219,16 +221,6 @@ export default class ContentEdit extends Component {
     this.setState({fields: this.state.fields.set(field, value)});
   }
 
-  onChange_MEDIA(event, field) {
-    const {addMediaItem} = this.props;
-    let file = event.target.files[0];
-    let parseFile = new Parse.File(file.name, file, file.type);
-    parseFile.save().then(() => {
-      addMediaItem(parseFile, trimFileExt(file.name), file.type);
-      this.setState({fields: this.state.fields.set(field, parseFile)});
-    });
-  }
-
   onChange_DATE(dateStr, field) {
     if (dateStr) {
       let date = new Date(dateStr);
@@ -244,6 +236,22 @@ export default class ContentEdit extends Component {
     date.setHours(time.hour());
     date.setMinutes(time.minute());
     this.setState({fields: this.state.fields.set(field, date)});
+  }
+
+  onMediaChoose(field) {
+    this.props.showModal(MODAL_TYPE_MEDIA, field);
+  }
+
+  onMediaNew(event, field) {
+    const {addMediaItem} = this.props;
+    let file = event.target.files[0];
+    let parseFile = new Parse.File(filterSpecials(file.name), file, file.type);
+    parseFile.save().then(() => {
+      addMediaItem(parseFile, trimFileExt(file.name), file.type);
+      let items = store.getState().media.items;
+      let item = items[items.length - 1];
+      this.setState({fields: this.state.fields.set(field, item)});
+    });
   }
 
   generateElement(field, value) {
@@ -443,26 +451,39 @@ export default class ContentEdit extends Component {
       case ftps.FIELD_TYPE_MEDIA:
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__MEDIA__MEDIA:
-            let imgStyle = {};
-            // if (value)
-              // imgStyle = {backgroundImage: `url(${value.file.url()})`};
 
-            inner = (
-              <div styleName="media">
-                <div styleName="media-buttons">
-                  <div styleName="media-button media-upload">Upload New</div>
-                  <div styleName="media-button media-insert">Insert Existing</div>
-                </div>
-                <div styleName="media-item">
-                  <div styleName="media-header">
-                    <input type="text" placeholder="Image name" value="My Image Title" />
-                    <InlineSVG styleName="media-cross" src={require('./cross.svg')}/>
+            if (!value && value.file) {
+              let imgStyle = {backgroundImage: `url(${value.file.url()})`};
+              inner = (
+                <div styleName="media">
+                  <div styleName="media-item">
+                    <div styleName="media-header">
+                      <input type="text" placeholder="Image name" value={value.name} />
+                      <InlineSVG styleName="media-cross" src={require('./cross.svg')}/>
+                    </div>
+                    <div styleName="media-content" style={imgStyle}>
+                    </div>
                   </div>
-                  <div styleName="media-content" style={imgStyle}>
+                </div>
+              );
+
+            } else {
+              inner = (
+                <div styleName="media">
+                  <div styleName="media-buttons">
+                    <input type="file"
+                           styleName="media-button media-upload"
+                           onClick={e => this.onMediaNew(e, field)}>
+                      Upload New
+                    </input>
+                    <div styleName="media-button media-insert"
+                         onClick={() => this.onMediaChoose(field)}>
+                      Insert Existing
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
+              );
+            }
             break;
         }
         break;

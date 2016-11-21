@@ -147,3 +147,15 @@ export function getModelByName(name) {
   }
   return null;
 }
+
+export function getMediaByO(origin) {
+  if (!origin)
+    return null;
+
+  let items = store.getState().media.items;
+  for (let item of items) {
+    if (item.origin && item.origin.id == origin.id)
+      return item;
+  }
+  return null;
+}

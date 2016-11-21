@@ -19,6 +19,7 @@ export const PAGE_SETTINGS  = 'app/nav/pages/PAGE_SETTINGS';
 export const PAGE_SHARING   = 'app/nav/pages/PAGE_SHARING';
 
 export const MODAL_TYPE_FIELD = 'app/nav/modals/MODAL_TYPE_FIELD';
+export const MODAL_TYPE_MEDIA = 'app/nav/modals/MODAL_TYPE_MEDIA';
 
 
 

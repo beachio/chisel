@@ -37,12 +37,12 @@ export function init() {
 
 export function addMediaItem(file, name, type) {
   let item = new MediaItemData();
-  
+
   item.file = file;
   item.name = name;
   if (type)
     item.type = type;
-  
+
   item.updateOrigin();
   item.origin.save();
   

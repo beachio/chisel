@@ -12,7 +12,7 @@ import FieldModal from 'components/modals/FieldModal/FieldModal';
 import MediaModal from 'components/modals/MediaModal/MediaModal';
 import ReferenceModal from 'components/modals/ReferenceModal/ReferenceModal';
 import AlertModal from 'components/modals/AlertModal/AlertModal';
-import {closeAlert, closeModal, MODAL_TYPE_FIELD} from 'ducks/nav';
+import {closeAlert, closeModal, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA} from 'ducks/nav';
 import {updateField} from 'ducks/models';
 
 import styles from './app.sss';
@@ -38,6 +38,12 @@ class App extends React.Component {
             {
               nav.modalShowing && nav.modalType == MODAL_TYPE_FIELD &&
                 <FieldModal params={nav.modalParams}
+                            onClose={closeModal}
+                            updateField={updateField} />
+            }
+            {
+              nav.modalShowing && nav.modalType == MODAL_TYPE_MEDIA &&
+                <MediaModal params={nav.modalParams}
                             onClose={closeModal}
                             updateField={updateField} />
             }
