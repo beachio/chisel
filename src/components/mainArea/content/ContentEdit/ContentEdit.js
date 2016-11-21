@@ -8,6 +8,11 @@ import Flatpickr from 'react-flatpickr';
 import TimePicker from 'rc-time-picker';
 import 'rc-time-picker/assets/index.css';
 import moment from 'moment';
+import Editor from 'react-medium-editor';
+// load theme styles with webpack
+require('medium-editor/dist/css/medium-editor.css');
+require('medium-editor/dist/css/themes/default.css');
+
 
 import InputControl from 'components/elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
@@ -193,6 +198,11 @@ export default class ContentEdit extends Component {
     this.setState({fields: this.state.fields.set(field, value)});
   }
 
+  onChange_LONG_TEXT_WYSIWYG(text, field) {
+    let value = text;
+    this.setState({fields: this.state.fields.set(field, value)});
+  }
+
   onChange_FLOAT(event, field) {
     let str = event.target.value;
     let value = parseFloat(str);
@@ -314,11 +324,10 @@ export default class ContentEdit extends Component {
 
           case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
             inner = (
-              <textarea styleName="textarea"
-                        ref={field.nameId}
-                        value={value}
-                        readOnly={!isEditable}
-                        onChange={e => this.onChange_LONG_TEXT(e, field)} />
+              <Editor
+                text={value}
+                onChange={text => this.onChange_LONG_TEXT_WYSIWYG(text, field)}
+              />
             );
             break;
         }
