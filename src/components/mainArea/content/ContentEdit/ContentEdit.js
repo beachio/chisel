@@ -444,15 +444,22 @@ export default class ContentEdit extends Component {
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__MEDIA__MEDIA:
             let imgStyle = {};
-            if (value)
-              imgStyle = {backgroundImage: `url(${value.url()})`};
+            // if (value)
+              // imgStyle = {backgroundImage: `url(${value.file.url()})`};
 
             inner = (
-              <div styleName="image" style={imgStyle}>
-                <div styleName="fileUpload">
-                  <input styleName="fileUpload-input"
-                         type="file"
-                         onChange={e => this.onChange_MEDIA(e, field)} />
+              <div styleName="media">
+                <div styleName="media-buttons">
+                  <div styleName="media-button media-upload">Upload New</div>
+                  <div styleName="media-button media-insert">Insert Existing</div>
+                </div>
+                <div styleName="media-item">
+                  <div styleName="media-header">
+                    <input type="text" placeholder="Image name" value="My Image Title" />
+                    <InlineSVG styleName="media-cross" src={require('./cross.svg')}/>
+                  </div>
+                  <div styleName="media-content" style={imgStyle}>
+                  </div>
                 </div>
               </div>
             );

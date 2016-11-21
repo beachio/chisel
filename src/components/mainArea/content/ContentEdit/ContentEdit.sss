@@ -2,7 +2,7 @@
   display: flex
   flex-flow: column nowrap
   align-items: flex-start
-  padding: 0 10%
+  padding: 0 35px
 
   width: 100%
 
@@ -13,6 +13,9 @@
 
   display: flex
   flex-flow: column nowrap
+
+  transition: color 0.2s ease
+  will-change: color
 
   &-title,
   &-error
@@ -28,6 +31,9 @@
 
   &-error
     color: #DD5555
+
+  &:hover > .field-title
+    color: #5DAD47
 
   .link
     position: absolute
@@ -166,3 +172,94 @@
 
   .button-publish
     margin-right: 15px
+
+
+.media
+  display: flex
+  flex-flow: row wrap
+  justify-content: space-between
+  align-items: flex-start
+
+  &-buttons
+    flex: 0 0 100%
+
+    display: flex
+    flex-flow: row nowrap
+
+    margin-bottom: 20px
+
+  &-button
+    background: rgba(255,255,255,0.80)
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10)
+    border-radius: 10px
+    border: 2px solid #DDDDDD
+
+    font-size: 24px
+    color: #666666
+    letter-spacing: 0.54px
+
+    transition: border-color 0.2s ease
+    will-change: border-color
+
+    cursor: pointer
+
+    &:hover
+      border-color: #258BF8
+
+  &-upload
+    padding: 9px 36px 10px
+    margin-right: 20px
+
+  &-insert
+    padding: 9px 30px 10px 20px
+
+  &-item
+    position: relative
+    overflow: hidden
+
+    display: flex
+    flex-flow: column nowrap
+    flex: 0 0 49%
+    margin-bottom: 15px
+
+    cursor: pointer
+
+    background: rgba(255,255,255,0.80)
+    border: 2px solid #DDDDDD
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10)
+    border-radius: 10px
+
+    transition: border-color 0.2s ease
+    will-change: border-color
+
+    &:hover
+      border-color: #6D9EE1
+
+
+  &-header
+    position: relative
+
+    input
+      width: 100%
+      outline: none
+      border: none
+      background: transparent
+      font-size: 24px
+      color: #666666
+      letter-spacing: 0.54px
+      padding: 11px 38px
+
+  &-cross
+    position: absolute
+    right: 14px
+    top: 11px
+
+    cursor: pointer
+
+    svg
+      width: 24px
+      height: 24px
+
+  &-content
+    height: 108px
+    background: no-repeat center center / cover
