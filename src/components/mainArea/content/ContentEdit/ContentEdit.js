@@ -248,7 +248,13 @@ export default class ContentEdit extends Component {
 
   generateElement(field, value) {
     const {isEditable} = this.props;
-    
+
+    let title = (
+      <div styleName="field-title">
+        {field.name}
+      </div>
+    );
+
     let inner;
 
     switch (field.type) {
@@ -323,6 +329,11 @@ export default class ContentEdit extends Component {
             break;
 
           case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
+            title = (
+              <div styleName="field-title">
+                {field.name}
+              </div>
+            );
             inner = (
               <Editor
                 text={value}
@@ -480,9 +491,7 @@ export default class ContentEdit extends Component {
 
     return (
       <div styleName="field" key={field.nameId}>
-        <div styleName="field-title">
-          {field.name}
-        </div>
+        {title}
         {inner}
         {
           error &&
