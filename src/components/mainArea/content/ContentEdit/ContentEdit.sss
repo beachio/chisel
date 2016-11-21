@@ -174,7 +174,8 @@
     margin-right: 15px
 
 
-.media
+.media,
+.reference
   display: flex
   flex-flow: row wrap
   justify-content: space-between
@@ -211,7 +212,11 @@
     margin-right: 20px
 
   &-insert
+    padding: 9px 20px 10px 20px
+
+  &-new
     padding: 9px 30px 10px 20px
+    margin-right: 20px
 
   &-hidden
     width: 100%
@@ -243,8 +248,12 @@
     &:hover
       border-color: #6D9EE1
 
+  .reference-item
+    flex: 0 0 80%
 
-  &-header
+
+  &-header,
+  .reference-item
     position: relative
 
     input
