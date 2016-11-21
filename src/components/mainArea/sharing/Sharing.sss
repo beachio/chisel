@@ -84,7 +84,7 @@
     margin-top: 3px
     margin-bottom: 3px
     padding: 5px 0
-  
+
     &:hover
       .hidden-controls
         opacity: 0.999
@@ -136,6 +136,11 @@
       padding: 0 9px
       cursor: pointer
 
+      position: absolute
+      right: 45px
+      top: 50%
+      transform: translateY(-50%)
+
 
 .input-wrapper
   margin-top: 10px
@@ -151,18 +156,17 @@
     opacity: 0.001
     transition: opacity 0.1s ease
     will-change: opacity
-    
+
     display: flex
     flex-flow: row nowrap
     align-items: center
-  
+
   &-remove
     margin-left: 25px
     height: 24px
     width: 24px
     cursor: pointer
-  
+
   .cross
     height: 24px
     width: 24px
-    
