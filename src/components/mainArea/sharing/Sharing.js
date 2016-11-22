@@ -180,7 +180,7 @@ export default class Sharing extends Component {
 
 
                   <div styleName="footer">
-                    If the recipient doesn’t yet have a Scrivener account, they will be sent an invitation to join.
+                    If the recipient doesn’t yet have a Chisel account, they will be sent an invitation to join.
                   </div>
                 </div>
             }

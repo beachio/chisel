@@ -1,8 +1,8 @@
 {
-  "name": "scrivener",
+  "name": "Chisel",
   "version": "0.1.0",
   "description": "Parse CMS",
-  "main": "dist/scrivener.js",
+  "main": "dist/main.js",
   "files": [
     "src",
     "dist"
