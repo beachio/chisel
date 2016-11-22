@@ -263,7 +263,14 @@ export default class ContentEdit extends Component {
   }
 
   onShowWysiwygModal(field) {
-    this.props.showModal(MODAL_TYPE_WYSIWYG, field);
+    let fields = this.state.fields;
+    this.props.showModal(
+      MODAL_TYPE_WYSIWYG,
+      {
+        text: fields.get(field),
+        callback: text => this.setState({fields: fields.set(field, text)})
+      }
+    );
   }
 
   generateElement(field, value) {
