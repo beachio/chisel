@@ -241,7 +241,9 @@ export default class ContentEdit extends Component {
   }
 
   onMediaChoose(field) {
-    this.props.showModal(MODAL_TYPE_MEDIA, field);
+    this.props.showModal(MODAL_TYPE_MEDIA,
+      item => this.setState({fields: this.state.fields.set(field, item)})
+    );
   }
 
   onMediaNew(event, field) {

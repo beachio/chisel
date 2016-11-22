@@ -14,14 +14,13 @@ export default class MediaModal extends Component {
     selectedItem: null
   };
   onClose = null;
-  field = null;
+  callback = null;
   items = [];
 
 
   componentWillMount() {
     this.onClose = this.props.onClose;
-    this.field = this.props.params;
-    console.log(this.props);
+    this.callback = this.props.params;
     this.items = store.getState().media.items;
   }
 
@@ -30,10 +29,7 @@ export default class MediaModal extends Component {
   };
 
   onChoose = () => {
-    if (this.state.selectedItem) {
-      this.field.value = this.state.selectedItem;
-      this.props.updateField(this.field);
-    }
+    this.callback(this.state.selectedItem);
     this.onClose();
   };
 
@@ -80,6 +76,7 @@ export default class MediaModal extends Component {
               <div styleName="buttons-inner">
                 <ButtonControl color="green"
                                value="Choose"
+                               disabled={!this.state.selectedItem}
                                onClick={this.onChoose} />
               </div>
               <div styleName="buttons-inner">
