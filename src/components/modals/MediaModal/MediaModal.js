@@ -20,7 +20,7 @@ export default class MediaModal extends Component {
 
   componentWillMount() {
     this.onClose = this.props.onClose;
-    this.callback = this.props.params;
+    this.callback = this.props.params.callback;
     this.items = store.getState().media.items;
   }
 
