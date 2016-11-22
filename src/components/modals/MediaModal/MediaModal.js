@@ -20,7 +20,8 @@ export default class MediaModal extends Component {
 
   componentWillMount() {
     this.onClose = this.props.onClose;
-    this.field = this.props.field;
+    this.field = this.props.params;
+    console.log(this.props);
     this.items = store.getState().media.items;
   }
 
@@ -30,7 +31,7 @@ export default class MediaModal extends Component {
 
   onChoose = () => {
     if (this.state.selectedItem) {
-      this.field.value = this.state.selectedItem.file;
+      this.field.value = this.state.selectedItem;
       this.props.updateField(this.field);
     }
     this.onClose();

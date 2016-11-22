@@ -256,6 +256,10 @@ export default class ContentEdit extends Component {
     });
   }
 
+  onMediaClear(field) {
+    this.setState({fields: this.state.fields.set(field, null)});
+  }
+
   onShowWysiwygModal(field) {
     this.props.showModal(MODAL_TYPE_WYSIWYG, field);
   }
@@ -466,7 +470,9 @@ export default class ContentEdit extends Component {
                   <div styleName="media-item">
                     <div styleName="media-header">
                       <input type="text" placeholder="Image name" value={value.name} />
-                      <InlineSVG styleName="media-cross" src={require('./cross.svg')}/>
+                      <InlineSVG styleName="media-cross"
+                                 src={require('./cross.svg')}
+                                 onClick={() => this.onMediaClear(field)} />
                     </div>
                     <div styleName="media-content" style={imgStyle}>
                     </div>
