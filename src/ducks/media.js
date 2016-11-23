@@ -1,11 +1,13 @@
 import {Parse} from 'parse';
 
 import {MediaItemData} from 'models/MediaItemData';
+import {store} from 'index';
 
 
-export const INIT_END    = 'app/media/INIT_END';
-export const ITEM_ADD    = 'app/media/ITEM_ADD';
-export const ITEM_DELETE = 'app/media/ITEM_DELETE';
+export const INIT_END       = 'app/media/INIT_END';
+export const POST_INIT_END  = 'app/media/POST_INIT_END';
+export const ITEM_ADD       = 'app/media/ITEM_ADD';
+export const ITEM_DELETE    = 'app/media/ITEM_DELETE';
 
 
 function requestMedia() {
@@ -35,13 +37,25 @@ export function init() {
   };
 }
 
-export function addMediaItem(file, name, type) {
+export function postInit() {
+  let items = store.getState().media.items;
+  for (let item of items) {
+    item.postInit();
+  }
+  
+  return {
+    type: POST_INIT_END
+  };
+}
+
+export function addMediaItem(file, name, type, cItem = null) {
   let item = new MediaItemData();
 
   item.file = file;
   item.name = name;
   if (type)
     item.type = type;
+  item.contentItem = cItem;
 
   item.updateOrigin();
   item.origin.save();
@@ -90,6 +104,7 @@ export default function mediaReducer(state = initialState, action) {
         items
       };
   
+    case POST_INIT_END:
     default:
       return state;
   }

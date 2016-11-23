@@ -48,6 +48,9 @@ export default class MediaModal extends Component {
             <div styleName="media">
               {
                 this.items.map(item => {
+                  if (item.contentItem)
+                    return null;
+                  
                   let imgStyle = {};
                   if (item.file)
                     imgStyle = {backgroundImage: `url(${item.file.url()})`};

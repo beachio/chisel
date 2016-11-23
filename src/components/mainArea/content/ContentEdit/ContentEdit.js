@@ -239,27 +239,35 @@ export default class ContentEdit extends Component {
     date.setMinutes(time.minute());
     this.setState({fields: this.state.fields.set(field, date)});
   }
+  
+  setLastMedia(field) {
+    let mItems = store.getState().media.items;
+    let mItem = mItems[mItems.length - 1];
+    this.setState({fields: this.state.fields.set(field, mItem)});
+  }
 
   onMediaChoose(field) {
-    this.props.showModal(MODAL_TYPE_MEDIA,
-      item => this.setState({fields: this.state.fields.set(field, item)})
-    );
+    this.props.showModal(MODAL_TYPE_MEDIA, mItem => {
+      this.props.addMediaItem(mItem.file, mItem.name, mItem.type, this.item);
+      this.setLastMedia(field);
+    });
   }
 
   onMediaNew(event, field) {
-    const {addMediaItem} = this.props;
     let file = event.target.files[0];
     let parseFile = new Parse.File(filterSpecials(file.name), file, file.type);
     parseFile.save().then(() => {
+      const {addMediaItem} = this.props;
       addMediaItem(parseFile, trimFileExt(file.name), file.type);
-      let items = store.getState().media.items;
-      let item = items[items.length - 1];
-      this.setState({fields: this.state.fields.set(field, item)});
+      addMediaItem(parseFile, trimFileExt(file.name), file.type, this.item);
+      this.setLastMedia(field);
     });
   }
 
   onMediaClear(field) {
-    this.setState({fields: this.state.fields.set(field, null)});
+    let fields = this.state.fields;
+    this.props.removeMediaItem(fields.get(field));
+    this.setState({fields: fields.set(field, null)});
   }
   
   onReferenceChoose(field) {
