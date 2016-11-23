@@ -20,7 +20,7 @@ export default class MediaModal extends Component {
 
   componentWillMount() {
     this.onClose = this.props.onClose;
-    this.callback = this.props.params.callback;
+    this.callback = this.props.params;
     this.items = store.getState().media.items;
   }
 
@@ -56,12 +56,10 @@ export default class MediaModal extends Component {
                   if (item === this.state.selectedItem)
                     itemStyle += " media-chosen";
 
-                  let key = Math.random();
-
                   return (
                     <div styleName={itemStyle}
                          onClick={() => this.onSelect(item)}
-                         key={key} >
+                         key={item.origin.id} >
                       <div styleName="media-header">
                         {item.name}
                       </div>
