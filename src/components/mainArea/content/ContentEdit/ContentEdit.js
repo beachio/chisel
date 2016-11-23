@@ -578,7 +578,7 @@ export default class ContentEdit extends Component {
               inner = (
                 <div styleName="reference">
                   <div styleName="reference-item">
-                    <input type="text" value={value.title} />
+                    <input type="text" value={value.title} readOnly />
                     <InlineSVG styleName="reference-cross"
                                src={require('./cross.svg')}
                                onClick={() => this.onReferenceClear(field)} />

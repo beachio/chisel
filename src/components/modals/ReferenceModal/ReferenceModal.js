@@ -11,7 +11,8 @@ import styles from './ReferenceModal.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class ReferenceModal extends Component {
   state = {
-    selectedItem: null
+    selectedItem: null,
+    searchText: ''
   };
   onClose = null;
   callback = null;
@@ -24,6 +25,22 @@ export default class ReferenceModal extends Component {
     this.items = store.getState().content.items;
   }
   
+  onSearch = (event) => {
+    let searchText = event.target.value;
+  
+    //if there is no selected item in search results, reset selected item
+    if (this.state.selectedItem && !this.searchMatch(searchText, this.state.selectedItem.title))
+      this.setState({searchText, selectedItem: null});
+    else
+      this.setState({searchText});
+  };
+  
+  searchMatch(search, target) {
+    if (!search)
+      return true;
+    return target.toLowerCase().indexOf(search.toLowerCase()) != -1;
+  }
+  
   onSelect = (item) => {
     this.setState({selectedItem: item});
   };
@@ -34,6 +51,8 @@ export default class ReferenceModal extends Component {
   };
 
   render() {
+    let currentItem = store.getState().content.currentItem;
+    
     return (
       <div styleName="modal">
         <div styleName="modal-inner">
@@ -41,13 +60,19 @@ export default class ReferenceModal extends Component {
             <div styleName="input-wrapper">
               <InputControl type="big"
                             label="search entries"
-                            placeholder="My Post"
-                            onChange={this.onChangeName} />
+                            value={this.state.searchText}
+                            onChange={this.onSearch} />
             </div>
 
             <div styleName="reference">
               {
                 this.items.map(item => {
+                  if (currentItem == item)
+                    return null;
+  
+                  if (!this.searchMatch(this.state.searchText, item.title))
+                    return null;
+                  
                   let style = "reference-item";
                   if (item == this.state.selectedItem)
                     style += " reference-chosen";

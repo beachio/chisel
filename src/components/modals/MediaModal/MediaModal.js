@@ -11,7 +11,8 @@ import styles from './MediaModal.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class MediaModal extends Component {
   state = {
-    selectedItem: null
+    selectedItem: null,
+    searchText: ''
   };
   onClose = null;
   callback = null;
@@ -22,6 +23,22 @@ export default class MediaModal extends Component {
     this.onClose = this.props.onClose;
     this.callback = this.props.params;
     this.items = store.getState().media.items;
+  }
+  
+  onSearch = (event) => {
+    let searchText = event.target.value;
+    
+    //if there is no selected item in search results, reset selected item
+    if (this.state.selectedItem && !this.searchMatch(searchText, this.state.selectedItem.name))
+      this.setState({searchText, selectedItem: null});
+    else
+      this.setState({searchText});
+  };
+  
+  searchMatch(search, target) {
+    if (!search)
+      return true;
+    return target.toLowerCase().indexOf(search.toLowerCase()) != -1;
   }
 
   onSelect = (item) => {
@@ -41,14 +58,17 @@ export default class MediaModal extends Component {
             <div styleName="input-wrapper">
               <InputControl type="big"
                             label="search media files"
-                            placeholder="Lake"
-                            onChange={this.onChangeName} />
+                            value={this.state.searchText}
+                            onChange={this.onSearch} />
             </div>
 
             <div styleName="media">
               {
                 this.items.map(item => {
                   if (item.contentItem)
+                    return null;
+                  
+                  if (!this.searchMatch(this.state.searchText, item.name))
                     return null;
                   
                   let imgStyle = {};
