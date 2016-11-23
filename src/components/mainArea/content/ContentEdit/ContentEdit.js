@@ -205,8 +205,6 @@ export default class ContentEdit extends Component {
     this.setState({fields: this.state.fields.set(field, value)});
   }
 
-
-
   onChange_FLOAT(event, field) {
     let str = event.target.value;
     let value = parseFloat(str);
@@ -268,6 +266,15 @@ export default class ContentEdit extends Component {
     let fields = this.state.fields;
     this.props.removeMediaItem(fields.get(field));
     this.setState({fields: fields.set(field, null)});
+  }
+  
+  onMediaNameChange(event, field) {
+    let value = event.target.value;
+    let fields = this.state.fields;
+    let mItem = fields.get(field);
+    mItem.name = value;
+    this.props.updateMediaItem(mItem);
+    this.setState({fields: this.state.fields.set(field, mItem)});
   }
   
   onReferenceChoose(field) {
@@ -500,7 +507,10 @@ export default class ContentEdit extends Component {
                 <div styleName="media">
                   <div styleName="media-item">
                     <div styleName="media-header">
-                      <input type="text" placeholder="Image name" value={value.name} />
+                      <input type="text"
+                             placeholder="Image name"
+                             onChange={e => this.onMediaNameChange(e, field)}
+                             value={value.name} />
                       <InlineSVG styleName="media-cross"
                                  src={require('./cross.svg')}
                                  onClick={() => this.onMediaClear(field)} />

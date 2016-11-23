@@ -10,7 +10,7 @@ import Sharing from 'components/mainArea/sharing/Sharing';
 import Model from 'components/mainArea/models/Model/Model';
 import {addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField} from 'ducks/models';
 import {addItem, updateItem, setCurrentItem, deleteItem} from 'ducks/content';
-import {addMediaItem, removeMediaItem} from 'ducks/media';
+import {addMediaItem, updateMediaItem, removeMediaItem} from 'ducks/media';
 import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, showAlert, closeModel, closeContentItem, showModal} from 'ducks/nav';
 import InlineSVG from 'svg-inline-react';
 
@@ -24,7 +24,7 @@ export class MainArea extends Component  {
     const {addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField} = this.props.modelsActions;
     const {addItem, updateItem, setCurrentItem} = this.props.contentActions;
     const {showAlert, closeModel, closeContentItem, showModal} = this.props.navActions;
-    const {addMediaItem, removeMediaItem} = this.props.mediaActions;
+    const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
 
     let isEditable = models.isOwner || models.isAdmin;
 
@@ -82,6 +82,7 @@ export class MainArea extends Component  {
                          onClose={closeContentItem}
                          updateItem={updateItem}
                          addMediaItem={addMediaItem}
+                         updateMediaItem={updateMediaItem}
                          removeMediaItem={removeMediaItem}
                          showModal={showModal}
                          isEditable={isEditable} />
@@ -123,7 +124,7 @@ function mapDispatchToProps(dispatch) {
     modelsActions:  bindActionCreators({addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField}, dispatch),
     contentActions: bindActionCreators({addItem, updateItem, setCurrentItem, deleteItem}, dispatch),
     navActions:     bindActionCreators({showAlert, closeModel, closeContentItem, showModal}, dispatch),
-    mediaActions:   bindActionCreators({addMediaItem, removeMediaItem}, dispatch)
+    mediaActions:   bindActionCreators({addMediaItem, updateMediaItem, removeMediaItem}, dispatch)
   };
 }
 

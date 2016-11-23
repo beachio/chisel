@@ -7,6 +7,7 @@ import {store} from 'index';
 export const INIT_END       = 'app/media/INIT_END';
 export const POST_INIT_END  = 'app/media/POST_INIT_END';
 export const ITEM_ADD       = 'app/media/ITEM_ADD';
+export const ITEM_UPDATE    = 'app/media/ITEM_UPDATE';
 export const ITEM_DELETE    = 'app/media/ITEM_DELETE';
 
 
@@ -66,6 +67,16 @@ export function addMediaItem(file, name, type, cItem = null) {
   };
 }
 
+export function updateMediaItem(item) {
+  item.updateOrigin();
+  item.origin.save();
+  
+  return {
+    type: ITEM_UPDATE,
+    item
+  };
+}
+
 export function removeMediaItem(item) {
   item.origin.destroy();
   
@@ -104,6 +115,7 @@ export default function mediaReducer(state = initialState, action) {
         items
       };
   
+    case ITEM_UPDATE:
     case POST_INIT_END:
     default:
       return state;
