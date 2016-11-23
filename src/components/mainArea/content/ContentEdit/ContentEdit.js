@@ -20,7 +20,7 @@ import EditableTitleControl from 'components/elements/EditableTitleControl/Edita
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {filterSpecials, trimFileExt} from 'utils/common';
-import {MODAL_TYPE_MEDIA, MODAL_TYPE_WYSIWYG} from 'ducks/nav';
+import {MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG} from 'ducks/nav';
 import {store} from 'index';
 
 import * as ftps from 'models/ModelData';
@@ -259,6 +259,20 @@ export default class ContentEdit extends Component {
   }
 
   onMediaClear(field) {
+    this.setState({fields: this.state.fields.set(field, null)});
+  }
+  
+  onReferenceChoose(field) {
+    this.props.showModal(MODAL_TYPE_REFERENCE,
+      item => this.setState({fields: this.state.fields.set(field, item)})
+    );
+  }
+  
+  onReferenceNew(field) {
+    //TODO
+  }
+  
+  onReferenceClear(field) {
     this.setState({fields: this.state.fields.set(field, null)});
   }
 
@@ -542,23 +556,32 @@ export default class ContentEdit extends Component {
       case ftps.FIELD_TYPE_REFERENCE:
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__REFERENCE__REFERENCE:
-            inner = (
-              <div styleName="reference">
-                <div styleName="reference-buttons">
-                  <div styleName="reference-button reference-new">
-                    Create new entry
-                  </div>
-                  <div styleName="reference-button reference-insert">
-                    Insert Existing Entry
+            if (value) {
+              inner = (
+                <div styleName="reference">
+                  <div styleName="reference-item">
+                    <input type="text" value={value.title} />
+                    <InlineSVG styleName="reference-cross"
+                               src={require('./cross.svg')}
+                               onClick={() => this.onReferenceClear(field)} />
                   </div>
                 </div>
-
-                <div styleName="reference-item">
-                  <input type="text" placeholder="My Reference Title" value="My Reference Title" />
-                  <InlineSVG styleName="reference-cross" src={require('./cross.svg')}/>
+              );
+            } else {
+              inner = (
+                <div styleName="reference">
+                  <div styleName="reference-buttons">
+                    <div styleName="reference-button reference-new" onClick={() => this.onReferenceNew(field)}>
+                      Create new entry
+                    </div>
+                    <div styleName="reference-button reference-insert" onClick={() => this.onReferenceChoose(field)}>
+                      Insert Existing Entry
+                    </div>
+                  </div>
                 </div>
-              </div>
-            );
+              );
+            }
+            
             break;
         }
         break;

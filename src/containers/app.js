@@ -13,7 +13,7 @@ import MediaModal from 'components/modals/MediaModal/MediaModal';
 import WysiwygModal from 'components/modals/WysiwygModal/WysiwygModal';
 import ReferenceModal from 'components/modals/ReferenceModal/ReferenceModal';
 import AlertModal from 'components/modals/AlertModal/AlertModal';
-import {closeAlert, closeModal, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_WYSIWYG} from 'ducks/nav';
+import {closeAlert, closeModal, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG} from 'ducks/nav';
 import {updateField} from 'ducks/models';
 
 import styles from './app.sss';
@@ -47,6 +47,12 @@ class App extends React.Component {
                 <MediaModal params={nav.modalParams}
                             onClose={closeModal}
                             updateField={updateField} />
+            }
+            {
+              nav.modalShowing && nav.modalType == MODAL_TYPE_REFERENCE &&
+                <ReferenceModal params={nav.modalParams}
+                                onClose={closeModal}
+                                updateField={updateField} />
             }
             {
               nav.modalShowing && nav.modalType == MODAL_TYPE_WYSIWYG &&

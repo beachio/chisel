@@ -159,3 +159,15 @@ export function getMediaByO(origin) {
   }
   return null;
 }
+
+export function getContentByO(origin) {
+  if (!origin)
+    return null;
+  
+  let items = store.getState().content.items;
+  for (let item of items) {
+    if (item.origin && item.origin.id == origin.id)
+      return item;
+  }
+  return null;
+}

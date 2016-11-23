@@ -1,8 +1,8 @@
 import {Parse} from 'parse';
 
 import {removeSpaces} from 'utils/common';
-import {getMediaByO} from 'utils/data';
-import {FIELD_TYPE_MEDIA} from 'models/ModelData';
+import {getMediaByO, getContentByO} from 'utils/data';
+import {FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCE} from 'models/ModelData';
 
 
 export class ContentItemData {
@@ -59,6 +59,8 @@ export class ContentItemData {
       let value = origin.get(field.nameId);
       if (field.type == FIELD_TYPE_MEDIA)
         this.fields.set(field, getMediaByO(value));
+      else if (field.type == FIELD_TYPE_REFERENCE)
+        this.fields.set(field, getContentByO(value));
       else
         this.fields.set(field, value);
   
@@ -77,7 +79,7 @@ export class ContentItemData {
     this.origin.set("t__color",      this.color);
   
     for (let [field, value] of this.fields) {
-      if (field.type == FIELD_TYPE_MEDIA && value)
+      if ((field.type == FIELD_TYPE_MEDIA || field.type == FIELD_TYPE_REFERENCE) && value)
         this.origin.set(field.nameId, value.origin);
       else
         this.origin.set(field.nameId, value);
