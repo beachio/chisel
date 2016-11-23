@@ -59,8 +59,6 @@ export class ContentItemData {
       let value = origin.get(field.nameId);
       if (field.type == FIELD_TYPE_MEDIA)
         this.fields.set(field, getMediaByO(value));
-      else if (field.type == FIELD_TYPE_REFERENCE)
-        this.fields.set(field, getContentByO(value));
       else
         this.fields.set(field, value);
   
@@ -69,6 +67,13 @@ export class ContentItemData {
     }
     
     return this;
+  }
+  
+  postInit(items) {
+    for (let field of this.model.fields) {
+      if (field.type == FIELD_TYPE_REFERENCE)
+        this.fields.set(field, getContentByO(this.origin.get(field.nameId), items));
+    }
   }
   
   updateOrigin() {

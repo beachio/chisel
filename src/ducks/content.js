@@ -111,6 +111,8 @@ const initialState = {
 export default function contentReducer(state = initialState, action) {
   switch (action.type) {
     case INIT_END:
+      for (let item of action.items)
+        item.postInit(action.items);
       return {
         ...state,
         items: action.items

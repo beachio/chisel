@@ -91,7 +91,8 @@ const initialState = {
 };
 
 export default function mediaReducer(state = initialState, action) {
-  let items;
+  let items = state.items;
+  
   switch (action.type) {
     case INIT_END:
       return {
@@ -100,7 +101,6 @@ export default function mediaReducer(state = initialState, action) {
       };
   
     case ITEM_ADD:
-      items = state.items;
       items.push(action.item);
       return {
         ...state,
@@ -108,7 +108,6 @@ export default function mediaReducer(state = initialState, action) {
       };
   
     case ITEM_DELETE:
-      items = state.items;
       items.splice(items.indexOf(action.item), 1);
       return {
         ...state,
