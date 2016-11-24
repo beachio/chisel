@@ -21,6 +21,11 @@ module.exports = {
   module: {
     loaders: [
       {
+        test: /\.js$/,
+        loader: 'babel',
+        exclude: /node_modules/
+      },
+      {
         test: /\.svg$/,
         loader: 'svg-inline'
       },

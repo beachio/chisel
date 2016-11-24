@@ -23,11 +23,6 @@ module.exports = merge(baseWebpackConfig, {
   module: {
     loaders: [
       {
-        test: /\.js$/,
-        loader: 'babel',
-        exclude: /node_modules/
-      },
-      {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract('style-loader', [
           'css-loader',

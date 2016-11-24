@@ -3,7 +3,7 @@ import {Parse} from 'parse';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import _ from 'lodash/core';
-import 'flatpickr/dist/flatpickr.material_green.min.css';
+import 'flatpickr/dist/flatpickr.min.css';
 import Flatpickr from 'react-flatpickr';
 import TimePicker from 'rc-time-picker';
 import 'rc-time-picker/assets/index.css';

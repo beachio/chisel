@@ -20,11 +20,6 @@ module.exports = merge(baseWebpackConfig, {
   module: {
     loaders: [
       {
-        test: /\.js$/,
-        loaders: ['react-hot', 'babel'],
-        exclude: /node_modules/
-      },
-      {
         test: /\.css$/,
         loaders: [
           'style-loader',
