@@ -35,7 +35,7 @@ export default class DropdownControl extends Component {
   }
 
   onSuggestionClick = event => {
-    let item = event.target.innerHTML;
+    let item = event.target.innerText;
     this.setState({
       suggestionValue: item,
       suggestionsVisibility: false
