@@ -355,7 +355,8 @@ export default class ContentEdit extends Component {
 
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__URL:
             inner = (
-              <div styleName="input-wrapper">
+              <div styleName="input-wrapper url">
+                <div styleName="url-span">http://</div>
                 <InputControl type="big"
                               ref={field.nameId}
                               value={value}
@@ -565,16 +566,20 @@ export default class ContentEdit extends Component {
               time.minute(value.getMinutes());
             }
             inner = (
-              <div styleName="input-wrapper">
-                <Flatpickr value={value}
-                           data-click-opens={isEditable}
-                           data-alt-input="true"
-                           data-alt-format="F j, Y"
-                           onChange={(obj, str, ins) => this.onChange_DATE(str, field)} />
-                <TimePicker showSecond={false}
-                            value={time}
-                            disabled={!isEditable}
-                            onChange={e => this.onChange_TIME(e, field)} />
+              <div styleName="input-wrapper data-time-wrapper">
+                <div styleName="date">
+                  <Flatpickr value={value}
+                             data-click-opens={isEditable}
+                             data-alt-input="true"
+                             data-alt-format="F j, Y"
+                             onChange={(obj, str, ins) => this.onChange_DATE(str, field)} />
+                </div>
+                <div styleName="time">
+                  <TimePicker showSecond={false}
+                              value={time}
+                              disabled={!isEditable}
+                              onChange={e => this.onChange_TIME(e, field)} />
+                </div>
               </div>
             );
             break;
