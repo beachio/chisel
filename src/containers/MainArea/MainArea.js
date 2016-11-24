@@ -65,18 +65,6 @@ export class MainArea extends Component  {
         break;
 
       case PAGE_CONTENT:
-        if (models.currentSite)
-          Area = (
-            <ContentList items={content.items}
-                         models={models.currentSite.models}
-                         setCurrentItem={setCurrentItem}
-                         addItem={addItem}
-                         deleteItem={deleteItem}
-                         showAlert={showAlert}
-                         alertShowing={nav.alertShowing}
-                         isEditable={isEditable}/>
-          );
-  
         if (nav.openedContentItem)
           Area = (
             <ContentEdit item={content.currentItem}
@@ -88,7 +76,25 @@ export class MainArea extends Component  {
                          showModal={showModal}
                          isEditable={isEditable} />
           );
-
+        else if (models.currentSite && models.currentSite.models.length)
+          Area = (
+            <ContentList items={content.items}
+                         models={models.currentSite.models}
+                         setCurrentItem={setCurrentItem}
+                         addItem={addItem}
+                         deleteItem={deleteItem}
+                         showAlert={showAlert}
+                         alertShowing={nav.alertShowing}
+                         isEditable={isEditable}/>
+          );
+        else if (models.currentSite)
+          Area = (
+            <div styleName="start-working">
+              <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
+              Add any model to start creating content
+            </div>
+          );
+  
         break;
 
       case PAGE_SHARING:
@@ -102,6 +108,25 @@ export class MainArea extends Component  {
                    alertShowing={nav.alertShowing}
                    isEditable={models.isOwner} />
         );
+        break;
+  
+      case PAGE_API:
+        Area = (
+          <div styleName="start-working">
+            <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
+            Check Parse docs!
+          </div>
+        );
+        break;
+  
+      case PAGE_SETTINGS:
+        Area = (
+          <div styleName="start-working">
+            <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
+            There is no any settings yet
+          </div>
+        );
+        break;
     }
 
     return (
