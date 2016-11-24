@@ -193,7 +193,7 @@ export default class ContentEdit extends Component {
   onChange_SHORT_TEXT(event, field) {
     let value = event.target.value;
     this.setState({fields: this.state.fields.set(field, value)});
-    
+
     if (field.isTitle) {
       this.setState({title: value});
       for (let [tempField, tempValue] of this.state.fields) {
@@ -247,7 +247,7 @@ export default class ContentEdit extends Component {
     date.setMinutes(time.minute());
     this.setState({fields: this.state.fields.set(field, date)});
   }
-  
+
   setLastMedia(field) {
     let mItems = store.getState().media.items;
     let mItem = mItems[mItems.length - 1];
@@ -277,7 +277,7 @@ export default class ContentEdit extends Component {
     this.props.removeMediaItem(fields.get(field));
     this.setState({fields: fields.set(field, null)});
   }
-  
+
   onMediaNameChange(event, field) {
     let value = event.target.value;
     let fields = this.state.fields;
@@ -286,17 +286,17 @@ export default class ContentEdit extends Component {
     this.props.updateMediaItem(mItem);
     this.setState({fields: this.state.fields.set(field, mItem)});
   }
-  
+
   onReferenceChoose(field) {
     this.props.showModal(MODAL_TYPE_REFERENCE,
       item => this.setState({fields: this.state.fields.set(field, item)})
     );
   }
-  
+
   onReferenceNew(field) {
     //TODO
   }
-  
+
   onReferenceClear(field) {
     this.setState({fields: this.state.fields.set(field, null)});
   }
@@ -332,11 +332,11 @@ export default class ContentEdit extends Component {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
             inner = (
               <div styleName="input-wrapper">
-                <input styleName="input"
-                       ref={field.nameId}
-                       value={value}
-                       readOnly={!isEditable}
-                       onChange={e => this.onChange_SHORT_TEXT(e, field)} />
+                <InputControl ref={field.nameId}
+                              type="big"
+                              value={value}
+                              readOnly={!isEditable}
+                              onChange={e => this.onChange_SHORT_TEXT(e, field)} />
               </div>
             );
             break;
@@ -344,11 +344,11 @@ export default class ContentEdit extends Component {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
             inner = (
               <div styleName="input-wrapper">
-                <input styleName="input"
-                       ref={field.nameId}
-                       value={value}
-                       readOnly={!isEditable}
-                       onChange={e => this.onChange_SHORT_TEXT(e, field)} />
+                <InputControl type="big"
+                              ref={field.nameId}
+                              value={value}
+                              readOnly={!isEditable}
+                              onChange={e => this.onChange_SHORT_TEXT(e, field)} />
               </div>
             );
             break;
@@ -356,11 +356,11 @@ export default class ContentEdit extends Component {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__URL:
             inner = (
               <div styleName="input-wrapper">
-                <input styleName="input"
-                       ref={field.nameId}
-                       value={value}
-                       readOnly={!isEditable}
-                       onChange={e => this.onChange_SHORT_TEXT(e, field)} />
+                <InputControl type="big"
+                              ref={field.nameId}
+                              value={value}
+                              readOnly={!isEditable}
+                              onChange={e => this.onChange_SHORT_TEXT(e, field)} />
               </div>
             );
             break;
@@ -375,11 +375,11 @@ export default class ContentEdit extends Component {
           case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
             inner = (
               <div styleName="input-wrapper">
-                <input styleName="input"
-                       ref={field.nameId}
-                       value={value}
-                       readOnly={!isEditable}
-                       onChange={e => this.onChange_LONG_TEXT(e, field)} />
+                <InputControl type="big"
+                              ref={field.nameId}
+                              value={value}
+                              readOnly={!isEditable}
+                              onChange={e => this.onChange_LONG_TEXT(e, field)} />
               </div>
             );
             break;
@@ -422,11 +422,11 @@ export default class ContentEdit extends Component {
           case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
             inner = (
               <div styleName="input-wrapper">
-                <input styleName="input"
-                       ref={field.nameId}
-                       value={value}
-                       readOnly={!isEditable}
-                       onChange={e => this.onChange_FLOAT(e, field)} />
+                <InputControl type="big"
+                              ref={field.nameId}
+                              value={value}
+                              readOnly={!isEditable}
+                              onChange={e => this.onChange_FLOAT(e, field)} />
               </div>
             );
             break;
@@ -441,11 +441,11 @@ export default class ContentEdit extends Component {
           case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
             inner = (
               <div styleName="input-wrapper">
-                <input styleName="input"
-                       ref={field.nameId}
-                       value={value}
-                       readOnly={!isEditable}
-                       onChange={e => this.onChange_INTEGER(e, field)}/>
+                <InputControl type="big"
+                              ref={field.nameId}
+                              value={value}
+                              readOnly={!isEditable}
+                              onChange={e => this.onChange_INTEGER(e, field)}/>
               </div>
             );
             break;
@@ -453,11 +453,11 @@ export default class ContentEdit extends Component {
           case ftps.FIELD_APPEARANCE__INTEGER__RATING:
             inner = (
               <div styleName="input-wrapper">
-                <input styleName="input"
-                       ref={field.nameId}
-                       value={value}
-                       readOnly={!isEditable}
-                       onChange={e => this.onChange_INTEGER(e, field)}/>
+                <InputControl type="big"
+                              ref={field.nameId}
+                              value={value}
+                              readOnly={!isEditable}
+                              onChange={e => this.onChange_INTEGER(e, field)}/>
               </div>
             );
             break;
@@ -609,7 +609,7 @@ export default class ContentEdit extends Component {
                 </div>
               );
             }
-            
+
             break;
         }
         break;
