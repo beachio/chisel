@@ -70,9 +70,6 @@ export default class ContentList extends Component {
     if (event)
       event.preventDefault();
 
-    if (!this.state.itemTitle)
-      return;
-
     const {addItem} = this.props;
     addItem(this.state.itemTitle, this.state.currentModel);
     this.setState({itemTitle: ""});
@@ -102,10 +99,11 @@ export default class ContentList extends Component {
   onRemoveClick = (event, item) => {
     event.stopPropagation();
     const {showAlert, deleteItem} = this.props;
+    let title = item.title ? item.title : 'content item';
     
     let params = {
       type: ALERT_TYPE_CONFIRM,
-      title: `Deleting ${item.name}`,
+      title: `Deleting ${title}`,
       description: "Are you sure?",
       onConfirm: () => deleteItem(item)
     };

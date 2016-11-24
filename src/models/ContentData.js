@@ -23,6 +23,9 @@ export class ContentItemData {
   
   get title() {return this.fields.get(this._titleField);}
   set title(title) {
+    if (!this.titleField)
+      return;
+    
     title = removeSpaces(title);
     this.fields.set(this.titleField, title);
   }
