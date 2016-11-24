@@ -30,8 +30,8 @@ export default class Menu extends Component  {
     return (
       <div styleName="menu">
         <div styleName={styleModels}    onClick={() => openPage(PAGE_MODELS)}   >Models</div>
-        <div styleName={styleApi}       onClick={() => openPage(PAGE_API)}      >API</div>
         <div styleName={styleContent}   onClick={() => openPage(PAGE_CONTENT)}  >Content</div>
+        <div styleName={styleApi}       onClick={() => openPage(PAGE_API)}      >API</div>
         <div styleName={styleSettings}  onClick={() => openPage(PAGE_SETTINGS)} >Settings</div>
         <div styleName={styleSharing}   onClick={() => openPage(PAGE_SHARING)}  >Sharing</div>
       </div>
