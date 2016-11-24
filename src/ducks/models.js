@@ -5,6 +5,7 @@ import {UserData, CollaborationData, ROLE_ADMIN} from 'models/UserData';
 import {SiteData, ModelData, ModelFieldData, canBeTitle} from 'models/ModelData';
 import {getRandomColor} from 'utils/common';
 import {LOGOUT} from './user';
+import {deleteItem} from './content'
 
 
 export const INIT_END             = 'app/models/INIT_END';
@@ -297,6 +298,11 @@ export function deleteModel(model) {
   models.splice(models.indexOf(model), 1);
   
   model.origin.destroy();
+  
+  for (let item of store.getState().content.items) {
+    if (item.model == model)
+      store.dispatch(deleteItem(item));
+  }
   
   return {
     type: MODEL_DELETED,
