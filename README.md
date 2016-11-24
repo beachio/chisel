@@ -19,3 +19,5 @@ npm start
 # build for production with minification
 npm run build
 ```
+
+Or you can connect to remote server, if you edit src/ducks/initialize.js.
