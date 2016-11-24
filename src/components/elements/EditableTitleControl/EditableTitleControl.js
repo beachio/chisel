@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 
+import {filterSpecials} from 'utils/common';
+
 import styles from './EditableTitleControl.sss';
 
 
@@ -24,7 +26,8 @@ export default class EditableTitleControl extends Component {
       wText = this.props.placeholder;
     if (!wText)
       wText = MIN_TEXT;
-
+    wText = filterSpecials(wText);
+    
     this.testTextElm.innerText = wText;
     let width = this.testTextElm.clientWidth * 1.1;
     if (width < this.minTextWidth)
@@ -41,6 +44,7 @@ export default class EditableTitleControl extends Component {
     this.testTextElm = document.createElement('div');
     let style = {
       fontSize: this.props.isSmall ? '12px' : '20px',
+      fontFamily: "'Open Sans', sans-serif",
       opacity: '.01',
       position: 'absolute',
       top: '0',
