@@ -325,6 +325,8 @@ export function addField(name) {
   if (!currentModel.hasTitle() && canBeTitle(field))
     changeTitleField(field);
   
+  field.model.origin.save();
+  
   return {
     type: FIELD_ADD,
     field
@@ -362,6 +364,8 @@ export function updateField(field) {
       changeTitleField(field);
   }
   
+  field.model.origin.save();
+  
   return {
     type: FIELD_UPDATED,
     field
@@ -382,6 +386,8 @@ export function removeField(field) {
       }
     }
   }
+  
+  field.model.origin.save();
   
   return {
     type: FIELD_DELETED,
