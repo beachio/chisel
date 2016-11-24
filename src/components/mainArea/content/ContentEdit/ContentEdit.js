@@ -233,8 +233,10 @@ export default class ContentEdit extends Component {
     if (dateStr) {
       let date = new Date(dateStr);
       let oldDate = this.state.fields.get(field);
-      date.setHours(oldDate.getHours());
-      date.setMinutes(oldDate.getMinutes());
+      if (oldDate) {
+        date.setHours(oldDate.getHours());
+        date.setMinutes(oldDate.getMinutes());
+      }
       this.setState({fields: this.state.fields.set(field, date)});
     }
   }
