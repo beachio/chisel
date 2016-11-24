@@ -214,6 +214,9 @@ export const FIELD_TYPES = new Map([
   ]]
 ]);
 
+export function canBeTitle(field) {
+  return field.type == FIELD_TYPE_SHORT_TEXT && field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE;
+}
 
 export const FIELD_NAMES_RESERVED = ['t__color', 't__published', 't__model'];
 

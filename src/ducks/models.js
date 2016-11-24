@@ -2,7 +2,7 @@ import {Parse} from 'parse';
 
 import {store} from '../index';
 import {UserData, CollaborationData, ROLE_ADMIN} from 'models/UserData';
-import {SiteData, ModelData, ModelFieldData, FIELD_TYPE_SHORT_TEXT} from 'models/ModelData';
+import {SiteData, ModelData, ModelFieldData, canBeTitle} from 'models/ModelData';
 import {getRandomColor} from 'utils/common';
 import {LOGOUT} from './user';
 
@@ -322,7 +322,7 @@ export function addField(name) {
   field.updateOrigin();
   field.origin.save();
   
-  if (!currentModel.hasTitle() && field.type == FIELD_TYPE_SHORT_TEXT)
+  if (!currentModel.hasTitle() && canBeTitle(field))
     changeTitleField(field);
   
   return {
@@ -337,7 +337,7 @@ export function updateField(field) {
   
   if (field.isTitle) {
     //if current field is title, remove other titles
-    if (field.type == FIELD_TYPE_SHORT_TEXT) {
+    if (canBeTitle(field)) {
       for (let tempField of field.model.fields) {
         if (tempField != field && tempField.isTitle)
           changeTitleField(tempField, false);
@@ -351,14 +351,14 @@ export function updateField(field) {
     let titleSet = false;
     //first we check other fields to make title
     for (let tempField of field.model.fields) {
-      if (tempField != field && tempField.type == FIELD_TYPE_SHORT_TEXT) {
+      if (tempField != field && canBeTitle(tempField)) {
         changeTitleField(tempField);
         titleSet = true;
         break;
       }
     }
     //if we can't, we try to make title current field
-    if (!titleSet && field.type == FIELD_TYPE_SHORT_TEXT)
+    if (!titleSet && canBeTitle(field))
       changeTitleField(field);
   }
   
@@ -376,7 +376,7 @@ export function removeField(field) {
   
   if (!field.model.hasTitle()) {
     for (let tempField of field.model.fields) {
-      if (tempField.type == FIELD_TYPE_SHORT_TEXT) {
+      if (canBeTitle(tempField)) {
         changeTitleField(tempField);
         break;
       }

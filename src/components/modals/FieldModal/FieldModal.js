@@ -8,7 +8,7 @@ import DropdownControl from 'components/elements/DropdownControl/DropdownControl
 import InputControl from 'components/elements/InputControl/InputControl';
 import {removeSpaces, filterSpecials} from 'utils/common';
 import {checkFieldName, NAME_ERROR_NAME_EXIST, NAME_ERROR_NAME_RESERVED} from 'utils/data';
-import {FIELD_TYPES, FIELD_TYPE_SHORT_TEXT} from 'models/ModelData';
+import {FIELD_TYPES, FIELD_TYPE_SHORT_TEXT, FIELD_APPEARANCE__SHORT_TEXT__SINGLE} from 'models/ModelData';
 
 import styles from './FieldModal.sss';
 
@@ -145,7 +145,7 @@ export default class FieldModal extends Component {
               </div>
 
               {
-                this.state.type == FIELD_TYPE_SHORT_TEXT &&
+                this.state.type == FIELD_TYPE_SHORT_TEXT && this.state.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE &&
                   <div styleName="input-wrapper">
                     <div styleName="label">Entry Title</div>
                     <div styleName="switch">
