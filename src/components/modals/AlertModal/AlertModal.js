@@ -24,8 +24,11 @@ export default class AlertModal extends Component {
 
   onKeyPress = event => {
     event = event || window.event;
+    
     //Enter or Esc pressed
-    if (event.keyCode == 13 || event.keyCode == 27)
+    if (event.keyCode == 13)
+      setTimeout(this.onConfirm, 1);
+    else if (event.keyCode == 27)
       setTimeout(this.props.onClose, 1);
   };
   

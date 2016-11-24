@@ -73,6 +73,7 @@ export class MainArea extends Component  {
                          addItem={addItem}
                          deleteItem={deleteItem}
                          showAlert={showAlert}
+                         alertShowing={nav.alertShowing}
                          isEditable={isEditable}/>
           );
   

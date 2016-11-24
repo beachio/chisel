@@ -64,7 +64,6 @@ export default class ContentEdit extends Component {
   };
 
   onSave() {
-    this.item.title = this.state.title;
     this.item.color = this.state.color;
     this.item.fields = this.state.fields;
 
