@@ -49,6 +49,10 @@ export default class ContentEdit extends Component {
 
   updateItemTitle = title => {
     this.setState({title});
+    for (let [field, value] of this.state.fields) {
+      if (field.isTitle)
+        this.setState({fields: this.state.fields.set(field, title)});
+    }
   };
 
   endEdit() {
@@ -60,9 +64,6 @@ export default class ContentEdit extends Component {
   };
 
   onSave() {
-    if (!this.state.title)
-      return;
-
     this.item.title = this.state.title;
     this.item.color = this.state.color;
     this.item.fields = this.state.fields;
@@ -193,6 +194,15 @@ export default class ContentEdit extends Component {
   onChange_SHORT_TEXT(event, field) {
     let value = event.target.value;
     this.setState({fields: this.state.fields.set(field, value)});
+    
+    if (field.isTitle) {
+      this.setState({title: value});
+      for (let [tempField, tempValue] of this.state.fields) {
+        if (tempField.appearance == ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG) {
+          this.setState({fields: this.state.fields.set(tempField, filterSpecials(value))});
+        }
+      }
+    }
   }
 
   onChange_LONG_TEXT(event, field) {
@@ -201,8 +211,7 @@ export default class ContentEdit extends Component {
   }
 
   onChange_LONG_TEXT_WYSIWYG(text, field) {
-    let value = text;
-    this.setState({fields: this.state.fields.set(field, value)});
+    this.setState({fields: this.state.fields.set(field, text)});
   }
 
   onChange_FLOAT(event, field) {

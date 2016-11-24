@@ -18,9 +18,13 @@ export default class EditableTitleControl extends Component {
   testTextElm = null;
   minTextWidth = 0;
   editable = false;
+  
+  startText = undefined;
 
 
   setText(text) {
+    text = text ? text : '';
+    
     let wText = text;
     if (!wText)
       wText = this.props.placeholder;
@@ -38,6 +42,8 @@ export default class EditableTitleControl extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setText(nextProps.text);
+    if (this.startText === undefined)
+      this.startText = nextProps.text;
   }
 
   componentDidMount() {
@@ -81,18 +87,23 @@ export default class EditableTitleControl extends Component {
       return;
 
     this.setState({editing: false});
-    this.props.cancel();
+    this.props.update(this.state.text);
   };
 
   onKeyDown = event => {
+    event.stopPropagation();
     if (this.props.alertShowing || !this.editable)
       return;
 
     //Enter pressed
     if (event.keyCode == 13) {
-      this.props.update(this.title);
-      //Esc pressed
+      this.setState({editing: false});
+      this.props.update(this.state.text);
+      
+    //Esc pressed
     } else if (event.keyCode == 27) {
+      this.setState({editing: false});
+      this.setText(this.startText);
       this.props.cancel();
     }
   };
