@@ -3,12 +3,14 @@ import {Parse} from 'parse';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import _ from 'lodash/core';
+import ReactStars from 'react-stars';
+
 import 'flatpickr/dist/flatpickr.min.css';
 import Flatpickr from 'react-flatpickr';
+
+import 'medium-editor/dist/css/medium-editor.css';
+import 'medium-editor/dist/css/themes/default.css';
 import Editor from 'react-medium-editor';
-// load theme styles with webpack
-require('medium-editor/dist/css/medium-editor.css');
-require('medium-editor/dist/css/themes/default.css');
 
 
 import InputControl from 'components/elements/InputControl/InputControl';
@@ -21,6 +23,7 @@ import {MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG} from 'ducks/
 import {store} from 'index';
 
 import * as ftps from 'models/ModelData';
+
 
 import styles from './ContentEdit.sss';
 
@@ -219,6 +222,11 @@ export default class ContentEdit extends Component {
   onChange_INTEGER(event, field) {
     let str = event.target.value;
     let value = parseFloat(str);
+    this.setState({fields: this.state.fields.set(field, value)});
+  }
+  
+  onChange_INTEGER__RATING(value, field) {
+    value *= 2;
     this.setState({fields: this.state.fields.set(field, value)});
   }
 
@@ -451,13 +459,14 @@ export default class ContentEdit extends Component {
             break;
 
           case ftps.FIELD_APPEARANCE__INTEGER__RATING:
+            value *= .5;
             inner = (
               <div styleName="input-wrapper">
-                <InputControl type="big"
-                              ref={field.nameId}
-                              value={value}
-                              readOnly={!isEditable}
-                              onChange={e => this.onChange_INTEGER(e, field)}/>
+                <ReactStars
+                  value={value}
+                  onChange={e => this.onChange_INTEGER__RATING(e, field)}
+                  size={24}
+                  color2={'#ffd700'} />
               </div>
             );
             break;
