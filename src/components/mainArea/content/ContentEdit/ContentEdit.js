@@ -237,10 +237,10 @@ export default class ContentEdit extends Component {
   onChange_DATE(_date, field) {
     let date = _date[0];
     let oldDate = this.state.fields.get(field);
-    if (oldDate) {
-      date.setHours(oldDate.getHours());
-      date.setMinutes(oldDate.getMinutes());
-    }
+    if (!oldDate)
+      oldDate = new Date();
+    date.setHours(oldDate.getHours());
+    date.setMinutes(oldDate.getMinutes());
     this.setState({fields: this.state.fields.set(field, date)});
   }
 
@@ -569,7 +569,7 @@ export default class ContentEdit extends Component {
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__DATE__DATE:
             if (!value)
-              value = '';
+              value = new Date();
 
             inner = (
               <div styleName="input-wrapper data-time-wrapper">
