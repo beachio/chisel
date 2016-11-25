@@ -46,7 +46,7 @@ export default class ContentEdit extends Component {
       fields: new Map(this.item.fields)
     });
   }
-  
+
   componentWillUnmount() {
     if (!this.item.published || this.validate()) {
       this.item.color = this.state.color;
@@ -224,7 +224,7 @@ export default class ContentEdit extends Component {
     let value = parseFloat(str);
     this.setState({fields: this.state.fields.set(field, value)});
   }
-  
+
   onChange_INTEGER__RATING(value, field) {
     value *= 2;
     this.setState({fields: this.state.fields.set(field, value)});
@@ -403,7 +403,7 @@ export default class ContentEdit extends Component {
           case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
             if (!value)
               value = "<p></p>";
-            
+
             title = (
               <div styleName="field-title">
                 {field.name}
@@ -466,10 +466,12 @@ export default class ContentEdit extends Component {
             inner = (
               <div styleName="input-wrapper">
                 <ReactStars
+                  styleName="react-stars"
                   value={value}
                   onChange={e => this.onChange_INTEGER__RATING(e, field)}
-                  size={24}
-                  color2={'#ffd700'} />
+                  size={32}
+                  color1={'#F5F5F5'}
+                  color2={'#5CA6DC'} />
               </div>
             );
             break;
