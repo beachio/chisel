@@ -407,6 +407,7 @@ export default class ContentEdit extends Component {
             );
             inner = (
               <Editor
+                styleName="wysiwig"
                 text={value}
                 onChange={text => this.onChange_LONG_TEXT_WYSIWYG(text, field)}
               />
