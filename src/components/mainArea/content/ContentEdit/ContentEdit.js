@@ -401,6 +401,9 @@ export default class ContentEdit extends Component {
             break;
 
           case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
+            if (!value)
+              value = "<p></p>";
+            
             title = (
               <div styleName="field-title">
                 {field.name}
@@ -415,6 +418,7 @@ export default class ContentEdit extends Component {
                 styleName="wysiwig"
                 text={value}
                 onChange={text => this.onChange_LONG_TEXT_WYSIWYG(text, field)}
+                options={{placeholder: false}}
               />
             );
             break;
