@@ -27,6 +27,7 @@ export class MainArea extends Component  {
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
 
     let isEditable = models.isOwner || models.isAdmin;
+    let curSite = models.currentSite;
 
     let Area = (
       <div styleName="start-working">
@@ -35,11 +36,12 @@ export class MainArea extends Component  {
         <div styleName="hint">Find "Add new site" button at sidebar</div>
       </div>
     );
+    
     switch (nav.openedPage) {
       case PAGE_MODELS:
-        if (models.currentSite)
+        if (curSite)
           Area = (
-            <ModelsList models={models.currentSite.models}
+            <ModelsList models={curSite.models}
                         setCurrentModel={setCurrentModel}
                         addModel={addModel}
                         deleteModel={deleteModel}
@@ -65,7 +67,7 @@ export class MainArea extends Component  {
         break;
 
       case PAGE_CONTENT:
-        if (nav.openedContentItem)
+        if (nav.openedContentItem) {
           Area = (
             <ContentEdit item={content.currentItem}
                          onClose={closeContentItem}
@@ -74,12 +76,17 @@ export class MainArea extends Component  {
                          updateMediaItem={updateMediaItem}
                          removeMediaItem={removeMediaItem}
                          showModal={showModal}
-                         isEditable={isEditable} />
+                         isEditable={isEditable}/>
           );
-        else if (models.currentSite && models.currentSite.models.length)
+        } else if (curSite && curSite.models.length) {
+          let items = [];
+          for (let item of content.items) {
+            if (item.model.site == curSite)
+              items.push(item);
+          }
           Area = (
-            <ContentList items={content.items}
-                         models={models.currentSite.models}
+            <ContentList items={items}
+                         models={curSite.models}
                          setCurrentItem={setCurrentItem}
                          addItem={addItem}
                          deleteItem={deleteItem}
@@ -87,20 +94,21 @@ export class MainArea extends Component  {
                          alertShowing={nav.alertShowing}
                          isEditable={isEditable}/>
           );
-        else if (models.currentSite)
+        } else if (curSite) {
           Area = (
             <div styleName="start-working">
               <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
               Add any model to start creating content
             </div>
           );
+        }
 
         break;
 
       case PAGE_SHARING:
         Area = (
-          <Sharing collaborations={models.currentSite.collaborations}
-                   owner={models.currentSite.owner}
+          <Sharing collaborations={curSite.collaborations}
+                   owner={curSite.owner}
                    addCollaboration={addCollaboration}
                    updateCollaboration={updateCollaboration}
                    deleteCollaboration={deleteCollaboration}
