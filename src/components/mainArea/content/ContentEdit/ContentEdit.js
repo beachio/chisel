@@ -46,6 +46,14 @@ export default class ContentEdit extends Component {
       fields: new Map(this.item.fields)
     });
   }
+  
+  componentWillUnmount() {
+    if (!this.item.published || this.validate()) {
+      this.item.color = this.state.color;
+      this.item.fields = this.state.fields;
+      this.props.updateItem(this.item);
+    }
+  }
 
   updateItemTitle = title => {
     this.setState({title});
@@ -59,16 +67,8 @@ export default class ContentEdit extends Component {
   }
 
   onClose = () => {
-    this.onSave();
     this.props.onClose();
   };
-
-  onSave() {
-    this.item.color = this.state.color;
-    this.item.fields = this.state.fields;
-
-    this.props.updateItem(this.item);
-  }
 
   onDiscard = () => {
     this.setState({fields: new Map(this.item.fields)});
