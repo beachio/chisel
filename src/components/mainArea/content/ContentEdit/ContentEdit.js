@@ -362,7 +362,6 @@ export default class ContentEdit extends Component {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__URL:
             inner = (
               <div styleName="input-wrapper url">
-                <div styleName="url-span">http://</div>
                 <InputControl type="big"
                               ref={field.nameId}
                               value={value}
