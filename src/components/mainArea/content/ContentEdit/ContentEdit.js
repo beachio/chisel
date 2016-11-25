@@ -5,9 +5,6 @@ import InlineSVG from 'svg-inline-react';
 import _ from 'lodash/core';
 import 'flatpickr/dist/flatpickr.min.css';
 import Flatpickr from 'react-flatpickr';
-import TimePicker from 'rc-time-picker';
-import 'rc-time-picker/assets/index.css';
-import moment from 'moment';
 import Editor from 'react-medium-editor';
 // load theme styles with webpack
 require('medium-editor/dist/css/medium-editor.css');
@@ -229,22 +226,23 @@ export default class ContentEdit extends Component {
     this.setState({fields: this.state.fields.set(field, value)});
   }
 
-  onChange_DATE(dateStr, field) {
-    if (dateStr) {
-      let date = new Date(dateStr);
-      let oldDate = this.state.fields.get(field);
-      if (oldDate) {
-        date.setHours(oldDate.getHours());
-        date.setMinutes(oldDate.getMinutes());
-      }
-      this.setState({fields: this.state.fields.set(field, date)});
+  onChange_DATE(_date, field) {
+    let date = _date[0];
+    let oldDate = this.state.fields.get(field);
+    if (oldDate) {
+      date.setHours(oldDate.getHours());
+      date.setMinutes(oldDate.getMinutes());
     }
+    this.setState({fields: this.state.fields.set(field, date)});
   }
 
-  onChange_TIME(time, field) {
+  onChange_TIME(_time, field) {
+    let time = _time[0];
     let date = this.state.fields.get(field);
-    date.setHours(time.hour());
-    date.setMinutes(time.minute());
+    if (!date)
+      date = new Date();
+    date.setHours(time.getHours());
+    date.setMinutes(time.getMinutes());
     this.setState({fields: this.state.fields.set(field, date)});
   }
 
@@ -559,27 +557,24 @@ export default class ContentEdit extends Component {
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__DATE__DATE:
             if (!value)
-              value = new Date();
+              value = '';
 
-            let time = moment();
-            if (value) {
-              time.hour(value.getHours());
-              time.minute(value.getMinutes());
-            }
             inner = (
               <div styleName="input-wrapper data-time-wrapper">
                 <div styleName="date">
                   <Flatpickr value={value}
                              data-click-opens={isEditable}
                              data-alt-input="true"
-                             data-alt-format="F j, Y"
-                             onChange={(obj, str, ins) => this.onChange_DATE(str, field)} />
+                             onChange={obj => this.onChange_DATE(obj, field)} />
                 </div>
                 <div styleName="time">
-                  <TimePicker showSecond={false}
-                              value={time}
-                              disabled={!isEditable}
-                              onChange={e => this.onChange_TIME(e, field)} />
+                  <Flatpickr value={value}
+                             data-click-opens={isEditable}
+                             data-no-calendar={true}
+                             data-enable-time={true}
+                             data-alt-format="h:i K"
+                             data-alt-input="true"
+                             onChange={obj => this.onChange_TIME(obj, field)} />
                 </div>
               </div>
             );
