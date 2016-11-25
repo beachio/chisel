@@ -47,7 +47,7 @@ export class MainArea extends Component  {
                         alertShowing={nav.alertShowing}
                         isEditable={isEditable} />
           );
-        
+
         if (nav.openedModel)
           Area = (
             <Model model={models.currentModel}
@@ -94,7 +94,7 @@ export class MainArea extends Component  {
               Add any model to start creating content
             </div>
           );
-  
+
         break;
 
       case PAGE_SHARING:
@@ -109,16 +109,18 @@ export class MainArea extends Component  {
                    isEditable={models.isOwner} />
         );
         break;
-  
+
       case PAGE_API:
         Area = (
           <div styleName="start-working">
             <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
-            Check Parse docs!
+            <div styleName="docs">
+              Check <a styleName="docs-link" href="http://parseplatform.github.io/docs/" target="_blank">Parse</a> docs!
+            </div>
           </div>
         );
         break;
-  
+
       case PAGE_SETTINGS:
         Area = (
           <div styleName="start-working">
