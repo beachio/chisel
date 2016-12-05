@@ -55,7 +55,7 @@ export class Sign extends Component  {
     let contents = (
       <div styleName="Sign">
         <div styleName="logo">
-          <img src={require("./logo.png")} />
+          <img src={require("./chisel-logo.png")} />
         </div>
         <div styleName="title">Welcome to Chisel</div>
         <form styleName="form" onSubmit={this.onSubmit}>
@@ -63,7 +63,7 @@ export class Sign extends Component  {
           <input styleName="input" type="password" placeholder="Enter password" onChange={this.onPasswordChange} />
           <div styleName="button">
             <ButtonControl color="green"
-                           value="Sign in / Sign up"
+                           value="Enter"
                            onClick={this.onSubmit} />
           </div>
         </form>
