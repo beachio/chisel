@@ -116,6 +116,8 @@ export default function mediaReducer(state = initialState, action) {
   
     case ITEM_UPDATE:
     case POST_INIT_END:
+      return {...state};
+      
     default:
       return state;
   }

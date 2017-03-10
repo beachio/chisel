@@ -128,7 +128,7 @@ export default function contentReducer(state = initialState, action) {
       
     case ITEM_UPDATED:
     case ITEM_DELETED:
-      return state;
+      return {...state};
   
     case SET_CURRENT_ITEM:
       return {
@@ -144,7 +144,7 @@ export default function contentReducer(state = initialState, action) {
       for (let item of modelItems) {
         item.model = model;
       }
-      return state;
+      return {...state};
     
     case LOGOUT:
       return {

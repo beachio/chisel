@@ -33,7 +33,7 @@ const initialState = {
 export default function initializeReducer(state = initialState, action) {
   switch (action.type) {
     case INITIALIZE_APP_START:
-      return state;
+      return {...state};
 
     case INITIALIZE_APP_END:
       return {...state, initializedApp: true};

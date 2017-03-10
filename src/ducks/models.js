@@ -451,7 +451,7 @@ export default function modelsReducer(state = initialState, action) {
     case FIELD_ADD:
     case FIELD_UPDATED:
     case FIELD_DELETED:
-      return state;
+      return {...state};
     
     case LOGOUT:
       return {
