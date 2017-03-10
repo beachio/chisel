@@ -63,9 +63,6 @@ export default class ContentEdit extends Component {
     }
   };
 
-  endEdit() {
-  }
-
   onClose = () => {
     this.props.onClose();
   };
@@ -192,8 +189,8 @@ export default class ContentEdit extends Component {
 
   onChange_SHORT_TEXT(event, field) {
     let value = event.target.value;
-    this.setState({fields: this.state.fields.set(field, value)});
-
+    this.setFieldValue(field, value);
+  
     if (field.isTitle) {
       this.setState({title: value});
       for (let [tempField, tempValue] of this.state.fields) {
@@ -206,32 +203,32 @@ export default class ContentEdit extends Component {
 
   onChange_LONG_TEXT(event, field) {
     let value = event.target.value;
-    this.setState({fields: this.state.fields.set(field, value)});
+    this.setFieldValue(field, value);
   }
 
   onChange_LONG_TEXT_WYSIWYG(text, field) {
-    this.setState({fields: this.state.fields.set(field, text)});
+    this.setFieldValue(field, text);
   }
 
   onChange_FLOAT(event, field) {
     let str = event.target.value;
     let value = parseFloat(str);
-    this.setState({fields: this.state.fields.set(field, value)});
+    this.setFieldValue(field, value);
   }
 
   onChange_INTEGER(event, field) {
     let str = event.target.value;
     let value = parseFloat(str);
-    this.setState({fields: this.state.fields.set(field, value)});
+    this.setFieldValue(field, value);
   }
 
   onChange_INTEGER__RATING(value, field) {
     value *= 2;
-    this.setState({fields: this.state.fields.set(field, value)});
+    this.setFieldValue(field, value);
   }
 
   onChange_BOOLEAN(value, field) {
-    this.setState({fields: this.state.fields.set(field, value)});
+    this.setFieldValue(field, value);
   }
 
   onChange_DATE(_date, field) {
@@ -241,7 +238,7 @@ export default class ContentEdit extends Component {
       oldDate = new Date();
     date.setHours(oldDate.getHours());
     date.setMinutes(oldDate.getMinutes());
-    this.setState({fields: this.state.fields.set(field, date)});
+    this.setFieldValue(field, date);
   }
 
   onChange_TIME(_time, field) {
@@ -251,13 +248,13 @@ export default class ContentEdit extends Component {
       date = new Date();
     date.setHours(time.getHours());
     date.setMinutes(time.getMinutes());
-    this.setState({fields: this.state.fields.set(field, date)});
+    this.setFieldValue(field, date);
   }
 
   setLastMedia(field) {
     let mItems = store.getState().media.items;
     let mItem = mItems[mItems.length - 1];
-    this.setState({fields: this.state.fields.set(field, mItem)});
+    this.setFieldValue(field, mItem);
   }
 
   onMediaChoose(field) {
@@ -281,7 +278,7 @@ export default class ContentEdit extends Component {
   onMediaClear(field) {
     let fields = this.state.fields;
     this.props.removeMediaItem(fields.get(field));
-    this.setState({fields: fields.set(field, null)});
+    this.setFieldValue(field, null);
   }
 
   onMediaNameChange(event, field) {
@@ -290,12 +287,12 @@ export default class ContentEdit extends Component {
     let mItem = fields.get(field);
     mItem.name = value;
     this.props.updateMediaItem(mItem);
-    this.setState({fields: this.state.fields.set(field, mItem)});
+    this.setFieldValue(field, mItem);
   }
 
   onReferenceChoose(field) {
     this.props.showModal(MODAL_TYPE_REFERENCE,
-      item => this.setState({fields: this.state.fields.set(field, item)})
+      item => this.setFieldValue(field, item)
     );
   }
 
@@ -303,21 +300,21 @@ export default class ContentEdit extends Component {
     //TODO
   }
 
-  onReferenceClear(field) {
-    this.setState({fields: this.state.fields.set(field, null)});
-  }
-
   onShowWysiwygModal(field) {
-    let fields = this.state.fields;
     this.props.showModal(
       MODAL_TYPE_WYSIWYG,
       {
-        text: fields.get(field),
-        callback: text => this.setState({fields: fields.set(field, text)})
+        text: this.state.fields.get(field),
+        callback: text =>  this.setFieldValue(field, text)
       }
     );
   }
-
+  
+  setFieldValue(field, value) {
+    let fields = this.state.fields;
+    this.setState({fields: fields.set(field, value)});
+  }
+  
   generateElement(field, value) {
     const {isEditable} = this.props;
 
@@ -606,7 +603,7 @@ export default class ContentEdit extends Component {
                     <input type="text" value={value.title} readOnly />
                     <InlineSVG styleName="reference-cross"
                                src={require('./cross.svg')}
-                               onClick={() => this.onReferenceClear(field)} />
+                               onClick={() => this.setFieldValue(field, null)} />
                   </div>
                 </div>
               );
