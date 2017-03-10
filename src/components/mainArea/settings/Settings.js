@@ -88,7 +88,8 @@ export default class Settings extends Component {
     return true;
   }
   
-  onSave = () => {
+  onSave = e => {
+    e.preventDefault();
     if (this.validate()) {
       this.setState({dirty: false});
       this.site.name = this.state.name;
@@ -102,7 +103,7 @@ export default class Settings extends Component {
     
     return (
       <ContainerComponent title="Site settings">
-        <div styleName="content">
+        <form styleName="content" onSubmit={this.onSave}>
           <div styleName="field">
             <div styleName="field-title">Site name</div>
             <div styleName="input-wrapper">
@@ -125,9 +126,9 @@ export default class Settings extends Component {
             isEditable &&
             <div styleName="buttons-wrapper">
               <ButtonControl color="green"
+                             type="submit"
                              disabled={!this.state.dirty || this.state.error}
-                             value="Save changes"
-                             onClick={this.onSave}/>
+                             value="Save changes"/>
             </div>
           }
           {
@@ -136,7 +137,7 @@ export default class Settings extends Component {
                 {this.state.error}
               </div>
           }
-        </div>
+        </form>
       </ContainerComponent>
     );
   }

@@ -70,8 +70,7 @@ export class Sign extends Component  {
           <div styleName="button">
             <ButtonControl color="green"
                            type="submit"
-                           value="Enter"
-                           onClick={this.onSubmit} />
+                           value="Enter" />
           </div>
         </form>
 
