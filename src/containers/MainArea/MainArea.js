@@ -7,8 +7,9 @@ import ModelsList from 'components/mainArea/models/ModelsList/ModelsList';
 import ContentList from 'components/mainArea/content/ContentList/ContentList';
 import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import Sharing from 'components/mainArea/sharing/Sharing';
+import Settings from 'components/mainArea/settings/Settings';
 import Model from 'components/mainArea/models/Model/Model';
-import {addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField} from 'ducks/models';
+import {updateSite, addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField} from 'ducks/models';
 import {addItem, updateItem, setCurrentItem, deleteItem} from 'ducks/content';
 import {addMediaItem, updateMediaItem, removeMediaItem} from 'ducks/media';
 import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, showAlert, closeModel, closeContentItem, showModal} from 'ducks/nav';
@@ -21,7 +22,7 @@ import styles from './MainArea.sss';
 export class MainArea extends Component  {
   render() {
     const {models, content, nav} = this.props;
-    const {addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField} = this.props.modelsActions;
+    const {updateSite, addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField} = this.props.modelsActions;
     const {addItem, updateItem, setCurrentItem} = this.props.contentActions;
     const {showAlert, closeModel, closeContentItem, showModal} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
@@ -130,12 +131,21 @@ export class MainArea extends Component  {
         break;
 
       case PAGE_SETTINGS:
-        Area = (
-          <div styleName="start-working">
-            <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
-            There is no any settings yet
-          </div>
-        );
+        if (curSite) {
+          Area = (
+            <Settings site={curSite}
+                      updateSite={updateSite}
+                      isEditable={models.isOwner} />
+          );
+        } else {
+          Area = (
+            <div styleName="start-working">
+              <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
+              There is no site selected
+            </div>
+          );
+        }
+  
         break;
     }
 
@@ -157,7 +167,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelsActions:  bindActionCreators({addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField}, dispatch),
+    modelsActions:  bindActionCreators({updateSite, addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField}, dispatch),
     contentActions: bindActionCreators({addItem, updateItem, setCurrentItem, deleteItem}, dispatch),
     navActions:     bindActionCreators({showAlert, closeModel, closeContentItem, showModal}, dispatch),
     mediaActions:   bindActionCreators({addMediaItem, updateMediaItem, removeMediaItem}, dispatch)
