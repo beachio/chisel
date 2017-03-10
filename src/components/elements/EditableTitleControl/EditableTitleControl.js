@@ -15,6 +15,9 @@ export default class EditableTitleControl extends Component {
     editing: false,
     width: 0
   };
+  
+  input = null;
+  
   testTextElm = null;
   minTextWidth = 0;
   editable = false;
@@ -74,7 +77,7 @@ export default class EditableTitleControl extends Component {
 
     this.setState(
       {editing: true},
-      () => this.refs.input.focus()
+      () => this.input.focus()
     );
   };
 
@@ -125,7 +128,7 @@ export default class EditableTitleControl extends Component {
     return (
       <div styleName={wrapperStyle}>
         <input style={{width: this.state.width + 'px'}}
-               ref="input"
+               ref={input => this.input = input}
                styleName={inputStyle}
                value={this.state.text}
                readOnly={!editable}

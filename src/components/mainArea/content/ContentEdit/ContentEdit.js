@@ -335,8 +335,7 @@ export default class ContentEdit extends Component {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
             inner = (
               <div styleName="input-wrapper">
-                <InputControl ref={field.nameId}
-                              type="big"
+                <InputControl type="big"
                               value={value}
                               readOnly={!isEditable}
                               onChange={e => this.onChange_SHORT_TEXT(e, field)} />
@@ -348,7 +347,6 @@ export default class ContentEdit extends Component {
             inner = (
               <div styleName="input-wrapper">
                 <InputControl type="big"
-                              ref={field.nameId}
                               value={value}
                               readOnly={!isEditable}
                               onChange={e => this.onChange_SHORT_TEXT(e, field)} />
@@ -360,7 +358,6 @@ export default class ContentEdit extends Component {
             inner = (
               <div styleName="input-wrapper url">
                 <InputControl type="big"
-                              ref={field.nameId}
                               value={value}
                               readOnly={!isEditable}
                               onChange={e => this.onChange_SHORT_TEXT(e, field)} />
@@ -379,7 +376,6 @@ export default class ContentEdit extends Component {
             inner = (
               <div styleName="input-wrapper">
                 <InputControl type="big"
-                              ref={field.nameId}
                               value={value}
                               readOnly={!isEditable}
                               onChange={e => this.onChange_LONG_TEXT(e, field)} />
@@ -390,7 +386,6 @@ export default class ContentEdit extends Component {
           case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
             inner = (
               <textarea styleName="textarea"
-                        ref={field.nameId}
                         value={value}
                         readOnly={!isEditable}
                         onChange={e => this.onChange_LONG_TEXT(e, field)} />
@@ -431,7 +426,6 @@ export default class ContentEdit extends Component {
             inner = (
               <div styleName="input-wrapper">
                 <InputControl type="big"
-                              ref={field.nameId}
                               value={value}
                               readOnly={!isEditable}
                               onChange={e => this.onChange_FLOAT(e, field)} />
@@ -450,7 +444,6 @@ export default class ContentEdit extends Component {
             inner = (
               <div styleName="input-wrapper">
                 <InputControl type="big"
-                              ref={field.nameId}
                               value={value}
                               readOnly={!isEditable}
                               onChange={e => this.onChange_INTEGER(e, field)}/>
