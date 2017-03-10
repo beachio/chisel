@@ -41,7 +41,7 @@ export class Sign extends Component  {
     });
   };
 
-  onSubmit = (event) => {
+  onSubmit = event => {
     event.preventDefault();
     const {loginOrRegister} = this.props.userActions;
     if (this.state.email.length && this.state.password.length)
@@ -59,10 +59,17 @@ export class Sign extends Component  {
         </div>
         <div styleName="title">Welcome to Chisel</div>
         <form styleName="form" onSubmit={this.onSubmit}>
-          <input styleName="input" type="text" placeholder="Enter email" onChange={this.onEmailChange} />
-          <input styleName="input" type="password" placeholder="Enter password" onChange={this.onPasswordChange} />
+          <input styleName="input"
+                 type="text"
+                 placeholder="Enter email"
+                 onChange={this.onEmailChange} />
+          <input styleName="input"
+                 type="password"
+                 placeholder="Enter password"
+                 onChange={this.onPasswordChange} />
           <div styleName="button">
             <ButtonControl color="green"
+                           type="submit"
                            value="Enter"
                            onClick={this.onSubmit} />
           </div>
@@ -71,7 +78,7 @@ export class Sign extends Component  {
         <div styleName="errors">
           {
             this.state.authError ==  ERROR_WRONG_PASS &&
-              <div styleName="error">Wrong password!</div>
+              <div styleName="error">Wrong email or password!</div>
           }
           {
             this.state.emptyFields &&
