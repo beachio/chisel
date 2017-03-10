@@ -6,21 +6,33 @@ import {removeSpaces, filterSpecials} from 'utils/common';
 import {FIELD_NAMES_RESERVED} from 'models/ModelData';
 
 
-export function checkSiteName(name) {
+export function checkSiteName(name, curSite) {
   if (!name)
     return false;
   
   name = removeSpaces(name);
-  let nameId = filterSpecials(name);
   
   let sites = store.getState().models.sites;
   for (let site of sites) {
-    if (site.name == name || site.nameId == nameId)
+    if (site != curSite && site.name == name)
       return false;
   }
   
   return true;
 }
+
+export function checkSiteDomain(domain, curSite) {
+  if (!domain)
+    return false;
+  
+  let sites = store.getState().models.sites;
+  for (let site of sites) {
+    if (site != curSite && site.domain == domain)
+      return false;
+  }
+  return true;
+}
+
 
 export const NAME_CORRECT             = 0;
 export const NAME_ERROR_NAME_EXIST    = 1;

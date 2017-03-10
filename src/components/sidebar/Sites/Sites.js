@@ -70,7 +70,7 @@ export default class Sites extends Component {
     if ((this.state.adding || this.state.editing) &&
         this.state.newSiteName &&
         this.state.newSiteName != this.newSite.name) {
-      if (checkSiteName(this.state.newSiteName)) {
+      if (checkSiteName(this.state.newSiteName, this.state.currentSite)) {
         this.newSite.name = this.state.newSiteName;
         this.newSite.domain = this.newSite.name;
         if (this.state.adding) {
