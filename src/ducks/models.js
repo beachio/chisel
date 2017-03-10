@@ -58,16 +58,19 @@ function requestCollaborationsPost(sites_o, sites) {
       .containedIn("site", sites_o)
       .find()
       .then(collabs_o => {
+        let promises = [];
         for (let collab_o of collabs_o) {
           let collab = new CollaborationData().setOrigin(collab_o);
           
-          //WARNING: uncontrolled async operations
-          collab_o.get('user')
-            .fetch()
-            .then(user_o => {
-              let user = new UserData().setOrigin(user_o);
-              collab.user = user;
-            });
+          promises.push(new Promise((inResolve, inReject) => {
+            collab_o.get('user')
+              .fetch()
+              .then(user_o => {
+                let user = new UserData().setOrigin(user_o);
+                collab.user = user;
+                inResolve();
+              }, inReject);
+          }));
           
           let site_o = collab_o.get("site");
           for (let site of sites) {
@@ -78,8 +81,10 @@ function requestCollaborationsPost(sites_o, sites) {
             }
           }
         }
-        
-        resolve();
+  
+        Promise.all(promises)
+          .then(() => resolve())
+          .catch(reject);
       }, reject);
   });
 }
@@ -147,26 +152,29 @@ export function init() {
       })
       .then(sitesUser_o => {
         sites_o = sites_o.concat(sitesUser_o);
-        
+        let promises = [];
         for (let site_o of sites_o) {
           let site = new SiteData().setOrigin(site_o);
-          
-          //WARNING: uncontrolled async operations
-          site_o.get('owner')
-            .fetch()
-            .then(owner_o => {
-              let owner = new UserData().setOrigin(owner_o);
-              site.owner = owner;
-            });
+  
+          promises.push(new Promise((inResolve, inReject) => {
+            site_o.get('owner')
+              .fetch()
+              .then(owner_o => {
+                let owner = new UserData().setOrigin(owner_o);
+                site.owner = owner;
+                inResolve();
+              }, inReject);
+          }));
           
           sites.push(site);
         }
 
-        return Promise.all([
-          requestCollaborationsPost(sitesUser_o, sites),
-          requestModels(sites_o, sites, models_o, models)
-            .then(() => requestFields(models_o, models))
-        ]);
+        return Promise.all(promises)
+          .then(() => Promise.all([
+            requestCollaborationsPost(sitesUser_o, sites),
+            requestModels(sites_o, sites, models_o, models)
+              .then(() => requestFields(models_o, models))
+          ]));
       })
       .then(() =>
         dispatch({
