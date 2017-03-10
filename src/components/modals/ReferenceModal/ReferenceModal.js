@@ -22,7 +22,13 @@ export default class ReferenceModal extends Component {
   componentWillMount() {
     this.onClose = this.props.onClose;
     this.callback = this.props.params;
-    this.items = store.getState().content.items;
+    
+    let allItems = store.getState().content.items;
+    let curSite = store.getState().models.currentSite;
+    for (let item of allItems) {
+      if (!item.model.site || item.model.site == curSite)
+        this.items.push(item);
+    }
   }
   
   onSearch = (event) => {

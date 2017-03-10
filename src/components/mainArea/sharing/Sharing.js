@@ -131,7 +131,7 @@ export default class Sharing extends Component {
                 </div>
                 <div styleName="type">
                   <div styleName="name">{owner.firstName} {owner.lastName}</div>
-                  <div styleName="email">{owner.email}</div>
+                  <div styleName="email">{owner.username}</div>
                 </div>
                 <div styleName="role">
                   OWNER
@@ -140,13 +140,13 @@ export default class Sharing extends Component {
               {
                 this.state.collaborations.map((collaboration, index) => {
                   return(
-                    <div styleName="list-item" key={collaboration.user.email}>
+                    <div styleName="list-item" key={collaboration.user.username}>
                       <div styleName="avatar">
                         <Gravatar email={collaboration.user.email} styleName="gravatar"/>
                       </div>
                       <div styleName="type">
                         <div styleName="name">{collaboration.user.firstName} {collaboration.user.lastName} </div>
-                        <div styleName="email">{collaboration.user.email}</div>
+                        <div styleName="email">{collaboration.user.username}</div>
                       </div>
                       <div styleName="role" onClick={event => this.onRoleClick(event, index)}>
                         {collaboration.role == ROLE_ADMIN ? "ADMIN" : "EDITOR"}

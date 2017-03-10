@@ -5,6 +5,7 @@ export class UserData {
   origin = null;
   
   email = "";
+  username = "";
   firstName = "";
   lastName = "";
   avatar = null;
@@ -15,6 +16,7 @@ export class UserData {
     this.origin = origin;
     
     if (origin.get('email'))      this.email      = origin.get('email');
+    if (origin.get('username'))   this.username   = origin.get('username');
     if (origin.get('firstName'))  this.firstName  = origin.get('firstName');
     if (origin.get('lastName'))   this.lastName   = origin.get('lastName');
     if (origin.get('avatar'))     this.avatar     = origin.get('avatar');
@@ -55,7 +57,7 @@ export class CollaborationData {
   
   updateOrigin() {
     if (!this.origin)
-      this.origin = new CollaborationData.OriginClass;
+      this.origin = new CollaborationData.OriginClass();
     
     this.origin.set("role", this.role);
     this.origin.set("site", this.site.origin);
