@@ -212,13 +212,13 @@ export default class ContentEdit extends Component {
 
   onChange_FLOAT(event, field) {
     let str = event.target.value;
-    let value = parseFloat(str);
+    let value = !!str ? parseFloat(str) : '';
     this.setFieldValue(field, value);
   }
 
   onChange_INTEGER(event, field) {
     let str = event.target.value;
-    let value = parseFloat(str);
+    let value = !!str ? parseFloat(str) : '';
     this.setFieldValue(field, value);
   }
 
