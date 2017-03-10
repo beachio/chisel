@@ -18,10 +18,21 @@ function subInitParse() {
 }
 
 export function initApp() {
-  subInitParse();
-  store.dispatch(getLocalStorage());
-  return {
-    type: INITIALIZE_APP_END
+  return dispatch => {
+    subInitParse();
+  
+    new Promise((resolve, reject) => {
+      store.dispatch(getLocalStorage());
+      dispatch({
+        type: INITIALIZE_APP_END
+      });
+    })
+      .catch(e => {
+        setTimeout(() => {
+          localStorage.clear();
+          window.location = "/";
+        }, 1000);
+      });
   };
 }
 
