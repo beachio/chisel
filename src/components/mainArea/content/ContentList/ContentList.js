@@ -86,7 +86,7 @@ export default class ContentList extends Component {
       models.delete(model);
     else
       models.add(model);
-    this.setState({activeModels: models});
+    this.setState({activeModels: models, currentModel: model});
   };
 
   onStatusClick = status => {
@@ -171,44 +171,41 @@ export default class ContentList extends Component {
                   </div>
               }
               {
-                this.state.items.map(item => {
-                  if (this.state.activeModels.size && !this.state.activeModels.has(item.model))
-                    return;
-                  if (this.state.activeStatus != STATUS_ALL &&
-                      (this.state.activeStatus == STATUS_PUBLISHED) != item.published)
-                    return;
-
-                  let updatedDate = item.origin.updatedAt;
-                  if (!updatedDate)
-                    updatedDate = new Date();
-                  let updatedStr = updatedDate.toLocaleString("en-US",
-                    {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
-
-                  let colorStyle = {background: item.color};
-                  let key = item.origin && item.origin.id ? item.origin.id : Math.random();
-
-                  return(
-                    <div styleName="list-item"
-                         key={key}
-                         onClick={() => this.onItemClick(item)} >
-                      <div styleName="colorLabel" style={colorStyle}></div>
-                      <div styleName="type">
-                        <div styleName="name">{item.title}</div>
-                        <div styleName="description">{item.model.name}</div>
-                      </div>
-                      <div styleName="updated">{updatedStr}</div>
-                      {
-                        isEditable &&
-                          <div styleName="hidden-controls">
-                            <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, item)}>
-                              <InlineSVG styleName="cross"
-                                         src={require("./cross.svg")}/>
+                this.state.items
+                  .filter(item => !this.state.activeModels.size || this.state.activeModels.has(item.model))
+                  .filter(item => this.state.activeStatus == STATUS_ALL || (this.state.activeStatus == STATUS_PUBLISHED) == item.published)
+                  .map(item => {
+                    let updatedDate = item.origin.updatedAt;
+                    if (!updatedDate)
+                      updatedDate = new Date();
+                    let updatedStr = updatedDate.toLocaleString("en-US",
+                      {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
+  
+                    let colorStyle = {background: item.color};
+                    let key = item.origin && item.origin.id ? item.origin.id : Math.random();
+  
+                    return(
+                      <div styleName="list-item"
+                           key={key}
+                           onClick={() => this.onItemClick(item)} >
+                        <div styleName="colorLabel" style={colorStyle}></div>
+                        <div styleName="type">
+                          <div styleName="name">{item.title}</div>
+                          <div styleName="description">{item.model.name}</div>
+                        </div>
+                        <div styleName="updated">{updatedStr}</div>
+                        {
+                          isEditable &&
+                            <div styleName="hidden-controls">
+                              <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, item)}>
+                                <InlineSVG styleName="cross"
+                                           src={require("./cross.svg")}/>
+                              </div>
                             </div>
-                          </div>
-                      }
-                    </div>
-                  );
-                })
+                        }
+                      </div>
+                    );
+                  })
               }
             </div>
             {
@@ -220,7 +217,7 @@ export default class ContentList extends Component {
                                      current={this.state.currentModel.name} />
                   </div>
                   <div styleName="input-wrapper">
-                    <InputControl placeholder="Create a new Content Type"
+                    <InputControl placeholder="Create a new Content Record"
                                   value={this.state.itemTitle}
                                   autoFocus={true}
                                   icon="plus"
