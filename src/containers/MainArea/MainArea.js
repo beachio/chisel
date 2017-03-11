@@ -20,6 +20,8 @@ import styles from './MainArea.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export class MainArea extends Component  {
+  mainElement = null;
+  
   render() {
     const {models, content, nav} = this.props;
     const {updateSite, deleteSite, addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField} = this.props.modelsActions;
@@ -37,6 +39,9 @@ export class MainArea extends Component  {
         <div styleName="hint">Find "Add new site" button at sidebar</div>
       </div>
     );
+    
+    if (this.mainElement)
+      this.mainElement.scrollTop = 0;
     
     switch (nav.openedPage) {
       case PAGE_MODELS:
@@ -72,6 +77,7 @@ export class MainArea extends Component  {
           Area = (
             <ContentEdit item={content.currentItem}
                          onClose={closeContentItem}
+                         setCurrentItem={setCurrentItem}
                          updateItem={updateItem}
                          addMediaItem={addMediaItem}
                          updateMediaItem={updateMediaItem}
@@ -152,7 +158,7 @@ export class MainArea extends Component  {
     }
 
     return (
-      <div styleName="mainArea">
+      <div styleName="mainArea" ref={elm => this.mainElement = elm}>
         {Area}
       </div>
     );
@@ -169,7 +175,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelsActions:  bindActionCreators({updateSite, deleteSite, addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField}, dispatch),
+    modelsActions:  bindActionCreators({updateSite, deleteSite, addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField},
+      dispatch),
     contentActions: bindActionCreators({addItem, updateItem, setCurrentItem, deleteItem}, dispatch),
     navActions:     bindActionCreators({showAlert, closeModel, closeContentItem, showModal}, dispatch),
     mediaActions:   bindActionCreators({addMediaItem, updateMediaItem, removeMediaItem}, dispatch)

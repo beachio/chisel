@@ -307,6 +307,18 @@ export default class ContentEdit extends Component {
   onReferenceNew(field) {
     //TODO
   }
+  
+  onReferenceClick(newItem) {
+    this.saveItem();
+    this.props.setCurrentItem(newItem);
+    this.setItem(newItem);
+    this.scrollTop = 0;
+  };
+  
+  onReferenceClear = (event, field) => {
+    event.stopPropagation();
+    this.setFieldValue(field, null);
+  };
 
   onShowWysiwygModal(field) {
     this.props.showModal(
@@ -600,11 +612,11 @@ export default class ContentEdit extends Component {
             if (value) {
               inner = (
                 <div styleName="reference">
-                  <div styleName="reference-item">
+                  <div styleName="reference-item" onClick={() => this.onReferenceClick(value)}>
                     <input type="text" value={value.title} readOnly />
                     <InlineSVG styleName="reference-cross"
                                src={require('./cross.svg')}
-                               onClick={() => this.setFieldValue(field, null)} />
+                               onClick={e => this.onReferenceClear(e, field)} />
                   </div>
                 </div>
               );
