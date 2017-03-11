@@ -39,15 +39,23 @@ export default class ContentEdit extends Component {
   fieldsErrors = new Map();
 
   componentWillMount() {
-    this.item = this.props.item;
-    this.setState({
-      title:  this.item.title,
-      color:  this.item.color,
-      fields: new Map(this.item.fields)
-    });
+    this.setItem(this.props.item);
   }
 
   componentWillUnmount() {
+    this.saveItem();
+  }
+  
+  setItem(item) {
+    this.item = item;
+    this.setState({
+      title:  item.title,
+      color:  item.color,
+      fields: new Map(item.fields)
+    });
+  }
+  
+  saveItem() {
     if (!this.item.published || this.validate()) {
       this.item.color = this.state.color;
       this.item.fields = this.state.fields;
