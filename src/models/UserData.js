@@ -33,15 +33,17 @@ export class UserData {
   }
 }
 
-export const ROLE_ADMIN   = "admin";
-export const ROLE_EDITOR  = "editor";
+export const ROLE_OWNER     = "OWNER";
+export const ROLE_ADMIN     = "ADMIN";
+export const ROLE_EDITOR    = "EDITOR";
+export const ROLE_DEVELOPER = "DEVELOPER";
 
 export class CollaborationData {
   static get OriginClass() {return Parse.Object.extend("Collaboration");}
   
   origin = null;
   
-  role = ROLE_EDITOR;
+  role = ROLE_DEVELOPER;
   
   //links
   site = null;

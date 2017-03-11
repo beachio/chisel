@@ -3,7 +3,7 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import Gravatar from 'react-gravatar';
 
-import {ROLE_ADMIN, ROLE_EDITOR, CollaborationData} from 'models/UserData';
+import {ROLE_ADMIN, ROLE_EDITOR, ROLE_DEVELOPER, CollaborationData} from 'models/UserData';
 import {getUser, checkCollaboration, COLLAB_CORRECT, COLLAB_ERROR_EXIST, COLLAB_ERROR_SELF} from 'utils/data';
 
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
@@ -19,8 +19,6 @@ export default class Sharing extends Component {
     input: ""
   };
   activeInput = null;
-  isOwner = false;
-  isAdmin = false;
 
 
   componentWillMount() {
@@ -102,6 +100,8 @@ export default class Sharing extends Component {
     if (collab.role == ROLE_ADMIN)
       collab.role = ROLE_EDITOR;
     else if (collab.role == ROLE_EDITOR)
+      collab.role = ROLE_DEVELOPER;
+    else if (collab.role == ROLE_DEVELOPER)
       collab.role = ROLE_ADMIN;
     
     this.setState({collaborations});
@@ -118,7 +118,7 @@ export default class Sharing extends Component {
   }
 
   render() {
-    const {owner, isEditable} = this.props;
+    const {owner, user, isEditable} = this.props;
 
     return (
       <div styleName="wrapper">
@@ -139,6 +139,9 @@ export default class Sharing extends Component {
               </div>
               {
                 this.state.collaborations.map((collaboration, index) => {
+                  let localEditable = isEditable;
+                  if (collaboration.user.origin.id == user.origin.id)
+                    localEditable = false;
                   return(
                     <div styleName="list-item" key={collaboration.user.username}>
                       <div styleName="avatar">
@@ -148,11 +151,18 @@ export default class Sharing extends Component {
                         <div styleName="name">{collaboration.user.firstName} {collaboration.user.lastName} </div>
                         <div styleName="email">{collaboration.user.username}</div>
                       </div>
-                      <div styleName="role" onClick={event => this.onRoleClick(event, index)}>
-                        {collaboration.role == ROLE_ADMIN ? "ADMIN" : "EDITOR"}
-                      </div>
                       {
-                        isEditable &&
+                        localEditable ?
+                          <div styleName="role editable" onClick={event => this.onRoleClick(event, index)}>
+                            {collaboration.role}
+                          </div>
+                          :
+                          <div styleName="role">
+                            {collaboration.role}
+                          </div>
+                      }
+                      {
+                        localEditable &&
                           <div styleName="hidden-controls">
                             <div styleName="hidden-remove" onClick={event => this.onDeleteClick(event, collaboration)}>
                               <InlineSVG styleName="cross"

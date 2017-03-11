@@ -14,7 +14,7 @@ import styles from './Header.sss';
 @CSSModules(styles, {allowMultiple: true})
 export class Header extends Component  {
   render() {
-    const {nav} = this.props;
+    const {nav, models} = this.props;
     const {openPage} = this.props.navActions;
     const {logout} = this.props.userActions;
 
@@ -24,6 +24,7 @@ export class Header extends Component  {
           <img src={require("./logo.png")} />
         </a>
         <Menu openedPage={nav.openedPage}
+              role={models.role}
               openPage={openPage} />
         <div styleName="logout" onClick={logout}>
           Log out
@@ -36,6 +37,7 @@ export class Header extends Component  {
 
 function mapStateToProps(state) {
   return {
+    models: state.models,
     nav:  state.nav
   };
 }

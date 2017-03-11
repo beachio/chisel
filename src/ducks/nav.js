@@ -81,7 +81,7 @@ export function closeModal() {
 }
 
 const initialState = {
-  openedPage: PAGE_MODELS,
+  openedPage: PAGE_CONTENT,
 
   openedModel: false,
   
@@ -115,7 +115,7 @@ export default function navReducer(state = initialState, action) {
     case LOGOUT:
       return {
         ...state,
-        openedPage: PAGE_MODELS,
+        openedPage: PAGE_CONTENT,
         openedModel: false,
         openedContentItem: false
       };

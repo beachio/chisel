@@ -1,7 +1,7 @@
 import {Parse} from 'parse';
 
 import {store} from '../index';
-import {UserData, CollaborationData, ROLE_ADMIN} from 'models/UserData';
+import {UserData, CollaborationData, ROLE_ADMIN, ROLE_DEVELOPER, ROLE_EDITOR, ROLE_OWNER} from 'models/UserData';
 import {SiteData, ModelData, ModelFieldData, canBeTitle} from 'models/ModelData';
 import {getRandomColor} from 'utils/common';
 import {LOGOUT} from './user';
@@ -172,7 +172,7 @@ export function init() {
 
         return Promise.all(promises)
           .then(() => Promise.all([
-            requestCollaborationsPost(sitesUser_o, sites),
+            requestCollaborationsPost(sites_o, sites),
             requestModels(sites_o, sites, models_o, models)
               .then(() => requestFields(models_o, models))
           ]));
@@ -194,22 +194,22 @@ export function setCurrentSite(currentSite) {
     };
   
   let userData = store.getState().user.userData;
-  let isOwner = userData.origin.id == currentSite.owner.origin.id;
 
-  let checkIsAdmin = () => {
+  let getRole = () => {
+    if (userData.origin.id == currentSite.owner.origin.id)
+      return ROLE_OWNER;
     for (let collab of currentSite.collaborations) {
-      if (collab.user.origin.id == userData.origin.id && collab.role == ROLE_ADMIN)
-        return true;
+      if (collab.user.origin.id == userData.origin.id)
+        return collab.role;
     }
-    return false;
+    return null;
   };
-  let isAdmin = checkIsAdmin();
+  let role = getRole();
 
   return {
     type: SET_CURRENT_SITE,
     currentSite,
-    isOwner,
-    isAdmin
+    role
   };
 }
 
@@ -434,8 +434,7 @@ const initialState = {
   currentSite: null,
   currentModel: null,
 
-  isOwner: false,
-  isAdmin: false
+  role: null
 };
 
 export default function modelsReducer(state = initialState, action) {
@@ -451,8 +450,7 @@ export default function modelsReducer(state = initialState, action) {
       return {
         ...state,
         currentSite:  action.currentSite,
-        isOwner: action.isOwner,
-        isAdmin: action.isAdmin
+        role: action.role
       };
 
     case SET_CURRENT_MODEL:
@@ -479,8 +477,7 @@ export default function modelsReducer(state = initialState, action) {
         ...state,
         currentModel: null,
         currentSite: null,
-        isOwner: false,
-        isAdmin: false
+        role: null
       };
     
     default:

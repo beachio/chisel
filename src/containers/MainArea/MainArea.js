@@ -9,6 +9,7 @@ import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import Sharing from 'components/mainArea/sharing/Sharing';
 import Settings from 'components/mainArea/settings/Settings';
 import Model from 'components/mainArea/models/Model/Model';
+import {ROLE_DEVELOPER, ROLE_EDITOR, ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';
 import {updateSite, deleteSite, addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField} from 'ducks/models';
 import {addItem, updateItem, setCurrentItem, deleteItem} from 'ducks/content';
 import {addMediaItem, updateMediaItem, removeMediaItem} from 'ducks/media';
@@ -23,13 +24,12 @@ export class MainArea extends Component  {
   mainElement = null;
   
   render() {
-    const {models, content, nav} = this.props;
+    const {models, content, nav, user} = this.props;
     const {updateSite, deleteSite, addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, removeField} = this.props.modelsActions;
     const {addItem, updateItem, setCurrentItem} = this.props.contentActions;
     const {showAlert, closeModel, closeContentItem, showModal} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
 
-    let isEditable = models.isOwner || models.isAdmin;
     let curSite = models.currentSite;
 
     let Area = (
@@ -53,7 +53,7 @@ export class MainArea extends Component  {
                         deleteModel={deleteModel}
                         showAlert={showAlert}
                         alertShowing={nav.alertShowing}
-                        isEditable={isEditable} />
+                        isEditable={true} />
           );
 
         if (nav.openedModel)
@@ -67,7 +67,7 @@ export class MainArea extends Component  {
                    showModal={showModal}
                    modalShowing={nav.modalShowing}
                    alertShowing={nav.alertShowing}
-                   isEditable={isEditable} />
+                   isEditable={true} />
           );
 
         break;
@@ -83,7 +83,7 @@ export class MainArea extends Component  {
                          updateMediaItem={updateMediaItem}
                          removeMediaItem={removeMediaItem}
                          showModal={showModal}
-                         isEditable={isEditable}/>
+                         isEditable={models.role != ROLE_DEVELOPER}/>
           );
         } else if (curSite && curSite.models.length) {
           let items = [];
@@ -99,7 +99,7 @@ export class MainArea extends Component  {
                          deleteItem={deleteItem}
                          showAlert={showAlert}
                          alertShowing={nav.alertShowing}
-                         isEditable={isEditable}/>
+                         isEditable={models.role != ROLE_DEVELOPER}/>
           );
         } else if (curSite) {
           Area = (
@@ -116,12 +116,13 @@ export class MainArea extends Component  {
         Area = (
           <Sharing collaborations={curSite.collaborations}
                    owner={curSite.owner}
+                   user={user.userData}
                    addCollaboration={addCollaboration}
                    updateCollaboration={updateCollaboration}
                    deleteCollaboration={deleteCollaboration}
                    showAlert={showAlert}
                    alertShowing={nav.alertShowing}
-                   isEditable={models.isOwner} />
+                   isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
         );
         break;
 
@@ -143,7 +144,7 @@ export class MainArea extends Component  {
                       updateSite={updateSite}
                       deleteSite={deleteSite}
                       showAlert={showAlert}
-                      isEditable={models.isOwner} />
+                      isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
           );
         } else {
           Area = (
@@ -169,7 +170,8 @@ function mapStateToProps(state) {
   return {
     models:   state.models,
     content:  state.content,
-    nav:      state.nav
+    nav:      state.nav,
+    user:     state.user
   };
 }
 

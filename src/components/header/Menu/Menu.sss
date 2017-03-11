@@ -6,19 +6,22 @@
 
 .button
   font-size: 13px
-  color: #666666
+  color: #ccc
   letter-spacing: 0.5px
-  cursor: pointer
   user-select: none
   line-height: 60px
   padding: 0 30px
 
   transition: background 0.2s ease
   will-change: background
-
+  
+  &.enabled
+    color: #666
+    cursor: pointer
+  
+  &.enabled:hover
+    background: #f9f9f9
+    
   &.active
     background: #F9F9F9
     color: #6D9EE1
-
-  &:hover
-    background: #f9f9f9
