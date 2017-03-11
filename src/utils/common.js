@@ -1,4 +1,4 @@
-export function removeSpaces(str) {
+export function removeOddSpaces(str) {
   if (!str)
     return '';
   return str.trim().replace(/\s+/g, ' ');
@@ -31,4 +31,14 @@ export function trimFileExt(name) {
     return name.slice(0, ind);
   else
     return name;
+}
+
+export function checkURL(str) {
+  let pattern = new RegExp('^(https?:\\/\\/)' + // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+    '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+  return pattern.test(str);
 }

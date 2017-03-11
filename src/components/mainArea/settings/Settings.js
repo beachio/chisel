@@ -4,6 +4,7 @@ import CSSModules from 'react-css-modules';
 import InputControl from 'components/elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
+import {checkURL} from 'utils/common';
 import {checkSiteName, checkSiteDomain} from 'utils/data';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
 
@@ -63,14 +64,7 @@ export default class Settings extends Component {
       return false;
     }
     
-    //TODO: move to utils
-    let pattern = new RegExp('^(https?:\\/\\/)' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
-    if (!pattern.test(this.state.domain)) {
+    if (!checkURL(this.state.domain)) {
       this.setState({error: ERROR_WRONG_URL});
       return false;
     }

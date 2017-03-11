@@ -1,6 +1,6 @@
 import {Parse} from 'parse';
 
-import {removeSpaces} from 'utils/common';
+import {removeOddSpaces} from 'utils/common';
 import {getMediaByO, getContentByO} from 'utils/data';
 import {FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCE, FIELD_TYPE_REFERENCES} from 'models/ModelData';
 
@@ -26,7 +26,7 @@ export class ContentItemData {
     if (!this.titleField)
       return;
     
-    title = removeSpaces(title);
+    title = removeOddSpaces(title);
     this.fields.set(this.titleField, title);
   }
   

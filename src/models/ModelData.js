@@ -1,6 +1,6 @@
 import {Parse} from 'parse';
 
-import {removeSpaces, filterSpecials} from 'utils/common';
+import {removeOddSpaces, filterSpecials} from 'utils/common';
 
 
 export class SiteData {
@@ -23,7 +23,7 @@ export class SiteData {
 
   get name() {return this._name;}
   set name(name) {
-    this._name = removeSpaces(name);
+    this._name = removeOddSpaces(name);
     this.nameId = this._name;
   }
 
@@ -77,7 +77,7 @@ export class ModelData {
 
   get name() {return this._name;}
   set name(name) {
-    this._name = removeSpaces(name);
+    this._name = removeOddSpaces(name);
     this.nameId = this._name;
   }
 
@@ -246,7 +246,7 @@ export class ModelFieldData {
 
   get name() {return this._name;}
   set name(name) {
-    this._name = removeSpaces(name);
+    this._name = removeOddSpaces(name);
     this.nameId = this._name;
   }
 

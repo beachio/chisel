@@ -6,7 +6,7 @@ import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import InputControl from 'components/elements/InputControl/InputControl';
-import {removeSpaces, filterSpecials} from 'utils/common';
+import {removeOddSpaces, filterSpecials} from 'utils/common';
 import {checkFieldName, NAME_ERROR_NAME_EXIST, NAME_ERROR_NAME_RESERVED} from 'utils/data';
 import {FIELD_TYPES, FIELD_TYPE_SHORT_TEXT, FIELD_APPEARANCE__SHORT_TEXT__SINGLE} from 'models/ModelData';
 
@@ -48,7 +48,7 @@ export default class FieldModal extends Component {
 
   onChangeName = event => {
     let name = event.target.value;
-    let nameId = filterSpecials(removeSpaces(name));
+    let nameId = filterSpecials(removeOddSpaces(name));
 
     this.setState({name, nameId, error: null});
   };

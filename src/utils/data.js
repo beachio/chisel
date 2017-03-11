@@ -2,7 +2,7 @@ import {Parse} from 'parse';
 
 import {store} from '../index';
 import {UserData} from 'models/UserData';
-import {removeSpaces, filterSpecials} from 'utils/common';
+import {removeOddSpaces, filterSpecials} from 'utils/common';
 import {FIELD_NAMES_RESERVED} from 'models/ModelData';
 
 
@@ -10,7 +10,7 @@ export function checkSiteName(name, curSite) {
   if (!name)
     return false;
   
-  name = removeSpaces(name);
+  name = removeOddSpaces(name);
   
   let sites = store.getState().models.sites;
   for (let site of sites) {
@@ -43,7 +43,7 @@ export function checkModelName(name) {
   if (!name || !store.getState().models.currentSite)
     return NAME_ERROR_OTHER;
 
-  name = removeSpaces(name);
+  name = removeOddSpaces(name);
   let nameId = filterSpecials(name);
   
   let models = store.getState().models.currentSite.models;
@@ -59,7 +59,7 @@ export function checkFieldName(name) {
   if (!name || !store.getState().models.currentModel)
     return NAME_ERROR_OTHER;
   
-  name = removeSpaces(name);
+  name = removeOddSpaces(name);
   let nameId = filterSpecials(name);
   
   //name reserved

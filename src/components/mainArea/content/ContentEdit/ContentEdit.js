@@ -18,7 +18,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
-import {filterSpecials, trimFileExt} from 'utils/common';
+import {filterSpecials, trimFileExt, checkURL} from 'utils/common';
 import {MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG} from 'ducks/nav';
 import {store} from 'index';
 
@@ -115,14 +115,8 @@ export default class ContentEdit extends Component {
             case ftps.FIELD_APPEARANCE__SHORT_TEXT__URL:
               if (!value)
                 break;
-
-              let pattern = new RegExp('^(https?:\\/\\/)' + // protocol
-                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
-                '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-                '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-                '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
-              if (!pattern.test(value))
+              
+              if (!checkURL(value))
                 error = "You must type a valid URL!";
               break;
           }
