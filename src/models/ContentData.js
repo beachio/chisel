@@ -2,7 +2,7 @@ import {Parse} from 'parse';
 
 import {removeSpaces} from 'utils/common';
 import {getMediaByO, getContentByO} from 'utils/data';
-import {FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCE} from 'models/ModelData';
+import {FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCE, FIELD_TYPE_REFERENCES} from 'models/ModelData';
 
 
 export class ContentItemData {
@@ -74,8 +74,21 @@ export class ContentItemData {
   
   postInit(items) {
     for (let field of this.model.fields) {
-      if (field.type == FIELD_TYPE_REFERENCE)
+      if (field.type == FIELD_TYPE_REFERENCES) {
+        let refersO = this.origin.get(field.nameId);
+        if (refersO)
+          refersO = [];
+        
+        let refers = [];
+        for (let refO of refersO) {
+          let ref = getContentByO(refO, items);
+          if (ref)
+            refers.push(ref);
+        }
+        this.fields.set(field, refers);
+      } else if (field.type == FIELD_TYPE_REFERENCE) {
         this.fields.set(field, getContentByO(this.origin.get(field.nameId), items));
+      }
     }
   }
   
@@ -87,10 +100,18 @@ export class ContentItemData {
     this.origin.set("t__color",      this.color);
   
     for (let [field, value] of this.fields) {
-      if ((field.type == FIELD_TYPE_MEDIA || field.type == FIELD_TYPE_REFERENCE) && value)
+      if (field.type == FIELD_TYPE_REFERENCES && value) {
+        let refOrigins = [];
+        for (let ref of value) {
+          if (ref.origin)
+            refOrigins.push(ref.origin);
+        }
+        this.origin.set(field.nameId, refOrigins);
+      } else if ((field.type == FIELD_TYPE_MEDIA || field.type == FIELD_TYPE_REFERENCE) && value) {
         this.origin.set(field.nameId, value.origin);
-      else
+      } else {
         this.origin.set(field.nameId, value);
+      }
     }
     
     this.origin.set("t__model",  this.model.origin);

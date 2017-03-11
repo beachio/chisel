@@ -308,16 +308,35 @@ export default class ContentEdit extends Component {
     //TODO
   }
   
+  onReferenceMultChoose(field) {
+    let refers = this.state.fields.get(field);
+    if (!refers)
+      refers = [];
+    this.props.showModal(MODAL_TYPE_REFERENCE,
+      item => this.setFieldValue(field, refers.concat(item))
+    );
+  }
+  
+  onReferenceMultNew(field) {
+    //TODO
+  }
+  
   onReferenceClick(newItem) {
     this.saveItem();
     this.props.setCurrentItem(newItem);
     this.setItem(newItem);
-    this.scrollTop = 0;
   };
   
   onReferenceClear = (event, field) => {
     event.stopPropagation();
     this.setFieldValue(field, null);
+  };
+  
+  onReferenceMultClear = (event, field, refer) => {
+    event.stopPropagation();
+    let refers = this.state.fields.get(field);
+    refers.splice(refers.indexOf(refer), 1);
+    this.setFieldValue(field, refers.slice());
   };
 
   onShowWysiwygModal(field) {
@@ -635,6 +654,44 @@ export default class ContentEdit extends Component {
               );
             }
 
+            break;
+        }
+        break;
+  
+      case ftps.FIELD_TYPE_REFERENCES:
+        switch (field.appearance) {
+          case ftps.FIELD_APPEARANCE__REFERENCES__REFERENCES:
+            inner = (
+              <div styleName="reference">
+                {
+                  value && value.length ?
+                    value.map(refer => {
+                      let key = refer.origin && refer.origin.id ? refer.origin.id : Math.random();
+                      
+                      return(
+                        <div styleName="reference-item" key={key} onClick={() => this.onReferenceClick(refer)}>
+                          <input type="text" value={refer.title} readOnly />
+                          <InlineSVG styleName="reference-cross"
+                                     src={require('./cross.svg')}
+                                     onClick={e => this.onReferenceMultClear(e, field, refer)} />
+                        </div>
+                      );
+                    })
+                    :
+                    null
+                }
+                
+                <div styleName="reference-buttons">
+                  <div styleName="reference-button reference-new" onClick={() => this.onReferenceMultNew(field)}>
+                    Create new entry
+                  </div>
+                  <div styleName="reference-button reference-insert" onClick={() => this.onReferenceMultChoose(field)}>
+                    Insert Existing Entry
+                  </div>
+                </div>
+              </div>
+            );
+        
             break;
         }
         break;
