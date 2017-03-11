@@ -294,7 +294,7 @@ export default class ContentEdit extends Component {
 
   onReferenceChoose(field) {
     this.props.showModal(MODAL_TYPE_REFERENCE,
-      item => this.setFieldValue(field, item)
+      {callback: item => this.setFieldValue(field, item)}
     );
   }
 
@@ -307,7 +307,10 @@ export default class ContentEdit extends Component {
     if (!refers)
       refers = [];
     this.props.showModal(MODAL_TYPE_REFERENCE,
-      item => this.setFieldValue(field, refers.concat(item))
+      {
+        existingItems: refers,
+        callback: items => this.setFieldValue(field, refers.concat(items))
+      }
     );
   }
   
@@ -330,7 +333,7 @@ export default class ContentEdit extends Component {
     event.stopPropagation();
     let refers = this.state.fields.get(field);
     refers.splice(refers.indexOf(refer), 1);
-    this.setFieldValue(field, refers.slice());
+    this.setFieldValue(field, refers);
   };
 
   onShowWysiwygModal(field) {

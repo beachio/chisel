@@ -11,9 +11,12 @@ import styles from './ReferenceModal.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class ReferenceModal extends Component {
   state = {
-    selectedItem: null,
+    selectedItems: [],
     searchText: ''
   };
+  
+  isMult = false;
+  existingItems = [];
   onClose = null;
   callback = null;
   items = [];
@@ -21,13 +24,18 @@ export default class ReferenceModal extends Component {
   
   componentWillMount() {
     this.onClose = this.props.onClose;
-    this.callback = this.props.params;
+    if (this.props.params.existingItems) {
+      this.isMult = true;
+      this.existingItems = this.props.params.existingItems;
+    }
+    this.callback = this.props.params.callback;
     
     let allItems = store.getState().content.items;
     let curSite = store.getState().models.currentSite;
     for (let item of allItems) {
       if (!item.model.site || item.model.site == curSite)
-        this.items.push(item);
+        if (this.existingItems.indexOf(item) == -1)
+          this.items.push(item);
     }
   }
   
@@ -35,10 +43,10 @@ export default class ReferenceModal extends Component {
     let searchText = event.target.value;
   
     //if there is no selected item in search results, reset selected item
-    if (this.state.selectedItem && !this.searchMatch(searchText, this.state.selectedItem.title))
-      this.setState({searchText, selectedItem: null});
-    else
-      this.setState({searchText});
+    //if (this.state.selectedItem && !this.searchMatch(searchText, this.state.selectedItem.title))
+      this.setState({searchText, selectedItems: []});
+    //else
+      //this.setState({searchText});
   };
   
   searchMatch(search, target) {
@@ -48,11 +56,23 @@ export default class ReferenceModal extends Component {
   }
   
   onSelect = (item) => {
-    this.setState({selectedItem: item});
+    if (this.isMult) {
+      let items = this.state.selectedItems;
+      let ind = items.indexOf(item);
+      if (ind == -1)
+        items.push(item);
+      else
+        items.splice(ind, 1);
+      this.setState({selectedItems: items});
+    } else {
+      this.setState({selectedItems: [item]});
+    }
   };
   
   onChoose = () => {
-    this.callback(this.state.selectedItem);
+    this.callback(this.isMult ?
+      this.state.selectedItems :
+      this.state.selectedItems[0]);
     this.onClose();
   };
 
@@ -80,7 +100,7 @@ export default class ReferenceModal extends Component {
                     return null;
                   
                   let style = "reference-item";
-                  if (item == this.state.selectedItem)
+                  if (this.state.selectedItems.indexOf(item) != -1)
                     style += " reference-chosen";
                   
                   return (
@@ -98,7 +118,7 @@ export default class ReferenceModal extends Component {
               <div styleName="buttons-inner">
                 <ButtonControl color="green"
                                value="Choose"
-                               disabled={!this.state.selectedItem}
+                               disabled={!this.state.selectedItems.length}
                                onClick={this.onChoose} />
               </div>
               <div styleName="buttons-inner">
