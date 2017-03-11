@@ -76,7 +76,7 @@ export class ContentItemData {
     for (let field of this.model.fields) {
       if (field.type == FIELD_TYPE_REFERENCES) {
         let refersO = this.origin.get(field.nameId);
-        if (refersO)
+        if (!refersO)
           refersO = [];
         
         let refers = [];
