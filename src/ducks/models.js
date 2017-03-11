@@ -12,6 +12,7 @@ export const INIT_END             = 'app/models/INIT_END';
 
 export const SITE_ADD             = 'app/models/SITE_ADD';
 export const SITE_UPDATED         = 'app/models/SITE_UPDATED';
+export const SITE_DELETED         = 'app/models/SITE_DELETED';
 export const COLLABORATION_ADD    = 'app/models/COLLABORATION_ADD';
 export const COLLABORATION_UPDATE = 'app/models/COLLABORATION_UPDATE';
 export const COLLABORATION_DELETE = 'app/models/COLLABORATION_DELETE';
@@ -186,6 +187,12 @@ export function init() {
 }
 
 export function setCurrentSite(currentSite) {
+  if (!currentSite)
+    return {
+      type: SET_CURRENT_SITE,
+      currentSite: null
+    };
+  
   let userData = store.getState().user.userData;
   let isOwner = userData.origin.id == currentSite.owner.origin.id;
 
@@ -227,6 +234,19 @@ export function updateSite(site) {
   
   return {
     type: SITE_UPDATED
+  };
+}
+
+export function deleteSite(site) {
+  let sites = store.getState().models.sites;
+  sites.splice(sites.indexOf(site), 1);
+  
+  site.origin.destroy();
+  
+  store.dispatch(setCurrentSite(sites[0]));
+  
+  return {
+    type: SITE_DELETED
   };
 }
 
@@ -442,6 +462,7 @@ export default function modelsReducer(state = initialState, action) {
       };
   
     case SITE_UPDATED:
+    case SITE_DELETED:
     case COLLABORATION_ADD:
     case COLLABORATION_UPDATE:
     case COLLABORATION_DELETE:

@@ -5,6 +5,7 @@ import InputControl from 'components/elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {checkSiteName, checkSiteDomain} from 'utils/data';
+import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
 
 
 import styles from './Settings.sss';
@@ -98,6 +99,18 @@ export default class Settings extends Component {
     }
   };
   
+  onDelete = () => {
+    const {showAlert, deleteSite} = this.props;
+  
+    let params = {
+      type: ALERT_TYPE_CONFIRM,
+      title: `Deleting ${this.state.name}`,
+      description: "Are you sure?",
+      onConfirm: () => deleteSite(this.site)
+    };
+    showAlert(params);
+  };
+  
   render() {
     const {isEditable} = this.props;
     
@@ -124,12 +137,20 @@ export default class Settings extends Component {
           </div>
           {
             isEditable &&
-            <div styleName="buttons-wrapper">
-              <ButtonControl color="green"
-                             type="submit"
-                             disabled={!this.state.dirty || this.state.error}
-                             value="Save changes"/>
-            </div>
+              <div styleName="buttons-wrapper">
+                <ButtonControl color="green"
+                               type="submit"
+                               disabled={!this.state.dirty || this.state.error}
+                               value="Save changes"/>
+              </div>
+          }
+          {
+            isEditable &&
+              <div styleName="buttons-wrapper">
+                <ButtonControl color="red"
+                               value="Delete site"
+                               onClick={this.onDelete} />
+              </div>
           }
           {
             this.state.error &&
