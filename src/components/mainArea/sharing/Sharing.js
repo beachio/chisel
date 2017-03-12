@@ -82,7 +82,8 @@ export default class Sharing extends Component {
             break;
         }
       })
-      .catch(() => {
+      .catch(error => {
+        console.log(error);
         let params = {
           title: "Error",
           description: "The user does not exists.",

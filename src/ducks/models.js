@@ -219,6 +219,8 @@ export function addSite(site) {
   
   site.owner = store.getState().user.userData;
   site.updateOrigin();
+  
+  site.origin.setACL(new Parse.ACL(Parse.User.current()));
   site.origin.save();
   
   return {
@@ -251,67 +253,93 @@ export function deleteSite(site) {
 }
 
 export function addCollaboration(user) {
-  let collab = new CollaborationData();
-  collab.user = user;
+  return dispatch => {
+    let collab = new CollaborationData();
+    collab.user = user;
   
-  let currentSite = store.getState().models.currentSite;
-  collab.site = currentSite;
+    let currentSite = store.getState().models.currentSite;
+    collab.site = currentSite;
   
-  currentSite.collaborations.push(collab);
-  collab.updateOrigin();
-  collab.origin.save();
-  
-  return {
-    type: COLLABORATION_ADD
+    currentSite.collaborations.push(collab);
+    collab.updateOrigin();
+    collab.origin.save()
+      .then(() => dispatch({
+        type: COLLABORATION_ADD,
+        collab
+      }), error => dispatch({
+        type: COLLABORATION_ADD,
+        error
+      }));
   };
 }
 
 export function updateCollaboration(collab) {
-  collab.updateOrigin();
-  collab.origin.save();
+  return dispatch => {
+    collab.updateOrigin();
   
-  return {
-    type: COLLABORATION_UPDATE
-  };
+    collab.origin.save()
+      .then(() => dispatch({
+        type: COLLABORATION_UPDATE,
+        collab
+      }), error => dispatch({
+        type: COLLABORATION_UPDATE,
+        error
+      }));
+  }
 }
 
 export function deleteCollaboration(collab) {
-  let collabs = store.getState().models.currentSite.collaborations;
-  collabs.splice(collabs.indexOf(collab), 1);
+  return dispatch => {
+    let collabs = store.getState().models.currentSite.collaborations;
+    collabs.splice(collabs.indexOf(collab), 1);
   
-  collab.origin.destroy();
-  
-  return {
-    type: COLLABORATION_DELETE
-  };
+    collab.origin.destroy()
+      .then(() => dispatch({
+        type: COLLABORATION_DELETE,
+        collab
+      }), error => dispatch({
+        type: COLLABORATION_DELETE,
+        error
+      }));
+  }
 }
 
 export function addModel(name) {
-  let model = new ModelData();
-  model.name = name;
-  model.color = getRandomColor();
+  return dispatch => {
+    let model = new ModelData();
+    model.name = name;
+    model.color = getRandomColor();
   
-  let currentSite = store.getState().models.currentSite;
-  currentSite.models.push(model);
-  model.site = currentSite;
+    let currentSite = store.getState().models.currentSite;
+    currentSite.models.push(model);
+    model.site = currentSite;
   
-  model.setTableName();
-  model.updateOrigin();
-  model.origin.save();
+    model.setTableName();
+    model.updateOrigin();
   
-  return {
-    type: MODEL_ADD,
-    model
-  };
+    model.origin.save()
+      .then(() => dispatch({
+        type: MODEL_ADD,
+        model
+      }), error => dispatch({
+        type: MODEL_ADD,
+        error
+      }));
+  }
 }
 
 export function updateModel(model) {
-  model.updateOrigin();
-  model.origin.save();
-  
-  return {
-    type: MODEL_UPDATED
-  };
+  return dispatch => {
+    model.updateOrigin();
+    model.origin.save()
+      .then(() => dispatch({
+        type: MODEL_UPDATED,
+        model
+      }), error => dispatch({
+        type: MODEL_UPDATED,
+        error
+      }));
+  }
 }
 
 export function setCurrentModel(currentModel) {
@@ -322,111 +350,122 @@ export function setCurrentModel(currentModel) {
 }
 
 export function deleteModel(model) {
-  let models = store.getState().models.currentSite.models;
-  models.splice(models.indexOf(model), 1);
+  return dispatch => {
+    let models = store.getState().models.currentSite.models;
+    models.splice(models.indexOf(model), 1);
   
-  model.origin.destroy();
-  
-  for (let item of store.getState().content.items) {
-    if (item.model == model)
-      store.dispatch(deleteItem(item));
+    model.origin.destroy()
+      .then(() => dispatch({
+        type: MODEL_DELETED,
+        model
+      }), error => dispatch({
+        type: MODEL_DELETED,
+        error
+      }));
   }
-  
-  return {
-    type: MODEL_DELETED,
-    model
-  };
 }
 
 function changeTitleField(field, value = true) {
   field.isTitle = value;
   field.updateOrigin();
-  field.origin.save();
+  return new Promise((rs, rj) => field.origin.save().then(rs, rj));
 }
 
 export function addField(name) {
-  let field = new ModelFieldData();
-  field.name = name;
-  field.color = getRandomColor();
+  return dispatch => {
+    let field = new ModelFieldData();
+    field.name = name;
+    field.color = getRandomColor();
   
-  let currentModel = store.getState().models.currentModel;
-  currentModel.fields.push(field);
-  field.model = currentModel;
+    let currentModel = store.getState().models.currentModel;
+    currentModel.fields.push(field);
+    field.model = currentModel;
   
-  field.updateOrigin();
-  field.origin.save();
-  
-  if (!currentModel.hasTitle() && canBeTitle(field))
-    changeTitleField(field);
-  
-  field.model.origin.save();
-  
-  return {
-    type: FIELD_ADD,
-    field
-  };
+    field.updateOrigin();
+    new Promise((rs, rj) => field.origin.save().then(rs, rj))
+      .then(() => {
+        if (!currentModel.hasTitle() && canBeTitle(field))
+          return changeTitleField(field);
+      })
+      .then(() => new Promise((rs, rj) => field.model.origin.save().then(rs, rj)))
+      .then(() => dispatch({
+        type: FIELD_ADD,
+        field
+      }))
+      .catch(error => dispatch({
+        type: FIELD_ADD,
+        error
+      }));
+  }
 }
 
 export function updateField(field) {
-  field.updateOrigin();
-  field.origin.save();
+  return dispatch => {
+    field.updateOrigin();
+    new Promise((rs, rj) => field.origin.save().then(rs, rj))
+      .then(() => {
+        if (field.isTitle) {
+          //if current field is title, remove other titles
+          if (canBeTitle(field)) {
+            let promises = [];
+            for (let tempField of field.model.fields) {
+              if (tempField != field && tempField.isTitle)
+                promises.push(changeTitleField(tempField, false));
+            }
+            return Promise.all(promises);
+          } else {
+            return changeTitleField(field, false);
+          }
+        }
   
-  if (field.isTitle) {
-    //if current field is title, remove other titles
-    if (canBeTitle(field)) {
-      for (let tempField of field.model.fields) {
-        if (tempField != field && tempField.isTitle)
-          changeTitleField(tempField, false);
-      }
-    } else {
-      changeTitleField(field, false);
-    }
+        if (!field.model.hasTitle()) {
+          //first we check other fields to make title
+          for (let tempField of field.model.fields) {
+            if (tempField != field && canBeTitle(tempField))
+              return changeTitleField(tempField);
+          }
+          
+          //if we can't, we try to make title current field
+          if (canBeTitle(field))
+            return changeTitleField(field);
+        }
+      })
+      .then(() => new Promise((rs, rj) => field.model.origin.save().then(rs, rj)))
+      .then(() => dispatch ({
+        type: FIELD_UPDATED,
+        field
+      }))
+      .catch(error => dispatch({
+        type: FIELD_UPDATED,
+        error
+      }));
   }
-  
-  if (!field.model.hasTitle()) {
-    let titleSet = false;
-    //first we check other fields to make title
-    for (let tempField of field.model.fields) {
-      if (tempField != field && canBeTitle(tempField)) {
-        changeTitleField(tempField);
-        titleSet = true;
-        break;
-      }
-    }
-    //if we can't, we try to make title current field
-    if (!titleSet && canBeTitle(field))
-      changeTitleField(field);
-  }
-  
-  field.model.origin.save();
-  
-  return {
-    type: FIELD_UPDATED,
-    field
-  };
 }
 
 export function removeField(field) {
-  let fields = store.getState().models.currentModel.fields;
-  fields.splice(fields.indexOf(field), 1);
+  return dispatch => {
+    let fields = store.getState().models.currentModel.fields;
+    fields.splice(fields.indexOf(field), 1);
   
-  field.origin.destroy();
-  
-  if (!field.model.hasTitle()) {
-    for (let tempField of field.model.fields) {
-      if (canBeTitle(tempField)) {
-        changeTitleField(tempField);
-        break;
-      }
-    }
+    new Promise((rs, rj) => field.origin.destroy().then(rs, rj))
+      .then(() => {
+        if (!field.model.hasTitle()) {
+          for (let tempField of field.model.fields) {
+            if (canBeTitle(tempField))
+              return changeTitleField(tempField);
+          }
+        }
+      })
+      .then(() => new Promise((rs, rj) => field.model.origin.save().then(rs, rj)))
+      .then(() => dispatch ({
+        type: FIELD_DELETED,
+        field
+      }))
+      .catch(error => dispatch ({
+        type: FIELD_DELETED,
+        error
+      }));
   }
-  
-  field.model.origin.save();
-  
-  return {
-    type: FIELD_DELETED,
-    field
-  };
 }
 
 const initialState = {

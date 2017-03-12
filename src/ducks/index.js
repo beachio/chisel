@@ -6,6 +6,7 @@ import content from './content';
 import nav from './nav';
 import user from './user';
 import media from './media';
+import ACLset from './ACLset';
 
 
 export default combineReducers({
@@ -14,5 +15,6 @@ export default combineReducers({
   content,
   nav,
   user,
-  media
+  media,
+  ACLset
 });

@@ -55,33 +55,44 @@ export function init() {
 }
 
 export function addItem(title, model = null) {
-  let item = new ContentItemData();
+  return dispatch => {
+    let item = new ContentItemData();
   
-  let models = store.getState().models.currentSite.models;
-  if (model)
-    item.model = model;
-  else
-    item.model = models[0];
+    let models = store.getState().models.currentSite.models;
+    if (model)
+      item.model = model;
+    else
+      item.model = models[0];
   
-  item.title = title;
-  item.color = getRandomColor();
+    item.title = title;
+    item.color = getRandomColor();
   
-  item.updateOrigin();
-  item.origin.save();
-  
-  return {
-    type: ITEM_ADD,
-    item
-  };
+    item.updateOrigin();
+    item.origin.save()
+      .then(() => dispatch({
+        type: ITEM_ADD,
+        item
+      }))
+      .catch(error => dispatch({
+        type: ITEM_ADD,
+        error
+      }));
+  }
 }
 
 export function updateItem(item) {
-  item.updateOrigin();
-  item.origin.save();
-  
-  return {
-    type: ITEM_UPDATED
-  };
+  return dispatch => {
+    item.updateOrigin();
+    item.origin.save()
+      .then(() => dispatch({
+        type: ITEM_UPDATED,
+        item
+      }))
+      .catch(error => dispatch({
+        type: ITEM_UPDATED,
+        error
+      }));
+  }
 }
 
 export function setCurrentItem(currentItem) {
@@ -92,15 +103,20 @@ export function setCurrentItem(currentItem) {
 }
 
 export function deleteItem(item) {
-  let items = store.getState().content.items;
-  items.splice(items.indexOf(item), 1);
+  return dispatch => {
+    let items = store.getState().content.items;
+    items.splice(items.indexOf(item), 1);
   
-  item.origin.destroy();
-  
-  return {
-    type: ITEM_DELETED,
-    item
-  };
+    item.origin.destroy()
+      .then(() => dispatch({
+        type: ITEM_DELETED,
+        item
+      }))
+      .catch(error => dispatch({
+        type: ITEM_DELETED,
+        error
+      }));
+  }
 }
 
 const initialState = {
