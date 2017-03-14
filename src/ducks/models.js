@@ -442,7 +442,7 @@ export function updateField(field) {
   }
 }
 
-export function removeField(field) {
+export function deleteField(field) {
   return dispatch => {
     let fields = store.getState().models.currentModel.fields;
     fields.splice(fields.indexOf(field), 1);
