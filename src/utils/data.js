@@ -148,6 +148,16 @@ export function getContentForModel(model) {
   return res;
 }
 
+export function getContentForSite(site) {
+  let items = store.getState().content.items;
+  let res = [];
+  for (let item of items) {
+    if (item.model.site == site)
+      res.push(item);
+  }
+  return res;
+}
+
 export function getModelByName(name) {
   let site = store.getState().models.currentSite;
   if (!site)

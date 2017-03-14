@@ -11,17 +11,17 @@ import {deleteItem} from './content'
 export const INIT_END             = 'app/models/INIT_END';
 
 export const SITE_ADD             = 'app/models/SITE_ADD';
-export const SITE_UPDATED         = 'app/models/SITE_UPDATED';
-export const SITE_DELETED         = 'app/models/SITE_DELETED';
+export const SITE_UPDATE          = 'app/models/SITE_UPDATE';
+export const SITE_DELETE          = 'app/models/SITE_DELETE';
 export const COLLABORATION_ADD    = 'app/models/COLLABORATION_ADD';
 export const COLLABORATION_UPDATE = 'app/models/COLLABORATION_UPDATE';
 export const COLLABORATION_DELETE = 'app/models/COLLABORATION_DELETE';
 export const MODEL_ADD            = 'app/models/MODEL_ADD';
-export const MODEL_UPDATED        = 'app/models/MODEL_UPDATED';
-export const MODEL_DELETED        = 'app/models/MODEL_DELETED';
+export const MODEL_UPDATE         = 'app/models/MODEL_UPDATE';
+export const MODEL_DELETE         = 'app/models/MODEL_DELETE';
 export const FIELD_ADD            = 'app/models/FIELD_ADD';
-export const FIELD_UPDATED        = 'app/models/FIELD_UPDATED';
-export const FIELD_DELETED        = 'app/models/FIELD_DELETED';
+export const FIELD_UPDATE         = 'app/models/FIELD_UPDATE';
+export const FIELD_DELETE         = 'app/models/FIELD_DELETE';
 
 export const SET_CURRENT_SITE     = 'app/models/SET_CURRENT_SITE';
 export const SET_CURRENT_MODEL    = 'app/models/SET_CURRENT_MODEL';
@@ -214,9 +214,6 @@ export function setCurrentSite(currentSite) {
 }
 
 export function addSite(site) {
-  let sites = store.getState().models.sites;
-  sites.push(site);
-  
   site.owner = store.getState().user.userData;
   site.updateOrigin();
   
@@ -225,8 +222,7 @@ export function addSite(site) {
   
   return {
     type: SITE_ADD,
-    site,
-    sites
+    site
   };
 }
 
@@ -235,111 +231,80 @@ export function updateSite(site) {
   site.origin.save();
   
   return {
-    type: SITE_UPDATED
+    type: SITE_UPDATE
   };
 }
 
 export function deleteSite(site) {
-  let sites = store.getState().models.sites;
-  sites.splice(sites.indexOf(site), 1);
-  
   site.origin.destroy();
   
-  store.dispatch(setCurrentSite(sites[0]));
-  
   return {
-    type: SITE_DELETED
+    type: SITE_DELETE,
+    site
   };
 }
 
 export function addCollaboration(user) {
-  return dispatch => {
-    let collab = new CollaborationData();
-    collab.user = user;
+  let collab = new CollaborationData();
+  collab.user = user;
   
-    let currentSite = store.getState().models.currentSite;
-    collab.site = currentSite;
+  let currentSite = store.getState().models.currentSite;
+  collab.site = currentSite;
   
-    currentSite.collaborations.push(collab);
-    collab.updateOrigin();
-    collab.origin.save()
-      .then(() => dispatch({
-        type: COLLABORATION_ADD,
-        collab
-      }), error => dispatch({
-        type: COLLABORATION_ADD,
-        error
-      }));
+  collab.updateOrigin();
+  collab.origin.save();
+  
+  return {
+    type: COLLABORATION_ADD,
+    collab
   };
 }
 
 export function updateCollaboration(collab) {
-  return dispatch => {
-    collab.updateOrigin();
+  collab.updateOrigin();
+  collab.origin.save();
   
-    collab.origin.save()
-      .then(() => dispatch({
-        type: COLLABORATION_UPDATE,
-        collab
-      }), error => dispatch({
-        type: COLLABORATION_UPDATE,
-        error
-      }));
-  }
+  return {
+    type: COLLABORATION_UPDATE,
+    collab
+  };
 }
 
 export function deleteCollaboration(collab) {
-  return dispatch => {
-    let collabs = store.getState().models.currentSite.collaborations;
-    collabs.splice(collabs.indexOf(collab), 1);
+  collab.origin.destroy();
   
-    collab.origin.destroy()
-      .then(() => dispatch({
-        type: COLLABORATION_DELETE,
-        collab
-      }), error => dispatch({
-        type: COLLABORATION_DELETE,
-        error
-      }));
-  }
+  return {
+    type: COLLABORATION_DELETE,
+    collab
+  };
 }
 
 export function addModel(name) {
-  return dispatch => {
-    let model = new ModelData();
-    model.name = name;
-    model.color = getRandomColor();
+  let model = new ModelData();
+  model.name = name;
+  model.color = getRandomColor();
   
-    let currentSite = store.getState().models.currentSite;
-    currentSite.models.push(model);
-    model.site = currentSite;
+  let currentSite = store.getState().models.currentSite;
+  model.site = currentSite;
+  model.setTableName();
   
-    model.setTableName();
-    model.updateOrigin();
+  model.updateOrigin();
+  model.origin.save();
   
-    model.origin.save()
-      .then(() => dispatch({
-        type: MODEL_ADD,
-        model
-      }), error => dispatch({
-        type: MODEL_ADD,
-        error
-      }));
-  }
+  return {
+    type: MODEL_ADD,
+    model
+  };
 }
 
 export function updateModel(model) {
-  return dispatch => {
-    model.updateOrigin();
-    model.origin.save()
-      .then(() => dispatch({
-        type: MODEL_UPDATED,
-        model
-      }), error => dispatch({
-        type: MODEL_UPDATED,
-        error
-      }));
-  }
+  model.updateOrigin();
+  model.origin.save();
+  
+  return{
+    type: MODEL_UPDATE,
+    model
+  };
 }
 
 export function setCurrentModel(currentModel) {
@@ -349,123 +314,99 @@ export function setCurrentModel(currentModel) {
   };
 }
 
-export function deleteModel(model) {
-  return dispatch => {
-    let models = store.getState().models.currentSite.models;
-    models.splice(models.indexOf(model), 1);
+export function deleteModel(model, site) {
+  model.origin.destroy();
   
-    model.origin.destroy()
-      .then(() => dispatch({
-        type: MODEL_DELETED,
-        model
-      }), error => dispatch({
-        type: MODEL_DELETED,
-        error
-      }));
-  }
+  return {
+    type: MODEL_DELETE,
+    model
+  };
 }
 
 function changeTitleField(field, value = true) {
   field.isTitle = value;
   field.updateOrigin();
-  return new Promise((rs, rj) => field.origin.save().then(rs, rj));
+  field.origin.save();
 }
 
 export function addField(name) {
-  return dispatch => {
-    let field = new ModelFieldData();
-    field.name = name;
-    field.color = getRandomColor();
+  let field = new ModelFieldData();
+  field.name = name;
+  field.color = getRandomColor();
   
-    let currentModel = store.getState().models.currentModel;
-    currentModel.fields.push(field);
-    field.model = currentModel;
+  let currentModel = store.getState().models.currentModel;
+  field.model = currentModel;
   
-    field.updateOrigin();
-    new Promise((rs, rj) => field.origin.save().then(rs, rj))
-      .then(() => {
-        if (!currentModel.hasTitle() && canBeTitle(field))
-          return changeTitleField(field);
-      })
-      .then(() => new Promise((rs, rj) => field.model.origin.save().then(rs, rj)))
-      .then(() => dispatch({
-        type: FIELD_ADD,
-        field
-      }))
-      .catch(error => dispatch({
-        type: FIELD_ADD,
-        error
-      }));
-  }
+  field.updateOrigin();
+  field.origin.save();
+  
+  if (!currentModel.hasTitle() && canBeTitle(field))
+    changeTitleField(field);
+  
+  field.model.origin.save();
+  
+  return {
+    type: FIELD_ADD,
+    field
+  };
 }
 
 export function updateField(field) {
-  return dispatch => {
-    field.updateOrigin();
-    new Promise((rs, rj) => field.origin.save().then(rs, rj))
-      .then(() => {
-        if (field.isTitle) {
-          //if current field is title, remove other titles
-          if (canBeTitle(field)) {
-            let promises = [];
-            for (let tempField of field.model.fields) {
-              if (tempField != field && tempField.isTitle)
-                promises.push(changeTitleField(tempField, false));
-            }
-            return Promise.all(promises);
-          } else {
-            return changeTitleField(field, false);
-          }
-        }
+  field.updateOrigin();
+  field.origin.save();
   
-        if (!field.model.hasTitle()) {
-          //first we check other fields to make title
-          for (let tempField of field.model.fields) {
-            if (tempField != field && canBeTitle(tempField))
-              return changeTitleField(tempField);
-          }
-          
-          //if we can't, we try to make title current field
-          if (canBeTitle(field))
-            return changeTitleField(field);
-        }
-      })
-      .then(() => new Promise((rs, rj) => field.model.origin.save().then(rs, rj)))
-      .then(() => dispatch ({
-        type: FIELD_UPDATED,
-        field
-      }))
-      .catch(error => dispatch({
-        type: FIELD_UPDATED,
-        error
-      }));
+  if (field.isTitle) {
+    //if current field is title, remove other titles
+    if (canBeTitle(field)) {
+      for (let tempField of field.model.fields) {
+        if (tempField != field && tempField.isTitle)
+          changeTitleField(tempField, false);
+      }
+    } else {
+      changeTitleField(field, false);
+    }
   }
+  
+  if (!field.model.hasTitle()) {
+    let titleSet = false;
+    //first we check other fields to make title
+    for (let tempField of field.model.fields) {
+      if (tempField != field && canBeTitle(tempField)) {
+        changeTitleField(tempField);
+        titleSet = true;
+        break;
+      }
+    }
+    //if we can't, we try to make title current field
+    if (!titleSet && canBeTitle(field))
+      changeTitleField(field);
+  }
+  
+  field.model.origin.save();
+  
+  return {
+    type: FIELD_UPDATE,
+    field
+  };
 }
 
 export function deleteField(field) {
-  return dispatch => {
-    let fields = store.getState().models.currentModel.fields;
-    fields.splice(fields.indexOf(field), 1);
+  field.origin.destroy();
   
-    new Promise((rs, rj) => field.origin.destroy().then(rs, rj))
-      .then(() => {
-        if (!field.model.hasTitle()) {
-          for (let tempField of field.model.fields) {
-            if (canBeTitle(tempField))
-              return changeTitleField(tempField);
-          }
-        }
-      })
-      .then(() => new Promise((rs, rj) => field.model.origin.save().then(rs, rj)))
-      .then(() => dispatch ({
-        type: FIELD_DELETED,
-        field
-      }))
-      .catch(error => dispatch ({
-        type: FIELD_DELETED,
-        error
-      }));
+  if (!field.model.hasTitle()) {
+    for (let tempField of field.model.fields) {
+      if (canBeTitle(tempField)) {
+        changeTitleField(tempField);
+        break;
+      }
+    }
   }
+  field.model.origin.save();
+  
+  return {
+    type: FIELD_DELETE,
+    field
+  };
 }
 
 const initialState = {
@@ -477,14 +418,15 @@ const initialState = {
 };
 
 export default function modelsReducer(state = initialState, action) {
+  let sites, currentSite, currentModel;
+  
   switch (action.type) {
     case INIT_END:
-    case SITE_ADD:
       return {
         ...state,
         sites: action.sites
       };
-  
+      
     case SET_CURRENT_SITE:
       return {
         ...state,
@@ -498,17 +440,78 @@ export default function modelsReducer(state = initialState, action) {
         currentModel: action.currentModel
       };
   
-    case SITE_UPDATED:
-    case SITE_DELETED:
+    case SITE_ADD:
+      sites = state.sites;
+      sites.push(action.site);
+      return {
+        ...state,
+        sites
+      };
+      
+    case SITE_DELETE:
+      sites = state.sites;
+      sites.splice(sites.indexOf(action.site), 1);
+      return {
+        ...state,
+        sites,
+        currentSite: sites[0]
+      };
+  
     case COLLABORATION_ADD:
-    case COLLABORATION_UPDATE:
+      currentSite = state.currentSite;
+      currentSite.collaborations.push(action.collab);
+      return {
+        ...state,
+        currentSite
+      };
+  
     case COLLABORATION_DELETE:
+      currentSite = state.currentSite;
+      let collabs = currentSite.collaborations;
+      collabs.splice(collabs.indexOf(action.collab), 1);
+      return {
+        ...state,
+        currentSite
+      };
+  
     case MODEL_ADD:
-    case MODEL_UPDATED:
-    case MODEL_DELETED:
+      currentSite = state.currentSite;
+      currentSite.models.push(action.model);
+      return {
+        ...state,
+        currentSite
+      };
+      
+    case MODEL_DELETE:
+      currentSite = state.currentSite;
+      let models = currentSite.models;
+      models.splice(models.indexOf(action.model), 1);
+      return {
+        ...state,
+        currentSite
+      };
+  
     case FIELD_ADD:
-    case FIELD_UPDATED:
-    case FIELD_DELETED:
+      currentModel = state.currentModel;
+      currentModel.fields.push(action.field);
+      return {
+        ...state,
+        currentModel
+      };
+  
+    case FIELD_DELETE:
+      currentModel = state.currentModel;
+      let fields = currentModel.fields;
+      fields.splice(fields.indexOf(action.field), 1);
+      return {
+        ...state,
+        currentModel
+      };
+  
+    case SITE_UPDATE:
+    case COLLABORATION_UPDATE:
+    case MODEL_UPDATE:
+    case FIELD_UPDATE:
       return {...state};
     
     case LOGOUT:

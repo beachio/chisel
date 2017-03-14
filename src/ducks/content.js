@@ -2,16 +2,16 @@ import {Parse} from 'parse';
 
 import {store} from '../index';
 import {ContentItemData} from 'models/ContentData';
-import {FIELD_ADD, FIELD_UPDATED, FIELD_DELETED} from 'ducks/models';
+import {SITE_DELETE, MODEL_DELETE} from 'ducks/models';
 import {LOGOUT} from './user';
 import {getRandomColor} from 'utils/common';
-import {getContentForModel} from 'utils/data';
+import {getContentForModel, getContentForSite} from 'utils/data';
 
 
 export const INIT_END           = 'app/content/INIT_END';
 export const ITEM_ADD           = 'app/content/ITEM_ADD';
-export const ITEM_UPDATED       = 'app/content/ITEM_UPDATED';
-export const ITEM_DELETED       = 'app/content/ITEM_DELETED';
+export const ITEM_UPDATE        = 'app/content/ITEM_UPDATE';
+export const ITEM_DELETE        = 'app/content/ITEM_DELETE';
 export const SET_CURRENT_ITEM   = 'app/content/SET_CURRENT_ITEM';
 
 function requestContentItems(model, items) {
@@ -55,44 +55,33 @@ export function init() {
 }
 
 export function addItem(title, model = null) {
-  return dispatch => {
-    let item = new ContentItemData();
+  let item = new ContentItemData();
   
-    let models = store.getState().models.currentSite.models;
-    if (model)
-      item.model = model;
-    else
-      item.model = models[0];
+  let models = store.getState().models.currentSite.models;
+  if (model)
+    item.model = model;
+  else
+    item.model = models[0];
   
-    item.title = title;
-    item.color = getRandomColor();
+  item.title = title;
+  item.color = getRandomColor();
   
-    item.updateOrigin();
-    item.origin.save()
-      .then(() => dispatch({
-        type: ITEM_ADD,
-        item
-      }))
-      .catch(error => dispatch({
-        type: ITEM_ADD,
-        error
-      }));
-  }
+  item.updateOrigin();
+  item.origin.save();
+  
+  return {
+    type: ITEM_ADD,
+    item
+  };
 }
 
 export function updateItem(item) {
-  return dispatch => {
-    item.updateOrigin();
-    item.origin.save()
-      .then(() => dispatch({
-        type: ITEM_UPDATED,
-        item
-      }))
-      .catch(error => dispatch({
-        type: ITEM_UPDATED,
-        error
-      }));
-  }
+  item.updateOrigin();
+  item.origin.save();
+  
+  return {
+    type: ITEM_UPDATE
+  };
 }
 
 export function setCurrentItem(currentItem) {
@@ -103,20 +92,13 @@ export function setCurrentItem(currentItem) {
 }
 
 export function deleteItem(item) {
-  return dispatch => {
-    let items = store.getState().content.items;
-    items.splice(items.indexOf(item), 1);
+  item.origin.destroy();
   
-    item.origin.destroy()
-      .then(() => dispatch({
-        type: ITEM_DELETED,
-        item
-      }))
-      .catch(error => dispatch({
-        type: ITEM_DELETED,
-        error
-      }));
-  }
+  return {
+    type: ITEM_DELETE,
+    item
+  };
+  
 }
 
 const initialState = {
@@ -125,6 +107,7 @@ const initialState = {
 };
 
 export default function contentReducer(state = initialState, action) {
+  let items, delItems;
   switch (action.type) {
     case INIT_END:
       for (let item of action.items)
@@ -134,34 +117,53 @@ export default function contentReducer(state = initialState, action) {
         items: action.items
       };
   
+    case SET_CURRENT_ITEM:
+      return {
+        ...state,
+        currentItem: action.currentItem,
+      };
+  
     case ITEM_ADD:
-      let items = state.items;
+      items = state.items;
       items.push(action.item);
       return {
         ...state,
         items
       };
       
-    case ITEM_UPDATED:
-    case ITEM_DELETED:
+    case ITEM_UPDATE:
       return {...state};
-  
-    case SET_CURRENT_ITEM:
+      
+    case ITEM_DELETE:
+      items = state.items;
+      items.splice(items.indexOf(action.item), 1);
       return {
         ...state,
-        currentItem: action.currentItem,
+        items
       };
+  
+    case MODEL_DELETE:
+      items = state.items;
+      delItems = getContentForModel(action.model);
+      for (let item of delItems)
+        items.splice(items.indexOf(item), 1);
       
-    case FIELD_ADD:
-    case FIELD_UPDATED:
-    case FIELD_DELETED:
-      let model = action.field.model;
-      let modelItems = getContentForModel(model);
-      for (let item of modelItems) {
-        item.model = model;
-      }
-      return {...state};
+      return {
+        ...state,
+        items
+      };
+  
+    case SITE_DELETE:
+      items = state.items;
+      delItems = getContentForSite(action.site);
+      for (let item of delItems)
+        items.splice(items.indexOf(item), 1);
     
+      return {
+        ...state,
+        items
+      };
+  
     case LOGOUT:
       return {
         ...state,
