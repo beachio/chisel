@@ -28,7 +28,7 @@ export class MainArea extends Component  {
     const {models, content, nav, user} = this.props;
     const {updateSite, deleteSite, addCollaboration, updateCollaboration, deleteCollaboration, deleteSelfCollaboration,
       addModel, setCurrentModel, updateModel, deleteModel, addField, deleteField} = this.props.modelsActions;
-    const {addItem, updateItem, setCurrentItem} = this.props.contentActions;
+    const {addItem, updateItem, deleteItem, setCurrentItem} = this.props.contentActions;
     const {showAlert, closeModel, closeContentItem, showModal} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
 
