@@ -8,23 +8,24 @@ import {LOGOUT} from './user';
 import {deleteItem} from './content'
 
 
-export const INIT_END             = 'app/models/INIT_END';
+export const INIT_END                   = 'app/models/INIT_END';
 
-export const SITE_ADD             = 'app/models/SITE_ADD';
-export const SITE_UPDATE          = 'app/models/SITE_UPDATE';
-export const SITE_DELETE          = 'app/models/SITE_DELETE';
-export const COLLABORATION_ADD    = 'app/models/COLLABORATION_ADD';
-export const COLLABORATION_UPDATE = 'app/models/COLLABORATION_UPDATE';
-export const COLLABORATION_DELETE = 'app/models/COLLABORATION_DELETE';
-export const MODEL_ADD            = 'app/models/MODEL_ADD';
-export const MODEL_UPDATE         = 'app/models/MODEL_UPDATE';
-export const MODEL_DELETE         = 'app/models/MODEL_DELETE';
-export const FIELD_ADD            = 'app/models/FIELD_ADD';
-export const FIELD_UPDATE         = 'app/models/FIELD_UPDATE';
-export const FIELD_DELETE         = 'app/models/FIELD_DELETE';
+export const SITE_ADD                   = 'app/models/SITE_ADD';
+export const SITE_UPDATE                = 'app/models/SITE_UPDATE';
+export const SITE_DELETE                = 'app/models/SITE_DELETE';
+export const COLLABORATION_ADD          = 'app/models/COLLABORATION_ADD';
+export const COLLABORATION_UPDATE       = 'app/models/COLLABORATION_UPDATE';
+export const COLLABORATION_DELETE       = 'app/models/COLLABORATION_DELETE';
+export const COLLABORATION_SELF_DELETE  = "app/models/COLLABORATION_SELF_DELETE";
+export const MODEL_ADD                  = 'app/models/MODEL_ADD';
+export const MODEL_UPDATE               = 'app/models/MODEL_UPDATE';
+export const MODEL_DELETE               = 'app/models/MODEL_DELETE';
+export const FIELD_ADD                  = 'app/models/FIELD_ADD';
+export const FIELD_UPDATE               = 'app/models/FIELD_UPDATE';
+export const FIELD_DELETE               = 'app/models/FIELD_DELETE';
 
-export const SET_CURRENT_SITE     = 'app/models/SET_CURRENT_SITE';
-export const SET_CURRENT_MODEL    = 'app/models/SET_CURRENT_MODEL';
+export const SET_CURRENT_SITE           = 'app/models/SET_CURRENT_SITE';
+export const SET_CURRENT_MODEL          = 'app/models/SET_CURRENT_MODEL';
 
 
 function requestCollaborationsPre() {
@@ -261,6 +262,8 @@ export function addCollaboration(user) {
   collab.site = currentSite;
   
   collab.updateOrigin();
+  
+  collab.origin.setACL(new Parse.ACL(currentSite.owner.origin));
   collab.origin.save();
   
   return {
@@ -287,6 +290,16 @@ export function deleteCollaboration(collab) {
     collab
   };
 }
+
+export function deleteSelfCollaboration(collab) {
+  collab.origin.destroy();
+  
+  return {
+    type: COLLABORATION_SELF_DELETE,
+    collab
+  };
+}
+
 
 export function addModel(name) {
   let model = new ModelData();
@@ -436,7 +449,7 @@ const initialState = {
 };
 
 export default function modelsReducer(state = initialState, action) {
-  let sites, currentSite, currentModel;
+  let sites, currentSite, currentModel, collabs;
   
   switch (action.type) {
     case INIT_END:
@@ -485,11 +498,24 @@ export default function modelsReducer(state = initialState, action) {
   
     case COLLABORATION_DELETE:
       currentSite = state.currentSite;
-      let collabs = currentSite.collaborations;
+      collabs = currentSite.collaborations;
       collabs.splice(collabs.indexOf(action.collab), 1);
       return {
         ...state,
         currentSite
+      };
+  
+    case COLLABORATION_SELF_DELETE:
+      currentSite = state.currentSite;
+      collabs = currentSite.collaborations;
+      collabs.splice(collabs.indexOf(action.collab), 1);
+      
+      sites = state.sites;
+      sites.splice(sites.indexOf(currentSite), 1);
+    
+      return {
+        ...state,
+        currentSite: sites[0]
       };
   
     case MODEL_ADD:

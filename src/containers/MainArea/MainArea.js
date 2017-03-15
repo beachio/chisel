@@ -10,7 +10,8 @@ import Sharing from 'components/mainArea/sharing/Sharing';
 import Settings from 'components/mainArea/settings/Settings';
 import Model from 'components/mainArea/models/Model/Model';
 import {ROLE_DEVELOPER, ROLE_EDITOR, ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';
-import {updateSite, deleteSite, addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, deleteField} from 'ducks/models';
+import {updateSite, deleteSite, addCollaboration, updateCollaboration, deleteCollaboration, deleteSelfCollaboration, addModel,
+  setCurrentModel, updateModel, deleteModel, addField, deleteField} from 'ducks/models';
 import {addItem, updateItem, setCurrentItem, deleteItem} from 'ducks/content';
 import {addMediaItem, updateMediaItem, removeMediaItem} from 'ducks/media';
 import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, showAlert, closeModel, closeContentItem, showModal} from 'ducks/nav';
@@ -25,7 +26,8 @@ export class MainArea extends Component  {
   
   render() {
     const {models, content, nav, user} = this.props;
-    const {updateSite, deleteSite, addCollaboration, updateCollaboration, deleteCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, deleteField} = this.props.modelsActions;
+    const {updateSite, deleteSite, addCollaboration, updateCollaboration, deleteCollaboration, deleteSelfCollaboration,
+      addModel, setCurrentModel, updateModel, deleteModel, addField, deleteField} = this.props.modelsActions;
     const {addItem, updateItem, setCurrentItem} = this.props.contentActions;
     const {showAlert, closeModel, closeContentItem, showModal} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
@@ -113,17 +115,19 @@ export class MainArea extends Component  {
         break;
 
       case PAGE_SHARING:
-        Area = (
-          <Sharing collaborations={curSite.collaborations}
-                   owner={curSite.owner}
-                   user={user.userData}
-                   addCollaboration={addCollaboration}
-                   updateCollaboration={updateCollaboration}
-                   deleteCollaboration={deleteCollaboration}
-                   showAlert={showAlert}
-                   alertShowing={nav.alertShowing}
-                   isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
-        );
+        if (curSite)
+          Area = (
+            <Sharing collaborations={curSite.collaborations}
+                     owner={curSite.owner}
+                     user={user.userData}
+                     addCollaboration={addCollaboration}
+                     updateCollaboration={updateCollaboration}
+                     deleteCollaboration={deleteCollaboration}
+                     deleteSelfCollaboration={deleteSelfCollaboration}
+                     showAlert={showAlert}
+                     alertShowing={nav.alertShowing}
+                     isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
+          );
         break;
 
       case PAGE_API:
@@ -138,7 +142,7 @@ export class MainArea extends Component  {
         break;
 
       case PAGE_SETTINGS:
-        if (curSite) {
+        if (curSite)
           Area = (
             <Settings site={curSite}
                       updateSite={updateSite}
@@ -146,14 +150,6 @@ export class MainArea extends Component  {
                       showAlert={showAlert}
                       isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
           );
-        } else {
-          Area = (
-            <div styleName="start-working">
-              <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
-              There is no site selected
-            </div>
-          );
-        }
   
         break;
     }
@@ -177,8 +173,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelsActions:  bindActionCreators({updateSite, deleteSite, addCollaboration, updateCollaboration, deleteCollaboration, addModel,
-        setCurrentModel, updateModel, deleteModel, addField, deleteField}, dispatch),
+    modelsActions:  bindActionCreators({updateSite, deleteSite, addCollaboration, updateCollaboration, deleteCollaboration,
+      deleteSelfCollaboration, addModel, setCurrentModel, updateModel, deleteModel, addField, deleteField}, dispatch),
     contentActions: bindActionCreators({addItem, updateItem, setCurrentItem, deleteItem}, dispatch),
     navActions:     bindActionCreators({showAlert, closeModel, closeContentItem, showModal}, dispatch),
     mediaActions:   bindActionCreators({addMediaItem, updateMediaItem, removeMediaItem}, dispatch)

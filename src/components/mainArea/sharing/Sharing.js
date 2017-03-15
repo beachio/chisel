@@ -2,12 +2,13 @@ import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import Gravatar from 'react-gravatar';
+import {Parse} from 'parse';
 
 import {ROLE_ADMIN, ROLE_EDITOR, ROLE_DEVELOPER, CollaborationData} from 'models/UserData';
 import {getUser, checkCollaboration, COLLAB_CORRECT, COLLAB_ERROR_EXIST, COLLAB_ERROR_SELF} from 'utils/data';
-
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
+import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
 
 import styles from './Sharing.sss';
 
@@ -109,13 +110,25 @@ export default class Sharing extends Component {
     this.props.updateCollaboration(collab);
   }
   
-  onDeleteClick(e, collab) {
-    e.stopPropagation();
-    
-    let collaborations = this.state.collaborations;
-    collaborations.splice(collaborations.indexOf(collab), 1);
-    this.setState({collaborations});
-    this.props.deleteCollaboration(collab);
+  onDeleteClick(event, collab) {
+    event.stopPropagation();
+    const {showAlert, deleteCollaboration, deleteSelfCollaboration} = this.props;
+    let user = collab.user.username;
+    let description = "This action cannot be undone. Are you sure?";
+    let delFunc = deleteCollaboration;
+    if (collab.user.origin.id == Parse.User.current().id) {
+      user = 'self';
+      description = "You are trying to leave managing this site. " + description;
+      delFunc = deleteSelfCollaboration;
+    }
+      
+    let params = {
+      type: ALERT_TYPE_CONFIRM,
+      title: `Deleting ${user} from collaborators`,
+      description,
+      onConfirm: () => delFunc(collab)
+    };
+    showAlert(params);
   }
 
   render() {
@@ -140,9 +153,13 @@ export default class Sharing extends Component {
               </div>
               {
                 this.state.collaborations.map((collaboration, index) => {
-                  let localEditable = isEditable;
-                  if (collaboration.user.origin.id == user.origin.id)
-                    localEditable = false;
+                  let localDelete = isEditable;
+                  let localRole = isEditable;
+                  if (collaboration.user.origin.id == user.origin.id) {
+                    localDelete = true;
+                    localRole = false;
+                  }
+                  
                   return(
                     <div styleName="list-item" key={collaboration.user.username}>
                       <div styleName="avatar">
@@ -153,7 +170,7 @@ export default class Sharing extends Component {
                         <div styleName="email">{collaboration.user.username}</div>
                       </div>
                       {
-                        localEditable ?
+                        localRole ?
                           <div styleName="role editable" onClick={event => this.onRoleClick(event, index)}>
                             {collaboration.role}
                           </div>
@@ -163,7 +180,7 @@ export default class Sharing extends Component {
                           </div>
                       }
                       {
-                        localEditable &&
+                        localDelete &&
                           <div styleName="hidden-controls">
                             <div styleName="hidden-remove" onClick={event => this.onDeleteClick(event, collaboration)}>
                               <InlineSVG styleName="cross"
