@@ -2,7 +2,7 @@ import {Parse} from 'parse';
 
 import {store} from '../index';
 import {ContentItemData} from 'models/ContentData';
-import {SITE_DELETE, MODEL_DELETE} from 'ducks/models';
+import {SITE_DELETE, MODEL_DELETE, FIELD_ADD, FIELD_UPDATE, FIELD_DELETE} from 'ducks/models';
 import {LOGOUT} from './user';
 import {getRandomColor} from 'utils/common';
 import {getContentForModel, getContentForSite} from 'utils/data';
@@ -159,6 +159,19 @@ export default function contentReducer(state = initialState, action) {
       for (let item of delItems)
         items.splice(items.indexOf(item), 1);
     
+      return {
+        ...state,
+        items
+      };
+      
+    case FIELD_ADD:
+    case FIELD_UPDATE:
+    case FIELD_DELETE:
+      let model = action.field.model;
+      items = state.items;
+      for (let item of items)
+        item.model = model;
+  
       return {
         ...state,
         items

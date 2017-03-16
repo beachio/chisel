@@ -34,16 +34,15 @@ export class ContentItemData {
   set model(model) {
     this._model = model;
     
-    let title = this.title;
+    let oldFields = this.fields;
     this.fields = new Map();
     for (let field of this.model.fields) {
-      this.fields.set(field, null);
+      let oldValue = oldFields.get(field);
+      this.fields.set(field, oldValue);
       
       if (field.isTitle)
         this._titleField = field;
     }
-    if (title)
-      this.title = title;
   }
   
   get OriginClass() {
