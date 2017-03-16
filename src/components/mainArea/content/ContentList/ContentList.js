@@ -160,6 +160,7 @@ export default class ContentList extends Component {
               </div>
             </div>
           </div>
+          
           <div styleName="list-wrapper">
             <div styleName="list">
               {
@@ -183,6 +184,8 @@ export default class ContentList extends Component {
   
                     let colorStyle = {background: item.color};
                     let key = item.origin && item.origin.id ? item.origin.id : Math.random();
+                    
+                    let title = item.title;
   
                     return(
                       <div styleName="list-item"
@@ -190,7 +193,12 @@ export default class ContentList extends Component {
                            onClick={() => this.onItemClick(item)} >
                         <div styleName="colorLabel" style={colorStyle}></div>
                         <div styleName="type">
-                          <div styleName="name">{item.title}</div>
+                          {
+                            title ?
+                              <div styleName="name">{title}</div>
+                            :
+                              <div styleName="name untitled">Untitled</div>
+                          }
                           <div styleName="description">{item.model.name}</div>
                         </div>
                         <div styleName="updated">{updatedStr}</div>
