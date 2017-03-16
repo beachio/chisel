@@ -113,19 +113,24 @@ export default class Sharing extends Component {
   onDeleteClick(event, collab) {
     event.stopPropagation();
     const {showAlert, deleteCollaboration, deleteSelfCollaboration} = this.props;
+    
     let user = collab.user.username;
     let description = "This action cannot be undone. Are you sure?";
     let delFunc = deleteCollaboration;
+    let confirmString = '';
+    
     if (collab.user.origin.id == Parse.User.current().id) {
       user = 'self';
-      description = "You are trying to leave managing this site. " + description;
+      description = "You are trying to stop managing this site. " + description + "<br><br>Please, type site name to confirm:";
       delFunc = deleteSelfCollaboration;
+      confirmString = collab.site.name;
     }
       
     let params = {
       type: ALERT_TYPE_CONFIRM,
       title: `Deleting ${user} from collaborators`,
       description,
+      confirmString,
       onConfirm: () => delFunc(collab)
     };
     showAlert(params);
