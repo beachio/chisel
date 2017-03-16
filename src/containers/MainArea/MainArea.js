@@ -47,69 +47,89 @@ export class MainArea extends Component  {
     
     switch (nav.openedPage) {
       case PAGE_MODELS:
-        if (curSite)
-          Area = (
-            <ModelsList models={curSite.models}
-                        setCurrentModel={setCurrentModel}
-                        addModel={addModel}
-                        deleteModel={deleteModel}
-                        showAlert={showAlert}
-                        alertShowing={nav.alertShowing}
-                        isEditable={true} />
-          );
-
-        if (nav.openedModel)
-          Area = (
-            <Model model={models.currentModel}
-                   onClose={closeModel}
-                   updateModel={updateModel}
-                   addField={addField}
-                   deleteField={deleteField}
-                   showAlert={showAlert}
-                   showModal={showModal}
-                   modalShowing={nav.modalShowing}
-                   alertShowing={nav.alertShowing}
-                   isEditable={true} />
-          );
+        if (curSite) {
+          if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN) {
+            Area = (
+              <ModelsList models={curSite.models}
+                          setCurrentModel={setCurrentModel}
+                          addModel={addModel}
+                          deleteModel={deleteModel}
+                          showAlert={showAlert}
+                          alertShowing={nav.alertShowing}
+                          isEditable={true}/>
+            );
+  
+            if (nav.openedModel)
+              Area = (
+                <Model model={models.currentModel}
+                       onClose={closeModel}
+                       updateModel={updateModel}
+                       addField={addField}
+                       deleteField={deleteField}
+                       showAlert={showAlert}
+                       showModal={showModal}
+                       modalShowing={nav.modalShowing}
+                       alertShowing={nav.alertShowing}
+                       isEditable={true}/>
+              );
+          
+          } else {
+            Area = (
+              <div styleName="start-working">
+                <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
+                You don't have rights to access this section.
+              </div>
+            );
+          }
+        }
 
         break;
 
       case PAGE_CONTENT:
-        if (nav.openedContentItem) {
-          Area = (
-            <ContentEdit item={content.currentItem}
-                         onClose={closeContentItem}
-                         setCurrentItem={setCurrentItem}
-                         updateItem={updateItem}
-                         addMediaItem={addMediaItem}
-                         updateMediaItem={updateMediaItem}
-                         removeMediaItem={removeMediaItem}
-                         showModal={showModal}
-                         isEditable={models.role != ROLE_DEVELOPER}/>
-          );
-        } else if (curSite && curSite.models.length) {
-          let items = [];
-          for (let item of content.items) {
-            if (item.model.site == curSite)
-              items.push(item);
+        if (curSite) {
+          if (nav.openedContentItem) {
+            Area = (
+              <ContentEdit item={content.currentItem}
+                           onClose={closeContentItem}
+                           setCurrentItem={setCurrentItem}
+                           updateItem={updateItem}
+                           addMediaItem={addMediaItem}
+                           updateMediaItem={updateMediaItem}
+                           removeMediaItem={removeMediaItem}
+                           showModal={showModal}
+                           isEditable={models.role != ROLE_DEVELOPER}/>
+            );
+          } else if (curSite.models.length) {
+            let items = [];
+            for (let item of content.items) {
+              if (item.model.site == curSite)
+                items.push(item);
+            }
+            Area = (
+              <ContentList items={items}
+                           models={curSite.models}
+                           setCurrentItem={setCurrentItem}
+                           addItem={addItem}
+                           deleteItem={deleteItem}
+                           showAlert={showAlert}
+                           alertShowing={nav.alertShowing}
+                           isEditable={models.role != ROLE_DEVELOPER}/>
+            );
+          } else if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN) {
+            Area = (
+              <div styleName="start-working">
+                <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
+                There are no models. Add any model to start creating content.
+              </div>
+            );
+          } else {
+            Area = (
+              <div styleName="start-working">
+                <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
+                There are no models.
+              </div>
+            );
           }
-          Area = (
-            <ContentList items={items}
-                         models={curSite.models}
-                         setCurrentItem={setCurrentItem}
-                         addItem={addItem}
-                         deleteItem={deleteItem}
-                         showAlert={showAlert}
-                         alertShowing={nav.alertShowing}
-                         isEditable={models.role != ROLE_DEVELOPER}/>
-          );
-        } else if (curSite) {
-          Area = (
-            <div styleName="start-working">
-              <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
-              Add any model to start creating content
-            </div>
-          );
         }
 
         break;
