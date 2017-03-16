@@ -264,7 +264,12 @@ export function addCollaboration(user) {
   collab.updateOrigin();
   
   collab.origin.setACL(new Parse.ACL(currentSite.owner.origin));
-  collab.origin.save();
+  collab.origin.save()
+    .then(() =>
+      Parse.Cloud.run('onCollaborationModify', {
+        collabId: collab.origin.id
+      })
+    );
   
   return {
     type: COLLABORATION_ADD,
@@ -274,7 +279,12 @@ export function addCollaboration(user) {
 
 export function updateCollaboration(collab) {
   collab.updateOrigin();
-  collab.origin.save();
+  collab.origin.save()
+    .then(() =>
+      Parse.Cloud.run('onCollaborationModify', {
+        collabId: collab.origin.id
+      })
+    );
   
   return {
     type: COLLABORATION_UPDATE,
@@ -283,7 +293,13 @@ export function updateCollaboration(collab) {
 }
 
 export function deleteCollaboration(collab) {
-  collab.origin.destroy();
+  Parse.Cloud.run('onCollaborationModify', {
+    collabId: collab.origin.id,
+    deleting: true
+  })
+    .then(() =>
+      collab.origin.destroy()
+    );
   
   return {
     type: COLLABORATION_DELETE,
@@ -292,7 +308,13 @@ export function deleteCollaboration(collab) {
 }
 
 export function deleteSelfCollaboration(collab) {
-  collab.origin.destroy();
+  Parse.Cloud.run('onCollaborationModify', {
+    collabId: collab.origin.id,
+    deleting: true
+  })
+    .then(() =>
+      collab.origin.destroy()
+    );
   
   return {
     type: COLLABORATION_SELF_DELETE,
@@ -311,7 +333,12 @@ export function addModel(name) {
   model.setTableName();
   
   model.updateOrigin();
-  model.origin.save();
+  model.origin.save()
+    .then(() =>
+      Parse.Cloud.run('onModelAdd', {
+        modelId: model.origin.id
+      })
+    );
   
   return {
     type: MODEL_ADD,
