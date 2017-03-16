@@ -99,7 +99,8 @@ export default class Settings extends Component {
     let params = {
       type: ALERT_TYPE_CONFIRM,
       title: `Deleting ${this.state.name}`,
-      description: "Are you sure?",
+      description: "You are trying to remove the site with all content. This action cannot be undone. Are you sure?<br><br>Please, type site name to confirm:",
+      confirmString: this.site.name,
       onConfirm: () => deleteSite(this.site)
     };
     showAlert(params);
