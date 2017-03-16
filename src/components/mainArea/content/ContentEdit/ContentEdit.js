@@ -19,6 +19,7 @@ import EditableTitleControl from 'components/elements/EditableTitleControl/Edita
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {filterSpecials, trimFileExt, checkURL} from 'utils/common';
+import {checkContentExistense} from 'utils/data';
 import {MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG} from 'ducks/nav';
 import {store} from 'index';
 
@@ -626,16 +627,26 @@ export default class ContentEdit extends Component {
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__REFERENCE__REFERENCE:
             if (value) {
-              inner = (
-                <div styleName="reference">
-                  <div styleName="reference-item" onClick={() => this.onReferenceClick(value)}>
-                    <input type="text" value={value.title} readOnly />
-                    <InlineSVG styleName="reference-cross"
-                               src={require('./cross.svg')}
-                               onClick={e => this.onReferenceClear(e, field)} />
+              let exist = checkContentExistense(value);
+              if (exist)
+                inner = (
+                  <div styleName="reference">
+                    <div styleName="reference-item" onClick={() => this.onReferenceClick(value)}>
+                      <input type="text" value={value.title} readOnly />
+                      <InlineSVG styleName="reference-cross"
+                                 src={require('./cross.svg')}
+                                 onClick={e => this.onReferenceClear(e, field)} />
+                    </div>
                   </div>
-                </div>
-              );
+                );
+              else
+                inner = (
+                  <div styleName="reference">
+                    <div styleName="reference-item" onClick={e => this.onReferenceClear(e, field)}>
+                      <input type="text" value="Error: item was deleted" readOnly />
+                    </div>
+                  </div>
+                );
             } else {
               inner = (
                 <div styleName="reference">

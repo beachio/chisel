@@ -158,6 +158,15 @@ export function getContentForSite(site) {
   return res;
 }
 
+export function checkContentExistense(item) {
+  let items = store.getState().content.items;
+  for (let tempItem of items) {
+    if (item == tempItem)
+      return true;
+  }
+  return false;
+}
+
 export function getModelByName(name) {
   let site = store.getState().models.currentSite;
   if (!site)
