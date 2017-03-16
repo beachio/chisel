@@ -387,9 +387,7 @@ function changeTitleField(field, value = true) {
   field.origin.save();
 }
 
-export function addField(name) {
-  let field = new ModelFieldData();
-  field.name = name;
+export function addField(field) {
   field.color = getRandomColor();
   
   let currentModel = store.getState().models.currentModel;

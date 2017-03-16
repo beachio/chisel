@@ -14,7 +14,7 @@ import WysiwygModal from 'components/modals/WysiwygModal/WysiwygModal';
 import ReferenceModal from 'components/modals/ReferenceModal/ReferenceModal';
 import AlertModal from 'components/modals/AlertModal/AlertModal';
 import {closeAlert, closeModal, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG} from 'ducks/nav';
-import {updateField} from 'ducks/models';
+import {addField, updateField} from 'ducks/models';
 
 import styles from './app.sss';
 
@@ -24,7 +24,7 @@ class App extends React.Component {
   render() {
     const {nav, user} = this.props;
     const {closeAlert, closeModal} = this.props.navActions;
-    const {updateField} = this.props.modelActions;
+    const {addField, updateField} = this.props.modelActions;
 
     let Page = (
       <div>
@@ -40,25 +40,23 @@ class App extends React.Component {
               nav.modalShowing && nav.modalType == MODAL_TYPE_FIELD &&
                 <FieldModal params={nav.modalParams}
                             onClose={closeModal}
+                            addField={addField}
                             updateField={updateField} />
             }
             {
               nav.modalShowing && nav.modalType == MODAL_TYPE_MEDIA &&
                 <MediaModal params={nav.modalParams}
-                            onClose={closeModal}
-                            updateField={updateField} />
+                            onClose={closeModal} />
             }
             {
               nav.modalShowing && nav.modalType == MODAL_TYPE_REFERENCE &&
                 <ReferenceModal params={nav.modalParams}
-                                onClose={closeModal}
-                                updateField={updateField} />
+                                onClose={closeModal} />
             }
             {
               nav.modalShowing && nav.modalType == MODAL_TYPE_WYSIWYG &&
                 <WysiwygModal params={nav.modalParams}
-                              onClose={closeModal}
-                              updateField={updateField} />
+                              onClose={closeModal} />
             }
             {
               nav.alertShowing &&
@@ -101,7 +99,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelActions: bindActionCreators({updateField}, dispatch),
+    modelActions: bindActionCreators({addField, updateField}, dispatch),
     navActions: bindActionCreators({closeAlert, closeModal}, dispatch)
   };
 }

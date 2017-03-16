@@ -9,6 +9,7 @@ import EditableTitleControl from 'components/elements/EditableTitleControl/Edita
 import {checkModelName, checkFieldName, getAlertForNameError, modelToJSON} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
+import {ModelFieldData} from 'models/ModelData';
 
 import styles from './Model.sss';
 
@@ -64,9 +65,10 @@ export default class Model extends Component {
       showAlert(getAlertForNameError(error));
       return;
     }
-
-    const {addField} = this.props;
-    addField(this.state.fieldName);
+  
+    let field = new ModelFieldData();
+    field.name = this.state.fieldName;
+    this.props.showModal(MODAL_TYPE_FIELD, field);
 
     this.setState({fieldName: ""});
   };

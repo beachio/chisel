@@ -29,12 +29,15 @@ export default class FieldModal extends Component {
   };
   typeList = Array.from(FIELD_TYPES.keys());
   field = null;
+  updating = false;
   onClose = null;
 
 
   componentWillMount() {
     this.field = this.props.params;
+    this.updating = !!this.field.origin;
     this.onClose = this.props.onClose;
+    
     this.setState({
       name:       this.field.name,
       nameId:     this.field.nameId,
@@ -89,7 +92,11 @@ export default class FieldModal extends Component {
     this.field.appearance = this.state.appearance;
     this.field.isTitle    = this.state.isTitle;
 
-    this.props.updateField(this.field);
+    const {addField, updateField} = this.props;
+    if (this.updating)
+      updateField(this.field);
+    else
+      addField(this.field);
     this.onClose();
   };
 
@@ -123,18 +130,25 @@ export default class FieldModal extends Component {
 
               <div styleName="input-wrapper">
                 <InputControl label="Field ID"
-                              placeholder="main_title"
-                              type="readOnly"
                               icon="lock"
                               value={this.state.nameId}
-                              readOnly="readOnly" />
+                              readOnly={true} />
               </div>
 
               <div styleName="input-wrapper">
-                <DropdownControl label="Type"
-                                 suggestionsList={this.typeList}
-                                 suggest={this.onChangeType}
-                                 current={this.state.type} />
+                {
+                  this.updating ?
+                    <InputControl label="Type"
+                                  icon="lock"
+                                  value={this.state.type}
+                                  readOnly={true} />
+                  :
+                    <DropdownControl label="Type"
+                                     suggestionsList={this.typeList}
+                                     suggest={this.onChangeType}
+                                     current={this.state.type} />
+                }
+                
               </div>
 
               <div styleName="input-wrapper">

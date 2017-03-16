@@ -15,9 +15,8 @@ export default class InputControl extends Component {
     if (type === 'big')
       inputStyles = 'input-big';
 
-    if (type === 'readOnly') {
+    if (readOnly)
       inputStyles = 'input input-readOnly';
-    }
 
     let iconEl;
     if (icon) {
