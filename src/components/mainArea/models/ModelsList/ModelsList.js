@@ -2,10 +2,10 @@ import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
-import {checkModelName, getAlertForNameError} from 'utils/data';
+import {checkModelName, getAlertForNameError, getContentForModel} from 'utils/data';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
-import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
+import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
 
 import styles from './ModelsList.sss';
 
@@ -77,12 +77,23 @@ export default class ModelsList extends Component {
     event.stopPropagation();
     const {showAlert, deleteModel} = this.props;
   
-    let params = {
-      type: ALERT_TYPE_CONFIRM,
-      title: `Deleting ${model.name} model`,
-      description: "Are you sure?",
-      onConfirm: () => deleteModel(model)
-    };
+    let params;
+    let contentCount = getContentForModel(model).length;
+    if (contentCount) {
+      params = {
+        type: ALERT_TYPE_ALERT,
+        title: `Deleting ${model.name} model`,
+        description: `There are ${contentCount} content items using the model. You should delete them first.`
+      };
+    } else {
+      params = {
+        type: ALERT_TYPE_CONFIRM,
+        title: `Deleting ${model.name} model`,
+        description: "Are you sure?",
+        onConfirm: () => deleteModel(model)
+      };
+    }
+     
     showAlert(params);
   };
 
