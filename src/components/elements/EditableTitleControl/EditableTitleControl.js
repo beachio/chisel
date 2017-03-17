@@ -91,6 +91,7 @@ export default class EditableTitleControl extends Component {
 
     this.setState({editing: false});
     this.props.update(this.state.text);
+    this.setText(this.props.text);
   };
 
   onKeyDown = event => {
@@ -102,6 +103,7 @@ export default class EditableTitleControl extends Component {
     if (event.keyCode == 13) {
       this.setState({editing: false});
       this.props.update(this.state.text);
+      this.setText(this.props.text);
       
     //Esc pressed
     } else if (event.keyCode == 27) {

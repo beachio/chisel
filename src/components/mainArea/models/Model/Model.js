@@ -6,7 +6,7 @@ import JSONView from '../../../elements/JSONView/JSONView';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
 import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
-import {checkModelName, checkFieldName, getAlertForNameError, modelToJSON} from 'utils/data';
+import {checkModelName, checkFieldName, getAlertForNameError, modelToJSON, NAME_ERROR_OTHER} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
 import {ModelFieldData} from 'models/ModelData';
@@ -99,18 +99,14 @@ export default class Model extends Component {
 
   updateModelName = name => {
     if (name != this.model.name) {
-      let error = checkModelName(this.state.name);
+      let error = checkModelName(name);
       if (!error) {
-        this.model.name = this.state.name;
+        this.model.name = name;
         this.props.updateModel(this.model);
         this.endEdit();
-      } else {
-        if (false && !this.props.alertShowing) {
-          this.endEdit();
-        } else {
-          const {showAlert} = this.props;
-          showAlert(getAlertForNameError(error));
-        }
+      } else if (error != NAME_ERROR_OTHER) {
+        const {showAlert} = this.props;
+        showAlert(getAlertForNameError(error));
       }
     } else {
       this.endEdit();
