@@ -1,11 +1,9 @@
 import {Parse} from 'parse';
 
 import {MediaItemData} from 'models/MediaItemData';
-import {store} from 'index';
 
 
 export const INIT_END       = 'app/media/INIT_END';
-export const POST_INIT_END  = 'app/media/POST_INIT_END';
 export const ITEM_ADD       = 'app/media/ITEM_ADD';
 export const ITEM_UPDATE    = 'app/media/ITEM_UPDATE';
 export const ITEM_DELETE    = 'app/media/ITEM_DELETE';
@@ -38,17 +36,6 @@ export function init() {
   };
 }
 
-export function postInit() {
-  let items = store.getState().media.items;
-  for (let item of items) {
-    item.postInit();
-  }
-  
-  return {
-    type: POST_INIT_END
-  };
-}
-
 export function addMediaItem(file, name, type, cItem = null) {
   let item = new MediaItemData();
 
@@ -56,7 +43,7 @@ export function addMediaItem(file, name, type, cItem = null) {
   item.name = name;
   if (type)
     item.type = type;
-  item.contentItem = cItem;
+  item.assigned = !!cItem;
 
   item.updateOrigin();
   item.origin.save();
@@ -115,7 +102,6 @@ export default function mediaReducer(state = initialState, action) {
       };
   
     case ITEM_UPDATE:
-    case POST_INIT_END:
       return {...state};
       
     default:

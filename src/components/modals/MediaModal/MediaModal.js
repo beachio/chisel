@@ -87,38 +87,36 @@ export default class MediaModal extends Component {
             <div styleName="input-wrapper">
               <InputControl type="big"
                             label="search media files"
+                            DOMRef={inp => this.focusElm = inp}
                             value={this.state.searchText}
                             onChange={this.onSearch} />
             </div>
 
             <div styleName="media">
               {
-                this.items.map(item => {
-                  if (item.contentItem)
-                    return null;
-                  
-                  if (!this.searchMatch(this.state.searchText, item.name))
-                    return null;
-                  
-                  let imgStyle = {};
-                  if (item.file)
-                    imgStyle = {backgroundImage: `url(${item.file.url()})`};
-
-                  let itemStyle = "media-item";
-                  if (item === this.state.selectedItem)
-                    itemStyle += " media-chosen";
-
-                  return (
-                    <div styleName={itemStyle}
-                         onClick={() => this.onSelect(item)}
-                         key={item.origin.id} >
-                      <div styleName="media-header">
-                        {item.name}
+                this.items
+                  .filter(item => !item.assigned)
+                  .filter(item => this.searchMatch(this.state.searchText, item.name))
+                  .map(item => {
+                    let imgStyle = {};
+                    if (item.file)
+                      imgStyle = {backgroundImage: `url(${item.file.url()})`};
+  
+                    let itemStyle = "media-item";
+                    if (item === this.state.selectedItem)
+                      itemStyle += " media-chosen";
+  
+                    return (
+                      <div styleName={itemStyle}
+                           onClick={() => this.onSelect(item)}
+                           key={item.origin.id} >
+                        <div styleName="media-header">
+                          {item.name}
+                        </div>
+                        <div styleName="media-content" style={imgStyle}></div>
                       </div>
-                      <div styleName="media-content" style={imgStyle}></div>
-                    </div>
-                  );
-                })
+                    );
+                  })
               }
             </div>
 
@@ -127,7 +125,6 @@ export default class MediaModal extends Component {
                 <ButtonControl color="green"
                                value="Choose"
                                disabled={!this.state.selectedItem}
-                               DOMRef={inp => this.focusElm = inp}
                                onClick={this.onChoose} />
               </div>
               <div styleName="buttons-inner">
