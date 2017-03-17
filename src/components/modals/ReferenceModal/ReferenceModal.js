@@ -15,6 +15,7 @@ export default class ReferenceModal extends Component {
     searchText: ''
   };
   
+  active = false;
   isMult = false;
   existingItems = [];
   onClose = null;
@@ -38,6 +39,30 @@ export default class ReferenceModal extends Component {
           this.items.push(item);
     }
   }
+  
+  componentDidMount() {
+    this.active = true;
+    document.onkeydown = this.onKeyPress;
+    
+    if (this.focusBtn)
+      setTimeout(() => this.focusBtn.focus(), 2);
+  }
+  
+  componentWillUnmount() {
+    document.onkeydown = null;
+    this.active = false;
+  }
+  
+  onKeyPress = () => {
+    let event = window.event;
+    event.stopPropagation();
+    
+    //Enter or Esc pressed
+    if (event.keyCode == 13)
+      setTimeout(this.onChoose, 1);
+    else if (event.keyCode == 27)
+      setTimeout(this.props.onClose, 1);
+  };
   
   onSearch = (event) => {
     let searchText = event.target.value;
@@ -70,6 +95,9 @@ export default class ReferenceModal extends Component {
   };
   
   onChoose = () => {
+    if (!this.state.selectedItems.length || !this.active)
+      return;
+    
     this.callback(this.isMult ?
       this.state.selectedItems :
       this.state.selectedItems[0]);
@@ -119,6 +147,7 @@ export default class ReferenceModal extends Component {
                 <ButtonControl color="green"
                                value="Choose"
                                disabled={!this.state.selectedItems.length}
+                               DOMRef={btn => this.focusBtn = btn}
                                onClick={this.onChoose} />
               </div>
               <div styleName="buttons-inner">

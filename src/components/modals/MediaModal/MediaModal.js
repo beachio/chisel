@@ -14,6 +14,8 @@ export default class MediaModal extends Component {
     selectedItem: null,
     searchText: ''
   };
+  
+  active = false;
   onClose = null;
   callback = null;
   items = [];
@@ -24,6 +26,30 @@ export default class MediaModal extends Component {
     this.callback = this.props.params;
     this.items = store.getState().media.items;
   }
+  
+  componentDidMount() {
+    this.active = true;
+    document.onkeydown = this.onKeyPress;
+    
+    if (this.focusElm)
+      setTimeout(() => this.focusElm.focus(), 2);
+  }
+  
+  componentWillUnmount() {
+    document.onkeydown = null;
+    this.active = false;
+  }
+  
+  onKeyPress = () => {
+    let event = window.event;
+    event.stopPropagation();
+    
+    //Enter or Esc pressed
+    if (event.keyCode == 13)
+      setTimeout(this.onChoose, 1);
+    else if (event.keyCode == 27)
+      setTimeout(this.props.onClose, 1);
+  };
   
   onSearch = (event) => {
     let searchText = event.target.value;
@@ -46,6 +72,9 @@ export default class MediaModal extends Component {
   };
 
   onChoose = () => {
+    if (!this.state.selectedItem || !this.active)
+      return;
+    
     this.callback(this.state.selectedItem);
     this.onClose();
   };
@@ -98,6 +127,7 @@ export default class MediaModal extends Component {
                 <ButtonControl color="green"
                                value="Choose"
                                disabled={!this.state.selectedItem}
+                               DOMRef={inp => this.focusElm = inp}
                                onClick={this.onChoose} />
               </div>
               <div styleName="buttons-inner">
