@@ -232,7 +232,7 @@ export default class ContentList extends Component {
                                   onIconClick={this.onAddItem}
                                   onChange={this.onItemTitleChange}
                                   onKeyDown={this.onKeyDown}
-                                  inputRef={c => this.activeInput = c} />
+                                  DOMRef={c => this.activeInput = c} />
                   </div>
                 </div>
             }

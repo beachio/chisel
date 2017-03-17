@@ -7,7 +7,7 @@ import IconsComponent from '../IconsComponent/IconsComponent';
 @CSSModules(styles, {allowMultiple: true})
 export default class InputControl extends Component {
   render() {
-    const {label, type, value, placeholder, onChange, readOnly, autoFocus, onKeyDown, inputRef, icon, onIconClick} = this.props;
+    const {label, type, value, placeholder, onChange, readOnly, autoFocus, onKeyDown, DOMRef, icon, onIconClick} = this.props;
     let inputValue = value;
     let inputPlaceholder = placeholder;
     let inputStyles = 'input';
@@ -37,7 +37,7 @@ export default class InputControl extends Component {
                onChange={onChange}
                onKeyDown={onKeyDown}
                readOnly={readOnly}
-               ref={inputRef} />
+               ref={DOMRef} />
         <label styleName="label"> {label} </label>
       </div>
     );

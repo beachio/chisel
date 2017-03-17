@@ -209,7 +209,7 @@ export default class Sharing extends Component {
                                 onKeyDown={this.onKeyDown}
                                 icon="users"
                                 onIconClick={this.onAddCollaboration}
-                                inputRef={c => this.activeInput = c}/>
+                                DOMRef={c => this.activeInput = c}/>
 
 
                   <div styleName="footer">

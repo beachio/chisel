@@ -185,7 +185,7 @@ export default class Model extends Component {
                               autoFocus={true}
                               onKeyDown={this.onAddKeyDown}
                               onChange={this.onFieldNameChange}
-                              inputRef={c => this.activeInput = c}
+                              DOMRef={c => this.activeInput = c}
                               icon="plus"
                               onIconClick={this.onAddField} />
               </div>

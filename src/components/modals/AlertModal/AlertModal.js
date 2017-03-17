@@ -18,6 +18,8 @@ export default class AlertModal extends Component {
   };
   type = ALERT_TYPE_ALERT;
   confirmString = '';
+  focusElm = null;
+  focusBtn = null;
   
   
   componentWillMount() {
@@ -27,6 +29,11 @@ export default class AlertModal extends Component {
   
   componentDidMount() {
     document.onkeydown = this.onKeyPress;
+  
+    if (this.focusElm)
+      setTimeout(() => this.focusElm.focus(), 2);
+    else if (this.focusBtn)
+      setTimeout(() => this.focusBtn.focus(), 2);
   }
 
   componentWillUnmount() {
@@ -35,6 +42,7 @@ export default class AlertModal extends Component {
 
   onKeyPress = event => {
     event = event || window.event;
+    event.stopPropagation();
     
     //Enter or Esc pressed
     if (event.keyCode == 13)
@@ -51,16 +59,21 @@ export default class AlertModal extends Component {
   
   onConfirm = () => {
     const {onClose} = this.props;
-    const {onConfirm} = this.props.params;
-    if (this.type == ALERT_TYPE_CONFIRM)
-      onConfirm();
-    onClose();
+    
+    if (this.type == ALERT_TYPE_CONFIRM) {
+      if (this.confirmString == this.state.confirmString) {
+        this.props.params.onConfirm();
+        onClose();
+      }
+    } else  {
+      onClose();
+    }
   };
 
   render() {
     const {onClose} = this.props;
     
-    const {title, description, type, onConfirm} = this.props.params;
+    const {title, description, type} = this.props.params;
     if (type)
       this.type = type;
   
@@ -84,6 +97,7 @@ export default class AlertModal extends Component {
               this.confirmString &&
                 <div styleName="input-wrapper">
                   <InputControl onChange={this.onChangeString}
+                                DOMRef={inp => this.focusElm = inp}
                                 value={this.state.confirmString} />
                 </div>
             }
@@ -92,6 +106,7 @@ export default class AlertModal extends Component {
                 <div styleName="button">
                   <ButtonControl color="green"
                                  value="OK"
+                                 DOMRef={btn => this.focusBtn = btn}
                                  onClick={onClose} />
                 </div>
             }
@@ -102,6 +117,7 @@ export default class AlertModal extends Component {
                     <ButtonControl color="red"
                                    value="Yes"
                                    disabled={this.confirmString != this.state.confirmString}
+                                   DOMRef={btn => this.focusBtn = btn}
                                    onClick={this.onConfirm} />
                   </div>
                   <div styleName="buttons-inner">

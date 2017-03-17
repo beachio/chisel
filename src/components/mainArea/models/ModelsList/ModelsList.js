@@ -157,7 +157,7 @@ export default class ModelsList extends Component {
                               placeholder="Create a new Content Type"
                               onChange={this.onModelNameChange}
                               onKeyDown={this.onKeyDown}
-                              inputRef={c => this.activeInput = c}
+                              DOMRef={c => this.activeInput = c}
                               icon="plus"
                               onIconClick={this.onAddModel} />
               </div>

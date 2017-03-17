@@ -8,7 +8,7 @@ import styles from './ButtonControl.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class ButtonControl extends Component {
   render() {
-    let {value, color, onClick, type, disabled} = this.props;
+    let {value, color, onClick, type, disabled, DOMRef} = this.props;
     if (!type)
       type = 'button';
 
@@ -28,7 +28,10 @@ export default class ButtonControl extends Component {
     }
 
     return (
-      <button styleName={buttonControlClasses} onClick={onClick} type={type}>
+      <button styleName={buttonControlClasses}
+              onClick={onClick}
+              type={type}
+              ref={DOMRef}>
         {value || 'Clear'}
       </button>
     );
