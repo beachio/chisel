@@ -27,10 +27,13 @@ export default class FieldModal extends Component {
 
     appList: []
   };
+  
+  active = false;
   typeList = Array.from(FIELD_TYPES.keys());
   field = null;
   updating = false;
   onClose = null;
+  focusBtn = null;
 
 
   componentWillMount() {
@@ -48,6 +51,30 @@ export default class FieldModal extends Component {
       appList:    FIELD_TYPES.get(this.field.type)
     });
   }
+  
+  componentDidMount() {
+    this.active = true;
+    document.onkeydown = this.onKeyPress;
+    
+    if (this.focusElm)
+      setTimeout(() => this.focusElm.focus(), 2);
+  }
+  
+  componentWillUnmount() {
+    document.onkeydown = null;
+    this.active = false;
+  }
+  
+  onKeyPress = () => {
+    let event = window.event;
+    event.stopPropagation();
+    
+    //Enter or Esc pressed
+    if (event.keyCode == 13)
+      setTimeout(this.onSave, 1);
+    else if (event.keyCode == 27)
+      setTimeout(this.props.onClose, 1);
+  };
 
   onChangeName = event => {
     let name = event.target.value;
@@ -73,6 +100,9 @@ export default class FieldModal extends Component {
   };
 
   onSave = () => {
+    if (!this.active)
+      return;
+    
     if (!this.state.name) {
       this.onClose();
       return;
@@ -115,6 +145,7 @@ export default class FieldModal extends Component {
               <div styleName="input-wrapper">
                 <InputControl label="Name"
                               placeholder="Main Title"
+                              DOMRef={inp => this.focusElm = inp}
                               onChange={this.onChangeName}
                               value={this.state.name} />
               </div>
