@@ -145,37 +145,36 @@ export const FIELD_TYPE_BOOLEAN     = "Boolean";
 export const FIELD_TYPE_DATE        = "Date/time";
 export const FIELD_TYPE_MEDIA       = "Media";
 export const FIELD_TYPE_JSON        = "JSON";
-export const FIELD_TYPE_REFERENCE   = "Reference";
-export const FIELD_TYPE_REFERENCES  = "Multiple references";
+export const FIELD_TYPE_REFERENCES  = "References";
 
 
-export const FIELD_APPEARANCE__SHORT_TEXT__SINGLE     = "Single line";
-export const FIELD_APPEARANCE__SHORT_TEXT__SLUG       = "Slug";
-export const FIELD_APPEARANCE__SHORT_TEXT__URL        = "URL";
-export const FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN   = "Dropdown";
-export const FIELD_APPEARANCE__SHORT_TEXT__RADIO      = "Radio buttons";
+export const FIELD_APPEARANCE__SHORT_TEXT__SINGLE   = "Single line";
+export const FIELD_APPEARANCE__SHORT_TEXT__SLUG     = "Slug";
+export const FIELD_APPEARANCE__SHORT_TEXT__URL      = "URL";
+export const FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN = "Dropdown";
+export const FIELD_APPEARANCE__SHORT_TEXT__RADIO    = "Radio buttons";
 
-export const FIELD_APPEARANCE__LONG_TEXT__SINGLE      = "Single line";
-export const FIELD_APPEARANCE__LONG_TEXT__MULTI       = "Multi-line";
-export const FIELD_APPEARANCE__LONG_TEXT__WYSIWIG     = "WYSIWYG";
+export const FIELD_APPEARANCE__LONG_TEXT__SINGLE    = "Single line";
+export const FIELD_APPEARANCE__LONG_TEXT__MULTI     = "Multi-line";
+export const FIELD_APPEARANCE__LONG_TEXT__WYSIWIG   = "WYSIWYG";
 
-export const FIELD_APPEARANCE__INTEGER__DECIMAL       = "Decimal";
-export const FIELD_APPEARANCE__INTEGER__RATING        = "Rating";
+export const FIELD_APPEARANCE__INTEGER__DECIMAL     = "Decimal";
+export const FIELD_APPEARANCE__INTEGER__RATING      = "Rating";
 
-export const FIELD_APPEARANCE__FLOAT__DECIMAL         = "Decimal";
+export const FIELD_APPEARANCE__FLOAT__DECIMAL       = "Decimal";
 
-export const FIELD_APPEARANCE__BOOLEAN__RADIO         = "Radio buttons";
-export const FIELD_APPEARANCE__BOOLEAN__SWITCH        = "Switch";
+export const FIELD_APPEARANCE__BOOLEAN__RADIO       = "Radio buttons";
+export const FIELD_APPEARANCE__BOOLEAN__SWITCH      = "Switch";
 
-export const FIELD_APPEARANCE__DATE__DATE             = "Date & time";
+export const FIELD_APPEARANCE__DATE__DATE           = "Date & time";
 
-export const FIELD_APPEARANCE__MEDIA__MEDIA           = "Media";
+export const FIELD_APPEARANCE__MEDIA__MEDIA         = "Media";
 
-export const FIELD_APPEARANCE__JSON__JSON             = "Date & time";
+export const FIELD_APPEARANCE__JSON__JSON           = "Date & time";
 
-export const FIELD_APPEARANCE__REFERENCE__REFERENCE   = "Reference";
+export const FIELD_APPEARANCE__REFERENCES__SINGLE   = "Single reference";
 
-export const FIELD_APPEARANCE__REFERENCES__REFERENCES = "Multiple references";
+export const FIELD_APPEARANCE__REFERENCES__MULTI    = "Multiple references";
 
 
 export const FIELD_TYPES = new Map([
@@ -211,11 +210,9 @@ export const FIELD_TYPES = new Map([
   /*[FIELD_TYPE_JSON, [
     FIELD_APPEARANCE__JSON__JSON
   ]],*/
-  [FIELD_TYPE_REFERENCE, [
-    FIELD_APPEARANCE__REFERENCE__REFERENCE
-  ]],
   [FIELD_TYPE_REFERENCES, [
-    FIELD_APPEARANCE__REFERENCES__REFERENCES
+    FIELD_APPEARANCE__REFERENCES__SINGLE,
+    FIELD_APPEARANCE__REFERENCES__MULTI
   ]]
 ]);
 

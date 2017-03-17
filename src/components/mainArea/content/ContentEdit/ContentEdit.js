@@ -293,30 +293,21 @@ export default class ContentEdit extends Component {
     this.setFieldValue(field, mItem);
   }
 
-  onReferenceChoose(field) {
-    this.props.showModal(MODAL_TYPE_REFERENCE,
-      {callback: item => this.setFieldValue(field, item)}
-    );
-  }
-
   onReferenceNew(field) {
     //TODO
   }
   
-  onReferenceMultChoose(field) {
+  onReferencesChoose(field, isMult) {
     let refers = this.state.fields.get(field);
     if (!refers)
       refers = [];
     this.props.showModal(MODAL_TYPE_REFERENCE,
       {
+        isMult,
         existingItems: refers,
         callback: items => this.setFieldValue(field, refers.concat(items))
       }
     );
-  }
-  
-  onReferenceMultNew(field) {
-    //TODO
   }
   
   onReferenceClick(newItem) {
@@ -325,15 +316,13 @@ export default class ContentEdit extends Component {
     this.setItem(newItem);
   };
   
-  onReferenceClear = (event, field) => {
-    event.stopPropagation();
-    this.setFieldValue(field, null);
-  };
-  
-  onReferenceMultClear = (event, field, refer) => {
+  onReferenceClear = (event, field, item) => {
     event.stopPropagation();
     let refers = this.state.fields.get(field);
-    refers.splice(refers.indexOf(refer), 1);
+    if (item)
+      refers.splice(refers.indexOf(item), 1);
+    else
+      refers.splice(0, refers.length);
     this.setFieldValue(field, refers);
   };
 
@@ -623,85 +612,65 @@ export default class ContentEdit extends Component {
         }
         break;
 
-      case ftps.FIELD_TYPE_REFERENCE:
-        switch (field.appearance) {
-          case ftps.FIELD_APPEARANCE__REFERENCE__REFERENCE:
-            if (value) {
-              let exist = checkContentExistense(value);
-              if (exist)
-                inner = (
-                  <div styleName="reference">
-                    <div styleName="reference-item" onClick={() => this.onReferenceClick(value)}>
-                      <input type="text" value={value.title} readOnly />
-                      <InlineSVG styleName="reference-cross"
-                                 src={require('./cross.svg')}
-                                 onClick={e => this.onReferenceClear(e, field)} />
-                    </div>
-                  </div>
-                );
-              else
-                inner = (
-                  <div styleName="reference">
-                    <div styleName="reference-item" onClick={e => this.onReferenceClear(e, field)}>
-                      <input type="text" value="Error: item was deleted" readOnly />
-                    </div>
-                  </div>
-                );
-            } else {
-              inner = (
-                <div styleName="reference">
-                  <div styleName="reference-buttons">
-                    <div styleName="reference-button reference-new" onClick={() => this.onReferenceNew(field)}>
-                      Create new entry
-                    </div>
-                    <div styleName="reference-button reference-insert" onClick={() => this.onReferenceChoose(field)}>
-                      Insert Existing Entry
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-
-            break;
-        }
-        break;
-  
       case ftps.FIELD_TYPE_REFERENCES:
-        switch (field.appearance) {
-          case ftps.FIELD_APPEARANCE__REFERENCES__REFERENCES:
-            inner = (
-              <div styleName="reference">
-                {
-                  value && value.length ?
-                    value.map(refer => {
-                      let key = refer.origin && refer.origin.id ? refer.origin.id : Math.random();
-                      
-                      return(
-                        <div styleName="reference-item" key={key} onClick={() => this.onReferenceClick(refer)}>
-                          <input type="text" value={refer.title} readOnly />
-                          <InlineSVG styleName="reference-cross"
-                                     src={require('./cross.svg')}
-                                     onClick={e => this.onReferenceMultClear(e, field, refer)} />
-                        </div>
-                      );
-                    })
-                    :
-                    null
-                }
-                
-                <div styleName="reference-buttons">
-                  <div styleName="reference-button reference-new" onClick={() => this.onReferenceMultNew(field)}>
-                    Create new entry
-                  </div>
-                  <div styleName="reference-button reference-insert" onClick={() => this.onReferenceMultChoose(field)}>
-                    Insert Existing Entry
-                  </div>
-                </div>
+        let oneReferenceBlock = item => {
+          let exist = checkContentExistense(item);
+          let key = item.origin && item.origin.id ? item.origin.id : Math.random();
+  
+          if (exist)
+            return (
+              <div styleName="reference-item" key={key} onClick={() => this.onReferenceClick(item)}>
+                <input type="text" value={item.title} readOnly />
+                <InlineSVG styleName="reference-cross"
+                           src={require('./cross.svg')}
+                           onClick={e => this.onReferenceClear(e, field, item)} />
               </div>
             );
+          else
+            return (
+              <div styleName="reference-item" key={key} onClick={e => this.onReferenceClear(e, field, item)}>
+                <input type="text" value="Error: item was deleted" readOnly />
+              </div>
+            );
+        };
+        
+        let addReferenceBlock = isMult => (
+          <div styleName="reference-buttons">
+            <div styleName="reference-button reference-new" onClick={() => this.onReferenceNew(field)}>
+              Create new entry
+            </div>
+            <div styleName="reference-button reference-insert" onClick={() => this.onReferencesChoose(field, isMult)}>
+              Insert Existing Entry
+            </div>
+          </div>
+        );
+  
+        let refInner = addReferenceBlock(false);
+        
+        switch (field.appearance) {
+          case ftps.FIELD_APPEARANCE__REFERENCES__SINGLE:
+            if (value && value.length)
+              refInner = oneReferenceBlock(value[0]);
+            break;
+  
+          case ftps.FIELD_APPEARANCE__REFERENCES__MULTI:
+            refInner = addReferenceBlock(true);
+            if (value && value.length)
+              refInner = (
+                <div>
+                  {value.map(item => oneReferenceBlock(item))}
+                  {addReferenceBlock(true)}
+                </div>
+              );
         
             break;
         }
+  
+        inner = (
+          <div styleName="reference">
+            {refInner}
+          </div>
+        );
         break;
 
     }

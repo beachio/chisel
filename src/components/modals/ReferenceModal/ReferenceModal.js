@@ -21,14 +21,13 @@ export default class ReferenceModal extends Component {
   onClose = null;
   callback = null;
   items = [];
+  focusElm = null;
   
   
   componentWillMount() {
     this.onClose = this.props.onClose;
-    if (this.props.params.existingItems) {
-      this.isMult = true;
-      this.existingItems = this.props.params.existingItems;
-    }
+    this.isMult = this.props.params.isMult;
+    this.existingItems = this.props.params.existingItems;
     this.callback = this.props.params.callback;
     
     let allItems = store.getState().content.items;
@@ -44,8 +43,8 @@ export default class ReferenceModal extends Component {
     this.active = true;
     document.onkeydown = this.onKeyPress;
     
-    if (this.focusBtn)
-      setTimeout(() => this.focusBtn.focus(), 2);
+    if (this.focusElm)
+      setTimeout(() => this.focusElm.focus(), 2);
   }
   
   componentWillUnmount() {
@@ -115,6 +114,7 @@ export default class ReferenceModal extends Component {
               <InputControl type="big"
                             label="search entries"
                             value={this.state.searchText}
+                            DOMRef={inp => this.focusElm = inp}
                             onChange={this.onSearch} />
             </div>
 
@@ -147,7 +147,6 @@ export default class ReferenceModal extends Component {
                 <ButtonControl color="green"
                                value="Choose"
                                disabled={!this.state.selectedItems.length}
-                               DOMRef={btn => this.focusBtn = btn}
                                onClick={this.onChoose} />
               </div>
               <div styleName="buttons-inner">

@@ -2,7 +2,7 @@ import {Parse} from 'parse';
 
 import {removeOddSpaces} from 'utils/common';
 import {getMediaByO, getContentByO} from 'utils/data';
-import {FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCE, FIELD_TYPE_REFERENCES} from 'models/ModelData';
+import {FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCES} from 'models/ModelData';
 
 
 export class ContentItemData {
@@ -85,8 +85,6 @@ export class ContentItemData {
             refers.push(ref);
         }
         this.fields.set(field, refers);
-      } else if (field.type == FIELD_TYPE_REFERENCE) {
-        this.fields.set(field, getContentByO(this.origin.get(field.nameId), items));
       }
     }
   }
@@ -106,7 +104,7 @@ export class ContentItemData {
             refOrigins.push(ref.origin);
         }
         this.origin.set(field.nameId, refOrigins);
-      } else if ((field.type == FIELD_TYPE_MEDIA || field.type == FIELD_TYPE_REFERENCE) && value) {
+      } else if ((field.type == FIELD_TYPE_MEDIA) && value) {
         this.origin.set(field.nameId, value.origin);
       } else {
         this.origin.set(field.nameId, value);

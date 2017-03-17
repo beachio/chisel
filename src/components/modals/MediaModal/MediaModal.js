@@ -19,6 +19,7 @@ export default class MediaModal extends Component {
   onClose = null;
   callback = null;
   items = [];
+  focusElm = null;
 
 
   componentWillMount() {
