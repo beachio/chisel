@@ -67,7 +67,7 @@ export default class EditableTitleControl extends Component {
   }
 
   onEditClick = () => {
-    if (!this.editable)
+    if (!this.editable || this.state.editing)
       return;
 
     this.setState(
@@ -136,10 +136,13 @@ export default class EditableTitleControl extends Component {
                onBlur={this.onBlur}
                onChange={this.onChange}
                onKeyDown={this.onKeyDown} />
-        <div styleName="edit"
-             onClick={this.onEditClick}>
-          edit
-        </div>
+        {
+          !this.state.editing &&
+            <div styleName="edit"
+                 onClick={this.onEditClick}>
+              edit
+            </div>
+        }
       </div>
     );
   }
