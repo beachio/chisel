@@ -52,7 +52,8 @@ export default class AlertModal extends Component {
   onConfirm = () => {
     const {onClose} = this.props;
     const {onConfirm} = this.props.params;
-    onConfirm();
+    if (this.type == ALERT_TYPE_CONFIRM)
+      onConfirm();
     onClose();
   };
 
