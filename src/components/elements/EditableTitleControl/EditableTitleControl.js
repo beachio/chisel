@@ -43,12 +43,6 @@ export default class EditableTitleControl extends Component {
     this.setState({text, width});
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setText(nextProps.text);
-    if (this.startText === undefined)
-      this.startText = nextProps.text;
-  }
-
   componentDidMount() {
     this.testTextElm = document.createElement('div');
     let style = {
@@ -67,6 +61,7 @@ export default class EditableTitleControl extends Component {
     this.minTextWidth = this.testTextElm.clientWidth * 1.1;
 
     this.setText(this.props.text);
+    this.startText = this.props.text;
 
     this.editable = !!this.props.update;
   }
@@ -86,12 +81,15 @@ export default class EditableTitleControl extends Component {
   };
 
   onBlur = () => {
-    if (!this.editable)
+    if (!this.editable || this.props.alertShowing)
       return;
-
-    this.setState({editing: false});
-    this.props.update(this.state.text);
-    this.setText(this.props.text);
+  
+    if (!this.props.required || this.state.text) {
+      this.setState({editing: false});
+      this.props.update(this.state.text, t => this.setText(t), true);
+    } else if (this.props.required) {
+      this.setText(this.startText);
+    }
   };
 
   onKeyDown = event => {
@@ -101,15 +99,15 @@ export default class EditableTitleControl extends Component {
 
     //Enter pressed
     if (event.keyCode == 13) {
-      this.setState({editing: false});
-      this.props.update(this.state.text);
-      this.setText(this.props.text);
+      if (!this.props.required || this.state.text) {
+        this.setState({editing: false});
+        this.props.update(this.state.text);
+      }
       
     //Esc pressed
     } else if (event.keyCode == 27) {
       this.setState({editing: false});
       this.setText(this.startText);
-      this.props.cancel();
     }
   };
 

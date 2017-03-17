@@ -23,6 +23,8 @@ export default class Model extends Component {
   };
   model = null;
   activeInput = null;
+  titleActive = false;
+  
 
   componentWillMount() {
     this.model = this.props.model;
@@ -30,8 +32,14 @@ export default class Model extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.alertShowing && this.activeInput)
-      this.activeInput.focus();
+    if (!nextProps.alertShowing) {
+      if (this.titleActive) {
+        this.controlTitle.onEditClick();
+        this.titleActive = false;
+      } else if (this.activeInput) {
+        this.activeInput.focus();
+      }
+    }
     this.setState({fields: nextProps.model.fields});
   }
 
@@ -97,19 +105,20 @@ export default class Model extends Component {
     });
   };
 
-  updateModelName = name => {
+  updateModelName = (name, callback, silent) => {
     if (name != this.model.name) {
       let error = checkModelName(name);
       if (!error) {
         this.model.name = name;
         this.props.updateModel(this.model);
-        this.endEdit();
       } else if (error != NAME_ERROR_OTHER) {
-        const {showAlert} = this.props;
-        showAlert(getAlertForNameError(error));
+        if (!silent) {
+          this.props.showAlert(getAlertForNameError(error));
+          this.titleActive = true;
+        } else if (callback != undefined) {
+          callback(this.model.name);
+        }
       }
-    } else {
-      this.endEdit();
     }
   };
 
@@ -117,13 +126,8 @@ export default class Model extends Component {
     if (description != this.model.description) {
       this.model.description = description;
       this.props.updateModel(this.model);
-      this.endEdit();
     }
   };
-
-  endEdit() {
-    this.activeInput = null;
-  }
 
   render() {
     const {onClose, isEditable, alertShowing} = this.props;
@@ -193,16 +197,16 @@ export default class Model extends Component {
     let titles = (
       <div>
         <EditableTitleControl text={this.model.name}
+                              ref={cmp => this.controlTitle = cmp}
                               placeholder={"Model name"}
                               alertShowing={alertShowing}
-                              update={isEditable ? this.updateModelName : null}
-                              cancel={this.endEdit} />
+                              required
+                              update={isEditable ? this.updateModelName : null} />
         <EditableTitleControl text={this.model.description}
                               placeholder={"Model description"}
                               isSmall={true}
                               alertShowing={alertShowing}
-                              update={isEditable ? this.updateModelDescription : null}
-                              cancel={this.endEdit} />
+                              update={isEditable ? this.updateModelDescription : null} />
       </div>
     );
 
