@@ -16,6 +16,8 @@ export default class AlertModal extends Component {
   state = {
     confirmString: ''
   };
+  
+  active = false;
   type = ALERT_TYPE_ALERT;
   confirmString = '';
   focusElm = null;
@@ -28,6 +30,7 @@ export default class AlertModal extends Component {
   }
   
   componentDidMount() {
+    this.active = true;
     document.onkeydown = this.onKeyPress;
   
     if (this.focusElm)
@@ -38,10 +41,11 @@ export default class AlertModal extends Component {
 
   componentWillUnmount() {
     document.onkeydown = null;
+    this.active = false;
   }
 
-  onKeyPress = event => {
-    event = event || window.event;
+  onKeyPress = () => {
+    let event = window.event;
     event.stopPropagation();
     
     //Enter or Esc pressed
@@ -58,6 +62,9 @@ export default class AlertModal extends Component {
   };
   
   onConfirm = () => {
+    if (!this.active)
+      return;
+    
     const {onClose} = this.props;
     
     if (this.type == ALERT_TYPE_CONFIRM) {
@@ -80,7 +87,7 @@ export default class AlertModal extends Component {
     let descriptionHTML = {__html: description || ''};
 
     return (
-      <div styleName="Modal" onKeyPress={this.onKeyPress}>
+      <div styleName="Modal">
         <div styleName="bg" onClick={onClose}></div>
 
         <div styleName="modal-inner">
