@@ -169,8 +169,10 @@ export default function contentReducer(state = initialState, action) {
     case FIELD_DELETE:
       let model = action.field.model;
       items = state.items;
-      for (let item of items)
-        item.model = model;
+      for (let item of items) {
+        if (item.model == model)
+          item.model = model;   //updating model: this is a setter
+      }
   
       return {
         ...state,
