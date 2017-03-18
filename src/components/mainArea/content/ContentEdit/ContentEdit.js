@@ -29,15 +29,21 @@ import * as ftps from 'models/ModelData';
 import styles from './ContentEdit.sss';
 
 
+const AUTOSAVE_TIMEOUT = 3000;
+
+  
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentEdit extends Component {
   state = {
     title: "",
     color: "rgba(0, 0, 0, 1)",
-    fields: new Map()
+    fields: new Map(),
+    fieldsErrors: new Map()
   };
   item = null;
-  fieldsErrors = new Map();
+  fieldsArchive = new Map();
+  timeout = 0;
+  
 
   componentWillMount() {
     this.setItem(this.props.item);
@@ -54,14 +60,16 @@ export default class ContentEdit extends Component {
       color:  item.color,
       fields: new Map(item.fields)
     });
+    this.fieldsArchive = new Map(item.fields);
   }
   
   saveItem() {
     if (!this.item.published || this.validate()) {
-      this.item.color = this.state.color;
       this.item.fields = this.state.fields;
       this.props.updateItem(this.item);
+      clearTimeout(this.timeout);
     }
+    this.timeout = 0;
   }
 
   updateItemTitle = title => {
@@ -84,14 +92,12 @@ export default class ContentEdit extends Component {
   };
 
   onDiscard = () => {
-    this.setState({fields: new Map(this.item.fields)});
+    this.setState({fields: new Map(this.fieldsArchive)});
   };
 
   onPublish = () => {
-    if (!this.validate()) {
-      this.forceUpdate();
+    if (!this.validate())
       return;
-    }
 
     this.item.published = true;
     this.onClose();
@@ -189,7 +195,9 @@ export default class ContentEdit extends Component {
           break;
       }
 
-      this.fieldsErrors.set(field, error);
+      let fieldErrors = this.state.fieldsErrors;
+      fieldErrors.set(field, error);
+      this.setState({fieldErrors});
       if (error)
         isValid = false;
     }
@@ -340,6 +348,8 @@ export default class ContentEdit extends Component {
   setFieldValue(field, value) {
     let fields = this.state.fields;
     this.setState({fields: fields.set(field, value)});
+    if (!this.timeout)
+      this.timeout = setTimeout(() => this.saveItem(), AUTOSAVE_TIMEOUT);
   }
   
   generateElement(field, value) {
@@ -676,7 +686,7 @@ export default class ContentEdit extends Component {
 
     }
 
-    let error = this.fieldsErrors.get(field);
+    let error = this.state.fieldsErrors.get(field);
 
     return (
       <div styleName="field" key={field.nameId}>

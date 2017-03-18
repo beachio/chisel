@@ -42,8 +42,8 @@ export class MainArea extends Component  {
       </div>
     );
     
-    if (this.mainElement)
-      this.mainElement.scrollTop = 0;
+    //if (this.mainElement)
+      //this.mainElement.scrollTop = 0;
     
     switch (nav.openedPage) {
       case PAGE_MODELS:
