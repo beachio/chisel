@@ -15,14 +15,14 @@ export default class Menu extends Component  {
     const {openedPage, openPage} = this.props;
 
     let styleModels   = "button";
-    let styleApi      = "button";
     let styleContent  = "button";
+    let styleApi      = "button";
     let styleSettings = "button";
     let styleSharing  = "button";
     switch(openedPage) {
       case PAGE_MODELS:   styleModels   += " active"; break;
-      case PAGE_API:      styleApi      += " active"; break;
       case PAGE_CONTENT:  styleContent  += " active"; break;
+      case PAGE_API:      styleApi      += " active"; break;
       case PAGE_SETTINGS: styleSettings += " active"; break;
       case PAGE_SHARING:  styleSharing  += " active"; break;
     }
