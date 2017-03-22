@@ -1,6 +1,4 @@
-import {INIT_END as INIT_END_models, SITE_ADD, SET_CURRENT_MODEL, setCurrentSite} from 'ducks/models';
-import {SET_CURRENT_ITEM} from 'ducks/content';
-import {openModel, openContentItem} from 'ducks/nav';
+import {INIT_END as INIT_END_models, SITE_ADD, setCurrentSite} from 'ducks/models';
 
 
 export const structure = store => next => action => {
@@ -11,10 +9,4 @@ export const structure = store => next => action => {
   
   if (action.type == SITE_ADD)
     next(setCurrentSite(action.site));
-  
-  if (action.type == SET_CURRENT_MODEL)
-    next(openModel());
-  
-  if (action.type == SET_CURRENT_ITEM)
-    next(openContentItem());
 };

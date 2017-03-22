@@ -11,7 +11,7 @@ import {syncHistoryWithStore} from 'react-router-redux';
 
 import App from 'containers/app';
 import configureStore from 'store/configureStore';
-import {initApp} from 'ducks/initialize';
+import {initApp} from 'utils/initialize';
 
 import APIPage from 'components/mainArea/API/APIPage';
 import Sign from 'containers/Sign/Sign';
@@ -27,7 +27,7 @@ import ContentEditContainer from 'containers/MainArea/Content/ContentEdit/Conten
 export const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
-store.dispatch(initApp());
+initApp();
 
 ReactDOM.render(
   <Provider store={store}>

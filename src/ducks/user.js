@@ -140,20 +140,17 @@ export function getLocalStorage() {
           let userData = new UserData().setOrigin();
           dispatch({
             type: LOGIN_RESPONSE,
-            localStorageReady: true,
             authorized: true,
             userData
           });
         }, () => {
           dispatch({
-            type: LOGIN_RESPONSE,
-            localStorageReady: true
+            type: LOGIN_RESPONSE
           });
         });
     } else {
       dispatch({
-        type: LOGIN_RESPONSE,
-        localStorageReady: true
+        type: LOGIN_RESPONSE
       });
     }
   };
@@ -202,10 +199,9 @@ export default function userReducer(state = initialState, action) {
         fetchingRequest: false,
         authorized: action.authorized,
         authError:  action.authError,
-        userData:   action.userData
+        userData:   action.userData,
+        localStorageReady: true
       };
-      if (action.localStorageReady)
-        result.localStorageReady = true;
       return result;
 
     case LOGOUT:
