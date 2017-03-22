@@ -55,7 +55,7 @@ class App extends React.Component {
       }
     };
     
-    return (
+    let res = (
       <div styleName="wrapper">
         {this.props.children}
         {
@@ -65,6 +65,11 @@ class App extends React.Component {
         {getModal()}
       </div>
     );
+    
+    if (!user.localStorageReady)
+      res = <SiteLoader />;
+    
+    return res;
   }
 }
 
