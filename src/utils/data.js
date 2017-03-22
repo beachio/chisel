@@ -167,12 +167,13 @@ export function getContentForSite(site) {
   return res;
 }
 
-export function getContentByModelAndId(model, id) {
-  let items = getContentForModel(model);
+export function getContentByModelAndId(modelNameId, id) {
+  let items = store.getState().content.items;
   for (let item of items) {
-    if (item.original.id == id)
+    if (item.model.nameId == modelNameId && item.origin.id == id)
       return item;
   }
+
   return null;
 }
 
