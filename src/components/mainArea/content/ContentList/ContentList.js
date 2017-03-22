@@ -44,6 +44,7 @@ export default class ContentList extends Component {
       this.setState({itemTitle: ""});
   }
 
+  //TODO криво как-то
   onChangeModel = name => {
     let model = getModelByName(name);
     this.setState({currentModel: model});

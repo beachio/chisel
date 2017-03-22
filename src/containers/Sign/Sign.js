@@ -88,10 +88,10 @@ export class Sign extends Component  {
     );
 
     return (
-        <div>
-          {contents}
-        </div>
-      );
+      <div className='container'>
+        {contents}
+      </div>
+    );
   }
 }
 

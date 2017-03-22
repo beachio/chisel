@@ -69,8 +69,8 @@ export default class ModelsList extends Component {
   };
 
   onModelClick = model => {
-    const {setCurrentModel} = this.props;
-    setCurrentModel(model);
+    const {gotoModel} = this.props;
+    gotoModel(model);
   };
   
   onRemoveClick = (event, model) => {

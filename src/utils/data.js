@@ -33,6 +33,15 @@ export function checkSiteDomain(domain, curSite) {
   return true;
 }
 
+export function getSiteByNameId(nameId) {
+  let sites = store.getState().models.sites;
+  for (let site of sites) {
+    if (site.nameId == nameId)
+      return site;
+  }
+  return null;
+}
+
 
 export const NAME_CORRECT             = 0;
 export const NAME_ERROR_NAME_EXIST    = 1;
@@ -158,6 +167,15 @@ export function getContentForSite(site) {
   return res;
 }
 
+export function getContentByModelAndId(model, id) {
+  let items = getContentForModel(model);
+  for (let item of items) {
+    if (item.original.id == id)
+      return item;
+  }
+  return null;
+}
+
 export function checkContentExistense(item) {
   let items = store.getState().content.items;
   for (let tempItem of items) {
@@ -174,6 +192,18 @@ export function getModelByName(name) {
   let models = site.models;
   for (let model of models) {
     if (model.name == name)
+      return model;
+  }
+  return null;
+}
+
+export function getModelByNameId(nameId) {
+  let site = store.getState().models.currentSite;
+  if (!site)
+    return;
+  let models = site.models;
+  for (let model of models) {
+    if (model.nameId == nameId)
       return model;
   }
   return null;

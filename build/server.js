@@ -2,6 +2,7 @@ const express = require('express');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
+const path = require('path');
 
 const config = require('./webpack.dev.config');
 
@@ -22,11 +23,10 @@ app.use(webpackHotMiddleware(compiler));
 // serve pure static assets
 app.use('/', express.static('./static'));
 
-/*
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + '../index.html');
+app.get(/.*/, function root(req, res) {
+  res.sendFile(path.join(__dirname, '../src/index.html'));
 });
-*/
+
 
 app.listen(port, error => {
   if (error)

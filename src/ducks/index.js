@@ -1,4 +1,5 @@
 import {combineReducers} from 'redux';
+import {routerReducer} from 'react-router-redux';
 
 import initialize from './initialize';
 import models from './models';
@@ -14,5 +15,6 @@ export default combineReducers({
   content,
   nav,
   user,
-  media
+  media,
+  routing: routerReducer
 });

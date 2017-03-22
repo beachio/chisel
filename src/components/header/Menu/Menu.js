@@ -1,39 +1,26 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
+import {Link} from 'react-router';
 
-import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING} from 'ducks/nav';
+import {USERSPACE_URL, SITE_URL} from 'middleware/routing';
 
-import styles from './Menu.sss';
+import styles, {activeItem} from './Menu.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
 export default class Menu extends Component  {
-  componentWillReceiveProps(nextProps) {
-  }
-
   render() {
-    const {openedPage, openPage} = this.props;
-
-    let styleModels   = "button";
-    let styleContent  = "button";
-    let styleApi      = "button";
-    let styleSettings = "button";
-    let styleSharing  = "button";
-    switch(openedPage) {
-      case PAGE_MODELS:   styleModels   += " active"; break;
-      case PAGE_CONTENT:  styleContent  += " active"; break;
-      case PAGE_API:      styleApi      += " active"; break;
-      case PAGE_SETTINGS: styleSettings += " active"; break;
-      case PAGE_SHARING:  styleSharing  += " active"; break;
-    }
+    const {siteNameId} = this.props;
+    
+    let prefix = `${USERSPACE_URL}${SITE_URL}${siteNameId}/`;
 
     return (
       <div styleName="menu">
-        <div styleName={styleModels}    onClick={() => openPage(PAGE_MODELS)}   >Models</div>
-        <div styleName={styleContent}   onClick={() => openPage(PAGE_CONTENT)}  >Content</div>
-        <div styleName={styleApi}       onClick={() => openPage(PAGE_API)}      >API</div>
-        <div styleName={styleSettings}  onClick={() => openPage(PAGE_SETTINGS)} >Settings</div>
-        <div styleName={styleSharing}   onClick={() => openPage(PAGE_SHARING)}  >Sharing</div>
+        <Link styleName="button" activeClassName={activeItem} to={prefix + 'models'}  >Models</Link>
+        <Link styleName="button" activeClassName={activeItem} to={prefix + 'content'} >Content</Link>
+        <Link styleName="button" activeClassName={activeItem} to={prefix + 'api'}     >API</Link>
+        <Link styleName="button" activeClassName={activeItem} to={prefix + 'settings'}>Settings</Link>
+        <Link styleName="button" activeClassName={activeItem} to={prefix + 'sharing'} >Sharing</Link>
       </div>
     );
   }

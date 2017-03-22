@@ -5,7 +5,6 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
 import Menu from 'components/header/Menu/Menu';
-import {openPage} from 'ducks/nav';
 import {logout} from 'ducks/user';
 
 import styles from './Header.sss';
@@ -14,17 +13,17 @@ import styles from './Header.sss';
 @CSSModules(styles, {allowMultiple: true})
 export class Header extends Component  {
   render() {
-    const {nav} = this.props;
-    const {openPage} = this.props.navActions;
+    const {models} = this.props;
     const {logout} = this.props.userActions;
 
+    let nameId = models.currentSite ? models.currentSite.nameId : null;
+    
     return (
       <div styleName="header">
-        <a href="/" styleName="logo">
+        <a href="#" styleName="logo">
           <img src={require("./logo.png")} />
         </a>
-        <Menu openedPage={nav.openedPage}
-              openPage={openPage} />
+        <Menu siteNameId={nameId} />
         <div styleName="logout" onClick={logout}>
           Log out
           <InlineSVG styleName="logout-icon" src={require("./logout.svg")} />
@@ -36,13 +35,12 @@ export class Header extends Component  {
 
 function mapStateToProps(state) {
   return {
-    nav:  state.nav
+    models: state.models
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    navActions:   bindActionCreators({openPage}, dispatch),
     userActions:  bindActionCreators({logout}, dispatch)
   };
 }

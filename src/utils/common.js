@@ -7,8 +7,6 @@ export function removeOddSpaces(str) {
 export function filterSpecials(str) {
   if (!str)
     return '';
-  if (str.match(/^\d/))
-    str = '_' + str;
   return str.replace(/\W/g, "_");
   
   /*

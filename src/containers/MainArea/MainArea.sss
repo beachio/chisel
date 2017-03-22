@@ -1,39 +1,42 @@
-.mainArea
-  flex: 1
-  overflow-x: hidden
-  overflow-y: scroll
-  height: 100%
-  display: flex
-  flex-flow: column nowrap
-  align-items: center
-  background: #f9f9f9
+.wrapper
+  overflow: hidden
+  height: 100vh
+  width: 100vw
   transform: translate3d(0, 0, 0)
-  padding: 60px 0 100px 0
-
-
-  .start-working
+  
+  &-inner
     display: flex
-    flex-flow: column nowrap
-    justify-content: center
-    align-items: center
+    flex-flow: row nowrap
     height: 100%
-    font-size: 18px
-    color: rgba(0,0,0,0.5)
-    font-weight: 100
-
-    .hammer
-      margin-right: 15px
-      margin-bottom: 15px
-      svg
-        height: 47px
-
-    .hint
-      font-size: 11px
-      margin-top: 10px
-
-  .docs
-    color: rgba(0,0,0,0.5)
-
-    &-link
-      color: #6D9EE1
-      border-bottom: 1px #6D9EE1 solid
+    
+    .mainArea
+      flex: 1
+      overflow-x: hidden
+      overflow-y: scroll
+      height: 100%
+      display: flex
+      flex-flow: column nowrap
+      align-items: center
+      background: #f9f9f9
+      transform: translate3d(0, 0, 0)
+      padding: 60px 0 100px 0
+    
+      .start-working
+        display: flex
+        flex-flow: column nowrap
+        justify-content: center
+        align-items: center
+        height: 100%
+        font-size: 18px
+        color: rgba(0,0,0,0.5)
+        font-weight: 100
+    
+        .hammer
+          margin-right: 15px
+          margin-bottom: 15px
+          svg
+            height: 47px
+    
+        .hint
+          font-size: 11px
+          margin-top: 10px

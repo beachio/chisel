@@ -30,10 +30,10 @@ export default class Sites extends Component {
     if (this.state.adding || this.state.editing)
       return;
 
+    const {gotoSite} = this.props;
+    gotoSite(site);
+    
     this.setState({currentSite: site});
-
-    const {setCurrentSite} = this.props;
-    setCurrentSite(site);
   };
 
   onClickAdd = () => {

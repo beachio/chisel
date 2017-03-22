@@ -3,11 +3,13 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
+import {push} from 'react-router-redux';
 
 import User from 'components/sidebar/User/User';
 import Sites from 'components/sidebar/Sites/Sites';
 import {showAlert} from 'ducks/nav';
-import {setCurrentSite, addSite, updateSite} from 'ducks/models';
+import {addSite, updateSite} from 'ducks/models';
+import {USERSPACE_URL, SITE_URL} from 'middleware/routing';
 
 import styles from './Sidebar.sss';
 
@@ -16,8 +18,14 @@ import styles from './Sidebar.sss';
 export class Sidebar extends Component {
   render() {
     const {models, nav, user} = this.props;
-    const {setCurrentSite, addSite, updateSite} = this.props.modelsActions;
+    const {addSite, updateSite} = this.props.modelsActions;
     const {showAlert} = this.props.navActions;
+    const {push} = this.props.routerActions;
+    
+    let gotoSite = site => {
+      let nameId = site.nameId;
+      push(`${USERSPACE_URL}${SITE_URL}${nameId}`);
+    };
 
     return (
       <div styleName="sidebar">
@@ -25,7 +33,7 @@ export class Sidebar extends Component {
           <User userData={user.userData} />
           <Sites sites={models.sites}
                  currentSite={models.currentSite}
-                 setCurrentSite={setCurrentSite}
+                 gotoSite={gotoSite}
                  addSite={addSite}
                  updateSite={updateSite}
                  showAlert={showAlert}
@@ -51,8 +59,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelsActions:  bindActionCreators({setCurrentSite, addSite, updateSite}, dispatch),
-    navActions:     bindActionCreators({showAlert}, dispatch)
+    modelsActions:  bindActionCreators({addSite, updateSite}, dispatch),
+    navActions:     bindActionCreators({showAlert}, dispatch),
+    routerActions:  bindActionCreators({push}, dispatch)
   };
 }
 

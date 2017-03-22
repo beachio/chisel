@@ -25,66 +25,44 @@ class App extends React.Component {
     const {nav, user} = this.props;
     const {closeAlert, closeModal} = this.props.navActions;
     const {addField, updateField} = this.props.modelActions;
-
-    let Page = (
-      <div>
-        <SiteLoader />
-      </div>
-    );
-
-    if (user.localStorageReady) {
-      if (user.authorized) {
-        Page = (
-          <div>
-            {
-              nav.modalShowing && nav.modalType == MODAL_TYPE_FIELD &&
-                <FieldModal params={nav.modalParams}
-                            onClose={closeModal}
-                            addField={addField}
-                            updateField={updateField} />
-            }
-            {
-              nav.modalShowing && nav.modalType == MODAL_TYPE_MEDIA &&
-                <MediaModal params={nav.modalParams}
-                            onClose={closeModal} />
-            }
-            {
-              nav.modalShowing && nav.modalType == MODAL_TYPE_REFERENCE &&
-                <ReferenceModal params={nav.modalParams}
-                                onClose={closeModal} />
-            }
-            {
-              nav.modalShowing && nav.modalType == MODAL_TYPE_WYSIWYG &&
-                <WysiwygModal params={nav.modalParams}
-                              onClose={closeModal} />
-            }
-            {
-              nav.alertShowing &&
-                <AlertModal params={nav.alertParams} onClose={closeAlert} />
-            }
-            <Header />
-            <div styleName="wrapper-inner">
-              <Sidebar />
-              <MainArea />
-            </div>
-          </div>
-        );
-      } else {
-        Page = (
-          <div className="container">
-            <Sign authError={user.authError} />
-            {
-              user.fetchingRequest &&
-                <SiteLoader />
-            }
-          </div>
-        );
+  
+    let getModal = () => {
+      if (nav.alertShowing)
+        return <AlertModal params={nav.alertParams} onClose={closeAlert}/>;
+    
+      if (!nav.modalShowing)
+        return null;
+    
+      switch (nav.modalType) {
+        case MODAL_TYPE_FIELD:
+          return <FieldModal params={nav.modalParams}
+                             onClose={closeModal}
+                             addField={addField}
+                             updateField={updateField}/>;
+      
+        case MODAL_TYPE_MEDIA:
+          return <MediaModal params={nav.modalParams}
+                             onClose={closeModal}/>;
+      
+        case MODAL_TYPE_REFERENCE:
+          return <ReferenceModal params={nav.modalParams}
+                                 onClose={closeModal}/>;
+      
+        case MODAL_TYPE_WYSIWYG:
+          return <WysiwygModal params={nav.modalParams}
+                               onClose={closeModal}/>;
+      
       }
-    }
-
+    };
+    
     return (
       <div styleName="wrapper">
-        {Page}
+        {this.props.children}
+        {
+          user.fetchingRequest &&
+            <SiteLoader />
+        }
+        {getModal()}
       </div>
     );
   }
