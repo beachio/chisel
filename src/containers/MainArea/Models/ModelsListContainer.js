@@ -5,7 +5,7 @@ import CSSModules from 'react-css-modules';
 import {push} from 'react-router-redux';
 
 import ModelsList from 'components/mainArea/models/ModelsList/ModelsList';
-import {addModel, setCurrentModel, deleteModel} from 'ducks/models';
+import {addModel, deleteModel} from 'ducks/models';
 import {showAlert} from 'ducks/nav';
 import {USERSPACE_URL, SITE_URL, MODELS_URL, MODEL_URL} from 'middleware/routing';
 
@@ -16,7 +16,7 @@ import styles from './ModelsListContainer.sss';
 export class ModelsListContainer extends Component  {
   render() {
     const {models, nav} = this.props;
-    const {addModel, setCurrentModel, deleteModel} = this.props.modelsActions;
+    const {addModel, deleteModel} = this.props.modelsActions;
     const {showAlert} = this.props.navActions;
     const {push} = this.props.routerActions;
     
@@ -47,7 +47,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelsActions:  bindActionCreators({addModel, setCurrentModel, deleteModel}, dispatch),
+    modelsActions:  bindActionCreators({addModel, deleteModel}, dispatch),
     navActions:     bindActionCreators({showAlert}, dispatch),
     routerActions:  bindActionCreators({push}, dispatch)
   };

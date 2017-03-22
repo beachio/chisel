@@ -321,8 +321,7 @@ export default class ContentEdit extends Component {
   
   onReferenceClick(newItem) {
     this.saveItem();
-    this.props.setCurrentItem(newItem);
-    this.setItem(newItem);
+    this.props.gotoItem(newItem);
   };
   
   onReferenceClear = (event, field, item) => {

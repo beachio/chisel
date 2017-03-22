@@ -3,10 +3,6 @@ import {LOGOUT} from './user';
 
 
 export const OPEN_PAGE          = 'app/nav/OPEN_PAGE';
-export const OPEN_MODEL         = 'app/nav/OPEN_MODEL';
-export const CLOSE_MODEL        = 'app/nav/CLOSE_MODEL';
-export const OPEN_CONTENT_ITEM  = 'app/nav/OPEN_CONTENT_ITEM';
-export const CLOSE_CONTENT_ITEM = 'app/nav/CLOSE_CONTENT_ITEM';
 export const SHOW_ALERT         = 'app/nav/SHOW_ALERT';
 export const CLOSE_ALERT        = 'app/nav/CLOSE_ALERT';
 export const SHOW_MODAL         = 'app/nav/SHOW_MODAL';
@@ -29,28 +25,6 @@ export function openPage(pageType) {
   return {
     type: OPEN_PAGE,
     pageType
-  };
-}
-
-export function openModel() {
-  return {
-    type: OPEN_MODEL
-  };
-}
-export function closeModel() {
-  return {
-    type: CLOSE_MODEL
-  };
-}
-
-export function openContentItem() {
-  return {
-    type: OPEN_CONTENT_ITEM
-  };
-}
-export function closeContentItem() {
-  return {
-    type: CLOSE_CONTENT_ITEM
   };
 }
 
@@ -82,10 +56,6 @@ export function closeModal() {
 
 const initialState = {
   openedPage: PAGE_MODELS,
-
-  openedModel: false,
-  
-  openedContentItem: false,
   
   alertShowing: false,
   alertParams: null,
@@ -100,31 +70,15 @@ export default function navReducer(state = initialState, action) {
     case OPEN_PAGE:
       return {
         ...state,
-        openedPage: action.pageType,
-        openedContentItem: false,
-        openedModel: false
+        openedPage: action.pageType
       };
-  
-    case OPEN_MODEL:
-      return {...state, openedModel: true};
-      
-    case CLOSE_MODEL:
-      return {...state, openedModel: false};
     
     case SET_CURRENT_SITE:
     case LOGOUT:
       return {
         ...state,
-        openedPage: PAGE_MODELS,
-        openedModel: false,
-        openedContentItem: false
+        openedPage: PAGE_MODELS
       };
-  
-    case OPEN_CONTENT_ITEM:
-      return {...state, openedContentItem: true};
-  
-    case CLOSE_CONTENT_ITEM:
-      return {...state, openedContentItem: false};
   
     case SHOW_ALERT:
       return {...state, alertShowing: true, alertParams: action.params};

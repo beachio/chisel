@@ -77,8 +77,8 @@ export default class ContentList extends Component {
   };
 
   onItemClick = item => {
-    const {setCurrentItem} = this.props;
-    setCurrentItem(item);
+    const {gotoItem} = this.props;
+    gotoItem(item);
   };
 
   onModelClick = model => {

@@ -2,12 +2,14 @@ import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
+import {push} from 'react-router-redux';
 
 import ContentList from 'components/mainArea/content/ContentList/ContentList';
 import {ROLE_OWNER, ROLE_ADMIN, ROLE_DEVELOPER} from 'models/UserData';
-import {addItem, setCurrentItem, deleteItem} from 'ducks/content';
+import {addItem, deleteItem} from 'ducks/content';
 import {showAlert} from 'ducks/nav';
 import InlineSVG from 'svg-inline-react';
+import {USERSPACE_URL, SITE_URL, CONTENT_URL, ITEM_URL} from 'middleware/routing';
 
 import styles from './ContentListContainer.sss';
 
@@ -16,8 +18,9 @@ import styles from './ContentListContainer.sss';
 export class ContentListContainer extends Component  {
   render() {
     const {models, content, nav} = this.props;
-    const {addItem, deleteItem, setCurrentItem} = this.props.contentActions;
+    const {addItem, deleteItem} = this.props.contentActions;
     const {showAlert} = this.props.navActions;
+    const {push} = this.props.routerActions;
     
     let curSite = models.currentSite;
     
@@ -29,10 +32,18 @@ export class ContentListContainer extends Component  {
           if (item.model.site == curSite)
             items.push(item);
         }
+  
+        let gotoItem = item => {
+          let siteNameId = curSite.nameId;
+          let modelNameId = item.model.nameId;
+          let itemId = item.origin.id;
+          push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${CONTENT_URL}${ITEM_URL}${modelNameId}~${itemId}`);
+        };
+        
         cmpContent = (
           <ContentList items={items}
                        models={curSite.models}
-                       setCurrentItem={setCurrentItem}
+                       gotoItem={gotoItem}
                        addItem={addItem}
                        deleteItem={deleteItem}
                        showAlert={showAlert}
@@ -70,8 +81,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    contentActions: bindActionCreators({addItem, setCurrentItem, deleteItem}, dispatch),
-    navActions:     bindActionCreators({showAlert}, dispatch)
+    contentActions: bindActionCreators({addItem, deleteItem}, dispatch),
+    navActions:     bindActionCreators({showAlert}, dispatch),
+    routerActions:  bindActionCreators({push}, dispatch)
   };
 }
 
