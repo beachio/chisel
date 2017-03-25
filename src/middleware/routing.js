@@ -1,4 +1,4 @@
-import {push, LOCATION_CHANGE} from 'react-router-redux';
+import {push, replace, LOCATION_CHANGE} from 'react-router-redux';
 
 import {store} from '../index';
 import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';
@@ -52,43 +52,58 @@ export const routing = store => next => action => {
     next(push(SIGN_URL));
   
   
-  let setFromURL = path => {
-    if (path.indexOf(USERSPACE_URL) != -1) {
+  let setFromURL = () => {
+    let path = waitingURL;
+    waitingURL = null;
     
-      let nameId = getNameId(path, SITE_URL);
-      let cSite = store.getState().models.currentSite;
-      if (nameId && (!cSite || nameId != cSite.nameId)) {
+    if (path.indexOf(USERSPACE_URL) == -1)
+      return;
+    
+    //set current site
+    let nameId = getNameId(path, SITE_URL);
+    let cSite = store.getState().models.currentSite;
+    if (nameId) {
+      if (!cSite || nameId != cSite.nameId) {
         let site = getSiteByNameId(nameId);
         if (site)
           next(setCurrentSite(site));
       }
-    
-      nameId = getNameId(path, MODEL_URL);
-      let cModel = store.getState().models.currentModel;
-      if (nameId && (!cModel || nameId != cModel.nameId)) {
-        let model = getModelByNameId(nameId);
-        if (model)
-          next(setCurrentModel(model));
+      
+    } else {
+      if (cSite) {
+        next(replace(`${USERSPACE_URL}${SITE_URL}${cSite.nameId}`));
+      } else {
+        let sites = store.getState().models.sites;
+        if (sites.length)
+          next(replace(`${USERSPACE_URL}${SITE_URL}${sites[0].nameId}`));
       }
-    
-      nameId = getNameId(path, ITEM_URL);
-      if (nameId) {
-        let modelNameId = nameId.slice(0, nameId.indexOf('~'));
-        let itemId = nameId.slice(nameId.indexOf('~') + 1);
-        if (modelNameId && itemId) {
-          let cItem = store.getState().content.currentItem;
-          //TODO — именование УРЛА происходит на основе origin.id итема. А если его нет по каким-то причинам?
-          if (!cItem || modelNameId != cItem.model.nameId || itemId != cItem.origin.id) {
-            let item = getContentByModelAndId(modelNameId, itemId);
-            if (item)
-              next(setCurrentItem(item));
-          }
-        }
-      }
-    
     }
   
-    waitingURL = null;
+    //set current model
+    nameId = getNameId(path, MODEL_URL);
+    let cModel = store.getState().models.currentModel;
+    if (nameId && (!cModel || nameId != cModel.nameId)) {
+      let model = getModelByNameId(nameId);
+      if (model)
+        next(setCurrentModel(model));
+    }
+  
+    //set current content item
+    nameId = getNameId(path, ITEM_URL);
+    if (nameId) {
+      let modelNameId = nameId.slice(0, nameId.indexOf('~'));
+      let itemId = nameId.slice(nameId.indexOf('~') + 1);
+      if (modelNameId && itemId) {
+        let cItem = store.getState().content.currentItem;
+        //TODO — именование УРЛА происходит на основе origin.id итема. А если его нет по каким-то причинам?
+        if (!cItem || modelNameId != cItem.model.nameId || itemId != cItem.origin.id) {
+          let item = getContentByModelAndId(modelNameId, itemId);
+          if (item)
+            next(setCurrentItem(item));
+        }
+      }
+    }
+    
   };
   
   
@@ -104,11 +119,11 @@ export const routing = store => next => action => {
       //next(push(USERSPACE_URL));
     
     if (initEnds)
-      setFromURL(waitingURL);
+      setFromURL();
   }
   
   if (action.type == INIT_END) {
     initEnds = true;
-    setFromURL(waitingURL);
+    setFromURL();
   }
 };

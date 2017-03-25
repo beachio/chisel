@@ -6,7 +6,7 @@ import './styles.global.sss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {Router, Route, browserHistory, IndexRedirect} from 'react-router';
+import {Router, Route, browserHistory, IndexRedirect, Redirect} from 'react-router';
 import {syncHistoryWithStore} from 'react-router-redux';
 
 import App from 'containers/app';
@@ -33,7 +33,6 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <Route path='/' component={App}>
-        <IndexRedirect to='/userspace' />
         <Route path="/sign" component={Sign} />
         <Route path="/userspace" component={MainArea} >
           <Route path="/userspace/:site/models" component={ModelsListContainer}/>
@@ -43,7 +42,10 @@ ReactDOM.render(
           <Route path="/userspace/:site/api" component={APIPage}/>
           <Route path="/userspace/:site/settings" component={SettingsContainer}/>
           <Route path="/userspace/:site/sharing" component={SharingContainer}/>
+          <Redirect from='/userspace/:site' to='/userspace/:site/models' />
         </Route>
+        <IndexRedirect to='/userspace' />
+        <Redirect from='/*' to='/userspace' />
       </Route>
     </Router>
   </Provider>,
