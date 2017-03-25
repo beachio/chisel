@@ -70,17 +70,20 @@ export default class Sites extends Component {
     if ((this.state.adding || this.state.editing) &&
         this.state.newSiteName &&
         this.state.newSiteName != this.newSite.name) {
+      
       if (checkSiteName(this.state.newSiteName, this.state.currentSite)) {
         this.newSite.name = this.state.newSiteName;
         this.newSite.domain = this.newSite.name;
-        if (this.state.adding) {
-          const {addSite} = this.props;
+        const {addSite, gotoSite, updateSite} = this.props;
+        
+        if (this.state.adding)
           addSite(this.newSite);
-        } else if (this.state.editing) {
-          const {updateSite} = this.props;
+        else if (this.state.editing)
           updateSite(this.newSite);
-        }
+        
+        gotoSite(this.newSite);
         this.endEdit();
+      
       } else {
         if (endOnSameName && !this.props.alertShowing) {
           this.endEdit();
