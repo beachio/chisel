@@ -3,10 +3,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 
-import Header from 'containers/Header/Header';
-import Sidebar from 'containers/Sidebar/Sidebar';
-import MainArea from 'containers/MainArea/MainArea';
-import Sign from 'containers/Sign/Sign';
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import FieldModal from 'components/modals/FieldModal/FieldModal';
 import MediaModal from 'components/modals/MediaModal/MediaModal';

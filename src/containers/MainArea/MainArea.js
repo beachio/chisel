@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from 'react';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 
@@ -53,9 +52,4 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainArea);
+export default connect(mapStateToProps)(MainArea);

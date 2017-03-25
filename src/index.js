@@ -36,12 +36,10 @@ ReactDOM.render(
         <IndexRedirect to='/userspace' />
         <Route path="/sign" component={Sign} />
         <Route path="/userspace" component={MainArea} >
-          <Route path="/userspace/:site/models" component={ModelsListContainer}>
-            <Route path="/userspace/:site/models/:model" component={ModelContainer}/>
-          </Route>
-          <Route path="/userspace/:site/content" component={ContentListContainer}>
-            <Route path="/userspace/:site/content/:item" component={ContentEditContainer}/>
-          </Route>
+          <Route path="/userspace/:site/models" component={ModelsListContainer}/>
+          <Route path="/userspace/:site/models/:model" component={ModelContainer}/>
+          <Route path="/userspace/:site/content" component={ContentListContainer}/>
+          <Route path="/userspace/:site/content/:item" component={ContentEditContainer}/>
           <Route path="/userspace/:site/api" component={APIPage}/>
           <Route path="/userspace/:site/settings" component={SettingsContainer}/>
           <Route path="/userspace/:site/sharing" component={SharingContainer}/>

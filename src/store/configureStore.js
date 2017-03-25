@@ -6,7 +6,6 @@ import {routerMiddleware, push} from 'react-router-redux';
 
 import rootReducer from 'ducks';
 import {initialization} from 'middleware/initialization';
-import {structure} from 'middleware/structure';
 import {routing} from 'middleware/routing';
 
 
@@ -18,7 +17,7 @@ export default function configureStore(initialState) {
   const store = createStore(
     rootReducer,
     initialState,
-    applyMiddleware(initialization, structure, routing, router, thunk, logger));
+    applyMiddleware(initialization, routing, router, thunk, logger));
 
   if (module.hot) {
     module.hot.accept('../ducks', () => {
