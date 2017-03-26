@@ -20,9 +20,9 @@ export class Header extends Component  {
     
     return (
       <div styleName="header">
-        <a href="#" styleName="logo">
+        <div styleName="logo">
           <img src={require("./logo.png")} />
-        </a>
+        </div>
         <Menu siteNameId={nameId}
               openedPage={nav.openedPage} />
         <div styleName="logout" onClick={logout}>
