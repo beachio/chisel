@@ -53,6 +53,11 @@ export default class ContentEdit extends Component {
     this.saveItem();
   }
   
+  componentWillReceiveProps(nextProps) {
+    if (this.item != nextProps.item)
+      this.setItem(nextProps.item);
+  }
+  
   setItem(item) {
     this.item = item;
     this.setState({
