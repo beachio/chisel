@@ -5,7 +5,7 @@ import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';
 import {setCurrentSite, setCurrentModel} from 'ducks/models';
 import {setCurrentItem} from 'ducks/content';
 import {getSiteByNameId, getModelByNameId, getContentByModelAndId} from 'utils/data';
-import {INIT_END} from 'ducks/content';
+import {INIT_END} from 'ducks/nav';
 
 
 export const SIGN_URL = '/sign';

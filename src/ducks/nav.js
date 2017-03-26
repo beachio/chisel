@@ -1,6 +1,9 @@
 import {LOCATION_CHANGE} from 'react-router-redux';
 
+import {LOGOUT} from 'ducks/user';
 
+
+export const INIT_END           = 'app/nav/INIT_END';
 export const SHOW_ALERT         = 'app/nav/SHOW_ALERT';
 export const CLOSE_ALERT        = 'app/nav/CLOSE_ALERT';
 export const SHOW_MODAL         = 'app/nav/SHOW_MODAL';
@@ -18,6 +21,11 @@ export const MODAL_TYPE_REFERENCE   = 'app/nav/modals/MODAL_TYPE_REFERENCE';
 export const MODAL_TYPE_WYSIWYG = 'app/nav/modals/MODAL_TYPE_WYSIWYG';
 
 
+export function initEnd() {
+  return {
+    type: INIT_END
+  }
+}
 
 export function showAlert(params) {
   return {
@@ -45,6 +53,8 @@ export function closeModal() {
 }
 
 const initialState = {
+  initEnded: false,
+  
   openedPage: PAGE_MODELS,
   
   alertShowing: false,
@@ -57,6 +67,18 @@ const initialState = {
 
 export default function navReducer(state = initialState, action) {
   switch (action.type) {
+    case INIT_END:
+      return {
+        ...state,
+        initEnded: true
+      };
+      
+    case LOGOUT:
+      return {
+        ...state,
+        initEnded: false
+      };
+    
     case LOCATION_CHANGE:
       let URL = action.payload.pathname;
       let openedPage = PAGE_MODELS;
