@@ -92,7 +92,19 @@ export function setCurrentItem(currentItem) {
 }
 
 export function deleteItem(item) {
-  item.origin.destroy();
+  //item.origin.destroy();
+  
+  Parse.Cloud.run('deleteContentItem', {
+    tableName: item.model.tableName,
+    itemId: item.origin.id,
+  }, {
+    success: status => {
+    
+    },
+    error: error => {
+      console.log(error);
+    }
+  });
   
   return {
     type: ITEM_DELETE,
