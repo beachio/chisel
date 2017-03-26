@@ -17,9 +17,7 @@ export const CONTENT_URL = '/content';
 export const ITEM_URL = '/item~';
 
 
-let hadNonAuth = false;
-let initEnds = false;
-let waitingURL = '';
+let URL = '/';
 
 
 let getNameId = (path, type) => {
@@ -38,23 +36,9 @@ let getNameId = (path, type) => {
 export const routing = store => next => action => {
   next(action);
   
-  if (action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) {
-    if (action.authorized) {
-      if (hadNonAuth)
-        next(push('/'));
-    } else {
-      next(push(SIGN_URL));
-      hadNonAuth = true;
-    }
-  }
-  
-  if (action.type == LOGOUT)
-    next(push(SIGN_URL));
-  
-  
   let setFromURL = () => {
-    let path = waitingURL;
-    waitingURL = null;
+    let path = URL;
+    URL = '/';
     
     if (path.indexOf(USERSPACE_URL) == -1)
       return;
@@ -108,22 +92,32 @@ export const routing = store => next => action => {
   
   
   if (action.type == LOCATION_CHANGE) {
-    waitingURL = action.payload.pathname;
+    URL = action.payload.pathname;
     let authorized = store.getState().user.authorized;
     let lsReady = store.getState().user.localStorageReady;
     
-    if (waitingURL.indexOf(USERSPACE_URL) != -1 && !authorized && lsReady)
+    if (URL.indexOf(USERSPACE_URL) != -1 && !authorized && lsReady)
       next(push(SIGN_URL));
   
-    //if (path.indexOf(USERSPACE_URL) == -1 && authorized)
-      //next(push(USERSPACE_URL));
+    if (URL.indexOf(USERSPACE_URL) == -1 && authorized)
+      next(push(USERSPACE_URL));
     
-    if (initEnds)
+    if (store.getState().nav.initEnded)
       setFromURL();
   }
   
-  if (action.type == INIT_END) {
-    initEnds = true;
+  if (action.type == INIT_END)
     setFromURL();
+  
+  if (action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) {
+    if (action.authorized) {
+      if (URL.indexOf(USERSPACE_URL) == -1)
+        next(push('/'));
+    } else {
+      next(push(SIGN_URL));
+    }
   }
+  
+  if (action.type == LOGOUT)
+    next(push(SIGN_URL));
 };
