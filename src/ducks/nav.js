@@ -1,8 +1,6 @@
-import {SET_CURRENT_SITE} from './models';
-import {LOGOUT} from './user';
+import {LOCATION_CHANGE} from 'react-router-redux';
 
 
-export const OPEN_PAGE          = 'app/nav/OPEN_PAGE';
 export const SHOW_ALERT         = 'app/nav/SHOW_ALERT';
 export const CLOSE_ALERT        = 'app/nav/CLOSE_ALERT';
 export const SHOW_MODAL         = 'app/nav/SHOW_MODAL';
@@ -19,14 +17,6 @@ export const MODAL_TYPE_MEDIA   = 'app/nav/modals/MODAL_TYPE_MEDIA';
 export const MODAL_TYPE_REFERENCE   = 'app/nav/modals/MODAL_TYPE_REFERENCE';
 export const MODAL_TYPE_WYSIWYG = 'app/nav/modals/MODAL_TYPE_WYSIWYG';
 
-
-
-export function openPage(pageType) {
-  return {
-    type: OPEN_PAGE,
-    pageType
-  };
-}
 
 
 export function showAlert(params) {
@@ -67,17 +57,21 @@ const initialState = {
 
 export default function navReducer(state = initialState, action) {
   switch (action.type) {
-    case OPEN_PAGE:
+    case LOCATION_CHANGE:
+      let URL = action.payload.pathname;
+      let openedPage = PAGE_MODELS;
+      if (URL.indexOf('content') != -1)
+        openedPage = PAGE_CONTENT;
+      else if (URL.indexOf('api') != -1)
+        openedPage = PAGE_API;
+      else if (URL.indexOf('settings') != -1)
+        openedPage = PAGE_SETTINGS;
+      else if (URL.indexOf('sharing') != -1)
+        openedPage = PAGE_SHARING;
+      
       return {
         ...state,
-        openedPage: action.pageType
-      };
-    
-    case SET_CURRENT_SITE:
-    case LOGOUT:
-      return {
-        ...state,
-        openedPage: PAGE_MODELS
+        openedPage
       };
   
     case SHOW_ALERT:

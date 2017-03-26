@@ -13,7 +13,7 @@ import styles from './Header.sss';
 @CSSModules(styles, {allowMultiple: true})
 export class Header extends Component  {
   render() {
-    const {models} = this.props;
+    const {models, nav} = this.props;
     const {logout} = this.props.userActions;
 
     let nameId = models.currentSite ? models.currentSite.nameId : null;
@@ -23,7 +23,8 @@ export class Header extends Component  {
         <a href="#" styleName="logo">
           <img src={require("./logo.png")} />
         </a>
-        <Menu siteNameId={nameId} />
+        <Menu siteNameId={nameId}
+              openedPage={nav.openedPage} />
         <div styleName="logout" onClick={logout}>
           Log out
           <InlineSVG styleName="logout-icon" src={require("./logout.svg")} />
@@ -35,7 +36,8 @@ export class Header extends Component  {
 
 function mapStateToProps(state) {
   return {
-    models: state.models
+    models: state.models,
+    nav:    state.nav
   };
 }
 
