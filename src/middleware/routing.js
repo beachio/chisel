@@ -34,8 +34,6 @@ let getNameId = (path, type) => {
 
 
 export const routing = store => next => action => {
-  next(action);
-  
   let setFromURL = () => {
     let path = URL;
     URL = '/';
@@ -62,40 +60,6 @@ export const routing = store => next => action => {
           next(replace(`${USERSPACE_URL}${SITE_URL}${sites[0].nameId}`));
       }
     }
-  
-    //set current model
-    nameId = getNameId(path, MODEL_URL);
-    let cModel = store.getState().models.currentModel;
-    if (nameId && (!cModel || nameId != cModel.nameId)) {
-      let model = getModelByNameId(nameId);
-      if (model)
-        next(setCurrentModel(model));
-    }
-  
-    //set current content item
-    nameId = getNameId(path, ITEM_URL);
-    if (nameId) {
-      let modelNameId = nameId.slice(0, nameId.indexOf('~'));
-      let itemId = nameId.slice(nameId.indexOf('~') + 1);
-      if (modelNameId && itemId) {
-        let cItem = store.getState().content.currentItem;
-        let isTemp = itemId.indexOf('(temp)') != -1;
-        
-        if (!cItem) {
-          let item = getContentByModelAndId(modelNameId, itemId);
-          if (item)
-            next(setCurrentItem(item));
-        } else {
-          if (modelNameId != cItem.model.nameId ||
-              isTemp ? itemId != cItem.tempId : itemId != cItem.origin.id) {
-            let item = getContentByModelAndId(modelNameId, itemId);
-            if (item)
-              next(setCurrentItem(item));
-          }
-        }
-      }
-    }
-    
   };
   
   
@@ -128,4 +92,6 @@ export const routing = store => next => action => {
   
   if (action.type == LOGOUT)
     next(push(SIGN_URL));
+  
+  next(action);
 };

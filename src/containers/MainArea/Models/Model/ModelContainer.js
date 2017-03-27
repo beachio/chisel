@@ -5,29 +5,53 @@ import CSSModules from 'react-css-modules';
 import {push} from 'react-router-redux';
 
 import Model from 'components/mainArea/models/Model/Model';
-import {updateModel, deleteField} from 'ducks/models';
+import {setCurrentModel, updateModel, deleteField} from 'ducks/models';
 import {showAlert, showModal} from 'ducks/nav';
 import {USERSPACE_URL, SITE_URL, MODELS_URL, MODEL_URL} from 'middleware/routing';
+import {getModelByNameId} from 'utils/data';
 
 import styles from './ModelContainer.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
 export class ModelContainer extends Component  {
+  //TODO Костыль!
+  model = null;
+  
+  componentWillMount() {
+    const MODEL = 'model~';
+  
+    let modelId = this.props.params.model;
+    if (modelId.indexOf(MODEL) != 0)
+      return;
+  
+    modelId = modelId.slice(MODEL.length);
+  
+    const {setCurrentModel} = this.props.modelsActions;
+    const {models} = this.props;
+    
+    this.model = models.currentModel;
+    if (!this.model || modelId != this.model.nameId) {
+      let newModel = getModelByNameId(modelId);
+      if (newModel) {
+        setCurrentModel(newModel);
+        this.model = newModel;
+      }
+    }
+  }
+  
   render() {
     const {models, nav} = this.props;
     const {updateModel, deleteField} = this.props.modelsActions;
     const {showAlert, showModal} = this.props.navActions;
     const {push} = this.props.routerActions;
   
-    let curSite = models.currentSite;
-    
     let closeModel = () => {
-      let siteNameId = curSite.nameId;
+      let siteNameId = models.currentSite.nameId;
       push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${MODELS_URL}`);
     };
     
-    return <Model model={models.currentModel}
+    return <Model model={this.model}
                   onClose={closeModel}
                   updateModel={updateModel}
                   deleteField={deleteField}
@@ -48,7 +72,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelsActions: bindActionCreators({updateModel, deleteField}, dispatch),
+    modelsActions: bindActionCreators({setCurrentModel, updateModel, deleteField}, dispatch),
     navActions: bindActionCreators({showAlert, showModal}, dispatch),
     routerActions: bindActionCreators({push}, dispatch)
   }

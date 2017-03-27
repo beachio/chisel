@@ -6,16 +6,49 @@ import {push} from 'react-router-redux';
 
 import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import {ROLE_DEVELOPER} from 'models/UserData';
-import {addItem, updateItem} from 'ducks/content';
+import {setCurrentItem, addItem, updateItem} from 'ducks/content';
 import {addMediaItem, updateMediaItem, removeMediaItem} from 'ducks/media';
 import {showModal} from 'ducks/nav';
 import {USERSPACE_URL, SITE_URL, CONTENT_URL, ITEM_URL} from 'middleware/routing';
+import {getContentByModelAndId} from 'utils/data';
 
 import styles from './ContentEditContainer.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export class ContentEditContainer extends Component  {
+export class ContentEditContainer extends Component {
+  componentWillMount() {
+    const ITEM = 'item~';
+    const {setCurrentItem} = this.props.contentActions;
+    const {content} = this.props;
+    
+    let nameId = this.props.params.item;
+    if (nameId.indexOf(ITEM) != 0)
+      return;
+  
+    nameId = nameId.slice(ITEM.length);
+    
+    let modelNameId = nameId.slice(0, nameId.indexOf('~'));
+    let itemId = nameId.slice(nameId.indexOf('~') + 1);
+    if (modelNameId && itemId) {
+      let cItem = content.currentItem;
+      let isTemp = itemId.indexOf('(temp)') != -1;
+    
+      if (!cItem) {
+        let item = getContentByModelAndId(modelNameId, itemId);
+        if (item)
+          setCurrentItem(item);
+      } else {
+        if (modelNameId != cItem.model.nameId ||
+          isTemp ? itemId != cItem.tempId : itemId != cItem.origin.id) {
+          let item = getContentByModelAndId(modelNameId, itemId);
+          if (item)
+            setCurrentItem(item);
+        }
+      }
+    }
+  }
+  
   render() {
     const {models, content} = this.props;
     const {addItem, updateItem} = this.props.contentActions;
@@ -63,7 +96,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    contentActions: bindActionCreators({addItem, updateItem}, dispatch),
+    contentActions: bindActionCreators({setCurrentItem, addItem, updateItem}, dispatch),
     mediaActions:   bindActionCreators({addMediaItem, updateMediaItem, removeMediaItem}, dispatch),
     navActions:     bindActionCreators({showModal}, dispatch),
     routerActions:  bindActionCreators({push}, dispatch)
