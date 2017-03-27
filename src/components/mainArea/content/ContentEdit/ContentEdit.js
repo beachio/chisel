@@ -317,6 +317,7 @@ export default class ContentEdit extends Component {
       refers = [];
     this.props.showModal(MODAL_TYPE_REFERENCE,
       {
+        currentItem: this.item,
         isMult,
         existingItems: refers,
         callback: items => this.setFieldValue(field, refers.concat(items))

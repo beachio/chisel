@@ -18,7 +18,7 @@ import styles from './app.sss';
 @CSSModules(styles, {allowMultiple: true})
 class App extends React.Component {
   render() {
-    const {nav, user} = this.props;
+    const {nav, user, content, models} = this.props;
     const {closeAlert, closeModal} = this.props.navActions;
     const {addField, updateField} = this.props.modelActions;
   
@@ -42,6 +42,8 @@ class App extends React.Component {
       
         case MODAL_TYPE_REFERENCE:
           return <ReferenceModal params={nav.modalParams}
+                                 currentSite={models.currentSite}
+                                 contentItems={content.items}
                                  onClose={closeModal}/>;
       
         case MODAL_TYPE_WYSIWYG:
@@ -71,8 +73,10 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    nav:  state.nav,
-    user: state.user
+    content:  state.content,
+    models:   state.models,
+    nav:      state.nav,
+    user:     state.user
   };
 }
 

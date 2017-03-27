@@ -3,7 +3,6 @@ import CSSModules from 'react-css-modules';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import InputControl from 'components/elements/InputControl/InputControl';
-import {store} from 'index';
 
 import styles from './ReferenceModal.sss';
 
@@ -15,27 +14,29 @@ export default class ReferenceModal extends Component {
     searchText: ''
   };
   
-  active = false;
   isMult = false;
-  existingItems = [];
   onClose = null;
   callback = null;
   items = [];
   focusElm = null;
+  active = false;
   
   
   componentWillMount() {
-    this.onClose = this.props.onClose;
     this.isMult = this.props.params.isMult;
-    this.existingItems = this.props.params.existingItems;
     this.callback = this.props.params.callback;
+    this.onClose = this.props.onClose;
     
-    let allItems = store.getState().content.items;
-    let curSite = store.getState().models.currentSite;
+    let currentItem = this.props.params.currentItem;
+    let existingItems = this.props.params.existingItems;
+    let allItems = this.props.contentItems;
+    let curSite = this.props.currentSite;
+    
     for (let item of allItems) {
-      if (!item.model.site || item.model.site == curSite)
-        if (this.existingItems.indexOf(item) == -1)
-          this.items.push(item);
+      if ((!item.model.site || item.model.site == curSite) &&
+          existingItems.indexOf(item) == -1 &&
+          item != currentItem)
+        this.items.push(item);
     }
   }
   
@@ -73,10 +74,11 @@ export default class ReferenceModal extends Component {
       //this.setState({searchText});
   };
   
-  searchMatch(search, target) {
-    if (!search)
+  searchMatch(target) {
+    if (!this.state.searchText)
       return true;
-    return target.toLowerCase().indexOf(search.toLowerCase()) != -1;
+    let text = this.state.searchText.toLowerCase();
+    return target.toLowerCase().indexOf(text) != -1;
   }
   
   onSelect = (item) => {
@@ -104,8 +106,6 @@ export default class ReferenceModal extends Component {
   };
 
   render() {
-    let currentItem = store.getState().content.currentItem;
-    
     return (
       <div styleName="modal">
         <div styleName="modal-inner">
@@ -120,25 +120,21 @@ export default class ReferenceModal extends Component {
 
             <div styleName="reference">
               {
-                this.items.map(item => {
-                  if (currentItem == item)
-                    return null;
-  
-                  if (!this.searchMatch(this.state.searchText, item.title))
-                    return null;
-                  
-                  let style = "reference-item";
-                  if (this.state.selectedItems.indexOf(item) != -1)
-                    style += " reference-chosen";
-                  
-                  return (
-                    <div styleName={style}
-                         key={item.origin.id}
-                         onClick={() => this.onSelect(item)}>
-                      [{item.model.name}] {item.title}
-                    </div>
-                  );
-                })
+                this.items
+                  .filter(item => this.searchMatch(item.title))
+                  .map(item => {
+                    let style = "reference-item";
+                    if (this.state.selectedItems.indexOf(item) != -1)
+                      style += " reference-chosen";
+                    
+                    return (
+                      <div styleName={style}
+                           key={item.origin.id}
+                           onClick={() => this.onSelect(item)}>
+                        [{item.model.name}] {item.title}
+                      </div>
+                    );
+                  })
               }
             </div>
 
