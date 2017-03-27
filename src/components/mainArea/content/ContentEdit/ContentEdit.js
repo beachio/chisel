@@ -650,21 +650,29 @@ export default class ContentEdit extends Component {
           let exist = checkContentExistense(item);
           let key = item.origin && item.origin.id ? item.origin.id : Math.random();
   
-          if (exist)
+          if (exist) {
+            let title = item.title ? item.title : "Untitled";
+            
+            let titleStyle = '';
+            if (!item.title)
+              titleStyle = "untitled";
+            
             return (
               <div styleName="reference-item" key={key} onClick={() => this.onReferenceClick(item)}>
-                <input type="text" value={item.title} readOnly />
+                <span styleName="reference-title">[{item.model.name}] <span styleName={titleStyle}>{title}</span></span>
                 <InlineSVG styleName="reference-cross"
                            src={require('./cross.svg')}
                            onClick={e => this.onReferenceClear(e, field, item)} />
               </div>
             );
-          else
+            
+          } else {
             return (
               <div styleName="reference-item" key={key} onClick={e => this.onReferenceClear(e, field, item)}>
                 <input type="text" value="Error: item was deleted" readOnly />
               </div>
             );
+          }
         };
         
         let addReferenceBlock = isMult => (
