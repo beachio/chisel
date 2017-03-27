@@ -21,9 +21,8 @@ import ContainerComponent from 'components/elements/ContainerComponent/Container
 import {filterSpecials, trimFileExt, checkURL} from 'utils/common';
 import {checkContentExistense} from 'utils/data';
 import {MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG, MODAL_TYPE_MODEL_CHOOSE} from 'ducks/nav';
-import {store} from 'index';
-
 import * as ftps from 'models/ModelData';
+import {MediaItemData} from 'models/MediaItemData';
 
 
 import styles from './ContentEdit.sss';
@@ -268,16 +267,16 @@ export default class ContentEdit extends Component {
     this.setFieldValue(field, date);
   }
 
-  setLastMedia(field) {
-    let mItems = store.getState().media.items;
-    let mItem = mItems[mItems.length - 1];
-    this.setFieldValue(field, mItem);
-  }
-
   onMediaChoose(field) {
     this.props.showModal(MODAL_TYPE_MEDIA, mItem => {
-      this.props.addMediaItem(mItem.file, mItem.name, mItem.type, this.item);
-      this.setLastMedia(field);
+      let item = new MediaItemData();
+      item.file = mItem.file;
+      item.name = mItem.name;
+      item.type = mItem.type;
+      item.assigned = true;
+      this.props.addMediaItem(item);
+  
+      this.setFieldValue(field, item);
     });
   }
 
@@ -286,9 +285,21 @@ export default class ContentEdit extends Component {
     let parseFile = new Parse.File(filterSpecials(file.name), file, file.type);
     parseFile.save().then(() => {
       const {addMediaItem} = this.props;
-      addMediaItem(parseFile, trimFileExt(file.name), file.type);
-      addMediaItem(parseFile, trimFileExt(file.name), file.type, this.item);
-      this.setLastMedia(field);
+      
+      let item = new MediaItemData();
+      item.file = parseFile;
+      item.name = trimFileExt(file.name);
+      item.type = file.type;
+      addMediaItem(item);
+  
+      item = new MediaItemData();
+      item.file = parseFile;
+      item.name = trimFileExt(file.name);
+      item.type = file.type;
+      item.assigned = true;
+      addMediaItem(item);
+  
+      this.setFieldValue(field, item);
     });
   }
 
