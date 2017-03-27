@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
+import {ContentItemData} from 'models/ContentData';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
@@ -70,9 +71,12 @@ export default class ContentList extends Component {
   onAddItem = event => {
     if (event)
       event.preventDefault();
-
-    const {addItem} = this.props;
-    addItem(this.state.itemTitle, this.state.currentModel);
+  
+    let item = new ContentItemData();
+    item.model = this.state.currentModel;
+    item.title = this.state.itemTitle;
+    this.props.addItem(item);
+    
     this.setState({itemTitle: ""});
   };
 
