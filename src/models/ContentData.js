@@ -12,6 +12,8 @@ export class ContentItemData {
   published = false;
   fields = new Map();
   
+  tempId = '(temp)' + Math.random().toFixed(10);
+  
   //setter
   _titleField = null;
   

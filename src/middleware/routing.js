@@ -79,11 +79,19 @@ export const routing = store => next => action => {
       let itemId = nameId.slice(nameId.indexOf('~') + 1);
       if (modelNameId && itemId) {
         let cItem = store.getState().content.currentItem;
-        //TODO — именование УРЛА происходит на основе origin.id итема. А если его нет по каким-то причинам?
-        if (!cItem || modelNameId != cItem.model.nameId || itemId != cItem.origin.id) {
+        let isTemp = itemId.indexOf('(temp)') != -1;
+        
+        if (!cItem) {
           let item = getContentByModelAndId(modelNameId, itemId);
           if (item)
             next(setCurrentItem(item));
+        } else {
+          if (modelNameId != cItem.model.nameId ||
+              isTemp ? itemId != cItem.tempId : itemId != cItem.origin.id) {
+            let item = getContentByModelAndId(modelNameId, itemId);
+            if (item)
+              next(setCurrentItem(item));
+          }
         }
       }
     }

@@ -169,8 +169,10 @@ export function getContentForSite(site) {
 
 export function getContentByModelAndId(modelNameId, id) {
   let items = store.getState().content.items;
+  let isTemp = id.indexOf('(temp)') != -1;
   for (let item of items) {
-    if (item.model.nameId == modelNameId && item.origin.id == id)
+    let sameId = isTemp ? id == item.tempId : id == item.origin.id;
+    if (item.model.nameId == modelNameId && sameId)
       return item;
   }
 

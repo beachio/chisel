@@ -31,10 +31,13 @@ export class ContentEditContainer extends Component  {
       let siteNameId = curSite.nameId;
       push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${CONTENT_URL}`);
     };
+    
     let gotoItem = item => {
       let siteNameId = curSite.nameId;
       let modelNameId = item.model.nameId;
       let itemId = item.origin.id;
+      if (!itemId || itemId == 'unknown')
+        itemId = item.tempId;
       push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${CONTENT_URL}${ITEM_URL}${modelNameId}~${itemId}`);
     };
     
