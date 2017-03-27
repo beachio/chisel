@@ -127,11 +127,15 @@ export default class ReferenceModal extends Component {
                     if (this.state.selectedItems.indexOf(item) != -1)
                       style += " reference-chosen";
                     
+                    let title = item.title;
+                    if (!title)
+                      title = <span styleName="untitled">Untitled</span>;
+                    
                     return (
                       <div styleName={style}
                            key={item.origin.id}
                            onClick={() => this.onSelect(item)}>
-                        [{item.model.name}] {item.title}
+                        [{item.model.name}] {title}
                       </div>
                     );
                   })
