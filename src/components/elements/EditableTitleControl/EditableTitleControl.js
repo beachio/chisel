@@ -65,6 +65,12 @@ export default class EditableTitleControl extends Component {
 
     this.editable = !!this.props.update;
   }
+  
+  componentWillReceiveProps(nextProps) {
+    this.setText(nextProps.text);
+    this.startText = nextProps.text;
+    this.editable = !!nextProps.update;
+  }
 
   onEditClick = () => {
     if (!this.editable || this.state.editing)
