@@ -6,7 +6,7 @@ import {push} from 'react-router-redux';
 
 import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import {ROLE_DEVELOPER} from 'models/UserData';
-import {updateItem} from 'ducks/content';
+import {addItem, updateItem} from 'ducks/content';
 import {addMediaItem, updateMediaItem, removeMediaItem} from 'ducks/media';
 import {showModal} from 'ducks/nav';
 import {USERSPACE_URL, SITE_URL, CONTENT_URL, ITEM_URL} from 'middleware/routing';
@@ -18,7 +18,7 @@ import styles from './ContentEditContainer.sss';
 export class ContentEditContainer extends Component  {
   render() {
     const {models, content} = this.props;
-    const {updateItem} = this.props.contentActions;
+    const {addItem, updateItem} = this.props.contentActions;
     const {showModal} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
     const {push} = this.props.routerActions;
@@ -44,6 +44,7 @@ export class ContentEditContainer extends Component  {
     return <ContentEdit item={content.currentItem}
                         onClose={closeItem}
                         gotoItem={gotoItem}
+                        addItem={addItem}
                         updateItem={updateItem}
                         addMediaItem={addMediaItem}
                         updateMediaItem={updateMediaItem}
@@ -62,7 +63,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    contentActions: bindActionCreators({updateItem}, dispatch),
+    contentActions: bindActionCreators({addItem, updateItem}, dispatch),
     mediaActions:   bindActionCreators({addMediaItem, updateMediaItem, removeMediaItem}, dispatch),
     navActions:     bindActionCreators({showModal}, dispatch),
     routerActions:  bindActionCreators({push}, dispatch)

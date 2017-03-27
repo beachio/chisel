@@ -21,6 +21,7 @@ import ContainerComponent from 'components/elements/ContainerComponent/Container
 import {filterSpecials, trimFileExt, checkURL} from 'utils/common';
 import {checkContentExistense} from 'utils/data';
 import {MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG, MODAL_TYPE_MODEL_CHOOSE} from 'ducks/nav';
+import {ContentItemData} from 'models/ContentData';
 import * as ftps from 'models/ModelData';
 import {MediaItemData} from 'models/MediaItemData';
 
@@ -319,13 +320,21 @@ export default class ContentEdit extends Component {
   }
 
   onReferenceNew(field) {
-    //TODO
+    this.props.showModal(MODAL_TYPE_MODEL_CHOOSE, {
+      callback: model => {
+        let item = new ContentItemData();
+        item.model = model;
+        this.props.addItem(item);
   
-    this.props.showModal(MODAL_TYPE_MODEL_CHOOSE,
-      {
-        callback: () => {}
+        let refers = this.state.fields.get(field);
+        if (!refers)
+          refers = [];
+        
+        this.setFieldValue(field, refers.concat(item));
+        this.saveItem();
+        this.props.gotoItem(item);
       }
-    );
+    });
   }
   
   onReferencesChoose(field, isMult) {
