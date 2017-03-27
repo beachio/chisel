@@ -1,0 +1,106 @@
+.modal
+  position: absolute
+  height: 100%
+  width: 100%
+  top: 0
+  left: 0
+
+  z-index: 25
+
+  background: rgba(0,0,0,0.5)
+  overflow-y: scroll
+  
+  &-header
+    border-bottom: 1px solid #E5E5E5
+    
+    padding: 4px 0
+    width: 100%
+    
+    display: flex
+    flex-flow: column nowrap
+    justify-content: center
+    align-items: center
+  
+    .title
+      font-size: 20px
+      color: #666666
+      letter-spacing: 0.83px
+      margin-top: 15px
+      margin-bottom: 15px
+
+  &-inner
+    position: absolute
+    left: 50%
+    transform: translateX(-50%)
+    background: #F9F9F9
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.10)
+    border-radius: 5px
+
+    margin: 30px 0
+
+    width: 70%
+    display: flex
+    flex-flow: column nowrap
+    align-items: center
+
+  .content
+    width: 100%
+    padding: 32px 10%
+
+  .input-wrapper
+    width: 100%
+    margin-bottom: 30px
+    position: relative
+
+  .buttons-wrapper
+    display: flex
+    flex-flow: row nowrap
+    margin-top: 80px
+    justify-content: center
+
+  .buttons-inner:first-child
+    margin-right: 10px
+
+  .error-same-name
+    color: red
+
+
+  .model
+    display: flex
+    flex-flow: column nowrap
+
+    &-item
+      position: relative
+      padding: 11px 38px
+      margin-top: 10px
+      font-size: 24px
+      color: #666666
+      letter-spacing: 0.54px
+      cursor: pointer
+
+      background: rgba(255,255,255,0.80)
+      border: 2px solid #DDDDDD
+      box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10)
+      border-radius: 10px
+
+      transition: border-color 0.2s ease
+      will-change: border-color
+
+      &:first-child
+        margin-top: 0
+
+      &:hover
+        border-color: #6D9EE1
+
+      &.model-chosen
+        border-color: #6D9EE1
+
+        &:after
+          content: ''
+          background: url('./okay.png') no-repeat center center / contain
+          height: 30px
+          width: 30px
+
+          position: absolute
+          top: 10px
+          right: 10px

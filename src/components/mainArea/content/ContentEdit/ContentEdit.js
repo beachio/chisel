@@ -20,7 +20,7 @@ import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {filterSpecials, trimFileExt, checkURL} from 'utils/common';
 import {checkContentExistense} from 'utils/data';
-import {MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG} from 'ducks/nav';
+import {MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG, MODAL_TYPE_MODEL_CHOOSE} from 'ducks/nav';
 import {store} from 'index';
 
 import * as ftps from 'models/ModelData';
@@ -309,6 +309,12 @@ export default class ContentEdit extends Component {
 
   onReferenceNew(field) {
     //TODO
+  
+    this.props.showModal(MODAL_TYPE_MODEL_CHOOSE,
+      {
+        callback: () => {}
+      }
+    );
   }
   
   onReferencesChoose(field, isMult) {

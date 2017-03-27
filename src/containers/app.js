@@ -8,8 +8,10 @@ import FieldModal from 'components/modals/FieldModal/FieldModal';
 import MediaModal from 'components/modals/MediaModal/MediaModal';
 import WysiwygModal from 'components/modals/WysiwygModal/WysiwygModal';
 import ReferenceModal from 'components/modals/ReferenceModal/ReferenceModal';
+import ModelChooseModal from 'components/modals/ModelChooseModal/ModelChooseModal';
 import AlertModal from 'components/modals/AlertModal/AlertModal';
-import {closeAlert, closeModal, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG} from 'ducks/nav';
+import {closeAlert, closeModal, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG,
+  MODAL_TYPE_MODEL_CHOOSE} from 'ducks/nav';
 import {addField, updateField} from 'ducks/models';
 
 import styles from './app.sss';
@@ -49,6 +51,11 @@ class App extends React.Component {
         case MODAL_TYPE_WYSIWYG:
           return <WysiwygModal params={nav.modalParams}
                                onClose={closeModal}/>;
+  
+        case MODAL_TYPE_MODEL_CHOOSE:
+          return <ModelChooseModal params={nav.modalParams}
+                                   models={models.currentSite.models}
+                                   onClose={closeModal}/>;
       
       }
     };
