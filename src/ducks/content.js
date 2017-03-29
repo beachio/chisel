@@ -54,16 +54,20 @@ export function init() {
   };
 }
 
+//we need wait for server to get item id
 export function addItem(item) {
-  item.color = getRandomColor();
+  return dispatch => {
+    item.color = getRandomColor();
   
-  item.updateOrigin();
-  item.origin.save();
-  
-  return {
-    type: ITEM_ADD,
-    item
-  };
+    item.updateOrigin();
+    item.origin.save()
+      .then(() => {
+        dispatch({
+          type: ITEM_ADD,
+          item
+        });
+      });
+  }
 }
 
 export function updateItem(item) {

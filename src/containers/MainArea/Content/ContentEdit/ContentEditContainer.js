@@ -18,11 +18,19 @@ import styles from './ContentEditContainer.sss';
 @CSSModules(styles, {allowMultiple: true})
 export class ContentEditContainer extends Component {
   componentWillMount() {
+    this.setItem(this.props.params.item);
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.params.item != this.props.params.item)
+      this.setItem(nextProps.params.item);
+  }
+  
+  setItem(nameId) {
     const ITEM = 'item~';
     const {setCurrentItem} = this.props.contentActions;
     const {content} = this.props;
-    
-    let nameId = this.props.params.item;
+  
     if (nameId.indexOf(ITEM) != 0)
       return;
   
@@ -32,19 +40,10 @@ export class ContentEditContainer extends Component {
     let itemId = nameId.slice(nameId.indexOf('~') + 1);
     if (modelNameId && itemId) {
       let cItem = content.currentItem;
-      let isTemp = itemId.indexOf('(temp)') != -1;
-    
-      if (!cItem) {
+      if (!cItem || modelNameId != cItem.model.nameId || itemId != cItem.origin.id) {
         let item = getContentByModelAndId(modelNameId, itemId);
         if (item)
           setCurrentItem(item);
-      } else {
-        if (modelNameId != cItem.model.nameId ||
-          isTemp ? itemId != cItem.tempId : itemId != cItem.origin.id) {
-          let item = getContentByModelAndId(modelNameId, itemId);
-          if (item)
-            setCurrentItem(item);
-        }
       }
     }
   }
@@ -69,10 +68,10 @@ export class ContentEditContainer extends Component {
       let siteNameId = curSite.nameId;
       let modelNameId = item.model.nameId;
       let itemId = item.origin.id;
-      if (!itemId || itemId == 'unknown')
-        itemId = item.tempId;
       push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${CONTENT_URL}${ITEM_URL}${modelNameId}~${itemId}`);
     };
+  
+    let lastItem = content.items[content.items.length - 1];
     
     return <ContentEdit item={content.currentItem}
                         onClose={closeItem}
@@ -82,6 +81,7 @@ export class ContentEditContainer extends Component {
                         addMediaItem={addMediaItem}
                         updateMediaItem={updateMediaItem}
                         removeMediaItem={removeMediaItem}
+                        lastItem={lastItem}
                         showModal={showModal}
                         isEditable={models.role != ROLE_DEVELOPER}/>;
   }

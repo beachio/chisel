@@ -43,6 +43,7 @@ export default class ContentEdit extends Component {
   item = null;
   fieldsArchive = new Map();
   timeout = 0;
+  addingItem = null;
   
 
   componentWillMount() {
@@ -56,6 +57,7 @@ export default class ContentEdit extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.item != nextProps.item)
       this.setItem(nextProps.item);
+    this.checkAddingItem(nextProps.lastItem);
   }
   
   setItem(item) {
@@ -322,19 +324,25 @@ export default class ContentEdit extends Component {
   onReferenceNew(field) {
     this.props.showModal(MODAL_TYPE_MODEL_CHOOSE, {
       callback: model => {
-        let item = new ContentItemData();
-        item.model = model;
-        this.props.addItem(item);
+        this.addingItem = new ContentItemData();
+        this.addingItem.model = model;
+        this.props.addItem(this.addingItem);
   
         let refers = this.state.fields.get(field);
         if (!refers)
           refers = [];
         
-        this.setFieldValue(field, refers.concat(item));
+        this.setFieldValue(field, refers.concat(this.addingItem));
         this.saveItem();
-        this.props.gotoItem(item);
       }
     });
+  }
+  
+  checkAddingItem(lastItem) {
+    if (this.addingItem && lastItem == this.addingItem) {
+      this.props.gotoItem(this.addingItem);
+      this.addingItem = null;
+    }
   }
   
   onReferencesChoose(field, isMult) {
