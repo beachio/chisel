@@ -26,16 +26,14 @@ function requestContentItems(model, items) {
           items.push(item);
         }
         resolve();
-      }, reject);
+      }, resolve);
   });
 }
 
 export function init() {
   return dispatch => {
-    let items = [];
-    
     let sites = store.getState().models.sites;
-    
+    let items = [];
     let promises = [];
     
     for (let site of sites) {
