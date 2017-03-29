@@ -7,6 +7,7 @@ import DropdownControl from 'components/elements/DropdownControl/DropdownControl
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
 import {getModelByName} from 'utils/data';
+import {getRelativeTime} from 'utils/common';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
 
 import styles from './ContentList.sss';
@@ -184,8 +185,7 @@ export default class ContentList extends Component {
                     let updatedDate = item.origin.updatedAt;
                     if (!updatedDate)
                       updatedDate = new Date();
-                    let updatedStr = updatedDate.toLocaleString("en-US",
-                      {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
+                    let updatedStr = getRelativeTime(updatedDate);
   
                     let colorStyle = {background: item.color};
                     let key = item.origin && item.origin.id ? item.origin.id : Math.random();

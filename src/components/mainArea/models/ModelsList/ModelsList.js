@@ -3,6 +3,7 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
 import {checkModelName, getAlertForNameError, getContentForModel} from 'utils/data';
+import {getRelativeTime} from 'utils/common';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
 import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
@@ -118,8 +119,7 @@ export default class ModelsList extends Component {
                 let updatedDate = model.origin.updatedAt;
                 if (!updatedDate)
                   updatedDate = new Date();
-                let updatedStr = updatedDate.toLocaleString("en-US",
-                  {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
+                let updatedStr = getRelativeTime(updatedDate);
 
                 let colorStyle = {background: model.color};
                 let key = model.origin && model.origin.id ? model.origin.id : Math.random();

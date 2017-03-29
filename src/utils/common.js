@@ -35,3 +35,50 @@ export function checkURL(str) {
     '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
   return pattern.test(str);
 }
+
+export function getRelativeTime(date) {
+  let now = new Date();
+  
+  const SECOND = 1000;
+  const MINUTE = 60 * SECOND;
+  const HOUR = 60 * MINUTE;
+  
+  let diff = now - date;
+  
+  let locale = navigator.language || navigator.userLanguage;
+  let time = date.toLocaleString(locale, {hour: 'numeric', minute: 'numeric'});
+  let fullDate = date.toLocaleString(locale,
+    {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
+  
+  if (diff < MINUTE) {
+    if (diff < 10 * SECOND)
+      return 'A few seconds ago';
+    else
+      return 'Less a minute ago';
+    
+  } else if (diff < HOUR) {
+    let minutes = Math.floor(diff / MINUTE);
+    if (minutes == 1)
+      return `${minutes} minute ago`;
+    else
+      return `${minutes} minutes ago`;
+  
+  // today
+  } else if (now.getDate() == date.getDate() &&
+            now.getMonth() == date.getMonth() &&
+            now.getFullYear() == date.getFullYear()) {
+    return `Today, at ${time}`;
+  
+  } else {
+    let tomorrow = new Date(date);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+  
+    // yesterday
+    if (now.getDate() == tomorrow.getDate() &&
+        now.getMonth() == tomorrow.getMonth() &&
+        now.getFullYear() == tomorrow.getFullYear())
+      return `Yesterday, at ${time}`;
+  }
+  
+  return fullDate;
+}
