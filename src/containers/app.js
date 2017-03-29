@@ -35,6 +35,7 @@ class App extends React.Component {
         case MODAL_TYPE_FIELD:
           return <FieldModal params={nav.modalParams}
                              onClose={closeModal}
+                             fields={models.currentModel.fields}
                              addField={addField}
                              updateField={updateField}/>;
       

@@ -2,35 +2,67 @@ import {Parse} from 'parse';
 
 import {store} from '../index';
 import {UserData} from 'models/UserData';
-import {removeOddSpaces, filterSpecials} from 'utils/common';
+import {removeOddSpaces, filterSpecials, checkURL} from 'utils/common';
 import {FIELD_NAMES_RESERVED} from 'models/ModelData';
 
 
+export function getNameId(name, objects, curObj) {
+  if (!name)
+    return null;
+  
+  let nameId = filterSpecials(name);
+  
+  let getNameIdInc = (inc = 0) => {
+    let newNameId = inc ? `${nameId}_${inc}` : nameId;
+    for (let obj of objects) {
+      if (obj != curObj && obj.nameId == newNameId)
+        return getNameIdInc(++inc);
+    }
+    return newNameId;
+  };
+  
+  return getNameIdInc();
+}
+
+export const NAME_CORRECT             = 0;
+export const NAME_ERROR_NAME_EXIST    = 1;
+export const NAME_ERROR_NAME_RESERVED = 2;
+export const NAME_ERROR_OTHER         = 3;
+
 export function checkSiteName(name, curSite) {
   if (!name)
-    return false;
+    return NAME_ERROR_OTHER;
   
   name = removeOddSpaces(name);
   
   let sites = store.getState().models.sites;
   for (let site of sites) {
     if (site != curSite && site.name == name)
-      return false;
+      return NAME_ERROR_NAME_EXIST;
   }
   
-  return true;
+  return NAME_CORRECT;
 }
+
+export const DOMAIN_CORRECT       = 0;
+export const DOMAIN_ERROR_EXIST   = 1;
+export const DOMAIN_ERROR_SYNTAX  = 2;
+export const DOMAIN_ERROR_OTHER   = 3;
 
 export function checkSiteDomain(domain, curSite) {
   if (!domain)
-    return false;
+    return DOMAIN_ERROR_OTHER;
+  
+  if (!checkURL(domain))
+    return DOMAIN_ERROR_SYNTAX;
   
   let sites = store.getState().models.sites;
   for (let site of sites) {
     if (site != curSite && site.domain == domain)
-      return false;
+      return DOMAIN_ERROR_EXIST;
   }
-  return true;
+  
+  return DOMAIN_CORRECT;
 }
 
 export function getSiteByNameId(nameId) {
@@ -43,21 +75,15 @@ export function getSiteByNameId(nameId) {
 }
 
 
-export const NAME_CORRECT             = 0;
-export const NAME_ERROR_NAME_EXIST    = 1;
-export const NAME_ERROR_NAME_RESERVED = 2;
-export const NAME_ERROR_OTHER         = 3;
-
-export function checkModelName(name) {
+export function checkModelName(name, curModel) {
   if (!name || !store.getState().models.currentSite)
     return NAME_ERROR_OTHER;
 
   name = removeOddSpaces(name);
-  let nameId = filterSpecials(name);
   
   let models = store.getState().models.currentSite.models;
   for (let model of models) {
-    if (model.name == name || model.nameId == nameId)
+    if (model != curModel && model.name == name)
       return NAME_ERROR_NAME_EXIST;
   }
   
@@ -80,7 +106,7 @@ export function checkFieldName(name) {
   //name already exists
   let fields = store.getState().models.currentModel.fields;
   for (let field of fields) {
-    if (field.name == name || field.nameId == nameId)
+    if (field.name == name)
       return NAME_ERROR_NAME_EXIST;
   }
   

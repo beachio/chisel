@@ -7,13 +7,8 @@ export function removeOddSpaces(str) {
 export function filterSpecials(str) {
   if (!str)
     return '';
+  str = removeOddSpaces(str);
   return str.replace(/\W/g, "_");
-  
-  /*
-  return str.replace(/\W+(.)/g, (match, chr) => {
-    return chr.toUpperCase();
-  });
-  */
 }
 
 export function getRandomColor() {

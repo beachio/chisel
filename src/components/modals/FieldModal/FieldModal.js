@@ -1,13 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
-import InlineSVG from 'svg-inline-react';
 
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import InputControl from 'components/elements/InputControl/InputControl';
-import {removeOddSpaces, filterSpecials} from 'utils/common';
-import {checkFieldName, NAME_ERROR_NAME_EXIST, NAME_ERROR_NAME_RESERVED} from 'utils/data';
+import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST, NAME_ERROR_NAME_RESERVED} from 'utils/data';
 import {FIELD_TYPES, FIELD_TYPE_SHORT_TEXT, FIELD_APPEARANCE__SHORT_TEXT__SINGLE} from 'models/ModelData';
 
 import styles from './FieldModal.sss';
@@ -33,7 +31,6 @@ export default class FieldModal extends Component {
   field = null;
   updating = false;
   onClose = null;
-  focusBtn = null;
 
 
   componentWillMount() {
@@ -78,7 +75,9 @@ export default class FieldModal extends Component {
 
   onChangeName = event => {
     let name = event.target.value;
-    let nameId = filterSpecials(removeOddSpaces(name));
+    let nameId = this.state.nameId;
+    if (!this.updating)
+      nameId = getNameId(name, this.props.fields);
 
     this.setState({name, nameId, error: null});
   };
@@ -117,7 +116,6 @@ export default class FieldModal extends Component {
     }
 
     this.field.name       = this.state.name;
-    this.field.nameId     = this.state.nameId;
     this.field.type       = this.state.type;
     this.field.appearance = this.state.appearance;
     this.field.isTitle    = this.state.isTitle;

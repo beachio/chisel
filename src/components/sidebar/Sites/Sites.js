@@ -71,9 +71,8 @@ export default class Sites extends Component {
         this.state.newSiteName &&
         this.state.newSiteName != this.newSite.name) {
       
-      if (checkSiteName(this.state.newSiteName, this.state.currentSite)) {
+      if (!checkSiteName(this.state.newSiteName, this.state.currentSite)) {
         this.newSite.name = this.state.newSiteName;
-        this.newSite.domain = this.newSite.name;
         const {addSite, gotoSite, updateSite} = this.props;
         
         if (this.state.adding)

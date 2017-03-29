@@ -4,15 +4,14 @@ import CSSModules from 'react-css-modules';
 import InputControl from 'components/elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
-import {checkURL} from 'utils/common';
-import {checkSiteName, checkSiteDomain} from 'utils/data';
+import {checkSiteName, checkSiteDomain, DOMAIN_ERROR_EXIST, DOMAIN_ERROR_SYNTAX} from 'utils/data';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
 
 
 import styles from './Settings.sss';
 
 const ERROR_BLANK_NAME = "The name is required!";
-const ERROR_WRONG_URL  = "The domain URL is wrong!";
+const ERROR_URL_SYNTAX  = "The domain URL is wrong!";
 const ERROR_NAME_EXIST = "This name is already exists";
 const ERROR_URL_EXIST  = "This domain URL is already exists";
 
@@ -64,18 +63,17 @@ export default class Settings extends Component {
       return false;
     }
     
-    if (!checkURL(this.state.domain)) {
-      this.setState({error: ERROR_WRONG_URL});
+    let domainStatus = checkSiteDomain(this.state.domain);
+    if (domainStatus == DOMAIN_ERROR_SYNTAX) {
+      this.setState({error: ERROR_URL_SYNTAX});
       return false;
-    }
-    
-    if (!checkSiteName(this.state.name, this.site)) {
-      this.setState({error: ERROR_NAME_EXIST});
-      return false;
-    }
-    
-    if (!checkSiteDomain(this.state.domain, this.site)) {
+    } else if (domainStatus == DOMAIN_ERROR_EXIST) {
       this.setState({error: ERROR_URL_EXIST});
+      return false;
+    }
+    
+    if (checkSiteName(this.state.name, this.site)) {
+      this.setState({error: ERROR_NAME_EXIST});
       return false;
     }
     

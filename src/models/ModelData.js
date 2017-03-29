@@ -24,7 +24,6 @@ export class SiteData {
   get name() {return this._name;}
   set name(name) {
     this._name = removeOddSpaces(name);
-    this.nameId = this._name;
   }
 
   get nameId() {return this._nameId;}
@@ -78,7 +77,6 @@ export class ModelData {
   get name() {return this._name;}
   set name(name) {
     this._name = removeOddSpaces(name);
-    this.nameId = this._name;
   }
 
   get nameId() {return this._nameId;}
@@ -244,7 +242,6 @@ export class ModelFieldData {
   get name() {return this._name;}
   set name(name) {
     this._name = removeOddSpaces(name);
-    this.nameId = this._name;
   }
 
   get nameId() {return this._nameId;}

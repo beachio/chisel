@@ -4,6 +4,7 @@ import {store} from '../index';
 import {UserData, CollaborationData, ROLE_ADMIN, ROLE_DEVELOPER, ROLE_EDITOR, ROLE_OWNER} from 'models/UserData';
 import {SiteData, ModelData, ModelFieldData, canBeTitle} from 'models/ModelData';
 import {getRandomColor} from 'utils/common';
+import {getNameId} from 'utils/data';
 import {LOGOUT} from './user';
 import {deleteItem} from './content'
 
@@ -216,6 +217,7 @@ export function setCurrentSite(currentSite) {
 
 export function addSite(site) {
   site.owner = store.getState().user.userData;
+  site.nameId = getNameId(site.name, store.getState().models.sites);
   site.updateOrigin();
   
   site.origin.setACL(new Parse.ACL(Parse.User.current()));
@@ -324,11 +326,12 @@ export function deleteSelfCollaboration(collab) {
 
 
 export function addModel(name) {
+  let currentSite = store.getState().models.currentSite;
+  
   let model = new ModelData();
   model.name = name;
+  model.nameId = getNameId(name, currentSite.models);
   model.color = getRandomColor();
-  
-  let currentSite = store.getState().models.currentSite;
   model.site = currentSite;
   model.setTableName();
   
@@ -388,10 +391,10 @@ function changeTitleField(field, value = true) {
 }
 
 export function addField(field) {
-  field.color = getRandomColor();
-  
   let currentModel = store.getState().models.currentModel;
+  field.color = getRandomColor();
   field.model = currentModel;
+  field.nameId = getNameId(field.name, currentModel.fields);
   
   field.updateOrigin();
   field.origin.save();

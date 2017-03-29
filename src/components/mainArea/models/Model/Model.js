@@ -6,7 +6,7 @@ import JSONView from '../../../elements/JSONView/JSONView';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
 import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
-import {checkModelName, checkFieldName, getAlertForNameError, modelToJSON, NAME_ERROR_OTHER} from 'utils/data';
+import {getNameId, checkModelName, checkFieldName, getAlertForNameError, modelToJSON, NAME_ERROR_OTHER} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
 import {ModelFieldData} from 'models/ModelData';
@@ -76,6 +76,7 @@ export default class Model extends Component {
   
     let field = new ModelFieldData();
     field.name = this.state.fieldName;
+    field.nameId = getNameId(field.name, this.model.fields);
     this.props.showModal(MODAL_TYPE_FIELD, field);
 
     this.setState({fieldName: ""});
