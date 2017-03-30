@@ -128,6 +128,14 @@ export default class Settings extends Component {
                             onChange={this.onChangeDomain} />
             </div>
           </div>
+          <div styleName="field">
+            <div styleName="field-title">Site ID</div>
+            <div styleName="input-wrapper">
+              <InputControl type="big"
+                            value={this.site.origin.id}
+                            readOnly={true} />
+            </div>
+          </div>
           {
             isEditable &&
               <div styleName="buttons-wrapper">

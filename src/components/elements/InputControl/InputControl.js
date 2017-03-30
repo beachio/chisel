@@ -1,8 +1,10 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
+
+import IconsComponent from 'components/elements/IconsComponent/IconsComponent';
+
 import styles from './InputControl.sss';
 
-import IconsComponent from '../IconsComponent/IconsComponent';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class InputControl extends Component {
