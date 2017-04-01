@@ -2,9 +2,9 @@ import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
+import {Helmet} from "react-helmet";
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
-
 import {loginOrRegister, ERROR_WRONG_PASS} from 'ducks/user';
 
 import styles from './Sign.sss';
@@ -70,7 +70,7 @@ export class Sign extends Component  {
           <div styleName="button">
             <ButtonControl color="green"
                            type="submit"
-                           value="Enter" />
+                           value="Sign in / Sign up" />
           </div>
         </form>
 
@@ -89,6 +89,9 @@ export class Sign extends Component  {
 
     return (
       <div className='container'>
+        <Helmet>
+          <title>Sign in / Sign up - Chisel</title>
+        </Helmet>
         {contents}
       </div>
     );

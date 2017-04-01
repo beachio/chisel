@@ -21,10 +21,12 @@ export class MainArea extends Component  {
     let title = "Userspace - Chisel";
     
     let cmpNoSites = (
-      <div className="start-working">
-        <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
-        Add new site to start working
-        <div className="hint">Find "Add new site" button at sidebar</div>
+      <div className="mainArea">
+        <div className="start-working">
+          <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
+          Add new site to start working
+          <div className="hint">Find "Add new site" button at sidebar</div>
+        </div>
       </div>
     );
   
