@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
+import {Helmet} from "react-helmet";
 
 import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import {ROLE_DEVELOPER} from 'models/UserData';
@@ -67,8 +68,14 @@ export class ContentEditContainer extends Component {
   
     let lastItem = content.items[content.items.length - 1];
     
+    let itemTitle = curItem.title ? curItem.title : 'Untitled';
+    let title = `Item:${itemTitle} - Site: ${curSite.name} - Chisel`;
+    
     return (
       <div className="mainArea">
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
         <ContentEdit item={curItem}
                      onClose={closeItem}
                      gotoItem={gotoItem}

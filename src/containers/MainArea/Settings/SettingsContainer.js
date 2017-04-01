@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {Helmet} from "react-helmet";
 
 import Settings from 'components/mainArea/settings/Settings';
 import {ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';
@@ -17,8 +18,14 @@ export class SettingsContainer extends Component  {
     let curSite = models.currentSite;
     if (!curSite)
       return null;
+    
+    let title = `Settings - Site: ${curSite.name} - Chisel`;
+    
     return (
       <div className="mainArea">
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
         <Settings site={curSite}
                   updateSite={updateSite}
                   deleteSite={deleteSite}

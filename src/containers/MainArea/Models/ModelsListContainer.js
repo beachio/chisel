@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
+import {Helmet} from "react-helmet";
 
 import ModelsList from 'components/mainArea/models/ModelsList/ModelsList';
 import {addModel, deleteModel} from 'ducks/models';
@@ -19,11 +20,16 @@ export class ModelsListContainer extends Component  {
     if (!curSite)
       return null;
     
+    let title = `Models - Site: ${curSite.name} - Chisel`;
+    
     let gotoModel = model => browserHistory.push(
       `${USERSPACE_URL}${SITE_URL}${curSite.nameId}${MODELS_URL}${MODEL_URL}${model.nameId}`);
     
     return (
       <div className="mainArea">
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
         <ModelsList models={curSite.models}
                     gotoModel={gotoModel}
                     addModel={addModel}

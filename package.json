@@ -72,6 +72,7 @@
     "react-dom": "^15.2.0",
     "react-flatpickr": "^1.1.0",
     "react-gravatar": "^2.4.5",
+    "react-helmet": "^5.0.2",
     "react-medium-editor": "^1.8.1",
     "react-redux": "=5.0.2",
     "react-router": "^3.0.0",

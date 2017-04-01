@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {Helmet} from "react-helmet";
 
 import Sharing from 'components/mainArea/sharing/Sharing';
 import {ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';
@@ -18,8 +19,13 @@ export class SharingContainer extends Component  {
     if (!curSite)
       return null;
     
+    let title = `Sharing - Site: ${curSite.name} - Chisel`;
+    
     return (
       <div className="mainArea">
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
         <Sharing collaborations={curSite.collaborations}
                  owner={curSite.owner}
                  user={user.userData}

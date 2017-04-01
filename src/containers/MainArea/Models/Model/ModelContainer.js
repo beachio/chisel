@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
+import {Helmet} from "react-helmet";
 
 import Model from 'components/mainArea/models/Model/Model';
 import {setCurrentModel, updateModel, deleteField} from 'ducks/models';
@@ -45,11 +46,16 @@ export class ModelContainer extends Component  {
     if (!curSite)
       return null;
     
+    let title = `Model: ${this.model.name} - Site: ${curSite.name} - Chisel`;
+    
     let closeModel = () => browserHistory.push(
       `${USERSPACE_URL}${SITE_URL}${curSite.nameId}${MODELS_URL}`);
     
     return (
       <div className="mainArea">
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
         <Model model={this.model}
                onClose={closeModel}
                updateModel={updateModel}

@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
+import {Helmet} from "react-helmet";
 
 import ContentList from 'components/mainArea/content/ContentList/ContentList';
 import {ROLE_OWNER, ROLE_ADMIN, ROLE_DEVELOPER} from 'models/UserData';
@@ -27,6 +28,8 @@ export class ContentListContainer extends Component  {
     let curSite = models.currentSite;
     if (!curSite)
       return null;
+    
+    let title = `Content - Site: ${curSite.name} - Chisel`;
     
     if (curSite.models.length) {
       let items = [];
@@ -62,6 +65,9 @@ export class ContentListContainer extends Component  {
     
     return (
       <div className="mainArea">
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
         {cmpContent}
       </div>
     );

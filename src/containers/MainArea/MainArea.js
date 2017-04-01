@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
+import {Helmet} from "react-helmet";
 
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import Header from 'containers/Header/Header';
@@ -17,6 +18,8 @@ export class MainArea extends Component  {
   render() {
     const {models, nav} = this.props;
 
+    let title = "Userspace - Chisel";
+    
     let cmpNoSites = (
       <div className="start-working">
         <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
@@ -40,7 +43,9 @@ export class MainArea extends Component  {
       let role = models.role;
       
       if (curSite) {
+        title = `Site: ${curSite.name} - Chisel`;
         area = cmpNoRights;
+        
         switch (nav.openedPage) {
           case PAGE_API:
             if (role == ROLE_OWNER || role == ROLE_ADMIN || role == ROLE_DEVELOPER)
@@ -65,6 +70,9 @@ export class MainArea extends Component  {
     
     return (
       <div>
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
         <Header />
         <div styleName="wrapper-inner">
           <Sidebar />
