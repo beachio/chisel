@@ -69,9 +69,6 @@ export const routing = store => next => action => {
     if (URL.indexOf(USERSPACE_URL) != -1 && !authorized && lsReady)
       browserHistory.push(SIGN_URL);
   
-    if (URL.indexOf(USERSPACE_URL) == -1 && authorized)
-      browserHistory.push(USERSPACE_URL);
-    
     if (store.getState().nav.initEnded)
       setFromURL();
   }
