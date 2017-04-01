@@ -82,7 +82,7 @@ export const routing = store => next => action => {
   if (action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) {
     if (action.authorized) {
       if (URL.indexOf(USERSPACE_URL) == -1)
-        browserHistory.replace('/');
+        browserHistory.replace(USERSPACE_URL);
     } else {
       browserHistory.push(SIGN_URL);
     }
