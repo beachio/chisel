@@ -33,6 +33,9 @@ let getNameId = (path, type) => {
 
 
 export const routing = store => next => action => {
+  next(action);
+  
+  
   let setFromURL = () => {
     let path = URL;
     URL = '/';
@@ -87,7 +90,4 @@ export const routing = store => next => action => {
   
   if (action.type == LOGOUT)
     browserHistory.push(SIGN_URL);
-  
-  
-  next(action);
 };
