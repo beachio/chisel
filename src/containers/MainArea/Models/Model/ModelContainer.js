@@ -44,12 +44,14 @@ export class ModelContainer extends Component  {
     const {models, nav} = this.props;
     const {updateModel, deleteField} = this.props.modelsActions;
     const {showAlert, showModal} = this.props.navActions;
-  
-    let closeModel = () => {
-      let siteNameId = models.currentSite.nameId;
-      browserHistory.push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${MODELS_URL}`);
-    };
     
+    let curSite = models.currentSite;
+    if (!curSite)
+      return null;
+    
+    let closeModel = () => browserHistory.push(
+      `${USERSPACE_URL}${SITE_URL}${curSite.nameId}${MODELS_URL}`);
+  
     return <Model model={this.model}
                   onClose={closeModel}
                   updateModel={updateModel}

@@ -34,16 +34,19 @@ export class MainArea extends Component  {
     
     let area = <SiteLoader/>;
     if (nav.initEnded) {
-      if (models.currentSite) {
+      let curSite = models.currentSite;
+      let role = models.role;
+      
+      if (curSite) {
         area = cmpNoRights;
         switch (nav.openedPage) {
           case PAGE_API:
-            if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN || models.role == ROLE_DEVELOPER)
+            if (role == ROLE_OWNER || role == ROLE_ADMIN || role == ROLE_DEVELOPER)
               area = this.props.children;
             break;
             
           case PAGE_MODELS:
-            if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN)
+            if (role == ROLE_OWNER || role == ROLE_ADMIN)
               area = this.props.children;
             break;
   
@@ -52,6 +55,7 @@ export class MainArea extends Component  {
           case PAGE_CONTENT:
             area = this.props.children;
         }
+        
       } else {
         area = cmpNoSites;
       }

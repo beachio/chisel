@@ -55,19 +55,18 @@ export class ContentEditContainer extends Component {
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
     
     let curSite = models.currentSite;
-    if (!curSite || !content.currentItem)
+    let curItem = content.currentItem;
+    if (!curSite || !curItem)
       return null;
     
-    let closeItem = () => {
-      let siteNameId = curSite.nameId;
-      browserHistory.push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${CONTENT_URL}`);
-    };
+    let closeItem = () => browserHistory.push(
+      `${USERSPACE_URL}${SITE_URL}${curSite.nameId}${CONTENT_URL}`);
     
     let gotoItem = item => {
-      let siteNameId = curSite.nameId;
-      let modelNameId = item.model.nameId;
+      let modelId = item.model.nameId;
       let itemId = item.origin.id;
-      browserHistory.push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${CONTENT_URL}${ITEM_URL}${modelNameId}~${itemId}`);
+      browserHistory.push(
+        `${USERSPACE_URL}${SITE_URL}${curSite.nameId}${CONTENT_URL}${ITEM_URL}${modelId}~${itemId}`);
     };
   
     let lastItem = content.items[content.items.length - 1];

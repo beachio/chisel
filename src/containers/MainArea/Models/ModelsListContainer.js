@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import CSSModules from 'react-css-modules';
 import {browserHistory} from 'react-router';
 
 import ModelsList from 'components/mainArea/models/ModelsList/ModelsList';
@@ -9,10 +8,7 @@ import {addModel, deleteModel} from 'ducks/models';
 import {showAlert} from 'ducks/nav';
 import {USERSPACE_URL, SITE_URL, MODELS_URL, MODEL_URL} from 'middleware/routing';
 
-import styles from './ModelsListContainer.sss';
 
-
-@CSSModules(styles, {allowMultiple: true})
 export class ModelsListContainer extends Component  {
   render() {
     const {models, nav} = this.props;
@@ -20,12 +16,11 @@ export class ModelsListContainer extends Component  {
     const {showAlert} = this.props.navActions;
     
     let curSite = models.currentSite;
+    if (!curSite)
+      return null;
     
-    let gotoModel = model => {
-      let siteNameId = curSite.nameId;
-      let modelNameId = model.nameId;
-      browserHistory.push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${MODELS_URL}${MODEL_URL}${modelNameId}`);
-    };
+    let gotoModel = model => browserHistory.push(
+      `${USERSPACE_URL}${SITE_URL}${curSite.nameId}${MODELS_URL}${MODEL_URL}${model.nameId}`);
     
     return <ModelsList models={curSite.models}
                        gotoModel={gotoModel}

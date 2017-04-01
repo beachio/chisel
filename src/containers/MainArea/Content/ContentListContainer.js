@@ -29,40 +29,39 @@ export class ContentListContainer extends Component  {
     );
   
     let curSite = models.currentSite;
-    if (curSite) {
-      if (curSite.models.length) {
-        let items = [];
-        for (let item of content.items) {
-          if (item.model.site == curSite)
-            items.push(item);
-        }
-  
-        let gotoItem = item => {
-          let siteNameId = curSite.nameId;
-          let modelNameId = item.model.nameId;
-          let itemId = item.origin.id;
-          browserHistory.push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${CONTENT_URL}${ITEM_URL}${modelNameId}~${itemId}`);
-        };
-        
-        cmpContent = (
-          <ContentList items={items}
-                       models={curSite.models}
-                       gotoItem={gotoItem}
-                       addItem={addItem}
-                       deleteItem={deleteItem}
-                       showAlert={showAlert}
-                       alertShowing={nav.alertShowing}
-                       isEditable={models.role != ROLE_DEVELOPER}/>
-        );
-        
-      } else if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN) {
-        cmpContent = (
-          <div styleName="start-working">
-            <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
-            There are no models. Add any model to start creating content.
-          </div>
-        );
+    if (!curSite)
+      return null;
+    
+    if (curSite.models.length) {
+      let items = [];
+      for (let item of content.items) {
+        if (item.model.site == curSite)
+          items.push(item);
       }
+
+      let gotoItem = item => {
+        let modelId = item.model.nameId;
+        let itemId = item.origin.id;
+        browserHistory.push(
+          `${USERSPACE_URL}${SITE_URL}${curSite.nameId}${CONTENT_URL}${ITEM_URL}${modelId}~${itemId}`);
+      };
+      
+      cmpContent = <ContentList items={items}
+                                models={curSite.models}
+                                gotoItem={gotoItem}
+                                addItem={addItem}
+                                deleteItem={deleteItem}
+                                showAlert={showAlert}
+                                alertShowing={nav.alertShowing}
+                                isEditable={models.role != ROLE_DEVELOPER}/>;
+      
+    } else if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN) {
+      cmpContent = (
+        <div styleName="start-working">
+          <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
+          There are no models. Add any model to start creating content.
+        </div>
+      );
     }
     
     return cmpContent;
