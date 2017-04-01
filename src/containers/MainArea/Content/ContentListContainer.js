@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import CSSModules from 'react-css-modules';
 import {browserHistory} from 'react-router';
 
 import ContentList from 'components/mainArea/content/ContentList/ContentList';
@@ -11,10 +10,7 @@ import {showAlert} from 'ducks/nav';
 import InlineSVG from 'svg-inline-react';
 import {USERSPACE_URL, SITE_URL, CONTENT_URL, ITEM_URL} from 'middleware/routing';
 
-import styles from './ContentListContainer.sss';
 
-
-@CSSModules(styles, {allowMultiple: true})
 export class ContentListContainer extends Component  {
   render() {
     const {models, content, nav} = this.props;
@@ -22,8 +18,8 @@ export class ContentListContainer extends Component  {
     const {showAlert} = this.props.navActions;
     
     let cmpContent = (
-      <div styleName="start-working">
-        <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
+      <div className="start-working">
+        <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
         There are no models.
       </div>
     );
@@ -57,14 +53,18 @@ export class ContentListContainer extends Component  {
       
     } else if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN) {
       cmpContent = (
-        <div styleName="start-working">
-          <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
+        <div className="start-working">
+          <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
           There are no models. Add any model to start creating content.
         </div>
       );
     }
     
-    return cmpContent;
+    return (
+      <div className="mainArea">
+        {cmpContent}
+      </div>
+    );
   }
 }
 

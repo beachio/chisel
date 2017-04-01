@@ -13,7 +13,7 @@ import App from 'containers/app';
 import configureStore from 'store/configureStore';
 import {initApp} from 'utils/initialize';
 
-import APIPage from 'components/mainArea/API/APIPage';
+import APIPage from 'containers/MainArea/API/APIPage';
 import Sign from 'containers/Sign/Sign';
 import MainArea from 'containers/MainArea/MainArea';
 import SettingsContainer from 'containers/MainArea/Settings/SettingsContainer';

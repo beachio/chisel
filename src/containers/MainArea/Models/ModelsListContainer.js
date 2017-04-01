@@ -22,13 +22,17 @@ export class ModelsListContainer extends Component  {
     let gotoModel = model => browserHistory.push(
       `${USERSPACE_URL}${SITE_URL}${curSite.nameId}${MODELS_URL}${MODEL_URL}${model.nameId}`);
     
-    return <ModelsList models={curSite.models}
-                       gotoModel={gotoModel}
-                       addModel={addModel}
-                       deleteModel={deleteModel}
-                       showAlert={showAlert}
-                       alertShowing={nav.alertShowing}
-                       isEditable={true}/>;
+    return (
+      <div className="mainArea">
+        <ModelsList models={curSite.models}
+                    gotoModel={gotoModel}
+                    addModel={addModel}
+                    deleteModel={deleteModel}
+                    showAlert={showAlert}
+                    alertShowing={nav.alertShowing}
+                    isEditable={true}/>
+      </div>
+    );
   }
 }
 

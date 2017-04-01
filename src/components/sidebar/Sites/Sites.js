@@ -147,7 +147,7 @@ export default class Sites extends Component {
                      onClick={() => this.onClickSite(site)}
                      key={key}>
                   <div styleName="icon">
-                    <InlineSVG src={require("./hammer.svg")} />
+                    <InlineSVG src={require("assets/images/hammer.svg")} />
                   </div>
                   <input styleName={styleInput}
                          readOnly={!editing}

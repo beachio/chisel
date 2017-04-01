@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
-import CSSModules from 'react-css-modules';
 
 import Model from 'components/mainArea/models/Model/Model';
 import {setCurrentModel, updateModel, deleteField} from 'ducks/models';
@@ -10,10 +9,7 @@ import {showAlert, showModal} from 'ducks/nav';
 import {USERSPACE_URL, SITE_URL, MODELS_URL, MODEL_URL} from 'middleware/routing';
 import {getModelByNameId} from 'utils/data';
 
-import styles from './ModelContainer.sss';
 
-
-@CSSModules(styles, {allowMultiple: true})
 export class ModelContainer extends Component  {
   //TODO Костыль!
   model = null;
@@ -51,16 +47,20 @@ export class ModelContainer extends Component  {
     
     let closeModel = () => browserHistory.push(
       `${USERSPACE_URL}${SITE_URL}${curSite.nameId}${MODELS_URL}`);
-  
-    return <Model model={this.model}
-                  onClose={closeModel}
-                  updateModel={updateModel}
-                  deleteField={deleteField}
-                  showAlert={showAlert}
-                  showModal={showModal}
-                  modalShowing={nav.modalShowing}
-                  alertShowing={nav.alertShowing}
-                  isEditable={true}/>;
+    
+    return (
+      <div className="mainArea">
+        <Model model={this.model}
+               onClose={closeModel}
+               updateModel={updateModel}
+               deleteField={deleteField}
+               showAlert={showAlert}
+               showModal={showModal}
+               modalShowing={nav.modalShowing}
+               alertShowing={nav.alertShowing}
+               isEditable={true}/>
+      </div>
+    );
   }
 }
 

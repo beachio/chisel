@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import CSSModules from 'react-css-modules';
 import {browserHistory} from 'react-router';
 
 import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
@@ -12,10 +11,7 @@ import {showModal} from 'ducks/nav';
 import {USERSPACE_URL, SITE_URL, CONTENT_URL, ITEM_URL} from 'middleware/routing';
 import {getContentByModelAndId} from 'utils/data';
 
-import styles from './ContentEditContainer.sss';
 
-
-@CSSModules(styles, {allowMultiple: true})
 export class ContentEditContainer extends Component {
   componentWillMount() {
     this.setItem(this.props.params.item);
@@ -71,17 +67,21 @@ export class ContentEditContainer extends Component {
   
     let lastItem = content.items[content.items.length - 1];
     
-    return <ContentEdit item={content.currentItem}
-                        onClose={closeItem}
-                        gotoItem={gotoItem}
-                        addItem={addItem}
-                        updateItem={updateItem}
-                        addMediaItem={addMediaItem}
-                        updateMediaItem={updateMediaItem}
-                        removeMediaItem={removeMediaItem}
-                        lastItem={lastItem}
-                        showModal={showModal}
-                        isEditable={models.role != ROLE_DEVELOPER}/>;
+    return (
+      <div className="mainArea">
+        <ContentEdit item={curItem}
+                     onClose={closeItem}
+                     gotoItem={gotoItem}
+                     addItem={addItem}
+                     updateItem={updateItem}
+                     addMediaItem={addMediaItem}
+                     updateMediaItem={updateMediaItem}
+                     removeMediaItem={removeMediaItem}
+                     lastItem={lastItem}
+                     showModal={showModal}
+                     isEditable={models.role != ROLE_DEVELOPER}/>
+      </div>
+    );
   }
 }
 

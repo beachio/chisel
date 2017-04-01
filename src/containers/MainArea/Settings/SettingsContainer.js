@@ -17,12 +17,15 @@ export class SettingsContainer extends Component  {
     let curSite = models.currentSite;
     if (!curSite)
       return null;
-  
-    return <Settings site={curSite}
-                     updateSite={updateSite}
-                     deleteSite={deleteSite}
-                     showAlert={showAlert}
-                     isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />;
+    return (
+      <div className="mainArea">
+        <Settings site={curSite}
+                  updateSite={updateSite}
+                  deleteSite={deleteSite}
+                  showAlert={showAlert}
+                  isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
+      </div>
+    );
   }
 }
 

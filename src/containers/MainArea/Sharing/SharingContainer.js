@@ -17,17 +17,21 @@ export class SharingContainer extends Component  {
     let curSite = models.currentSite;
     if (!curSite)
       return null;
-  
-    return <Sharing collaborations={curSite.collaborations}
-                    owner={curSite.owner}
-                    user={user.userData}
-                    addCollaboration={addCollaboration}
-                    updateCollaboration={updateCollaboration}
-                    deleteCollaboration={deleteCollaboration}
-                    deleteSelfCollaboration={deleteSelfCollaboration}
-                    showAlert={showAlert}
-                    alertShowing={nav.alertShowing}
-                    isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />;
+    
+    return (
+      <div className="mainArea">
+        <Sharing collaborations={curSite.collaborations}
+                 owner={curSite.owner}
+                 user={user.userData}
+                 addCollaboration={addCollaboration}
+                 updateCollaboration={updateCollaboration}
+                 deleteCollaboration={deleteCollaboration}
+                 deleteSelfCollaboration={deleteSelfCollaboration}
+                 showAlert={showAlert}
+                 alertShowing={nav.alertShowing}
+                 isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
+      </div>
+    );
   }
 }
 

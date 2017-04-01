@@ -18,17 +18,19 @@ export class MainArea extends Component  {
     const {models, nav} = this.props;
 
     let cmpNoSites = (
-      <div styleName="start-working">
-        <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
+      <div className="start-working">
+        <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
         Add new site to start working
-        <div styleName="hint">Find "Add new site" button at sidebar</div>
+        <div className="hint">Find "Add new site" button at sidebar</div>
       </div>
     );
   
     let cmpNoRights = (
-      <div styleName="start-working">
-        <InlineSVG styleName="hammer" src={require("./hammer.svg")}/>
-        You don't have rights to access this section.
+      <div className="mainArea">
+        <div className="start-working">
+          <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
+          You don't have rights to access this section.
+        </div>
       </div>
     );
     
@@ -66,9 +68,7 @@ export class MainArea extends Component  {
         <Header />
         <div styleName="wrapper-inner">
           <Sidebar />
-          <div styleName="mainArea">
-            {area}
-          </div>
+          {area}
         </div>
       </div>
     );
