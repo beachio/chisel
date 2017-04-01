@@ -1,10 +1,9 @@
-import {push, replace, LOCATION_CHANGE} from 'react-router-redux';
+import {browserHistory} from 'react-router';
+import {LOCATION_CHANGE} from 'react-router-redux';
 
-import {store} from '../index';
 import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';
-import {setCurrentSite, setCurrentModel} from 'ducks/models';
-import {setCurrentItem} from 'ducks/content';
-import {getSiteByNameId, getModelByNameId, getContentByModelAndId} from 'utils/data';
+import {setCurrentSite} from 'ducks/models';
+import {getSiteByNameId} from 'utils/data';
 import {INIT_END} from 'ducks/nav';
 
 
@@ -51,14 +50,13 @@ export const routing = store => next => action => {
           next(setCurrentSite(site));
       }
       
+    } else if (cSite) {
+      browserHistory.replace(`${USERSPACE_URL}${SITE_URL}${cSite.nameId}`);
+      
     } else {
-      if (cSite) {
-        next(replace(`${USERSPACE_URL}${SITE_URL}${cSite.nameId}`));
-      } else {
-        let sites = store.getState().models.sites;
-        if (sites.length)
-          next(replace(`${USERSPACE_URL}${SITE_URL}${sites[0].nameId}`));
-      }
+      let sites = store.getState().models.sites;
+      if (sites.length)
+        browserHistory.replace(`${USERSPACE_URL}${SITE_URL}${sites[0].nameId}`);
     }
   };
   
@@ -69,10 +67,10 @@ export const routing = store => next => action => {
     let lsReady = store.getState().user.localStorageReady;
     
     if (URL.indexOf(USERSPACE_URL) != -1 && !authorized && lsReady)
-      next(push(SIGN_URL));
+      browserHistory.push(SIGN_URL);
   
     if (URL.indexOf(USERSPACE_URL) == -1 && authorized)
-      next(push(USERSPACE_URL));
+      browserHistory.push(USERSPACE_URL);
     
     if (store.getState().nav.initEnded)
       setFromURL();
@@ -84,14 +82,15 @@ export const routing = store => next => action => {
   if (action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) {
     if (action.authorized) {
       if (URL.indexOf(USERSPACE_URL) == -1)
-        next(push('/'));
+        browserHistory.replace('/');
     } else {
-      next(push(SIGN_URL));
+      browserHistory.push(SIGN_URL);
     }
   }
   
   if (action.type == LOGOUT)
-    next(push(SIGN_URL));
+    browserHistory.push(SIGN_URL);
+  
   
   next(action);
 };

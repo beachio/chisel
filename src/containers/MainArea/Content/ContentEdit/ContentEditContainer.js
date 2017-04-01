@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
-import {push} from 'react-router-redux';
+import {browserHistory} from 'react-router';
 
 import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import {ROLE_DEVELOPER} from 'models/UserData';
@@ -53,7 +53,6 @@ export class ContentEditContainer extends Component {
     const {addItem, updateItem} = this.props.contentActions;
     const {showModal} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
-    const {push} = this.props.routerActions;
     
     let curSite = models.currentSite;
     if (!curSite || !content.currentItem)
@@ -61,14 +60,14 @@ export class ContentEditContainer extends Component {
     
     let closeItem = () => {
       let siteNameId = curSite.nameId;
-      push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${CONTENT_URL}`);
+      browserHistory.push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${CONTENT_URL}`);
     };
     
     let gotoItem = item => {
       let siteNameId = curSite.nameId;
       let modelNameId = item.model.nameId;
       let itemId = item.origin.id;
-      push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${CONTENT_URL}${ITEM_URL}${modelNameId}~${itemId}`);
+      browserHistory.push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${CONTENT_URL}${ITEM_URL}${modelNameId}~${itemId}`);
     };
   
     let lastItem = content.items[content.items.length - 1];
@@ -98,8 +97,7 @@ function mapDispatchToProps(dispatch) {
   return {
     contentActions: bindActionCreators({setCurrentItem, addItem, updateItem}, dispatch),
     mediaActions:   bindActionCreators({addMediaItem, updateMediaItem, removeMediaItem}, dispatch),
-    navActions:     bindActionCreators({showModal}, dispatch),
-    routerActions:  bindActionCreators({push}, dispatch)
+    navActions:     bindActionCreators({showModal}, dispatch)
   };
 }
 

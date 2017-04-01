@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
-import {push} from 'react-router-redux';
+import {browserHistory} from 'react-router';
 
 import ModelsList from 'components/mainArea/models/ModelsList/ModelsList';
 import {addModel, deleteModel} from 'ducks/models';
@@ -18,14 +18,13 @@ export class ModelsListContainer extends Component  {
     const {models, nav} = this.props;
     const {addModel, deleteModel} = this.props.modelsActions;
     const {showAlert} = this.props.navActions;
-    const {push} = this.props.routerActions;
     
     let curSite = models.currentSite;
     
     let gotoModel = model => {
       let siteNameId = curSite.nameId;
       let modelNameId = model.nameId;
-      push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${MODELS_URL}${MODEL_URL}${modelNameId}`);
+      browserHistory.push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${MODELS_URL}${MODEL_URL}${modelNameId}`);
     };
     
     return <ModelsList models={curSite.models}
@@ -48,8 +47,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     modelsActions:  bindActionCreators({addModel, deleteModel}, dispatch),
-    navActions:     bindActionCreators({showAlert}, dispatch),
-    routerActions:  bindActionCreators({push}, dispatch)
+    navActions:     bindActionCreators({showAlert}, dispatch)
   };
 }
 

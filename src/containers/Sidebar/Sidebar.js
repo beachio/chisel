@@ -3,7 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
-import {push} from 'react-router-redux';
+import {browserHistory} from 'react-router';
 
 import User from 'components/sidebar/User/User';
 import Sites from 'components/sidebar/Sites/Sites';
@@ -20,11 +20,10 @@ export class Sidebar extends Component {
     const {models, nav, user} = this.props;
     const {addSite, updateSite} = this.props.modelsActions;
     const {showAlert} = this.props.navActions;
-    const {push} = this.props.routerActions;
     
     let gotoSite = site => {
       let nameId = site.nameId;
-      push(`${USERSPACE_URL}${SITE_URL}${nameId}`);
+      browserHistory.push(`${USERSPACE_URL}${SITE_URL}${nameId}`);
     };
 
     return (
@@ -60,8 +59,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     modelsActions:  bindActionCreators({addSite, updateSite}, dispatch),
-    navActions:     bindActionCreators({showAlert}, dispatch),
-    routerActions:  bindActionCreators({push}, dispatch)
+    navActions:     bindActionCreators({showAlert}, dispatch)
   };
 }
 

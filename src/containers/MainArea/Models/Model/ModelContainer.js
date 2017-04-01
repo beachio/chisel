@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 import CSSModules from 'react-css-modules';
-import {push} from 'react-router-redux';
 
 import Model from 'components/mainArea/models/Model/Model';
 import {setCurrentModel, updateModel, deleteField} from 'ducks/models';
@@ -44,11 +44,10 @@ export class ModelContainer extends Component  {
     const {models, nav} = this.props;
     const {updateModel, deleteField} = this.props.modelsActions;
     const {showAlert, showModal} = this.props.navActions;
-    const {push} = this.props.routerActions;
   
     let closeModel = () => {
       let siteNameId = models.currentSite.nameId;
-      push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${MODELS_URL}`);
+      browserHistory.push(`${USERSPACE_URL}${SITE_URL}${siteNameId}${MODELS_URL}`);
     };
     
     return <Model model={this.model}
@@ -73,8 +72,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     modelsActions: bindActionCreators({setCurrentModel, updateModel, deleteField}, dispatch),
-    navActions: bindActionCreators({showAlert, showModal}, dispatch),
-    routerActions: bindActionCreators({push}, dispatch)
+    navActions: bindActionCreators({showAlert, showModal}, dispatch)
   }
 }
 
