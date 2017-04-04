@@ -17,6 +17,7 @@ export const ITEM_URL = '/item~';
 
 
 let URL = '/';
+let nonAuthURL = null;
 
 
 let getNameId = (path, type) => {
@@ -34,7 +35,6 @@ let getNameId = (path, type) => {
 
 export const routing = store => next => action => {
   next(action);
-  
   
   let setFromURL = () => {
     let path = URL;
@@ -63,29 +63,30 @@ export const routing = store => next => action => {
     }
   };
   
-  
   if (action.type == LOCATION_CHANGE) {
     URL = action.payload.pathname;
-    let authorized = store.getState().user.authorized;
-    let lsReady = store.getState().user.localStorageReady;
     
-    if (URL.indexOf(USERSPACE_URL) != -1 && !authorized && lsReady)
-      browserHistory.push(SIGN_URL);
+    if (URL.indexOf(USERSPACE_URL) != -1 && !nonAuthURL)
+      nonAuthURL = URL;
   
     if (store.getState().nav.initEnded)
       setFromURL();
   }
   
-  if (action.type == INIT_END)
-    setFromURL();
-  
   if (action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) {
-    if (action.authorized) {
-      if (URL.indexOf(USERSPACE_URL) == -1)
-        browserHistory.replace(USERSPACE_URL);
-    } else {
+    if (!action.authorized)
       browserHistory.push(SIGN_URL);
+  }
+  
+  if (action.type == INIT_END) {
+    if (nonAuthURL) {
+      URL = nonAuthURL;
+      nonAuthURL = null;
+      browserHistory.replace(URL);
+    } else if (URL.indexOf(USERSPACE_URL) == -1) {
+      browserHistory.replace(USERSPACE_URL);
     }
+    setFromURL();
   }
   
   if (action.type == LOGOUT)
