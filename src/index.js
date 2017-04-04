@@ -12,6 +12,7 @@ import {syncHistoryWithStore} from 'react-router-redux';
 import App from 'containers/app';
 import configureStore from 'store/configureStore';
 import {initApp} from 'utils/initialize';
+import {scrollUp} from 'utils/common';
 
 import APIPage from 'containers/MainArea/API/APIPage';
 import Sign from 'containers/Sign/Sign';
@@ -31,7 +32,7 @@ initApp();
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={history}>
+    <Router onUpdate={scrollUp} history={history}>
       <Route path='/' component={App}>
         <Route path="/sign" component={Sign} />
         <Route path="/userspace" component={MainArea} >

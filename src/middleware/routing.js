@@ -4,6 +4,7 @@ import {LOCATION_CHANGE} from 'react-router-redux';
 import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';
 import {setCurrentSite} from 'ducks/models';
 import {getSiteByNameId} from 'utils/data';
+import {scrollUp} from 'utils/common';
 import {INIT_END} from 'ducks/nav';
 
 
@@ -87,6 +88,8 @@ export const routing = store => next => action => {
       browserHistory.replace(USERSPACE_URL);
     }
     setFromURL();
+  
+    scrollUp();
   }
   
   if (action.type == LOGOUT)
