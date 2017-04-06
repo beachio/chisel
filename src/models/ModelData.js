@@ -218,6 +218,13 @@ export function canBeTitle(field) {
   return field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE;
 }
 
+export function canBeList(field) {
+  return field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE ||
+    field.appearance == FIELD_APPEARANCE__INTEGER__DECIMAL ||
+    field.appearance == FIELD_APPEARANCE__FLOAT__DECIMAL ||
+    field.appearance == FIELD_APPEARANCE__MEDIA__MEDIA;
+}
+
 export const FIELD_NAMES_RESERVED = ['t__color', 't__published', 't__model'];
 
 
@@ -230,6 +237,7 @@ export class ModelFieldData {
   appearance = FIELD_APPEARANCE__SHORT_TEXT__SINGLE;
   color = "rgba(0, 0, 0, 1)";
   isTitle = false;
+  isList = false;
 
   //setter
   _name = "";
@@ -258,6 +266,7 @@ export class ModelFieldData {
     if (origin.get('appearance')) this.appearance = origin.get('appearance');
     if (origin.get('color'))      this.color      = origin.get('color');
     if (origin.get('isTitle'))    this.isTitle    = true;
+    if (origin.get('isList'))     this.isList     = true;
 
     return this;
   }
@@ -272,8 +281,9 @@ export class ModelFieldData {
     this.origin.set("appearance", this.appearance);
     this.origin.set("color",      this.color);
     this.origin.set("isTitle",    this.isTitle);
+    this.origin.set("isList",     this.isList);
     
-    this.origin.set("model",    this.model.origin);
+    this.origin.set("model",      this.model.origin);
   }
 
   toJSON() {
@@ -283,7 +293,8 @@ export class ModelFieldData {
       type:       this.type,
       appearance: this.appearance,
       color:      this.color,
-      isTitle:    this.isTitle
+      isTitle:    this.isTitle,
+      isList:     this.isList
     };
   }
 }

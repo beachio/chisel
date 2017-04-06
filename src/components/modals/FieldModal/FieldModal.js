@@ -6,7 +6,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import InputControl from 'components/elements/InputControl/InputControl';
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST, NAME_ERROR_NAME_RESERVED} from 'utils/data';
-import {FIELD_TYPES, FIELD_TYPE_SHORT_TEXT, FIELD_APPEARANCE__SHORT_TEXT__SINGLE} from 'models/ModelData';
+import {FIELD_TYPES, canBeList, canBeTitle} from 'models/ModelData';
 
 import styles from './FieldModal.sss';
 
@@ -20,6 +20,7 @@ export default class FieldModal extends Component {
     type: '',
     appearance: '',
     isTitle: '',
+    isList: false,
 
     error: null,
 
@@ -44,6 +45,7 @@ export default class FieldModal extends Component {
       type:       this.field.type,
       appearance: this.field.appearance,
       isTitle:    this.field.isTitle,
+      isList:     this.field.isList,
 
       appList:    FIELD_TYPES.get(this.field.type)
     });
@@ -97,6 +99,10 @@ export default class FieldModal extends Component {
   onChangeIsTitle = isTitle => {
     this.setState({isTitle});
   };
+  
+  onChangeIsList = isList => {
+    this.setState({isList});
+  };
 
   onSave = () => {
     if (!this.active)
@@ -119,6 +125,7 @@ export default class FieldModal extends Component {
     this.field.type       = this.state.type;
     this.field.appearance = this.state.appearance;
     this.field.isTitle    = this.state.isTitle;
+    this.field.isList     = this.state.isList;
 
     const {addField, updateField} = this.props;
     if (this.updating)
@@ -188,11 +195,25 @@ export default class FieldModal extends Component {
               </div>
 
               {
-                this.state.type == FIELD_TYPE_SHORT_TEXT && this.state.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE &&
+                canBeList(this.field) &&
+                  <div styleName="input-wrapper">
+                    <div styleName="label">List (keeping multiple values instead of one)</div>
+                    <div styleName="switch">
+                      <SwitchControl checked={this.state.isList}
+                                     onChange={this.onChangeIsList}
+                                     disabled={this.state.isTitle || this.updating} />
+                    </div>
+                  </div>
+              }
+              
+              {
+                canBeTitle(this.field) &&
                   <div styleName="input-wrapper">
                     <div styleName="label">Entry Title</div>
                     <div styleName="switch">
-                      <SwitchControl checked={this.state.isTitle} onChange={this.onChangeIsTitle}/>
+                      <SwitchControl checked={this.state.isTitle}
+                                     onChange={this.onChangeIsTitle}
+                                     disabled={this.state.isList} />
                     </div>
                   </div>
               }

@@ -14,18 +14,23 @@ export default class SwitchControl extends Component {
   }
   
   onChange = e => {
-    const {onChange} = this.props;
-    if (onChange)
+    const {onChange, disabled} = this.props;
+    if (onChange && !disabled)
       onChange(e.target.checked);
   };
   
   render() {
-    const {title, checked} = this.props;
+    const {title, checked, disabled} = this.props;
+    let style = `SwitchControl`;
+    if (disabled)
+      style += ` disabled`;
+    
     return (
-      <div styleName="SwitchControl">
+      <div styleName={style}>
         <input type="checkbox"
                styleName="checkbox"
                id={this.id}
+               disabled={disabled}
                checked={checked}
                onChange={this.onChange}
         />

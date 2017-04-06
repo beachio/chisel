@@ -33,6 +33,7 @@
     background: #CCCCCC
     box-shadow: inset 0 10px 20px 0 rgba(0,0,0,0.10)
     border-radius: 25px
+    transition: all .2s
 
   .checkbox:not(checked) + .label:after
     content: ''
@@ -48,6 +49,21 @@
 
   .checkbox:checked + .label:before
     background-image: linear-gradient(-180deg, #0C80FF 0%, #3F9CFF 100%)
+    transition: background-image .2s
 
   .checkbox:checked + .label:after
     left: 30px
+
+.disabled
+  .label
+    color: #b1b1b1
+  
+  .checkbox:not(checked) + .label:before
+    background: #e6e6e6
+    box-shadow: inset 0 10px 20px 0 rgba(0, 0, 0, 0.01)
+  
+  .checkbox:not(checked) + .label:after
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.26)
+  
+  .checkbox:checked + .label:before
+    background-image: linear-gradient(-180deg, rgb(128, 189, 255) 0%, rgb(166, 210, 255) 100%)
