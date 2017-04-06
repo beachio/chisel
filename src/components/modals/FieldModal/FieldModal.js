@@ -195,7 +195,7 @@ export default class FieldModal extends Component {
               </div>
 
               {
-                canBeList(this.field) &&
+                canBeList(this.state) &&
                   <div styleName="input-wrapper">
                     <div styleName="label">List (keeping multiple values instead of one)</div>
                     <div styleName="switch">
@@ -207,7 +207,7 @@ export default class FieldModal extends Component {
               }
               
               {
-                canBeTitle(this.field) &&
+                canBeTitle(this.state) &&
                   <div styleName="input-wrapper">
                     <div styleName="label">Entry Title</div>
                     <div styleName="switch">
