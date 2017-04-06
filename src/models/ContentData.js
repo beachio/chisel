@@ -59,7 +59,7 @@ export class ContentItemData {
     
     for (let field of this.model.fields) {
       let value = origin.get(field.nameId);
-      if (field.type == FIELD_TYPE_MEDIA)
+      if (field.type == FIELD_TYPE_MEDIA && !field.isList)
         this.fields.set(field, getMediaByO(value));
       else
         this.fields.set(field, value);
@@ -74,7 +74,7 @@ export class ContentItemData {
   postInit(items) {
     for (let field of this.model.fields) {
       if (field.type == FIELD_TYPE_REFERENCES) {
-        let refersO = this.origin.get(field.nameId);
+        let refersO = this.fields.get(field);
         if (!refersO)
           refersO = [];
         
@@ -85,6 +85,19 @@ export class ContentItemData {
             refers.push(ref);
         }
         this.fields.set(field, refers);
+      
+      } else if (field.type == FIELD_TYPE_MEDIA && field.isList) {
+        let medsO = this.fields.get(field);
+        if (!medsO)
+          medsO = [];
+  
+        let meds = [];
+        for (let medO of medsO) {
+          let med = getMediaByO(medO, items);
+          if (med)
+            meds.push(med);
+        }
+        this.fields.set(field, meds);
       }
     }
   }
@@ -97,14 +110,17 @@ export class ContentItemData {
     this.origin.set("t__color",      this.color);
   
     for (let [field, value] of this.fields) {
-      if (field.type == FIELD_TYPE_REFERENCES && value) {
+      let isRefList = field.type == FIELD_TYPE_REFERENCES ||
+          field.type == FIELD_TYPE_MEDIA && field.isList;
+      
+      if (isRefList && value) {
         let refOrigins = [];
         for (let ref of value) {
           if (ref.origin)
             refOrigins.push(ref.origin);
         }
         this.origin.set(field.nameId, refOrigins);
-      } else if ((field.type == FIELD_TYPE_MEDIA) && value) {
+      } else if (field.type == FIELD_TYPE_MEDIA && value) {
         this.origin.set(field.nameId, value.origin);
       } else {
         this.origin.set(field.nameId, value);

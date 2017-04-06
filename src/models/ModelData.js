@@ -170,9 +170,7 @@ export const FIELD_APPEARANCE__MEDIA__MEDIA         = "Media";
 
 export const FIELD_APPEARANCE__JSON__JSON           = "Date & time";
 
-export const FIELD_APPEARANCE__REFERENCES__SINGLE   = "Single reference";
-
-export const FIELD_APPEARANCE__REFERENCES__MULTI    = "Multiple references";
+export const FIELD_APPEARANCE__REFERENCE_REFERENCE  = "Reference";
 
 
 export const FIELD_TYPES = new Map([
@@ -209,20 +207,20 @@ export const FIELD_TYPES = new Map([
     FIELD_APPEARANCE__JSON__JSON
   ]],*/
   [FIELD_TYPE_REFERENCES, [
-    FIELD_APPEARANCE__REFERENCES__SINGLE,
-    FIELD_APPEARANCE__REFERENCES__MULTI
+    FIELD_APPEARANCE__REFERENCE_REFERENCE,
   ]]
 ]);
 
 export function canBeTitle(field) {
-  return field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE;
+  return field.type == FIELD_TYPE_SHORT_TEXT && field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE;
 }
 
 export function canBeList(field) {
-  return field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE ||
-    field.appearance == FIELD_APPEARANCE__INTEGER__DECIMAL ||
-    field.appearance == FIELD_APPEARANCE__FLOAT__DECIMAL ||
-    field.appearance == FIELD_APPEARANCE__MEDIA__MEDIA;
+  return field.type == FIELD_TYPE_SHORT_TEXT && field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE ||
+    field.type == FIELD_TYPE_INTEGER && field.appearance == FIELD_APPEARANCE__INTEGER__DECIMAL ||
+    field.type == FIELD_TYPE_FLOAT && field.appearance == FIELD_APPEARANCE__FLOAT__DECIMAL ||
+    field.type == FIELD_TYPE_MEDIA && field.appearance == FIELD_APPEARANCE__MEDIA__MEDIA ||
+    field.type == FIELD_TYPE_REFERENCES && field.appearance == FIELD_APPEARANCE__REFERENCE_REFERENCE;
 }
 
 export const FIELD_NAMES_RESERVED = ['t__color', 't__published', 't__model'];

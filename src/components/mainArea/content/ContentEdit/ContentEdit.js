@@ -279,7 +279,14 @@ export default class ContentEdit extends Component {
       item.assigned = true;
       this.props.addMediaItem(item);
   
-      this.setFieldValue(field, item);
+      if (field.isList) {
+        let items = this.state.fields.get(field);
+        if (!items)
+          items = [];
+        this.setFieldValue(field, items.concat(item), true);
+      } else {
+        this.setFieldValue(field, item, true);
+      }
     });
   }
 
@@ -302,23 +309,35 @@ export default class ContentEdit extends Component {
       item.assigned = true;
       addMediaItem(item);
   
-      this.setFieldValue(field, item);
+      if (field.isList) {
+        let items = this.state.fields.get(field);
+        if (!items)
+          items = [];
+        this.setFieldValue(field, items.concat(item), true);
+      } else {
+        this.setFieldValue(field, item, true);
+      }
     });
   }
 
-  onMediaClear(field) {
-    let fields = this.state.fields;
-    this.props.removeMediaItem(fields.get(field));
-    this.setFieldValue(field, null);
+  onMediaClear(field, item) {
+    this.props.removeMediaItem(item);
+    
+    if (field.isList) {
+      let items = this.state.fields.get(field);
+      items.splice(items.indexOf(item), 1);
+      this.setFieldValue(field, items, true);
+    } else {
+      this.setFieldValue(field, null, true);
+    }
   }
 
-  onMediaNameChange(event, field) {
+  onMediaNameChange(event, field, item) {
     let value = event.target.value;
-    let fields = this.state.fields;
-    let mItem = fields.get(field);
-    mItem.name = value;
-    this.props.updateMediaItem(mItem);
-    this.setFieldValue(field, mItem);
+    item.name = value;
+    this.props.updateMediaItem(item);
+    
+    this.setFieldValue(field, this.state.fields.get(field));
   }
 
   onReferenceNew(field) {
@@ -332,8 +351,7 @@ export default class ContentEdit extends Component {
         if (!refers)
           refers = [];
         
-        this.setFieldValue(field, refers.concat(this.addingItem));
-        this.saveItem();
+        this.setFieldValue(field, refers.concat(this.addingItem), true);
       }
     });
   }
@@ -345,16 +363,16 @@ export default class ContentEdit extends Component {
     }
   }
   
-  onReferencesChoose(field, isMult) {
+  onReferencesChoose(field) {
     let refers = this.state.fields.get(field);
     if (!refers)
       refers = [];
     this.props.showModal(MODAL_TYPE_REFERENCE,
       {
         currentItem: this.item,
-        isMult,
+        isMult: field.isList,
         existingItems: refers,
-        callback: items => this.setFieldValue(field, refers.concat(items))
+        callback: items => this.setFieldValue(field, refers.concat(items), true)
       }
     );
   }
@@ -371,7 +389,7 @@ export default class ContentEdit extends Component {
       refers.splice(refers.indexOf(item), 1);
     else
       refers.splice(0, refers.length);
-    this.setFieldValue(field, refers);
+    this.setFieldValue(field, refers, true);
   };
 
   onShowWysiwygModal(field) {
@@ -379,15 +397,18 @@ export default class ContentEdit extends Component {
       MODAL_TYPE_WYSIWYG,
       {
         text: this.state.fields.get(field),
-        callback: text =>  this.setFieldValue(field, text)
+        callback: text => this.setFieldValue(field, text, true)
       }
     );
   }
   
-  setFieldValue(field, value) {
+  setFieldValue(field, value, save = false) {
     let fields = this.state.fields;
     this.setState({fields: fields.set(field, value)});
-    if (!this.timeout)
+    
+    if (save)
+      this.saveItem();
+    else if (!this.timeout)
       this.timeout = setTimeout(() => this.saveItem(), AUTOSAVE_TIMEOUT);
   }
   
@@ -588,49 +609,61 @@ export default class ContentEdit extends Component {
         break;
 
       case ftps.FIELD_TYPE_MEDIA:
-        switch (field.appearance) {
-          case ftps.FIELD_APPEARANCE__MEDIA__MEDIA:
-
-            if (value && value.file) {
-              let imgStyle = {backgroundImage: `url(${value.file.url()})`};
-              inner = (
-                <div styleName="media">
-                  <div styleName="media-item">
-                    <div styleName="media-header">
-                      <input type="text"
-                             placeholder="Image name"
-                             onChange={e => this.onMediaNameChange(e, field)}
-                             value={value.name} />
-                      <InlineSVG styleName="media-cross"
-                                 src={require('./cross.svg')}
-                                 onClick={() => this.onMediaClear(field)} />
-                    </div>
-                    <div styleName="media-content" style={imgStyle}>
-                    </div>
-                  </div>
-                </div>
-              );
-
-            } else {
-              inner = (
-                <div styleName="media">
-                  <div styleName="media-buttons">
-                    <div type="file" styleName="media-button media-upload">
-                      Upload New
-                      <input styleName="media-hidden"
-                             type="file"
-                             onChange={e => this.onMediaNew(e, field)} />
-                    </div>
-                    <div styleName="media-button media-insert"
-                         onClick={() => this.onMediaChoose(field)}>
-                      Insert Existing
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-            break;
+        let oneMediaBlock = item => {
+          let key = item.origin && item.origin.id ? item.origin.id : Math.random();
+          let imgStyle = {backgroundImage: `url(${item.file.url()})`};
+          
+          return (
+            <div styleName="media-item" key={key}>
+              <div styleName="media-header">
+                <input type="text"
+                       placeholder="Image name"
+                       onChange={e => this.onMediaNameChange(e, field, item)}
+                       value={value.name} />
+                <InlineSVG styleName="media-cross"
+                           src={require('./cross.svg')}
+                           onClick={() => this.onMediaClear(field, item)} />
+              </div>
+              <div styleName="media-content" style={imgStyle}></div>
+            </div>
+          );
+        };
+        
+        let addMediaBlock = (
+          <div styleName="media-buttons">
+            <div type="file" styleName="media-button media-upload">
+              Upload New
+              <input styleName="media-hidden"
+                     type="file"
+                     onChange={e => this.onMediaNew(e, field)} />
+            </div>
+            <div styleName="media-button media-insert"
+                 onClick={() => this.onMediaChoose(field)}>
+              Insert Existing
+            </div>
+          </div>
+        );
+  
+        let mediaInner = addMediaBlock;
+        if (field.isList) {
+          if (value && value.length)
+            mediaInner = (
+              <div>
+                {value.map(item => oneMediaBlock(item))}
+                {addMediaBlock}
+              </div>
+            );
+    
+        } else {
+          if (value && value.file)
+            mediaInner = oneMediaBlock(value);
         }
+  
+        inner = (
+          <div styleName="media">
+            {mediaInner}
+          </div>
+        );
         break;
 
       case ftps.FIELD_TYPE_DATE:
@@ -663,20 +696,20 @@ export default class ContentEdit extends Component {
         break;
 
       case ftps.FIELD_TYPE_REFERENCES:
-        let oneReferenceBlock = item => {
+        let oneRefBlock = item => {
           let exist = checkContentExistense(item);
           let key = item.origin && item.origin.id ? item.origin.id : Math.random();
   
           if (exist) {
             let title = item.title ? item.title : "Untitled";
-            
-            let titleStyle = '';
-            if (!item.title)
-              titleStyle = "untitled";
+            let titleStyle = item.title ? '' : 'untitled';
             
             return (
               <div styleName="reference-item" key={key} onClick={() => this.onReferenceClick(item)}>
-                <span styleName="reference-title">[{item.model.name}] <span styleName={titleStyle}>{title}</span></span>
+                <span styleName="reference-title">
+                  [{item.model.name}]
+                  <span styleName={titleStyle}>{title}</span>
+                </span>
                 <InlineSVG styleName="reference-cross"
                            src={require('./cross.svg')}
                            onClick={e => this.onReferenceClear(e, field, item)} />
@@ -692,36 +725,31 @@ export default class ContentEdit extends Component {
           }
         };
         
-        let addReferenceBlock = isMult => (
+        let addRefBlock = (
           <div styleName="reference-buttons">
             <div styleName="reference-button reference-new" onClick={() => this.onReferenceNew(field)}>
               Create new entry
             </div>
-            <div styleName="reference-button reference-insert" onClick={() => this.onReferencesChoose(field, isMult)}>
+            <div styleName="reference-button reference-insert" onClick={() => this.onReferencesChoose(field)}>
               Insert Existing Entry
             </div>
           </div>
         );
   
-        let refInner = addReferenceBlock(false);
-        
-        switch (field.appearance) {
-          case ftps.FIELD_APPEARANCE__REFERENCES__SINGLE:
-            if (value && value.length)
-              refInner = oneReferenceBlock(value[0]);
-            break;
+        let refInner = addRefBlock;
   
-          case ftps.FIELD_APPEARANCE__REFERENCES__MULTI:
-            refInner = addReferenceBlock(true);
-            if (value && value.length)
-              refInner = (
-                <div>
-                  {value.map(item => oneReferenceBlock(item))}
-                  {addReferenceBlock(true)}
-                </div>
-              );
+        if (field.isList) {
+          if (value && value.length)
+            refInner = (
+              <div>
+                {value.map(item => oneRefBlock(item))}
+                {addRefBlock}
+              </div>
+            );
         
-            break;
+        } else {
+          if (value && value.length)
+            refInner = oneRefBlock(value[0]);
         }
   
         inner = (
