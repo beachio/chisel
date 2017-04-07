@@ -43,24 +43,31 @@ export const routing = store => next => action => {
     
     if (path.indexOf(USERSPACE_URL) == -1)
       return;
+  
+    let cSite = store.getState().models.currentSite;
+    let setDefaultSite = () => {
+      if (cSite) {
+        browserHistory.replace(`${USERSPACE_URL}${SITE_URL}${cSite.nameId}`);
+      } else {
+        let sites = store.getState().models.sites;
+        if (sites.length)
+          browserHistory.replace(`${USERSPACE_URL}${SITE_URL}${sites[0].nameId}`);
+      }
+    };
     
     //set current site
     let nameId = getNameId(path, SITE_URL);
-    let cSite = store.getState().models.currentSite;
     if (nameId) {
       if (!cSite || nameId != cSite.nameId) {
         let site = getSiteByNameId(nameId);
         if (site)
           next(setCurrentSite(site));
+        else
+          setDefaultSite();
       }
       
-    } else if (cSite) {
-      browserHistory.replace(`${USERSPACE_URL}${SITE_URL}${cSite.nameId}`);
-      
     } else {
-      let sites = store.getState().models.sites;
-      if (sites.length)
-        browserHistory.replace(`${USERSPACE_URL}${SITE_URL}${sites[0].nameId}`);
+      setDefaultSite();
     }
   };
   
