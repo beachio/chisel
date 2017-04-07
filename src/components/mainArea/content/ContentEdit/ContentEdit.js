@@ -243,16 +243,46 @@ export default class ContentEdit extends Component {
     this.setFieldValue(field, text);
   }
 
-  onChange_FLOAT(event, field) {
+  onChange_FLOAT(event, field, ind) {
     let str = event.target.value;
-    let value = !!str ? parseFloat(str) : '';
-    this.setFieldValue(field, value);
+    
+    if (field.isList) {
+      let items = this.state.fields.get(field);
+      if (!items)
+        items = [];
+  
+      if (str)
+        items[ind] = parseFloat(str);
+      else
+        items.splice(ind, 1);
+  
+      this.setFieldValue(field, items);
+  
+    } else {
+      let value = !!str ? parseFloat(str) : '';
+      this.setFieldValue(field, value);
+    }
   }
 
-  onChange_INTEGER(event, field) {
+  onChange_INTEGER(event, field, ind) {
     let str = event.target.value;
-    let value = !!str ? parseFloat(str) : '';
-    this.setFieldValue(field, value);
+  
+    if (field.isList) {
+      let items = this.state.fields.get(field);
+      if (!items)
+        items = [];
+    
+      if (str)
+        items[ind] = parseFloat(str);
+      else
+        items.splice(ind, 1);
+    
+      this.setFieldValue(field, items);
+    
+    } else {
+      let value = !!str ? parseFloat(str) : '';
+      this.setFieldValue(field, value);
+    }
   }
 
   onChange_INTEGER__RATING(value, field) {
@@ -554,12 +584,31 @@ export default class ContentEdit extends Component {
 
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
+            let innerFloat;
+  
+            if (field.isList) {
+              if (!value)
+                value = [];
+  
+              innerFloat = [];
+              for (let i = 0; i < value.length + 1; i++) {
+                innerFloat.push(<InputControl type="big"
+                                              key={i}
+                                              value={value[i]}
+                                              readOnly={!isEditable}
+                                              onChange={e => this.onChange_FLOAT(e, field, i)}/>);
+              }
+    
+            } else {
+              innerFloat = <InputControl type="big"
+                                         value={value}
+                                         readOnly={!isEditable}
+                                         onChange={e => this.onChange_FLOAT(e, field)}/>;
+            }
+  
             inner = (
               <div styleName="input-wrapper">
-                <InputControl type="big"
-                              value={value}
-                              readOnly={!isEditable}
-                              onChange={e => this.onChange_FLOAT(e, field)} />
+                {innerFloat}
               </div>
             );
             break;
@@ -572,12 +621,31 @@ export default class ContentEdit extends Component {
 
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
+            let innerInt;
+  
+            if (field.isList) {
+              if (!value)
+                value = [];
+  
+              innerInt = [];
+              for (let i = 0; i < value.length + 1; i++) {
+                innerInt.push(<InputControl type="big"
+                                              key={i}
+                                              value={value[i]}
+                                              readOnly={!isEditable}
+                                              onChange={e => this.onChange_INTEGER(e, field, i)}/>);
+              }
+    
+            } else {
+              innerInt = <InputControl type="big"
+                                         value={value}
+                                         readOnly={!isEditable}
+                                         onChange={e => this.onChange_INTEGER(e, field)}/>;
+            }
+  
             inner = (
               <div styleName="input-wrapper">
-                <InputControl type="big"
-                              value={value}
-                              readOnly={!isEditable}
-                              onChange={e => this.onChange_INTEGER(e, field)}/>
+                {innerInt}
               </div>
             );
             break;
