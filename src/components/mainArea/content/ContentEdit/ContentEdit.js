@@ -212,7 +212,7 @@ export default class ContentEdit extends Component {
     return isValid;
   };
 
-  onChange_STRING(event, field, ind) {
+  onChange_STRING(event, field, i) {
     let value = event.target.value;
     
     if (field.isList) {
@@ -221,9 +221,9 @@ export default class ContentEdit extends Component {
         items = [];
       
       if (value)
-        items[ind] = value;
+        items[i] = value;
       else
-        items.splice(ind, 1);
+        items.splice(i, 1);
       
       this.setFieldValue(field, items);
       
@@ -237,18 +237,84 @@ export default class ContentEdit extends Component {
   onChange_LONG_TEXT_WYSIWYG(text, field) {
     this.setFieldValue(field, text);
   }
+
+  onKeyDown_TEXT = (event, field, i, inputs) => {
+    event.stopPropagation();
+    
+    let code = event.keyCode;
+    
+    //Enter or down pressed
+    if (code == 13 || code == 40) {
+      if (inputs[i + 1]) {
+        let items = this.state.fields.get(field);
+        if (items[i])
+          inputs[i + 1].focus();
+      }
+    
+    //up pressed
+    } else if (code == 38) {
+      if (i)
+        inputs[--i].focus();
+    }
+  };
   
-  onBlur_INTEGER(event, field, ind) {
+  onKeyDown_INTEGER = (event, field, i, inputs) => {
+    event.stopPropagation();
+    
+    let code = event.keyCode;
+    
+    //Enter or down pressed
+    if (code == 13 || code == 40) {
+      if (inputs[i + 1]) {
+        let items = this.state.fields.get(field);
+        let num = parseInt(items[i]);
+        if (!isNaN(num))
+          inputs[i + 1].focus();
+        else
+          this.onBlur_INTEGER(field, i);
+      }
+      
+      //up pressed
+    } else if (code == 38) {
+      if (i)
+        inputs[--i].focus();
+    }
+  };
+  
+  onKeyDown_FLOAT = (event, field, i, inputs) => {
+    event.stopPropagation();
+    
+    let code = event.keyCode;
+    
+    //Enter or down pressed
+    if (code == 13 || code == 40) {
+      if (inputs[i + 1]) {
+        let items = this.state.fields.get(field);
+        let num = parseFloat(items[i]);
+        if (!isNaN(num))
+          inputs[i + 1].focus();
+        else
+          this.onBlur_FLOAT(field, i);
+      }
+      
+      //up pressed
+    } else if (code == 38) {
+      if (i)
+        inputs[--i].focus();
+    }
+  };
+  
+  onBlur_INTEGER(field, i) {
     if (field.isList) {
       let items = this.state.fields.get(field);
       if (!items)
         return;
       
-      let num = parseInt(items[ind]);
+      let num = parseInt(items[i]);
       if (!isNaN(num))
-        items[ind] = num;
+        items[i] = num;
       else
-        items.splice(ind, 1);
+        items.splice(i, 1);
       
       this.setFieldValue(field, items);
       
@@ -258,17 +324,17 @@ export default class ContentEdit extends Component {
     }
   }
   
-  onBlur_FLOAT(event, field, ind) {
+  onBlur_FLOAT(field, i) {
     if (field.isList) {
       let items = this.state.fields.get(field);
       if (!items)
         return;
     
-      let num = parseFloat(items[ind]);
+      let num = parseFloat(items[i]);
       if (!isNaN(num))
-        items[ind] = num;
+        items[i] = num;
       else
-        items.splice(ind, 1);
+        items.splice(i, 1);
     
       this.setFieldValue(field, items);
     
@@ -475,12 +541,15 @@ export default class ContentEdit extends Component {
                 value = [];
   
               innerStr = [];
+              let inputs = [];
               for (let i = 0; i < value.length + 1; i++) {
                 innerStr.push(<InputControl type="big"
                                             key={i}
                                             value={value[i]}
                                             readOnly={!isEditable}
-                                            onChange={e => this.onChange_SHORT_TEXT(e, field, i)}/>);
+                                            DOMRef={inp => inputs[i] = inp}
+                                            onChange={e => this.onChange_STRING(e, field, i)}
+                                            onKeyDown={e => this.onKeyDown_TEXT(e, field, i, inputs)} />);
               }
               
             } else {
@@ -584,13 +653,16 @@ export default class ContentEdit extends Component {
                 value = [];
   
               innerFloat = [];
+              let inputs = [];
               for (let i = 0; i < value.length + 1; i++) {
                 innerFloat.push(<InputControl type="big"
                                               key={i}
                                               value={value[i]}
                                               readOnly={!isEditable}
                                               onChange={e => this.onChange_STRING(e, field, i)}
-                                              onBlur={e => this.onBlur_FLOAT(e, field, i)} />);
+                                              DOMRef={inp => inputs[i] = inp}
+                                              onBlur={e => this.onBlur_FLOAT(field, i)}
+                                              onKeyDown={e => this.onKeyDown_FLOAT(e, field, i, inputs)} />);
               }
     
             } else {
@@ -598,7 +670,7 @@ export default class ContentEdit extends Component {
                                          value={value}
                                          readOnly={!isEditable}
                                          onChange={e => this.onChange_STRING(e, field)}
-                                         onBlur={e => this.onBlur_FLOAT(e, field)} />;
+                                         onBlur={e => this.onBlur_FLOAT(field)} />;
             }
   
             inner = (
@@ -623,13 +695,16 @@ export default class ContentEdit extends Component {
                 value = [];
   
               innerInt = [];
+              let inputs = [];
               for (let i = 0; i < value.length + 1; i++) {
                 innerInt.push(<InputControl type="big"
                                             key={i}
                                             value={value[i]}
                                             readOnly={!isEditable}
                                             onChange={e => this.onChange_STRING(e, field, i)}
-                                            onBlur={e => this.onBlur_INTEGER(e, field, i)} />);
+                                            DOMRef={inp => inputs[i] = inp}
+                                            onBlur={e => this.onBlur_INTEGER(field, i)}
+                                            onKeyDown={e => this.onKeyDown_INTEGER(e, field, i, inputs)} />);
               }
     
             } else {
@@ -637,7 +712,8 @@ export default class ContentEdit extends Component {
                                        value={value}
                                        readOnly={!isEditable}
                                        onChange={e => this.onChange_STRING(e, field)}
-                                       onBlur={e => this.onBlur_INTEGER(e, field)} />;
+                                       onBlur={e => this.onBlur_INTEGER(field)}
+                                       onKeyDown={this.onKeyDown} />;
             }
   
             inner = (
