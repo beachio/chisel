@@ -94,8 +94,8 @@ export const routing = store => next => action => {
     } else if (URL.indexOf(USERSPACE_URL) == -1) {
       browserHistory.replace(USERSPACE_URL);
     }
+    
     setFromURL();
-  
     scrollUp();
   }
   
