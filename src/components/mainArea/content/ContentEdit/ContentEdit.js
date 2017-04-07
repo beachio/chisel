@@ -212,7 +212,7 @@ export default class ContentEdit extends Component {
     return isValid;
   };
 
-  onChange_SHORT_TEXT(event, field, ind) {
+  onChange_STRING(event, field, ind) {
     let value = event.target.value;
     
     if (field.isList) {
@@ -234,54 +234,47 @@ export default class ContentEdit extends Component {
     }
   }
 
-  onChange_LONG_TEXT(event, field) {
-    let value = event.target.value;
-    this.setFieldValue(field, value);
-  }
-
   onChange_LONG_TEXT_WYSIWYG(text, field) {
     this.setFieldValue(field, text);
   }
-
-  onChange_FLOAT(event, field, ind) {
-    let str = event.target.value;
-    
+  
+  onBlur_INTEGER(event, field, ind) {
     if (field.isList) {
       let items = this.state.fields.get(field);
       if (!items)
-        items = [];
-  
-      if (str)
-        items[ind] = parseFloat(str);
+        return;
+      
+      let num = parseInt(items[ind]);
+      if (!isNaN(num))
+        items[ind] = num;
       else
         items.splice(ind, 1);
-  
+      
       this.setFieldValue(field, items);
-  
+      
     } else {
-      let value = !!str ? parseFloat(str) : '';
-      this.setFieldValue(field, value);
+      let str = this.state.fields.get(field);
+      this.setFieldValue(field, parseInt(str));
     }
   }
-
-  onChange_INTEGER(event, field, ind) {
-    let str = event.target.value;
   
+  onBlur_FLOAT(event, field, ind) {
     if (field.isList) {
       let items = this.state.fields.get(field);
       if (!items)
-        items = [];
+        return;
     
-      if (str)
-        items[ind] = parseFloat(str);
+      let num = parseFloat(items[ind]);
+      if (!isNaN(num))
+        items[ind] = num;
       else
         items.splice(ind, 1);
     
       this.setFieldValue(field, items);
     
     } else {
-      let value = !!str ? parseFloat(str) : '';
-      this.setFieldValue(field, value);
+      let str = this.state.fields.get(field);
+      this.setFieldValue(field, parseFloat(str));
     }
   }
 
@@ -494,7 +487,7 @@ export default class ContentEdit extends Component {
               innerStr = <InputControl type="big"
                                        value={value}
                                        readOnly={!isEditable}
-                                       onChange={e => this.onChange_SHORT_TEXT(e, field)}/>;
+                                       onChange={e => this.onChange_STRING(e, field)}/>;
             }
   
             inner = (
@@ -510,7 +503,7 @@ export default class ContentEdit extends Component {
                 <InputControl type="big"
                               value={value}
                               readOnly={!isEditable}
-                              onChange={e => this.onChange_SHORT_TEXT(e, field)} />
+                              onChange={e => this.onChange_STRING(e, field)} />
               </div>
             );
             break;
@@ -521,7 +514,7 @@ export default class ContentEdit extends Component {
                 <InputControl type="big"
                               value={value}
                               readOnly={!isEditable}
-                              onChange={e => this.onChange_SHORT_TEXT(e, field)} />
+                              onChange={e => this.onChange_STRING(e, field)} />
               </div>
             );
             break;
@@ -539,7 +532,7 @@ export default class ContentEdit extends Component {
                 <InputControl type="big"
                               value={value}
                               readOnly={!isEditable}
-                              onChange={e => this.onChange_LONG_TEXT(e, field)} />
+                              onChange={e => this.onChange_STRING(e, field)} />
               </div>
             );
             break;
@@ -549,7 +542,7 @@ export default class ContentEdit extends Component {
               <textarea styleName="textarea"
                         value={value}
                         readOnly={!isEditable}
-                        onChange={e => this.onChange_LONG_TEXT(e, field)} />
+                        onChange={e => this.onChange_STRING(e, field)} />
             );
             break;
 
@@ -596,14 +589,16 @@ export default class ContentEdit extends Component {
                                               key={i}
                                               value={value[i]}
                                               readOnly={!isEditable}
-                                              onChange={e => this.onChange_FLOAT(e, field, i)}/>);
+                                              onChange={e => this.onChange_STRING(e, field, i)}
+                                              onBlur={e => this.onBlur_FLOAT(e, field, i)} />);
               }
     
             } else {
               innerFloat = <InputControl type="big"
                                          value={value}
                                          readOnly={!isEditable}
-                                         onChange={e => this.onChange_FLOAT(e, field)}/>;
+                                         onChange={e => this.onChange_STRING(e, field)}
+                                         onBlur={e => this.onBlur_FLOAT(e, field)} />;
             }
   
             inner = (
@@ -630,17 +625,19 @@ export default class ContentEdit extends Component {
               innerInt = [];
               for (let i = 0; i < value.length + 1; i++) {
                 innerInt.push(<InputControl type="big"
-                                              key={i}
-                                              value={value[i]}
-                                              readOnly={!isEditable}
-                                              onChange={e => this.onChange_INTEGER(e, field, i)}/>);
+                                            key={i}
+                                            value={value[i]}
+                                            readOnly={!isEditable}
+                                            onChange={e => this.onChange_STRING(e, field, i)}
+                                            onBlur={e => this.onBlur_INTEGER(e, field, i)} />);
               }
     
             } else {
               innerInt = <InputControl type="big"
-                                         value={value}
-                                         readOnly={!isEditable}
-                                         onChange={e => this.onChange_INTEGER(e, field)}/>;
+                                       value={value}
+                                       readOnly={!isEditable}
+                                       onChange={e => this.onChange_STRING(e, field)}
+                                       onBlur={e => this.onBlur_INTEGER(e, field)} />;
             }
   
             inner = (
