@@ -271,21 +271,26 @@ export default class ContentEdit extends Component {
   }
 
   onMediaChoose(field) {
-    this.props.showModal(MODAL_TYPE_MEDIA, mItem => {
-      let item = new MediaItemData();
-      item.file = mItem.file;
-      item.name = mItem.name;
-      item.type = mItem.type;
-      item.assigned = true;
-      this.props.addMediaItem(item);
-  
-      if (field.isList) {
-        let items = this.state.fields.get(field);
-        if (!items)
-          items = [];
-        this.setFieldValue(field, items.concat(item), true);
-      } else {
-        this.setFieldValue(field, item, true);
+    this.props.showModal(MODAL_TYPE_MEDIA, {
+      isMult: field.isList,
+      
+      callback: itemsSrc => {
+        let newItems = [];
+        for (let itemSrc of itemsSrc) {
+          let item = itemSrc.clone();
+          this.props.addMediaItem(item);
+          newItems.push(item);
+        }
+        
+        if (field.isList) {
+          let items = this.state.fields.get(field);
+          if (!items)
+            items = [];
+          this.setFieldValue(field, items.concat(newItems), true);
+          
+        } else {
+          this.setFieldValue(field, newItems[0], true);
+        }
       }
     });
   }
@@ -302,11 +307,7 @@ export default class ContentEdit extends Component {
       item.type = file.type;
       addMediaItem(item);
   
-      item = new MediaItemData();
-      item.file = parseFile;
-      item.name = trimFileExt(file.name);
-      item.type = file.type;
-      item.assigned = true;
+      item = item.clone();
       addMediaItem(item);
   
       if (field.isList) {
@@ -619,7 +620,7 @@ export default class ContentEdit extends Component {
                 <input type="text"
                        placeholder="Image name"
                        onChange={e => this.onMediaNameChange(e, field, item)}
-                       value={value.name} />
+                       value={item.name} />
                 <InlineSVG styleName="media-cross"
                            src={require('./cross.svg')}
                            onClick={() => this.onMediaClear(field, item)} />

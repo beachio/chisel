@@ -11,10 +11,11 @@ import styles from './MediaModal.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class MediaModal extends Component {
   state = {
-    selectedItem: null,
+    selectedItems: [],
     searchText: ''
   };
   
+  isMult = false;
   active = false;
   onClose = null;
   callback = null;
@@ -23,8 +24,10 @@ export default class MediaModal extends Component {
 
 
   componentWillMount() {
+    this.isMult = this.props.params.isMult;
+    this.callback = this.props.params.callback;
     this.onClose = this.props.onClose;
-    this.callback = this.props.params;
+    
     this.items = store.getState().media.items;
   }
   
@@ -56,10 +59,10 @@ export default class MediaModal extends Component {
     let searchText = event.target.value;
     
     //if there is no selected item in search results, reset selected item
-    if (this.state.selectedItem && !this.searchMatch(searchText, this.state.selectedItem.name))
-      this.setState({searchText, selectedItem: null});
-    else
-      this.setState({searchText});
+    //if (this.state.selectedItem && !this.searchMatch(searchText, this.state.selectedItem.name))
+      this.setState({searchText, selectedItems: []});
+    //else
+      //this.setState({searchText});
   };
   
   searchMatch(search, target) {
@@ -69,14 +72,24 @@ export default class MediaModal extends Component {
   }
 
   onSelect = (item) => {
-    this.setState({selectedItem: item});
+    if (this.isMult) {
+      let items = this.state.selectedItems;
+      let ind = items.indexOf(item);
+      if (ind == -1)
+        items.push(item);
+      else
+        items.splice(ind, 1);
+      this.setState({selectedItems: items});
+    } else {
+      this.setState({selectedItems: [item]});
+    }
   };
 
   onChoose = () => {
-    if (!this.state.selectedItem || !this.active)
+    if (!this.state.selectedItems.length || !this.active)
       return;
-    
-    this.callback(this.state.selectedItem);
+  
+    this.callback(this.state.selectedItems);
     this.onClose();
   };
 
@@ -104,7 +117,7 @@ export default class MediaModal extends Component {
                       imgStyle = {backgroundImage: `url(${item.file.url()})`};
   
                     let itemStyle = "media-item";
-                    if (item === this.state.selectedItem)
+                    if (this.state.selectedItems.indexOf(item) != -1)
                       itemStyle += " media-chosen";
   
                     return (
@@ -125,7 +138,7 @@ export default class MediaModal extends Component {
               <div styleName="buttons-inner">
                 <ButtonControl color="green"
                                value="Choose"
-                               disabled={!this.state.selectedItem}
+                               disabled={!this.state.selectedItems.length}
                                onClick={this.onChoose} />
               </div>
               <div styleName="buttons-inner">

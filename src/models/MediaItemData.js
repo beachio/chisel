@@ -36,4 +36,13 @@ export class MediaItemData {
     this.origin.set("file",     this.file);
     this.origin.set("assigned", this.assigned);
   }
+  
+  clone() {
+    let item = new MediaItemData();
+    item.file = this.file;
+    item.name = this.name;
+    item.type = this.type;
+    item.assigned = true;
+    return item;
+  }
 }
