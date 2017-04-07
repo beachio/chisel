@@ -10,7 +10,7 @@ import styles from './InputControl.sss';
 export default class InputControl extends Component {
   render() {
     const {label, type, value, placeholder, onChange, readOnly, autoFocus, onKeyDown, DOMRef, icon, onIconClick} = this.props;
-    let inputValue = value;
+    let inputValue = value ? value : ``;
     let inputPlaceholder = placeholder;
     let inputStyles = 'input';
 

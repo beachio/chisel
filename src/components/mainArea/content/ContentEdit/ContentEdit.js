@@ -212,12 +212,26 @@ export default class ContentEdit extends Component {
     return isValid;
   };
 
-  onChange_SHORT_TEXT(event, field) {
+  onChange_SHORT_TEXT(event, field, ind) {
     let value = event.target.value;
-    this.setFieldValue(field, value);
-  
-    if (field.isTitle)
-      this.updateItemTitle(value);
+    
+    if (field.isList) {
+      let items = this.state.fields.get(field);
+      if (!items)
+        items = [];
+      
+      if (value)
+        items[ind] = value;
+      else
+        items.splice(ind, 1);
+      
+      this.setFieldValue(field, items);
+      
+    } else {
+      this.setFieldValue(field, value);
+      if (field.isTitle)
+        this.updateItemTitle(value);
+    }
   }
 
   onChange_LONG_TEXT(event, field) {
@@ -431,12 +445,31 @@ export default class ContentEdit extends Component {
 
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
+            let innerStr;
+            
+            if (field.isList) {
+              if (!value)
+                value = [];
+  
+              innerStr = [];
+              for (let i = 0; i < value.length + 1; i++) {
+                innerStr.push(<InputControl type="big"
+                                            key={i}
+                                            value={value[i]}
+                                            readOnly={!isEditable}
+                                            onChange={e => this.onChange_SHORT_TEXT(e, field, i)}/>);
+              }
+              
+            } else {
+              innerStr = <InputControl type="big"
+                                       value={value}
+                                       readOnly={!isEditable}
+                                       onChange={e => this.onChange_SHORT_TEXT(e, field)}/>;
+            }
+  
             inner = (
               <div styleName="input-wrapper">
-                <InputControl type="big"
-                              value={value}
-                              readOnly={!isEditable}
-                              onChange={e => this.onChange_SHORT_TEXT(e, field)} />
+                {innerStr}
               </div>
             );
             break;
