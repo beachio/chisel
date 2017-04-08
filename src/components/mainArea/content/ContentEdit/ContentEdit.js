@@ -785,11 +785,10 @@ export default class ContentEdit extends Component {
 
       case ftps.FIELD_TYPE_MEDIA:
         let oneMediaBlock = item => {
-          let key = item.origin && item.origin.id ? item.origin.id : Math.random();
           let imgStyle = {backgroundImage: `url(${item.file.url()})`};
           
           return (
-            <div styleName="media-item" key={key}>
+            <div styleName="media-item" key={item.key}>
               <div styleName="media-header">
                 <input type="text"
                        placeholder="Image name"
