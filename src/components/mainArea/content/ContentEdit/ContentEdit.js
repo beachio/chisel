@@ -29,7 +29,7 @@ import {MediaItemData} from 'models/MediaItemData';
 import styles from './ContentEdit.sss';
 
 
-const AUTOSAVE_TIMEOUT = 3000;
+const AUTOSAVE_TIMEOUT = 2000;
 
   
 @CSSModules(styles, {allowMultiple: true})
@@ -43,6 +43,7 @@ export default class ContentEdit extends Component {
   item = null;
   fieldsArchive = new Map();
   timeout = 0;
+  mediaTimeouts = {};
   addingItem = null;
   
 
@@ -121,7 +122,7 @@ export default class ContentEdit extends Component {
           switch (field.appearance) {
             case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
               if (!value && field.isTitle)
-                error = "Title must be!";
+                error = "Title must be present!";
               break;
 
             case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
@@ -439,7 +440,12 @@ export default class ContentEdit extends Component {
   onMediaNameChange(event, field, item) {
     let value = event.target.value;
     item.name = value;
-    this.props.updateMediaItem(item);
+    
+    if (!this.mediaTimeouts[item.key])
+      this.mediaTimeouts[item.key] = setTimeout(() => {
+        this.props.updateMediaItem(item);
+        this.mediaTimeouts[item.key] = 0;
+      }, AUTOSAVE_TIMEOUT);
     
     this.setFieldValue(field, this.state.fields.get(field));
   }
