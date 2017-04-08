@@ -1,9 +1,9 @@
 import {Parse} from 'parse';
 
-import {getContentByO} from 'utils/data';
-
 
 export const MEDIA_TYPE__IMAGE = "MEDIA_TYPE__IMAGE";
+
+let keys = [];
 
 export class MediaItemData {
   static get OriginClass() {return Parse.Object.extend("MediaItem");}
@@ -15,6 +15,13 @@ export class MediaItemData {
   file = null;
   assigned = false;
   
+  key = 0;
+  
+  constructor() {
+    while (keys.indexOf(this.key) != -1)
+      this.key++;
+    keys.push(this.key);
+  }
   
   setOrigin(origin) {
     this.origin = origin;
