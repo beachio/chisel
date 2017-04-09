@@ -14,39 +14,40 @@ import styles from './MainArea.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export class MainArea extends Component  {
+export class MainArea extends Component {
+  cmpNoSites = (
+    <div className="mainArea">
+      <div className="start-working">
+        <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
+        Add new site to start working
+        <div className="hint">Find "Add new site" button at sidebar</div>
+      </div>
+    </div>
+  );
+  
+  cmpNoRights = (
+    <div className="mainArea">
+      <div className="start-working">
+        <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
+        You don't have rights to access this section.
+      </div>
+    </div>
+  );
+  
   render() {
     const {models, nav} = this.props;
-
+  
     let title = "Userspace - Chisel";
     
-    let cmpNoSites = (
-      <div className="mainArea">
-        <div className="start-working">
-          <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
-          Add new site to start working
-          <div className="hint">Find "Add new site" button at sidebar</div>
-        </div>
-      </div>
-    );
-  
-    let cmpNoRights = (
-      <div className="mainArea">
-        <div className="start-working">
-          <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
-          You don't have rights to access this section.
-        </div>
-      </div>
-    );
-    
     let area = <SiteLoader/>;
+    
     if (nav.initEnded) {
       let curSite = models.currentSite;
       let role = models.role;
       
       if (curSite) {
         title = `Site: ${curSite.name} - Chisel`;
-        area = cmpNoRights;
+        area = this.cmpNoRights;
         
         switch (nav.openedPage) {
           case PAGE_API:
@@ -66,7 +67,7 @@ export class MainArea extends Component  {
         }
         
       } else {
-        area = cmpNoSites;
+        area = this.cmpNoSites;
       }
     }
     

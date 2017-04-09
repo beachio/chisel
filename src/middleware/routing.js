@@ -5,16 +5,7 @@ import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';
 import {setCurrentSite} from 'ducks/models';
 import {getSiteByNameId} from 'utils/data';
 import {scrollUp} from 'utils/common';
-import {INIT_END} from 'ducks/nav';
-
-
-export const SIGN_URL = '/sign';
-export const USERSPACE_URL = '/userspace';
-export const SITE_URL = '/site~';
-export const MODELS_URL = '/models';
-export const MODEL_URL = '/model~';
-export const CONTENT_URL = '/content';
-export const ITEM_URL = '/item~';
+import {INIT_END, SIGN_URL, SITE_URL, USERSPACE_URL} from 'ducks/nav';
 
 
 let URL = '/';
@@ -47,11 +38,11 @@ export const routing = store => next => action => {
     let cSite = store.getState().models.currentSite;
     let setDefaultSite = () => {
       if (cSite) {
-        browserHistory.replace(`${USERSPACE_URL}${SITE_URL}${cSite.nameId}`);
+        browserHistory.replace(`/${USERSPACE_URL}/${SITE_URL}${cSite.nameId}`);
       } else {
         let sites = store.getState().models.sites;
         if (sites.length)
-          browserHistory.replace(`${USERSPACE_URL}${SITE_URL}${sites[0].nameId}`);
+          browserHistory.replace(`/${USERSPACE_URL}/${SITE_URL}${sites[0].nameId}`);
       }
     };
     
@@ -83,7 +74,7 @@ export const routing = store => next => action => {
   
   if (action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) {
     if (!action.authorized)
-      browserHistory.push(SIGN_URL);
+      browserHistory.push(`/${SIGN_URL}`);
   }
   
   if (action.type == INIT_END) {
@@ -92,7 +83,7 @@ export const routing = store => next => action => {
       nonAuthURL = null;
       browserHistory.replace(URL);
     } else if (URL.indexOf(USERSPACE_URL) == -1) {
-      browserHistory.replace(USERSPACE_URL);
+      browserHistory.replace(`/${USERSPACE_URL}`);
     }
     
     setFromURL();
@@ -100,5 +91,5 @@ export const routing = store => next => action => {
   }
   
   if (action.type == LOGOUT)
-    browserHistory.push(SIGN_URL);
+    browserHistory.push(`/${SIGN_URL}`);
 };

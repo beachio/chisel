@@ -6,8 +6,7 @@ import {Helmet} from "react-helmet";
 
 import Model from 'components/mainArea/models/Model/Model';
 import {setCurrentModel, updateModel, deleteField} from 'ducks/models';
-import {showAlert, showModal} from 'ducks/nav';
-import {USERSPACE_URL, SITE_URL, MODELS_URL, MODEL_URL} from 'middleware/routing';
+import {showAlert, showModal, USERSPACE_URL, SITE_URL, MODELS_URL, MODEL_URL} from 'ducks/nav';
 import {getModelByNameId} from 'utils/data';
 
 
@@ -16,13 +15,11 @@ export class ModelContainer extends Component  {
   model = null;
   
   componentWillMount() {
-    const MODEL = 'model~';
-  
     let modelId = this.props.params.model;
-    if (modelId.indexOf(MODEL) != 0)
+    if (modelId.indexOf(MODEL_URL) != 0)
       return;
   
-    modelId = modelId.slice(MODEL.length);
+    modelId = modelId.slice(MODEL_URL.length);
   
     const {setCurrentModel} = this.props.modelsActions;
     const {models} = this.props;
@@ -49,7 +46,7 @@ export class ModelContainer extends Component  {
     let title = `Model: ${this.model.name} - Site: ${curSite.name} - Chisel`;
     
     let closeModel = () => browserHistory.push(
-      `${USERSPACE_URL}${SITE_URL}${curSite.nameId}${MODELS_URL}`);
+      `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${MODELS_URL}`);
     
     return (
       <div className="mainArea">

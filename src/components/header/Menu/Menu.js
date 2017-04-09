@@ -2,8 +2,8 @@ import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import {Link} from 'react-router';
 
-import {USERSPACE_URL, SITE_URL} from 'middleware/routing';
-import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING} from 'ducks/nav';
+import {PAGE_MODELS, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING,
+  USERSPACE_URL, SITE_URL, MODELS_URL, CONTENT_URL, API_URL, SETTINGS_URL, SHARING_URL} from 'ducks/nav';
 
 import styles, {activeItem} from './Menu.sss';
 
@@ -13,15 +13,15 @@ export default class Menu extends Component  {
   render() {
     const {siteNameId, openedPage} = this.props;
     
-    let prefix = `${USERSPACE_URL}${SITE_URL}${siteNameId}/`;
+    let prefix = `/${USERSPACE_URL}/${SITE_URL}${siteNameId}/`;
 
     return (
       <div styleName="menu">
-        <Link styleName="button" className={openedPage == PAGE_MODELS   ? activeItem : ''} to={prefix + 'models'}  >Models</Link>
-        <Link styleName="button" className={openedPage == PAGE_CONTENT  ? activeItem : ''} to={prefix + 'content'} >Content</Link>
-        <Link styleName="button" className={openedPage == PAGE_API      ? activeItem : ''} to={prefix + 'api'}     >API</Link>
-        <Link styleName="button" className={openedPage == PAGE_SETTINGS ? activeItem : ''} to={prefix + 'settings'}>Settings</Link>
-        <Link styleName="button" className={openedPage == PAGE_SHARING  ? activeItem : ''} to={prefix + 'sharing'} >Sharing</Link>
+        <Link styleName="button" className={openedPage == PAGE_MODELS   ? activeItem : ''} to={prefix + MODELS_URL}  >Models</Link>
+        <Link styleName="button" className={openedPage == PAGE_CONTENT  ? activeItem : ''} to={prefix + CONTENT_URL} >Content</Link>
+        <Link styleName="button" className={openedPage == PAGE_API      ? activeItem : ''} to={prefix + API_URL}     >API</Link>
+        <Link styleName="button" className={openedPage == PAGE_SETTINGS ? activeItem : ''} to={prefix + SETTINGS_URL}>Settings</Link>
+        <Link styleName="button" className={openedPage == PAGE_SHARING  ? activeItem : ''} to={prefix + SHARING_URL} >Sharing</Link>
       </div>
     );
   }

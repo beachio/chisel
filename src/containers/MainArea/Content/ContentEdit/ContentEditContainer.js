@@ -8,8 +8,7 @@ import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import {ROLE_DEVELOPER} from 'models/UserData';
 import {setCurrentItem, addItem, updateItem} from 'ducks/content';
 import {addMediaItem, updateMediaItem, removeMediaItem} from 'ducks/media';
-import {showModal} from 'ducks/nav';
-import {USERSPACE_URL, SITE_URL, CONTENT_URL, ITEM_URL} from 'middleware/routing';
+import {showModal, CONTENT_URL, ITEM_URL, USERSPACE_URL, SITE_URL} from 'ducks/nav';
 import {getContentByModelAndId} from 'utils/data';
 
 
@@ -24,14 +23,13 @@ export class ContentEditContainer extends Component {
   }
   
   setItem(nameId) {
-    const ITEM = 'item~';
     const {setCurrentItem} = this.props.contentActions;
     const {content} = this.props;
   
-    if (nameId.indexOf(ITEM) != 0)
+    if (nameId.indexOf(ITEM_URL) != 0)
       return;
   
-    nameId = nameId.slice(ITEM.length);
+    nameId = nameId.slice(ITEM_URL.length);
     
     let modelNameId = nameId.slice(0, nameId.indexOf('~'));
     let itemId = nameId.slice(nameId.indexOf('~') + 1);
@@ -57,13 +55,13 @@ export class ContentEditContainer extends Component {
       return null;
     
     let closeItem = () => browserHistory.push(
-      `${USERSPACE_URL}${SITE_URL}${curSite.nameId}${CONTENT_URL}`);
+      `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${CONTENT_URL}`);
     
     let gotoItem = item => {
       let modelId = item.model.nameId;
       let itemId = item.origin.id;
       browserHistory.push(
-        `${USERSPACE_URL}${SITE_URL}${curSite.nameId}${CONTENT_URL}${ITEM_URL}${modelId}~${itemId}`);
+        `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${CONTENT_URL}/${ITEM_URL}${modelId}~${itemId}`);
     };
   
     let lastItem = content.items[content.items.length - 1];

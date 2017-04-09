@@ -13,6 +13,7 @@ import App from 'containers/app';
 import configureStore from 'store/configureStore';
 import {initApp} from 'utils/initialize';
 import {scrollUp} from 'utils/common';
+import {setCurrentPage, PAGE_MODELS, PAGE_PROFILE, PAGE_CONTENT, PAGE_API, PAGE_SETTINGS, PAGE_SHARING} from 'ducks/nav';
 
 import APIPage from 'containers/MainArea/API/APIPage';
 import Sign from 'containers/Sign/Sign';
@@ -30,19 +31,21 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 initApp();
 
+let SCP = page => store.dispatch(setCurrentPage(page));
+
 ReactDOM.render(
   <Provider store={store}>
     <Router onUpdate={scrollUp} history={history}>
       <Route path='/' component={App}>
         <Route path="/sign" component={Sign} />
         <Route path="/userspace" component={MainArea} >
-          <Route path="/userspace/:site/models" component={ModelsListContainer}/>
-          <Route path="/userspace/:site/models/:model" component={ModelContainer}/>
-          <Route path="/userspace/:site/content" component={ContentListContainer}/>
-          <Route path="/userspace/:site/content/:item" component={ContentEditContainer}/>
-          <Route path="/userspace/:site/api" component={APIPage}/>
-          <Route path="/userspace/:site/settings" component={SettingsContainer}/>
-          <Route path="/userspace/:site/sharing" component={SharingContainer}/>
+          <Route path="/userspace/:site/models"         component={ModelsListContainer}   onEnter={() => SCP(PAGE_MODELS)} />
+          <Route path="/userspace/:site/models/:model"  component={ModelContainer}        onEnter={() => SCP(PAGE_MODELS)} />
+          <Route path="/userspace/:site/content"        component={ContentListContainer}  onEnter={() => SCP(PAGE_CONTENT)} />
+          <Route path="/userspace/:site/content/:item"  component={ContentEditContainer}  onEnter={() => SCP(PAGE_CONTENT)} />
+          <Route path="/userspace/:site/api"            component={APIPage}               onEnter={() => SCP(PAGE_API)} />
+          <Route path="/userspace/:site/settings"       component={SettingsContainer}     onEnter={() => SCP(PAGE_SETTINGS)} />
+          <Route path="/userspace/:site/sharing"        component={SharingContainer}      onEnter={() => SCP(PAGE_SHARING)} />
           <Redirect from='/userspace/:site' to='/userspace/:site/models' />
         </Route>
         <IndexRedirect to='/userspace' />

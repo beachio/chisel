@@ -6,8 +6,7 @@ import {Helmet} from "react-helmet";
 
 import ModelsList from 'components/mainArea/models/ModelsList/ModelsList';
 import {addModel, deleteModel} from 'ducks/models';
-import {showAlert} from 'ducks/nav';
-import {USERSPACE_URL, SITE_URL, MODELS_URL, MODEL_URL} from 'middleware/routing';
+import {showAlert, USERSPACE_URL, SITE_URL, MODELS_URL, MODEL_URL} from 'ducks/nav';
 
 
 export class ModelsListContainer extends Component  {
@@ -23,7 +22,7 @@ export class ModelsListContainer extends Component  {
     let title = `Models - Site: ${curSite.name} - Chisel`;
     
     let gotoModel = model => browserHistory.push(
-      `${USERSPACE_URL}${SITE_URL}${curSite.nameId}${MODELS_URL}${MODEL_URL}${model.nameId}`);
+      `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${MODELS_URL}/${MODEL_URL}${model.nameId}`);
     
     return (
       <div className="mainArea">

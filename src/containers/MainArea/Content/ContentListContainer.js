@@ -3,13 +3,12 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import {Helmet} from "react-helmet";
+import InlineSVG from 'svg-inline-react';
 
 import ContentList from 'components/mainArea/content/ContentList/ContentList';
 import {ROLE_OWNER, ROLE_ADMIN, ROLE_DEVELOPER} from 'models/UserData';
 import {addItem, deleteItem} from 'ducks/content';
-import {showAlert} from 'ducks/nav';
-import InlineSVG from 'svg-inline-react';
-import {USERSPACE_URL, SITE_URL, CONTENT_URL, ITEM_URL} from 'middleware/routing';
+import {showAlert, CONTENT_URL, ITEM_URL, USERSPACE_URL, SITE_URL} from 'ducks/nav';
 
 
 export class ContentListContainer extends Component  {
@@ -42,7 +41,7 @@ export class ContentListContainer extends Component  {
         let modelId = item.model.nameId;
         let itemId = item.origin.id;
         browserHistory.push(
-          `${USERSPACE_URL}${SITE_URL}${curSite.nameId}${CONTENT_URL}${ITEM_URL}${modelId}~${itemId}`);
+          `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${CONTENT_URL}/${ITEM_URL}${modelId}~${itemId}`);
       };
       
       cmpContent = <ContentList items={items}
