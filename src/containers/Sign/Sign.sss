@@ -11,57 +11,69 @@
 
   min-width: 46%
 
-.logo
-  margin-bottom: 15px
-  text-align: center
+  .logo
+    margin-bottom: 15px
+    text-align: center
+  
+    img
+      height: 35px
+  
+  .title
+    font-size: 20px
+    color: #666666
+    letter-spacing: 0.83px
+    
+  .form
+    margin-top: 25px
+    display: flex
+    flex-flow: column nowrap
+    width: 100%
+    justify-content: space-between
+    align-items: center
+  
+    .description
+      color: #666666
+      font-size: 12px
+      text-align: center
+  
+    .input
+      background: #FFFFFF
+      border: none
+      border-bottom: 1px #ccc solid
+      border-radius: 2px
+      line-height: 38px
+      padding: 0 40px 0 9px
+      outline: none
+      width: 50%
+      font-size: 13px
+      color: #333333
+      letter-spacing: 0.5px
+    
+      margin-top: 20px
+    
+      transition: border-color 0.2s ease
+      will-change: border-color
+    
+      &:focus
+        border-color: #5CA6DC
+    
+      &:first-child
+        margin-top: 0
+    
+    .button
+      margin-top: 30px
+  
+    .errors
+      min-height: 35px
+      margin-top: 15px
 
-  img
-    height: 35px
-
-.form
-  margin-top: 25px
-  display: flex
-  flex-flow: column nowrap
-  width: 100%
-  justify-content: space-between
-  align-items: center
-
-.title
-  font-size: 20px
-  color: #666666
-  letter-spacing: 0.83px
-
-.errors
-  min-height: 35px
-
-.error
-  color: #ff5656
-  font-size: 12px
-  text-align: center
-
-.input
-  background: #FFFFFF
-  border: none;
-  border-bottom: 1px #ccc solid;
-  border-radius: 2px
-  line-height: 38px
-  padding: 0 40px 0 9px
-  outline: none
-  width: 50%
-  font-size: 13px
-  color: #333333
-  letter-spacing: 0.5px
-
-  margin-top: 20px
-
-  transition: border-color 0.2s ease
-  will-change: border-color
-
-  &:focus
-    border-color: #5CA6DC
-
-  &:first-child
-    margin-top: 0
-
-.button
-  margin-top: 30px
+      .error
+        color: #ff5656
+        font-size: 12px
+        text-align: center
+        
+    .forgot
+      margin-top: 40px
+      color: #5DAD47
+      cursor: pointer
+      font-size: 12px

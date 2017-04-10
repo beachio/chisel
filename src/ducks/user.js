@@ -10,6 +10,7 @@ export const REGISTER_RESPONSE  = 'app/user/REGISTER_RESPONSE';
 export const LOGOUT             = 'app/user/LOGOUT';
 export const UPDATE             = 'app/user/UPDATE';
 export const UPDATE_PASSWORD    = 'app/user/UPDATE_PASSWORD';
+export const RESTORE_PASSWORD   = 'app/user/RESTORE_PASSWORD';
 
 export const ERROR_USER_EXISTS  = 'app/user/ERROR_USER_EXISTS';
 export const ERROR_WRONG_PASS   = 'app/user/ERROR_WRONG_PASS';
@@ -188,6 +189,26 @@ export function updatePassword(password) {
   localStorage.setItem('authorization', JSON.stringify({email, password}));
   
   return {type: UPDATE_PASSWORD};
+}
+
+export function restorePassword(email) {
+  if (!email)
+    return null;
+  
+  return dispatch => {
+    Parse.User.requestPasswordReset(email)
+      .then(result => {
+        dispatch({
+          type: RESTORE_PASSWORD,
+          result
+        });
+      }, error => {
+        dispatch({
+          type: RESTORE_PASSWORD,
+          error
+        });
+      });
+  };
 }
 
 const initialState = {
