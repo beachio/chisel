@@ -24,6 +24,7 @@ import ModelsListContainer from 'containers/MainArea/Models/ModelsListContainer'
 import ModelContainer from 'containers/MainArea/Models/Model/ModelContainer';
 import ContentListContainer from 'containers/MainArea/Content/ContentListContainer';
 import ContentEditContainer from 'containers/MainArea/Content/ContentEdit/ContentEditContainer';
+import UserProfile from 'containers/MainArea/UserProfile/UserProfile';
 
 
 export const store = configureStore();
@@ -39,6 +40,7 @@ ReactDOM.render(
       <Route path='/' component={App}>
         <Route path="/sign" component={Sign} />
         <Route path="/userspace" component={MainArea} >
+          <Route path="/userspace/profile"              component={UserProfile}           onEnter={() => SCP(PAGE_PROFILE)} />
           <Route path="/userspace/:site/models"         component={ModelsListContainer}   onEnter={() => SCP(PAGE_MODELS)} />
           <Route path="/userspace/:site/models/:model"  component={ModelContainer}        onEnter={() => SCP(PAGE_MODELS)} />
           <Route path="/userspace/:site/content"        component={ContentListContainer}  onEnter={() => SCP(PAGE_CONTENT)} />

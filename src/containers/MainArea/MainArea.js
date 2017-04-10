@@ -8,7 +8,7 @@ import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
 import {ROLE_ADMIN, ROLE_DEVELOPER, ROLE_OWNER} from 'models/UserData';
-import {PAGE_SHARING, PAGE_SETTINGS, PAGE_API, PAGE_MODELS, PAGE_CONTENT} from 'ducks/nav';
+import {PAGE_SHARING, PAGE_SETTINGS, PAGE_API, PAGE_MODELS, PAGE_CONTENT, PAGE_PROFILE} from 'ducks/nav';
 
 import styles from './MainArea.sss';
 
@@ -45,7 +45,10 @@ export class MainArea extends Component {
       let curSite = models.currentSite;
       let role = models.role;
       
-      if (curSite) {
+      if (nav.openedPage == PAGE_PROFILE) {
+        area = this.props.children;
+        
+      } else if (curSite) {
         title = `Site: ${curSite.name} - Chisel`;
         area = this.cmpNoRights;
         

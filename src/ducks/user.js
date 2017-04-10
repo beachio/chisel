@@ -8,6 +8,7 @@ export const LOGIN_RESPONSE     = 'app/user/LOGIN_RESPONSE';
 export const REGISTER_REQUEST   = 'app/user/REGISTER_REQUEST';
 export const REGISTER_RESPONSE  = 'app/user/REGISTER_RESPONSE';
 export const LOGOUT             = 'app/user/LOGOUT';
+export const UPDATE             = 'app/user/UPDATE';
 
 export const ERROR_USER_EXISTS  = 'app/user/ERROR_USER_EXISTS';
 export const ERROR_WRONG_PASS   = 'app/user/ERROR_WRONG_PASS';
@@ -157,11 +158,24 @@ export function getLocalStorage() {
 export function logout() {
   localStorage.clear();
   Parse.User.logOut();
-  return {
-    type: LOGOUT
-  };
+  
+  return {type: LOGOUT};
 }
 
+export function update(data) {
+  data.updateOrigin();
+  data.origin.save();
+  
+  const {email} = data;
+  let authStr = localStorage.getItem('authorization');
+  let password = JSON.parse(authStr).password;
+  localStorage.setItem('authorization', JSON.stringify({email, password}));
+  
+  return {
+    type: UPDATE,
+    data
+  };
+}
 
 const initialState = {
   localStorageReady: false,
@@ -206,6 +220,12 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         authorized: false
+      };
+      
+    case UPDATE:
+      return {
+        ...state,
+        userData: action.data
       };
 
     default:

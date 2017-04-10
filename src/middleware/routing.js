@@ -62,7 +62,7 @@ export const routing = store => next => action => {
           setDefaultSite();
       }
       
-    } else {
+    } else if (path == `/${USERSPACE_URL}`) {
       setDefaultSite();
     }
   };
