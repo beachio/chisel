@@ -18,12 +18,18 @@ export class UserProfile extends Component  {
   state = {
     firstName: '',
     lastName: '',
+    dirtyData: false,
+    
     email: '',
+    dirtyEmail: false,
+    
     serverURL: '',
-    dirty: false,
+    dirtyServer: false,
+    
     error: null
   };
   userData = null;
+  
   
   componentWillMount() {
     const {user} = this.props;
@@ -32,24 +38,47 @@ export class UserProfile extends Component  {
     this.setState({
       firstName: user.userData.firstName,
       lastName: user.userData.lastName,
+      
       email: user.email,
+      
       serverURL: currentServerURL
     });
   }
   
-  onSave = e => {
+  onSaveData = e => {
     e.preventDefault();
+    
     if (this.validate()) {
-      this.setState({dirty: false});
+      this.setState({dirtyData: false});
       
       this.userData.firstName = this.state.firstName;
       this.userData.lastName = this.state.lastName;
-      this.userData.email = this.state.email;
-      
-      changeServerURL(this.state.serverURL);
       
       const {update} = this.props.userActions;
       update(this.userData);
+    }
+  };
+  
+  onSaveEmail = e => {
+    e.preventDefault();
+    
+    if (this.validate()) {
+      this.setState({dirtyEmail: false});
+      
+      this.userData.email = this.state.email;
+      
+      const {update} = this.props.userActions;
+      update(this.userData);
+    }
+  };
+  
+  onSaveServer = e => {
+    e.preventDefault();
+    
+    if (this.validate()) {
+      this.setState({dirtyServer: false});
+      
+      changeServerURL(this.state.serverURL);
     }
   };
   
@@ -59,22 +88,22 @@ export class UserProfile extends Component  {
   
   onChangeFirstName = event => {
     let firstName = event.target.value;
-    this.setState({firstName, dirty: true, error: null});
+    this.setState({firstName, dirtyData: true, error: null});
   };
   
   onChangeLastName = event => {
     let lastName = event.target.value;
-    this.setState({lastName, dirty: true, error: null});
+    this.setState({lastName, dirtyData: true, error: null});
   };
   
   onChangeEmail = event => {
     let email = event.target.value;
-    this.setState({email, dirty: true, error: null});
+    this.setState({email, dirtyEmail: true, error: null});
   };
   
   onChangeServerURL = event => {
     let serverURL = event.target.value;
-    this.setState({serverURL, dirty: true, error: null});
+    this.setState({serverURL, dirtyServer: true, error: null});
   };
   
   render() {
@@ -85,52 +114,77 @@ export class UserProfile extends Component  {
         </Helmet>
         
         <ContainerComponent title="User profile">
-          <form styleName="content" onSubmit={this.onSave}>
-            <div styleName="field">
-              <div styleName="field-title">First name</div>
-              <div styleName="input-wrapper">
-                <InputControl type="big"
-                              value={this.state.firstName}
-                              onChange={this.onChangeFirstName} />
+          <div styleName="content">
+            
+            <form styleName="section" onSubmit={this.onSaveData}>
+              <div styleName="section-header">Your personal data</div>
+              <div styleName="field">
+                <div styleName="field-title">First name</div>
+                <div styleName="input-wrapper">
+                  <InputControl type="big"
+                                value={this.state.firstName}
+                                onChange={this.onChangeFirstName} />
+                </div>
               </div>
-            </div>
-            <div styleName="field">
-              <div styleName="field-title">Last name</div>
-              <div styleName="input-wrapper">
-                <InputControl type="big"
-                              value={this.state.lastName}
-                              onChange={this.onChangeLastName} />
+              <div styleName="field">
+                <div styleName="field-title">Last name</div>
+                <div styleName="input-wrapper">
+                  <InputControl type="big"
+                                value={this.state.lastName}
+                                onChange={this.onChangeLastName} />
+                </div>
               </div>
-            </div>
-            <div styleName="field">
-              <div styleName="field-title">Email</div>
-              <div styleName="input-wrapper">
-                <InputControl type="big"
-                              value={this.state.email}
-                              onChange={this.onChangeEmail} />
+              <div styleName="buttons-wrapper">
+                <ButtonControl color="green"
+                               type="submit"
+                               disabled={!this.state.dirtyData || this.state.error}
+                               value="Update personal data"/>
               </div>
-            </div>
-            <div styleName="field">
-              <div styleName="field-title">Server URL</div>
-              <div styleName="input-wrapper">
-                <InputControl type="big"
-                              value={this.state.serverURL}
-                              onChange={this.onChangeServerURL} />
+            </form>
+  
+            <form styleName="section" onSubmit={this.onSaveEmail}>
+              <div styleName="section-header">Your email</div>
+              <div styleName="field">
+                <div styleName="field-title">Email</div>
+                <div styleName="input-wrapper">
+                  <InputControl type="big"
+                                value={this.state.email}
+                                onChange={this.onChangeEmail} />
+                </div>
               </div>
-            </div>
-            <div styleName="buttons-wrapper">
-              <ButtonControl color="green"
-                             type="submit"
-                             disabled={!this.state.dirty || this.state.error}
-                             value="Save changes"/>
-            </div>
+              <div styleName="buttons-wrapper">
+                <ButtonControl color="green"
+                               type="submit"
+                               disabled={!this.state.dirtyEmail || this.state.error}
+                               value="Change email"/>
+              </div>
+            </form>
+  
+            <form styleName="section" onSubmit={this.onSaveServer}>
+              <div styleName="section-header">Parse server data</div>
+              <div styleName="field">
+                <div styleName="field-title">Server URL</div>
+                <div styleName="input-wrapper">
+                  <InputControl type="big"
+                                value={this.state.serverURL}
+                                onChange={this.onChangeServerURL} />
+                </div>
+              </div>
+              <div styleName="buttons-wrapper">
+                <ButtonControl color="green"
+                               type="submit"
+                               disabled={!this.state.dirtyServer || this.state.error}
+                               value="Update server data"/>
+              </div>
+            </form>
+            
             {
               this.state.error &&
                 <div styleName="field-error">
                   {this.state.error}
                 </div>
             }
-          </form>
+          </div>
         </ContainerComponent>
       </div>
     );
