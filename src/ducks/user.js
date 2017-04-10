@@ -3,11 +3,11 @@ import {Parse} from 'parse';
 import {UserData} from 'models/UserData';
 
 
-export const LOGIN_REQUEST          = 'app/user/LOGIN_REQUEST';
-export const LOGIN_RESPONSE         = 'app/user/LOGIN_RESPONSE';
-export const REGISTER_REQUEST       = 'app/user/REGISTER_REQUEST';
-export const REGISTER_RESPONSE      = 'app/user/REGISTER_RESPONSE';
-export const LOGOUT                 = 'app/user/LOGOUT';
+export const LOGIN_REQUEST      = 'app/user/LOGIN_REQUEST';
+export const LOGIN_RESPONSE     = 'app/user/LOGIN_RESPONSE';
+export const REGISTER_REQUEST   = 'app/user/REGISTER_REQUEST';
+export const REGISTER_RESPONSE  = 'app/user/REGISTER_RESPONSE';
+export const LOGOUT             = 'app/user/LOGOUT';
 
 export const ERROR_USER_EXISTS  = 'app/user/ERROR_USER_EXISTS';
 export const ERROR_WRONG_PASS   = 'app/user/ERROR_WRONG_PASS';
@@ -92,6 +92,7 @@ export function loginOrRegister(email, password) {
           authorized: true,
           userData
         });
+        
       }, () => {
         let user = new Parse.User();
         user.set("username", email);
@@ -101,6 +102,7 @@ export function loginOrRegister(email, password) {
         user.set("lastName", "Daniel");
         user
           .signUp()
+          
           .then(() => {
             Parse.User.logIn(email, password)
               .then(() => {
@@ -114,6 +116,7 @@ export function loginOrRegister(email, password) {
               }, () => {
                 console.log('FATAL ERROR!!! AAAAAA!!!');
               });
+            
           }, () => {
             dispatch({
               type: LOGIN_RESPONSE,
@@ -125,34 +128,29 @@ export function loginOrRegister(email, password) {
 }
 
 export function getLocalStorage() {
+  let authStr = localStorage.getItem('authorization');
+  if (!authStr)
+    return {type: LOGIN_RESPONSE};
+  
   return dispatch => {
-    let authStr = localStorage.getItem('authorization');
-    if (authStr) {
-      let auth = JSON.parse(authStr);
-      dispatch({
-        type: LOGIN_REQUEST,
-        email: auth.email,
-        password: auth.password
-      });
+    let auth = JSON.parse(authStr);
+    dispatch({
+      type: LOGIN_REQUEST,
+      email: auth.email,
+      password: auth.password
+    });
 
-      Parse.User.logIn(auth.email, auth.password)
-        .then(() => {
-          let userData = new UserData().setOrigin();
-          dispatch({
-            type: LOGIN_RESPONSE,
-            authorized: true,
-            userData
-          });
-        }, () => {
-          dispatch({
-            type: LOGIN_RESPONSE
-          });
+    Parse.User.logIn(auth.email, auth.password)
+      .then(() => {
+        let userData = new UserData().setOrigin();
+        dispatch({
+          type: LOGIN_RESPONSE,
+          authorized: true,
+          userData
         });
-    } else {
-      dispatch({
-        type: LOGIN_RESPONSE
+      }, () => {
+        dispatch({type: LOGIN_RESPONSE});
       });
-    }
   };
 }
 

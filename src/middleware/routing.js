@@ -26,6 +26,11 @@ let getNameId = (path, type) => {
 
 
 export const routing = store => next => action => {
+  if (action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) {
+    if (!action.authorized)
+      browserHistory.push(`/${SIGN_URL}`);
+  }
+  
   next(action);
   
   let setFromURL = () => {
@@ -70,11 +75,6 @@ export const routing = store => next => action => {
   
     if (store.getState().nav.initEnded)
       setFromURL();
-  }
-  
-  if (action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) {
-    if (!action.authorized)
-      browserHistory.push(`/${SIGN_URL}`);
   }
   
   if (action.type == INIT_END) {
