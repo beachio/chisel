@@ -156,7 +156,7 @@ export function getLocalStorage() {
 }
 
 export function logout() {
-  localStorage.clear();
+  localStorage.setItem('authorization', '');
   Parse.User.logOut();
   
   return {type: LOGOUT};

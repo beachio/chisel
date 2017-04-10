@@ -8,6 +8,7 @@ import InputControl from 'components/elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {update} from 'ducks/user';
+import {currentServerURL, changeServerURL} from 'utils/initialize';
 
 import styles from './UserProfile.sss';
 
@@ -18,6 +19,7 @@ export class UserProfile extends Component  {
     firstName: '',
     lastName: '',
     email: '',
+    serverURL: '',
     dirty: false,
     error: null
   };
@@ -30,7 +32,8 @@ export class UserProfile extends Component  {
     this.setState({
       firstName: user.userData.firstName,
       lastName: user.userData.lastName,
-      email: user.email
+      email: user.email,
+      serverURL: currentServerURL
     });
   }
   
@@ -42,6 +45,8 @@ export class UserProfile extends Component  {
       this.userData.firstName = this.state.firstName;
       this.userData.lastName = this.state.lastName;
       this.userData.email = this.state.email;
+      
+      changeServerURL(this.state.serverURL);
       
       const {update} = this.props.userActions;
       update(this.userData);
@@ -65,6 +70,11 @@ export class UserProfile extends Component  {
   onChangeEmail = event => {
     let email = event.target.value;
     this.setState({email, dirty: true, error: null});
+  };
+  
+  onChangeServerURL = event => {
+    let serverURL = event.target.value;
+    this.setState({serverURL, dirty: true, error: null});
   };
   
   render() {
@@ -98,6 +108,14 @@ export class UserProfile extends Component  {
                 <InputControl type="big"
                               value={this.state.email}
                               onChange={this.onChangeEmail} />
+              </div>
+            </div>
+            <div styleName="field">
+              <div styleName="field-title">Server URL</div>
+              <div styleName="input-wrapper">
+                <InputControl type="big"
+                              value={this.state.serverURL}
+                              onChange={this.onChangeServerURL} />
               </div>
             </div>
             <div styleName="buttons-wrapper">

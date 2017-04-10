@@ -4,14 +4,22 @@ import {store} from '../index';
 import {getLocalStorage} from 'ducks/user';
 
 
-//const SERVER = "https://parse.nuwe.co:49178/parse";
-const SERVER = "http://localhost:1337/parse";
+//const SERVER_URL = "https://parse.nuwe.co:49178/parse";
+const SERVER_URL = "http://localhost:1337/parse";
 const APP_ID = "d5701a37cf242d5ee398005d997e4229";
+
+export let currentServerURL = SERVER_URL;
 
 
 function subInitParse() {
+  let serverLS = localStorage.getItem('parseServerURL');
+  if (serverLS)
+    currentServerURL = serverLS;
+  else
+    localStorage.setItem('parseServerURL', currentServerURL);
+  
   Parse.initialize(APP_ID);
-  Parse.serverURL = SERVER;
+  Parse.serverURL = currentServerURL;
 }
 
 export function initApp() {
@@ -26,4 +34,13 @@ export function initApp() {
         window.location = "/";
       }, 1000);
     });
+}
+
+export function changeServerURL(URL) {
+  if (!URL)
+    return;
+  
+  currentServerURL = URL;
+  localStorage.setItem('parseServerURL', URL);
+  Parse.serverURL = URL;
 }
