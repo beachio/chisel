@@ -9,6 +9,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {update} from 'ducks/user';
 import {currentServerURL, changeServerURL} from 'utils/initialize';
+import {checkURL} from 'utils/common';
 
 import styles from './UserProfile.sss';
 
@@ -19,14 +20,15 @@ export class UserProfile extends Component  {
     firstName: '',
     lastName: '',
     dirtyData: false,
+    errorData: null,
     
     email: '',
     dirtyEmail: false,
+    errorEmail: null,
     
     serverURL: '',
     dirtyServer: false,
-    
-    error: null
+    errorServer: null
   };
   userData = null;
   
@@ -48,7 +50,7 @@ export class UserProfile extends Component  {
   onSaveData = e => {
     e.preventDefault();
     
-    if (this.validate()) {
+    if (this.validateData()) {
       this.setState({dirtyData: false});
       
       this.userData.firstName = this.state.firstName;
@@ -62,7 +64,7 @@ export class UserProfile extends Component  {
   onSaveEmail = e => {
     e.preventDefault();
     
-    if (this.validate()) {
+    if (this.validateEmail()) {
       this.setState({dirtyEmail: false});
       
       this.userData.email = this.state.email;
@@ -75,35 +77,48 @@ export class UserProfile extends Component  {
   onSaveServer = e => {
     e.preventDefault();
     
-    if (this.validate()) {
+    if (this.validateServer()) {
       this.setState({dirtyServer: false});
       
       changeServerURL(this.state.serverURL);
     }
   };
   
-  validate() {
+  validateData() {
+    return true;
+  }
+  
+  validateEmail() {
+    return true;
+  }
+  
+  validateServer() {
+    if (!checkURL(this.state.serverURL)) {
+      this.setState({errorServer: `Invalid URL!`});
+      return false;
+    }
+    
     return true;
   }
   
   onChangeFirstName = event => {
     let firstName = event.target.value;
-    this.setState({firstName, dirtyData: true, error: null});
+    this.setState({firstName, dirtyData: true, errorData: null});
   };
   
   onChangeLastName = event => {
     let lastName = event.target.value;
-    this.setState({lastName, dirtyData: true, error: null});
+    this.setState({lastName, dirtyData: true, errorData: null});
   };
   
   onChangeEmail = event => {
     let email = event.target.value;
-    this.setState({email, dirtyEmail: true, error: null});
+    this.setState({email, dirtyEmail: true, errorEmail: null});
   };
   
   onChangeServerURL = event => {
     let serverURL = event.target.value;
-    this.setState({serverURL, dirtyServer: true, error: null});
+    this.setState({serverURL, dirtyServer: true, errorServer: null});
   };
   
   render() {
@@ -137,9 +152,15 @@ export class UserProfile extends Component  {
               <div styleName="buttons-wrapper">
                 <ButtonControl color="green"
                                type="submit"
-                               disabled={!this.state.dirtyData || this.state.error}
+                               disabled={!this.state.dirtyData || this.state.errorData}
                                value="Update personal data"/>
               </div>
+              {
+                this.state.errorData &&
+                  <div styleName="field-error">
+                    {this.state.errorData}
+                  </div>
+              }
             </form>
   
             <form styleName="section" onSubmit={this.onSaveEmail}>
@@ -155,9 +176,15 @@ export class UserProfile extends Component  {
               <div styleName="buttons-wrapper">
                 <ButtonControl color="green"
                                type="submit"
-                               disabled={!this.state.dirtyEmail || this.state.error}
+                               disabled={!this.state.dirtyEmail || this.state.errorEmail}
                                value="Change email"/>
               </div>
+              {
+                this.state.errorEmail &&
+                  <div styleName="field-error">
+                    {this.state.errorEmail}
+                  </div>
+              }
             </form>
   
             <form styleName="section" onSubmit={this.onSaveServer}>
@@ -173,17 +200,17 @@ export class UserProfile extends Component  {
               <div styleName="buttons-wrapper">
                 <ButtonControl color="green"
                                type="submit"
-                               disabled={!this.state.dirtyServer || this.state.error}
+                               disabled={!this.state.dirtyServer || this.state.errorServer}
                                value="Update server data"/>
               </div>
+              {
+                this.state.errorServer &&
+                  <div styleName="field-error">
+                    {this.state.errorServer}
+                  </div>
+              }
             </form>
             
-            {
-              this.state.error &&
-                <div styleName="field-error">
-                  {this.state.error}
-                </div>
-            }
           </div>
         </ContainerComponent>
       </div>
