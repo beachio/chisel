@@ -36,6 +36,11 @@ export function checkURL(str) {
   return pattern.test(str);
 }
 
+export function checkEmail(str) {
+  let pattern = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+  return pattern.test(str);
+}
+
 export function getRelativeTime(date) {
   let now = new Date();
   

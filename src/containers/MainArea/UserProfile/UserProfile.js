@@ -9,7 +9,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {update, updatePassword} from 'ducks/user';
 import {currentServerURL, changeServerURL} from 'utils/initialize';
-import {checkURL} from 'utils/common';
+import {checkURL, checkEmail} from 'utils/common';
 
 import styles from './UserProfile.sss';
 
@@ -105,6 +105,11 @@ export class UserProfile extends Component  {
   }
   
   validateEmail() {
+    if (!checkEmail(this.state.email)) {
+      this.setState({errorEmail: `Invalid email!`});
+      return false;
+    }
+  
     return true;
   }
   
