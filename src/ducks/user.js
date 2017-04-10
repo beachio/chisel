@@ -100,8 +100,6 @@ export function loginOrRegister(email, password) {
         user.set("username", email);
         user.set("email", email);
         user.set("password", password);
-        user.set("firstName", "Jack");
-        user.set("lastName", "Daniel");
         user
           .signUp()
           

@@ -16,6 +16,10 @@ export default class User extends Component {
 
     let link = `/${USERSPACE_URL}/${PROFILE_URL}/`;
     
+    let name = userData.email;
+    if (userData.firstName || userData.lastName)
+      name = `${userData.firstName} ${userData.lastName}`;
+    
     return (
       <div styleName="user">
         <Link styleName="profile" to={link} activeClassName={activeBla}>
@@ -23,7 +27,7 @@ export default class User extends Component {
             <Gravatar email={userData.email} styleName="gravatar"/>
           </div>
           <div styleName="avatar-name">
-            {userData.firstName} {userData.lastName}
+            {name}
           </div>
         </Link>
         <div styleName="settings">
