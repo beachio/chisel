@@ -9,34 +9,33 @@ import styles from './InputControl.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class InputControl extends Component {
   render() {
-    const {label, type, value, placeholder, onChange, readOnly, autoFocus, onKeyDown, onBlur, DOMRef, icon, onIconClick} = this.props;
+    let {label, type, value, placeholder, onChange, readOnly, autoFocus, onKeyDown, onBlur, DOMRef, icon, onIconClick, inputType} = this.props;
     
-    let inputValue = value;
     if (value == undefined || value == null)
-      inputValue = ``;
+      value = ``;
+  
+    if (!inputType)
+      inputType = `text`;
     
-    let inputPlaceholder = placeholder;
     let inputStyles = 'input';
-
     if (type === 'big')
       inputStyles = 'input-big';
-
     if (readOnly)
       inputStyles = 'input input-readOnly';
 
     let iconEl;
     if (icon)
       iconEl = (<div onClick={onIconClick} styleName={icon}><IconsComponent icon={icon} /></div>);
-
+  
     return (
       <div styleName="InputControl">
         {iconEl}
-        <input type="text"
+        <input type={inputType}
                styleName={inputStyles}
                icon={icon}
-               value={inputValue}
+               value={value}
                autoFocus={autoFocus}
-               placeholder={inputPlaceholder}
+               placeholder={placeholder}
                onChange={onChange}
                onBlur={onBlur}
                onKeyDown={onKeyDown}

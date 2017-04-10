@@ -7,7 +7,7 @@ import CSSModules from 'react-css-modules';
 import InputControl from 'components/elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
-import {update} from 'ducks/user';
+import {update, updatePassword} from 'ducks/user';
 import {currentServerURL, changeServerURL} from 'utils/initialize';
 import {checkURL} from 'utils/common';
 
@@ -25,6 +25,11 @@ export class UserProfile extends Component  {
     email: '',
     dirtyEmail: false,
     errorEmail: null,
+    
+    password: '',
+    passwordConfirm: '',
+    dirtyPassword: false,
+    errorPassword: null,
     
     serverURL: '',
     dirtyServer: false,
@@ -74,6 +79,17 @@ export class UserProfile extends Component  {
     }
   };
   
+  onSavePassword = e => {
+    e.preventDefault();
+    
+    if (this.validatePassword()) {
+      const {updatePassword} = this.props.userActions;
+      updatePassword(this.state.password);
+  
+      this.setState({password: '', passwordConfirm: '', dirtyPassword: false});
+    }
+  };
+  
   onSaveServer = e => {
     e.preventDefault();
     
@@ -89,6 +105,15 @@ export class UserProfile extends Component  {
   }
   
   validateEmail() {
+    return true;
+  }
+  
+  validatePassword() {
+    if (this.state.password != this.state.passwordConfirm) {
+      this.setState({errorPassword: `Passwords don't match!`});
+      return false;
+    }
+    
     return true;
   }
   
@@ -114,6 +139,18 @@ export class UserProfile extends Component  {
   onChangeEmail = event => {
     let email = event.target.value;
     this.setState({email, dirtyEmail: true, errorEmail: null});
+  };
+  
+  onChangePassword = event => {
+    let password = event.target.value;
+    let dirtyPassword = !!password || !!this.state.passwordConfirm;
+    this.setState({password, dirtyPassword, errorPassword: null});
+  };
+  
+  onChangePasswordConfirm = event => {
+    let passwordConfirm = event.target.value;
+    let dirtyPassword = !!passwordConfirm || !!this.state.password;
+    this.setState({passwordConfirm, dirtyPassword, errorPassword: null});
   };
   
   onChangeServerURL = event => {
@@ -187,6 +224,40 @@ export class UserProfile extends Component  {
               }
             </form>
   
+            <form styleName="section" onSubmit={this.onSavePassword}>
+              <div styleName="section-header">Changing password</div>
+              <div styleName="field">
+                <div styleName="field-title">Enter new password</div>
+                <div styleName="input-wrapper">
+                  <InputControl type="big"
+                                inputType="password"
+                                value={this.state.password}
+                                onChange={this.onChangePassword} />
+                </div>
+              </div>
+              <div styleName="field">
+                <div styleName="field-title">Confirm new password</div>
+                <div styleName="input-wrapper">
+                  <InputControl type="big"
+                                inputType="password"
+                                value={this.state.passwordConfirm}
+                                onChange={this.onChangePasswordConfirm} />
+                </div>
+              </div>
+              <div styleName="buttons-wrapper">
+                <ButtonControl color="green"
+                               type="submit"
+                               disabled={!this.state.dirtyPassword || this.state.errorPassword}
+                               value="Set new password"/>
+              </div>
+              {
+                this.state.errorPassword &&
+                  <div styleName="field-error">
+                    {this.state.errorPassword}
+                  </div>
+              }
+            </form>
+  
             <form styleName="section" onSubmit={this.onSaveServer}>
               <div styleName="section-header">Parse server data</div>
               <div styleName="field">
@@ -226,7 +297,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators({update}, dispatch)
+    userActions: bindActionCreators({update, updatePassword}, dispatch)
   };
 }
 

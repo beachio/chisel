@@ -9,6 +9,7 @@ export const REGISTER_REQUEST   = 'app/user/REGISTER_REQUEST';
 export const REGISTER_RESPONSE  = 'app/user/REGISTER_RESPONSE';
 export const LOGOUT             = 'app/user/LOGOUT';
 export const UPDATE             = 'app/user/UPDATE';
+export const UPDATE_PASSWORD    = 'app/user/UPDATE_PASSWORD';
 
 export const ERROR_USER_EXISTS  = 'app/user/ERROR_USER_EXISTS';
 export const ERROR_WRONG_PASS   = 'app/user/ERROR_WRONG_PASS';
@@ -177,6 +178,20 @@ export function update(data) {
   };
 }
 
+export function updatePassword(password) {
+  if (!password)
+    return null;
+  
+  let userData = Parse.User.current();
+  userData.set(`password`, password);
+  userData.save();
+  
+  let email = userData.get('email');
+  localStorage.setItem('authorization', JSON.stringify({email, password}));
+  
+  return {type: UPDATE_PASSWORD};
+}
+
 const initialState = {
   localStorageReady: false,
   fetchingRequest: false,
@@ -227,7 +242,10 @@ export default function userReducer(state = initialState, action) {
         ...state,
         userData: action.data
       };
-
+  
+    case UPDATE_PASSWORD:
+      return {...state};
+      
     default:
       return state;
   }
