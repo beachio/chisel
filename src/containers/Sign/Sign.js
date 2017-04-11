@@ -5,36 +5,52 @@ import CSSModules from 'react-css-modules';
 import {Helmet} from "react-helmet";
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
-import {loginOrRegister, restorePassword, ERROR_WRONG_PASS} from 'ducks/user';
+import {login, register, restorePassword, ERROR_USER_EXISTS, ERROR_WRONG_PASS, NO_ERROR} from 'ducks/user';
 
 import styles from './Sign.sss';
 
 
-const MODE_SIGN           = 'MODE_SIGN';
+const MODE_LOGIN          = 'MODE_LOGIN';
+const MODE_REG            = 'MODE_REG';
+const MODE_REG_MAIL       = 'MODE_REG_MAIL';
 const MODE_FORGOT         = 'MODE_FORGOT';
 const MODE_FORGOT_SENDED  = 'MODE_FORGOT_SENDED';
 
 @CSSModules(styles, {allowMultiple: true})
 export class Sign extends Component  {
   state = {
-    mode: MODE_SIGN,
+    mode: MODE_LOGIN,
     
     email: '',
     password: '',
-    emptyFields: false,
-    authError: null
+    passwordConfirm: '',
+    
+    authError: null,
+    lock: false
   };
+  
+  elmEmail;
+  elmPassword;
+  elmPasswordConfirm;
+  
 
   componentWillReceiveProps(nextProps) {
+    let authError = nextProps.authError;
+    
+    let mode = this.state.mode;
+    if (mode == MODE_REG && nextProps.authError == NO_ERROR)
+      mode = MODE_REG_MAIL;
+    
     this.setState({
-      authError: nextProps.authError
+      authError,
+      lock: !authError,
+      mode
     });
   }
 
   onEmailChange = event => {
     this.setState({
       email: event.target.value,
-      emptyFields: false,
       authError: null
     });
   };
@@ -42,145 +58,223 @@ export class Sign extends Component  {
   onPasswordChange = event => {
     this.setState({
       password: event.target.value,
-      emptyFields: false,
+      authError: null
+    });
+  };
+  
+  onPasswordConfirmChange = event => {
+    this.setState({
+      passwordConfirm: event.target.value,
       authError: null
     });
   };
 
-  onSubmit = event => {
+  onLogin = event => {
     event.preventDefault();
+  
+    if (!this.getLoginAvail())
+      return false;
     
-    const {loginOrRegister} = this.props.userActions;
-    if (this.state.email.length && this.state.password.length)
-      loginOrRegister(this.state.email, this.state.password);
-    else
-      this.setState({emptyFields: true});
+    const {login} = this.props.userActions;
+    login(this.state.email, this.state.password);
+    this.setState({lock: true});
     
     return false;
   };
   
-  onForgot = () => {
-    this.setState({mode: MODE_FORGOT, emptyFields: false, authError: null});
-  };
+  onReg = event => {
+    event.preventDefault();
+    
+    if (!this.getRegAvail())
+      return false;
   
-  onReturnSign = () => {
-    this.setState({mode: MODE_SIGN, emptyFields: false, authError: null});
+    const {register} = this.props.userActions;
+    register(this.state.email, this.state.password);
+    this.setState({lock: true});
+  
+    return false;
   };
   
   onRestore = event => {
     event.preventDefault();
     
-    if (!this.state.email) {
-      this.setState({emptyFields: true});
+    if (!this.getForgotAvail())
       return false;
-    }
     
     const {restorePassword} = this.props.userActions;
     restorePassword(this.state.email);
     this.setState({mode: MODE_FORGOT_SENDED});
     return false;
   };
-
+  
+  getLoginAvail() {
+    return !this.state.lock &&
+      this.state.email &&
+      this.state.password;
+  }
+  
+  getRegAvail() {
+    return !this.state.lock &&
+      this.state.email &&
+      this.state.password &&
+      this.state.password == this.state.passwordConfirm;
+  }
+  
+  getForgotAvail() {
+    return !this.state.lock &&
+      this.state.email;
+  }
+  
   render() {
-    let content = (
-      <form styleName="form" onSubmit={this.onSubmit}>
-        <input styleName="input"
-               type="text"
-               value={this.state.email}
-               placeholder="Enter email"
-               onChange={this.onEmailChange} />
-        <input styleName="input"
-               type="password"
-               value={this.state.password}
-               placeholder="Enter password"
-               onChange={this.onPasswordChange} />
-        <div styleName="button">
-          <ButtonControl color="green"
-                         type="submit"
-                         value="Sign in / Sign up" />
-        </div>
+    this.elmEmail = <input styleName="input"
+                           type="text"
+                           value={this.state.email}
+                           placeholder="Enter email"
+                           onChange={this.onEmailChange} />;
   
-        <div styleName="errors">
-          {
-            this.state.authError ==  ERROR_WRONG_PASS &&
-              <div styleName="error">Wrong email or password!</div>
-          }
-          {
-            this.state.emptyFields &&
-              <div styleName="error">You must type both fields!</div>
-          }
-        </div>
+    this.elmPassword = <input styleName="input"
+                              type="password"
+                              value={this.state.password}
+                              placeholder="Enter password"
+                              onChange={this.onPasswordChange} />;
   
-        <div styleName="forgot" onClick={this.onForgot}>
-          Forgot password?
-        </div>
-      </form>
-    );
+    this.elmPasswordConfirm = <input styleName="input"
+                                     type="password"
+                                     value={this.state.passwordConfirm}
+                                     placeholder="Confirm password"
+                                     onChange={this.onPasswordConfirmChange} />;
     
-    if (this.state.mode == MODE_FORGOT)
-      content = (
-        <form styleName="form" onSubmit={this.onRestore}>
-          <div styleName="description">
-            Type your email, and we will send your a link to reset your password.
-          </div>
-          <input styleName="input"
-                 type="text"
-                 value={this.state.email}
-                 placeholder="Enter email"
-                 onChange={this.onEmailChange} />
-          <div styleName="button">
-            <ButtonControl color="green"
-                           type="submit"
-                           value="Restore password" />
-          </div>
+    let content;
+    
+    switch (this.state.mode) {
+      
+      case MODE_LOGIN:
+        content = (
+          <form styleName="form" onSubmit={this.onLogin}>
+            {this.elmEmail}
+            {this.elmPassword}
+            
+            <div styleName="button">
+              <ButtonControl color="green"
+                             type="submit"
+                             disabled={!this.getLoginAvail()}
+                             value="Log in" />
+            </div>
+    
+            <div styleName="errors">
+              {
+                this.state.authError == ERROR_WRONG_PASS &&
+                  <div styleName="error">Wrong email or password!</div>
+              }
+            </div>
   
-          <div styleName="errors">
-            {
-              this.state.authError ==  ERROR_WRONG_PASS &&
-                <div styleName="error">Wrong email!</div>
-            }
-            {
-              this.state.emptyFields &&
-                <div styleName="error">You must type both fields</div>
-            }
-          </div>
+            <div styleName="forgot" onClick={() => this.setState({mode: MODE_FORGOT, authError: null, password: ''})}>
+              Forgot password?
+            </div>
+            <div styleName="forgot" onClick={() => this.setState({mode: MODE_REG, authError: null, password: ''})}>
+              Registration
+            </div>
+          </form>
+        );
+        break;
   
-          <div styleName="forgot" onClick={this.onReturnSign}>
-            Return to authorization
-          </div>
-        </form>
-      );
-  
-    if (this.state.mode == MODE_FORGOT_SENDED)
-      content = (
-        <form styleName="form" onSubmit={this.onRestore}>
-          <div styleName="description">
-            The mail have sended. Check your inbox.
-          </div>
+      case MODE_REG:
+        content = (
+          <form styleName="form" onSubmit={this.onReg}>
+            {this.elmEmail}
+            {this.elmPassword}
+            {this.elmPasswordConfirm}
+            
+            <div styleName="button">
+              <ButtonControl color="green"
+                             type="submit"
+                             disabled={!this.getRegAvail()}
+                             value="Register" />
+            </div>
         
-          <div styleName="forgot" onClick={this.onReturnSign}>
-            Return to authorization
-          </div>
-        </form>
-      );
+            <div styleName="errors">
+              {
+                this.state.authError ==  ERROR_USER_EXISTS &&
+                  <div styleName="error">This email is already in use!</div>
+              }
+            </div>
+  
+            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, authError: null, password: '', passwordConfirm: ''})}>
+              Log in
+            </div>
+          </form>
+        );
+        break;
+  
+      case MODE_REG_MAIL:
+        content = (
+          <form styleName="form" onSubmit={this.onRestore}>
+            <div styleName="description">
+              We send to your email a link to confirm your registration. Please, open it.
+            </div>
+  
+            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, authError: null})}>
+              Return to log in
+            </div>
+          </form>
+        );
+        break;
+        
+      case MODE_FORGOT:
+        content = (
+          <form styleName="form" onSubmit={this.onRestore}>
+            <div styleName="description">
+              Please, type your email, and we will send you a link to reset your password.
+            </div>
+            {this.elmEmail}
+            <div styleName="button">
+              <ButtonControl color="green"
+                             type="submit"
+                             disabled={!this.getForgotAvail()}
+                             value="Restore password" />
+            </div>
+      
+            <div styleName="errors">
+              {
+                this.state.authError == ERROR_WRONG_PASS &&
+                  <div styleName="error">Wrong email!</div>
+              }
+            </div>
+  
+            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, authError: null})}>
+              Return to log in
+            </div>
+          </form>
+        );
+        break;
+        
+      case MODE_FORGOT_SENDED:
+        content = (
+          <form styleName="form" onSubmit={this.onRestore}>
+            <div styleName="description">
+              The mail have sended. Please, check your inbox.
+            </div>
+  
+            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, authError: null})}>
+              Return to log in
+            </div>
+          </form>
+        );
+        break;
+    }
     
-    
-    let contents = (
-      <div styleName="Sign">
-        <div styleName="logo">
-          <img src={require("./chisel-logo.png")} />
-        </div>
-        <div styleName="title">Welcome to Chisel</div>
-        {content}
-      </div>
-    );
-
     return (
       <div className='container'>
         <Helmet>
           <title>Sign in / Sign up - Chisel</title>
         </Helmet>
-        {contents}
+        <div styleName="Sign">
+          <div styleName="logo">
+            <img src={require("./chisel-logo.png")} />
+          </div>
+          <div styleName="title">Welcome to Chisel</div>
+          {content}
+        </div>
       </div>
     );
   }
@@ -188,13 +282,13 @@ export class Sign extends Component  {
 
 function mapStateToProps(state) {
   return {
-    authError:     state.user.authError
+    authError: state.user.authError
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions:  bindActionCreators({loginOrRegister, restorePassword}, dispatch)
+    userActions: bindActionCreators({login, register, restorePassword}, dispatch)
   };
 }
 

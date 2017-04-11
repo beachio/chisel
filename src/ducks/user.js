@@ -14,6 +14,7 @@ export const RESTORE_PASSWORD   = 'app/user/RESTORE_PASSWORD';
 
 export const ERROR_USER_EXISTS  = 'app/user/ERROR_USER_EXISTS';
 export const ERROR_WRONG_PASS   = 'app/user/ERROR_WRONG_PASS';
+export const NO_ERROR           = 'app/user/NO_ERROR';
 
 
 export function register(email, password) {
@@ -31,18 +32,10 @@ export function register(email, password) {
     user
       .signUp()
       .then(() => {
-        Parse.User.logIn(email, password)
-          .then(() => {
-            localStorage.setItem('authorization', JSON.stringify({email, password}));
-            let userData = new UserData().setOrigin();
-            dispatch({
-              type: LOGIN_RESPONSE,
-              authorized: true,
-              userData
-            });
-          }, () => {
-            console.log('FATAL ERROR!!! AAAAAA!!!');
-          });
+        dispatch({
+          type: REGISTER_RESPONSE,
+          authError: NO_ERROR
+        });
       }, () => {
         dispatch({
           type: REGISTER_RESPONSE,
@@ -66,6 +59,7 @@ export function login(email, password) {
         let userData = new UserData().setOrigin();
         dispatch({
           type: LOGIN_RESPONSE,
+          authError: NO_ERROR,
           authorized: true,
           userData
         });
@@ -92,6 +86,7 @@ export function loginOrRegister(email, password) {
         let userData = new UserData().setOrigin();
         dispatch({
           type: LOGIN_RESPONSE,
+          authError: NO_ERROR,
           authorized: true,
           userData
         });
@@ -112,6 +107,7 @@ export function loginOrRegister(email, password) {
                 dispatch({
                   type: LOGIN_RESPONSE,
                   authorized: true,
+                  authError: NO_ERROR,
                   userData
                 });
               }, () => {
@@ -147,6 +143,7 @@ export function getLocalStorage() {
         dispatch({
           type: LOGIN_RESPONSE,
           authorized: true,
+          authError: NO_ERROR,
           userData
         });
       }, () => {
