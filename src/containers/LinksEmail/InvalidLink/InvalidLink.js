@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
+import {connect} from 'react-redux';
 import {Helmet} from "react-helmet";
 import {browserHistory} from 'react-router';
 
@@ -10,10 +11,14 @@ import styles from './InvalidLink.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export default class InvalidLink extends Component  {
+export class InvalidLink extends Component  {
   onLogin = event => {
     event.preventDefault();
-    browserHistory.replace(`/${SIGN_URL}`);
+    
+    if (this.props.authorized)
+      browserHistory.replace(`/${USERSPACE_URL}`);
+    else
+      browserHistory.replace(`/${SIGN_URL}`);
     
     return false;
   };
@@ -33,7 +38,7 @@ export default class InvalidLink extends Component  {
             <div styleName="button">
               <ButtonControl color="green"
                              type="submit"
-                             value="Return to login page" />
+                             value="OK" />
             </div>
           </form>
         </div>
@@ -41,3 +46,11 @@ export default class InvalidLink extends Component  {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    authorized: state.user.authorized
+  };
+}
+
+export default connect(mapStateToProps)(InvalidLink);
