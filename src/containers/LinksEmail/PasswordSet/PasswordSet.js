@@ -1,24 +1,37 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {Helmet} from "react-helmet";
+import {browserHistory} from 'react-router';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {currentServerURL} from 'utils/initialize';
+import {USERSPACE_URL, SIGN_URL} from 'ducks/nav';
+import {login} from 'ducks/user';
 
 import styles from './PasswordSet.sss';
 
 
+const MODE_SETUP  = 'MODE_SETUP';
+const MODE_DONE   = 'MODE_DONE';
+
 @CSSModules(styles, {allowMultiple: true})
-export default class PasswordSet extends Component  {
+export class PasswordSet extends Component  {
   state = {
+    mode: MODE_SETUP,
+    
     password: '',
-    passwordConfirm: ''
+    passwordConfirm: '',
+    
+    error: null
   };
   
   urlParams = {};
   
   componentWillMount() {
     this.parseURLParams();
+    this.setState({error: this.urlParams.error});
   }
   
   parseURLParams() {
@@ -47,27 +60,110 @@ export default class PasswordSet extends Component  {
   };
   
   onChange = event => {
-    if (!this.isAvail()) {
-      event.preventDefault();
-      return false;
-    }
+    event.preventDefault();
     
-    /*
-    if (this.props.authorized)
-      browserHistory.replace(`/${USERSPACE_URL}`);
-    else
-      browserHistory.replace(`/${SIGN_URL}`);
-    */
+    if (!this.isAvail())
+      return false;
+    
+    let params = {
+      username: this.urlParams.username,
+      token: this.urlParams.token,
+      'utf-8': '✓',
+      'new_password': this.state.password
+    };
+    
+    const form = Object
+      .keys(params)
+      .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+      .join('&');
+    
+    fetch(currentServerURL + '/apps/' + this.urlParams['id'] + '/request_password_reset', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: form
+    })
+      .then(r => {
+        console.log('good!');
+        console.log(r);
+  
+        const {login} = this.props.userActions;
+        login(this.urlParams.username, this.state.password);
+        
+        this.setState({mode: MODE_DONE});
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({error});
+      });
     
     return false;
   };
   
+  onLogin = event => {
+    event.preventDefault();
+  
+    if (this.props.authorized)
+      browserHistory.replace(`/${USERSPACE_URL}`);
+    else
+      browserHistory.replace(`/${SIGN_URL}`);
+  };
+  
   render() {
-    let action = currentServerURL + '/apps/' + this.urlParams['id'] + '/request_password_reset';
-    let username = this.urlParams['username'];
-    let token = this.urlParams['token'];
+    let content, title;
+    switch (this.state.mode) {
+      case MODE_SETUP:
+        title = `Please, type a new password for ${this.urlParams.username}:`;
+        content = (
+          <form styleName="form"
+                onSubmit={this.onChange}>
     
-    let error = this.urlParams['error'];
+            <input styleName="input"
+                   name="new_password"
+                   type="password"
+                   value={this.state.password}
+                   placeholder="Enter password"
+                   onChange={this.onPasswordChange} />
+    
+            <input styleName="input"
+                   type="password"
+                   value={this.state.passwordConfirm}
+                   placeholder="Confirm password"
+                   onChange={this.onPasswordConfirmChange} />
+    
+            <div styleName="button">
+              <ButtonControl color="green"
+                             type="submit"
+                             disabled={!this.isAvail()}
+                             value="Change password" />
+            </div>
+    
+            <div styleName="errors">
+              {
+                this.state.error &&
+                  <div styleName="error">{this.state.error}</div>
+              }
+            </div>
+          </form>
+        );
+        break;
+        
+      case MODE_DONE:
+        title = `Your password was changed successfully.`;
+        content = (
+          <form styleName="form" onSubmit={this.onLogin}>
+            <div styleName="button">
+              <ButtonControl color="green"
+                             type="submit"
+                             value="Log in" />
+            </div>
+          </form>
+        );
+        break;
+    }
+    
     
     return (
       <div className='container'>
@@ -79,53 +175,24 @@ export default class PasswordSet extends Component  {
           <div styleName="logo">
             <img src={require("assets/images/chisel-logo.png")} />
           </div>
-          <div styleName="title">Please, type a new password for {username}:</div>
-          
-          <form styleName="form"
-                action={action}
-                method='POST'
-                onSubmit={this.onChange}>
-            
-            <input styleName="input"
-                   name="new_password"
-                   type="password"
-                   value={this.state.password}
-                   placeholder="Enter password"
-                   onChange={this.onPasswordChange} />
-            
-            <input styleName="input"
-                   type="password"
-                   value={this.state.passwordConfirm}
-                   placeholder="Confirm password"
-                   onChange={this.onPasswordConfirmChange} />
-            
-            <input name='utf-8'
-                   type='hidden'
-                   value='✓' />
-            <input name="username"
-                   type="hidden"
-                   value={username} />
-            <input name="token"
-                   type="hidden"
-                   value={token} />
-            
-            <div styleName="button">
-              <ButtonControl color="green"
-                             type="submit"
-                             disabled={!this.isAvail()}
-                             value="Change password" />
-            </div>
-  
-            <div styleName="errors">
-              {
-                error &&
-                  <div styleName="error">{error}</div>
-              }
-            </div>
-          </form>
-          
+          <div styleName="title">{title}</div>
+          {content}
         </div>
       </div>
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    authorized: state.user.authorized
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators({login}, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PasswordSet);
