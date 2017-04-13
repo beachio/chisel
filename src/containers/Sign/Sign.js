@@ -270,7 +270,7 @@ export class Sign extends Component  {
         </Helmet>
         <div styleName="Sign">
           <div styleName="logo">
-            <img src={require("./chisel-logo.png")} />
+            <img src={require("assets/images/chisel-logo.png")} />
           </div>
           <div styleName="title">Welcome to Chisel</div>
           {content}

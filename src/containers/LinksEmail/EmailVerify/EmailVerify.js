@@ -32,7 +32,7 @@ export class EmailVerify extends Component  {
         </Helmet>
         <div styleName="EmailVerify">
           <div styleName="logo">
-            <img src={require("./chisel-logo.png")} />
+            <img src={require("assets/images/chisel-logo.png")} />
           </div>
           <div styleName="title">Your email was verified successfully.</div>
           <form styleName="form" onSubmit={this.onLogin}>
