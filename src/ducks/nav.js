@@ -23,6 +23,7 @@ export const MODAL_TYPE_WYSIWYG       = 'app/nav/modals/MODAL_TYPE_WYSIWYG';
 export const MODAL_TYPE_MODEL_CHOOSE  = 'app/nav/modals/MODAL_TYPE_MODEL_CHOOSE';
 
 
+export const EMAIL_V_URL = 'email-verify';
 export const SIGN_URL = 'sign';
 export const USERSPACE_URL = 'userspace';
 export const SITE_URL = 'site~';

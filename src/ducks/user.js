@@ -32,6 +32,7 @@ export function register(email, password) {
     user
       .signUp()
       .then(() => {
+        localStorage.setItem('authorization', JSON.stringify({email, password}));
         dispatch({
           type: REGISTER_RESPONSE,
           authError: NO_ERROR

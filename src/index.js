@@ -25,6 +25,7 @@ import ModelContainer from 'containers/MainArea/Models/Model/ModelContainer';
 import ContentListContainer from 'containers/MainArea/Content/ContentListContainer';
 import ContentEditContainer from 'containers/MainArea/Content/ContentEdit/ContentEditContainer';
 import UserProfile from 'containers/MainArea/UserProfile/UserProfile';
+import EmailVerify from 'containers/LinksEmail/EmailVerify/EmailVerify';
 
 
 export const store = configureStore();
@@ -38,6 +39,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router onUpdate={scrollUp} history={history}>
       <Route path='/' component={App}>
+        <Route path="/email-verify" component={EmailVerify} />
         <Route path="/sign" component={Sign} />
         <Route path="/userspace" component={MainArea} >
           <Route path="/userspace/profile"              component={UserProfile}           onEnter={() => SCP(PAGE_PROFILE)} />
