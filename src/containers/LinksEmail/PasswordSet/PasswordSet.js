@@ -86,9 +86,6 @@ export class PasswordSet extends Component  {
       body: form
     })
       .then(r => {
-        console.log('good!');
-        console.log(r);
-  
         const {login} = this.props.userActions;
         login(this.urlParams.username, this.state.password);
         
@@ -96,7 +93,7 @@ export class PasswordSet extends Component  {
       })
       .catch(error => {
         console.log(error);
-        this.setState({error});
+        //this.setState({error});
       });
     
     return false;
