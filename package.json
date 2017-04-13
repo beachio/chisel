@@ -82,6 +82,7 @@
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.0.1",
     "svg-inline-react": "^1.0.2",
-    "webpack-hot-middleware": "^2.10.0"
+    "webpack-hot-middleware": "^2.10.0",
+    "whatwg-fetch": "^2.0.3"
   }
 }
