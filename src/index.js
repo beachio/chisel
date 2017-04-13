@@ -26,6 +26,9 @@ import ContentListContainer from 'containers/MainArea/Content/ContentListContain
 import ContentEditContainer from 'containers/MainArea/Content/ContentEdit/ContentEditContainer';
 import UserProfile from 'containers/MainArea/UserProfile/UserProfile';
 import EmailVerify from 'containers/LinksEmail/EmailVerify/EmailVerify';
+import PasswordSetSuccess from 'containers/LinksEmail/PasswordSetSuccess/PasswordSetSuccess';
+import PasswordSet from 'containers/LinksEmail/PasswordSet/PasswordSet';
+import InvalidLink from 'containers/LinksEmail/InvalidLink/InvalidLink';
 
 
 export const store = configureStore();
@@ -40,6 +43,9 @@ ReactDOM.render(
     <Router onUpdate={scrollUp} history={history}>
       <Route path='/' component={App}>
         <Route path="/email-verify" component={EmailVerify} />
+        <Route path="/password-set-success" component={PasswordSetSuccess} />
+        <Route path="/password-set" component={PasswordSet} />
+        <Route path="/invalid-link" component={InvalidLink} />
         <Route path="/sign" component={Sign} />
         <Route path="/userspace" component={MainArea} >
           <Route path="/userspace/profile"              component={UserProfile}           onEnter={() => SCP(PAGE_PROFILE)} />

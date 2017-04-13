@@ -5,7 +5,7 @@ import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';
 import {setCurrentSite} from 'ducks/models';
 import {getSiteByNameId} from 'utils/data';
 import {scrollUp} from 'utils/common';
-import {INIT_END, SIGN_URL, SITE_URL, USERSPACE_URL} from 'ducks/nav';
+import {INIT_END, SIGN_URL, SITE_URL, USERSPACE_URL, EMAIL_URLS} from 'ducks/nav';
 
 
 let URL = '/';
@@ -24,10 +24,17 @@ let getNameId = (path, type) => {
   return nameId;
 };
 
+let isEmailURL = URL => {
+  for (let eURL of EMAIL_URLS) {
+    if (URL.indexOf(eURL) != -1)
+      return true;
+  }
+  return false;
+};
 
 export const routing = store => next => action => {
   if (action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) {
-    if (!action.authorized)
+    if (!action.authorized && !isEmailURL(URL))
       browserHistory.push(`/${SIGN_URL}`);
   }
   
@@ -82,7 +89,7 @@ export const routing = store => next => action => {
       URL = nonAuthURL;
       nonAuthURL = null;
       browserHistory.replace(URL);
-    } else if (URL.indexOf(USERSPACE_URL) == -1) {
+    } else if (URL.indexOf(USERSPACE_URL) == -1 && !isEmailURL(URL)) {
       browserHistory.replace(`/${USERSPACE_URL}`);
     }
     

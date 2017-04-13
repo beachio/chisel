@@ -23,7 +23,10 @@ export const MODAL_TYPE_WYSIWYG       = 'app/nav/modals/MODAL_TYPE_WYSIWYG';
 export const MODAL_TYPE_MODEL_CHOOSE  = 'app/nav/modals/MODAL_TYPE_MODEL_CHOOSE';
 
 
-export const EMAIL_V_URL = 'email-verify';
+export const EMAIL_VERIFY_URL = 'email-verify';
+export const PASSWORD_SET_URL = 'password-set';
+export const PASSWORD_SUCCESS_URL = 'password-set-success';
+export const INVALID_LINK_URL = 'invalid-link';
 export const SIGN_URL = 'sign';
 export const USERSPACE_URL = 'userspace';
 export const SITE_URL = 'site~';
@@ -35,6 +38,8 @@ export const API_URL = 'api';
 export const SETTINGS_URL = 'settings';
 export const SHARING_URL = 'sharing';
 export const PROFILE_URL = 'profile';
+
+export const EMAIL_URLS = [EMAIL_VERIFY_URL, PASSWORD_SET_URL, PASSWORD_SUCCESS_URL, INVALID_LINK_URL];
 
 
 export function initEnd() {
