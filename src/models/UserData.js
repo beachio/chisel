@@ -46,6 +46,7 @@ export class CollaborationData {
   origin = null;
   
   role = ROLE_DEVELOPER;
+  email = '';
   
   //links
   site = null;
@@ -54,7 +55,8 @@ export class CollaborationData {
   setOrigin(origin) {
     this.origin = origin;
   
-    if (origin.get('role')) this.role = origin.get('role');
+    if (origin.get('role'))   this.role =   origin.get('role');
+    if (origin.get('email'))  this.email =  origin.get('email');
     
     return this;
   }
@@ -64,7 +66,9 @@ export class CollaborationData {
       this.origin = new CollaborationData.OriginClass();
     
     this.origin.set("role", this.role);
+    this.origin.set("email", this.email);
     this.origin.set("site", this.site.origin);
-    this.origin.set("user", this.user.origin);
+    if (this.user)
+      this.origin.set("user", this.user.origin);
   }
 }

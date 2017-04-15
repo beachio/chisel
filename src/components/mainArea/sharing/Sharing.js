@@ -53,7 +53,11 @@ export default class Sharing extends Component {
   };
 
   onAddCollaboration = event => {
-    getUser(this.state.input)
+    let email = this.state.input;
+    if (!email)
+      return;
+    
+    getUser(email)
       .then(user => {
         let params;
         let error = checkCollaboration(user);
@@ -61,7 +65,7 @@ export default class Sharing extends Component {
         switch (error) {
           case COLLAB_CORRECT:
             this.props.addCollaboration(user);
-            this.setState({input: ""});
+            this.setState({input: ``});
             break;
             
           case COLLAB_ERROR_SELF:
@@ -85,12 +89,16 @@ export default class Sharing extends Component {
       })
       .catch(error => {
         console.log(error);
+  
         let params = {
-          title: "Error",
-          description: "The user does not exists.",
-          buttonText: "OK"
+          type: ALERT_TYPE_CONFIRM,
+          title: `Not registered user`,
+          description: `The user ${email} is not registered at Chisel. Would you like to send an invitation to them?`,
+          onConfirm: () => this.props.addInviteCollaboration(email)
         };
         this.props.showAlert(params);
+        
+        this.setState({input: ``});
       });
   };
   
@@ -113,19 +121,19 @@ export default class Sharing extends Component {
   onDeleteClick(event, collab) {
     event.stopPropagation();
     const {showAlert, deleteCollaboration, deleteSelfCollaboration} = this.props;
-    
-    let user = collab.user.username;
+  
     let description = "This action cannot be undone. Are you sure?";
     let delFunc = deleteCollaboration;
     let confirmString = '';
+    let user = collab.email;
     
-    if (collab.user.origin.id == Parse.User.current().id) {
+    if (collab.user && collab.user.origin.id == Parse.User.current().id) {
       user = 'self';
       description = "You are trying to stop managing this site. " + description + "<br><br>Please, type site name to confirm:";
       delFunc = deleteSelfCollaboration;
       confirmString = collab.site.name;
     }
-      
+    
     let params = {
       type: ALERT_TYPE_CONFIRM,
       title: `Deleting ${user} from collaborators`,
@@ -137,7 +145,8 @@ export default class Sharing extends Component {
   }
 
   render() {
-    const {owner, user, isEditable} = this.props;
+    const {owner, isEditable} = this.props;
+    const self = this.props.user;
 
     return (
       <div styleName="wrapper">
@@ -158,28 +167,58 @@ export default class Sharing extends Component {
               </div>
               {
                 this.state.collaborations.map((collaboration, index) => {
+                  let user = collaboration.user;
+                  
                   let localDelete = isEditable;
                   let localRole = isEditable;
-                  if (collaboration.user.origin.id == user.origin.id) {
-                    localDelete = true;
-                    localRole = false;
+                  
+                  let blockName = null;
+                  let style;
+  
+                  if (user) {
+                    style = "list-item";
+                    if (user.origin.id == self.origin.id) {
+                      localDelete = true;
+                      localRole = false;
+                    }
+                    
+                    if (user.firstName || user.lastName) {
+                      blockName = (
+                        <div styleName="type">
+                          <div styleName="name">{user.firstName} {user.lastName} </div>
+                          <div styleName="email">{user.username}</div>
+                        </div>
+                      );
+                    } else {
+                      blockName = (
+                        <div styleName="type-one-str">
+                          <div styleName="email">{collaboration.email}</div>
+                        </div>
+                      );
+                    }
+                    
+                  } else {
+                    style = "list-item list-item-pending";
+                    
+                    blockName = (
+                      <div styleName="type-one-str">
+                        <div styleName="email">{collaboration.email} (pending)</div>
+                      </div>
+                    );
                   }
                   
-                  return(
-                    <div styleName="list-item" key={collaboration.user.username}>
+                  return (
+                    <div styleName={style} key={collaboration.email}>
                       <div styleName="avatar">
-                        <Gravatar email={collaboration.user.email} styleName="gravatar"/>
+                        <Gravatar email={collaboration.email} styleName="gravatar"/>
                       </div>
-                      <div styleName="type">
-                        <div styleName="name">{collaboration.user.firstName} {collaboration.user.lastName} </div>
-                        <div styleName="email">{collaboration.user.username}</div>
-                      </div>
+                      {blockName}
                       {
                         localRole ?
                           <div styleName="role editable" onClick={event => this.onRoleClick(event, index)}>
                             {collaboration.role}
                           </div>
-                          :
+                        :
                           <div styleName="role">
                             {collaboration.role}
                           </div>

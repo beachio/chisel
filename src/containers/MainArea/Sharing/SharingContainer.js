@@ -5,14 +5,14 @@ import {Helmet} from "react-helmet";
 
 import Sharing from 'components/mainArea/sharing/Sharing';
 import {ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';
-import {addCollaboration, updateCollaboration, deleteCollaboration, deleteSelfCollaboration} from 'ducks/models';
+import {addCollaboration, addInviteCollaboration, updateCollaboration, deleteCollaboration, deleteSelfCollaboration} from 'ducks/models';
 import {showAlert} from 'ducks/nav';
 
 
 export class SharingContainer extends Component  {
   render() {
     const {models, nav, user} = this.props;
-    const {addCollaboration, updateCollaboration, deleteCollaboration, deleteSelfCollaboration} = this.props.modelsActions;
+    const {addCollaboration, addInviteCollaboration, updateCollaboration, deleteCollaboration, deleteSelfCollaboration} = this.props.modelsActions;
     const {showAlert} = this.props.navActions;
     
     let curSite = models.currentSite;
@@ -30,6 +30,7 @@ export class SharingContainer extends Component  {
                  owner={curSite.owner}
                  user={user.userData}
                  addCollaboration={addCollaboration}
+                 addInviteCollaboration={addInviteCollaboration}
                  updateCollaboration={updateCollaboration}
                  deleteCollaboration={deleteCollaboration}
                  deleteSelfCollaboration={deleteSelfCollaboration}
@@ -51,7 +52,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelsActions:  bindActionCreators({addCollaboration, updateCollaboration, deleteCollaboration, deleteSelfCollaboration}, dispatch),
+    modelsActions:  bindActionCreators({addCollaboration, addInviteCollaboration, updateCollaboration, deleteCollaboration, deleteSelfCollaboration}, dispatch),
     navActions:     bindActionCreators({showAlert}, dispatch),
   };
 }

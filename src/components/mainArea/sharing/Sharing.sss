@@ -106,23 +106,32 @@
         height: 100%
         width: 100%
 
-
     .type
       position: relative
       flex: 1
 
-    .name,
-    .email
-      font-size: 13px
-      color: #666666
-      letter-spacing: 0.5px
-      text-align: left
-
-    .name
-      font-weight: 600
-
-    .email
-      letter-spacing: 0.46px
+      .name,
+      .email
+        font-size: 13px
+        color: #666666
+        letter-spacing: 0.5px
+        text-align: left
+  
+      .name
+        font-weight: 600
+  
+      .email
+        letter-spacing: 0.46px
+        
+    .type-one-str
+      position: relative
+      flex: 1
+      
+      .email
+        font-size: 13px
+        color: #666666
+        letter-spacing: 0.5px
+        text-align: left
 
     .role
       background-image: linear-gradient(-180deg, #607D8B 0%, #3E5059 150%)
@@ -142,6 +151,16 @@
       
     .role.editable
       cursor: pointer
+  
+  &-item-pending
+    .avatar
+      opacity: 0.5
+    
+    .type-one-str
+      opacity: 0.5
+    
+    .role
+      opacity: 0.5
 
 
 .input-wrapper

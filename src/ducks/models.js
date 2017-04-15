@@ -66,13 +66,17 @@ function requestCollaborationsPost(sites_o, sites) {
           let collab = new CollaborationData().setOrigin(collab_o);
           
           promises.push(new Promise((inResolve, inReject) => {
-            collab_o.get('user')
-              .fetch()
-              .then(user_o => {
-                let user = new UserData().setOrigin(user_o);
-                collab.user = user;
-                inResolve();
-              }, inReject);
+            let user_o = collab_o.get('user');
+            if (user_o)
+              user_o
+                .fetch()
+                .then(user_o => {
+                  let user = new UserData().setOrigin(user_o);
+                  collab.user = user;
+                  inResolve();
+                }, inReject);
+            else
+              inResolve();
           }));
           
           let site_o = collab_o.get("site");
@@ -259,6 +263,7 @@ export function deleteSite(site) {
 export function addCollaboration(user) {
   let collab = new CollaborationData();
   collab.user = user;
+  collab.email = user.email;
   
   let currentSite = store.getState().models.currentSite;
   collab.site = currentSite;
@@ -272,6 +277,29 @@ export function addCollaboration(user) {
         collabId: collab.origin.id
       })
     );
+  
+  return {
+    type: COLLABORATION_ADD,
+    collab
+  };
+}
+
+export function addInviteCollaboration(email) {
+  let collab = new CollaborationData();
+  collab.email = email;
+  
+  let currentSite = store.getState().models.currentSite;
+  collab.site = currentSite;
+  
+  collab.updateOrigin();
+  
+  collab.origin.setACL(new Parse.ACL(currentSite.owner.origin));
+  collab.origin.save();
+  
+  Parse.Cloud.run('inviteUser', {
+    email,
+    siteName: currentSite.name
+  });
   
   return {
     type: COLLABORATION_ADD,

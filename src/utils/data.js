@@ -162,7 +162,7 @@ export function checkCollaboration(user) {
   
   let collabs = store.getState().models.currentSite.collaborations;
   for (let collab of collabs) {
-    if (collab.user.origin.id == user.origin.id)
+    if (collab.email == user.email)
       return COLLAB_ERROR_EXIST;
   }
   
