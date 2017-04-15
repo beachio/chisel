@@ -20,4 +20,4 @@ npm start
 npm run build
 ```
 
-You can connect to remote server, by editing **src/ducks/initialize.js**.
+To connect to remote server, you can set it URL in user's profile.
