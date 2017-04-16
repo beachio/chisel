@@ -94,3 +94,19 @@ export function scrollUp() {
   if (mainArea)
     mainArea.scrollTop = 0;
 }
+
+export function parseURLParams() {
+  let urlParams = {};
+  
+  let pair; // Really a match. Index 0 is the full match; 1 & 2 are the key & val.
+  let tokenize = /([^&=]+)=?([^&]*)/g;
+  // decodeURIComponents escapes everything but will leave +s that should be ' '
+  let reSpace = s => decodeURIComponent(s.replace(/\+/g, " "));
+  // Substring to cut off the leading '?'
+  let querystring = window.location.search.substring(1);
+  
+  while (pair = tokenize.exec(querystring))
+    urlParams[reSpace(pair[1])] = reSpace(pair[2]);
+  
+  return urlParams;
+}

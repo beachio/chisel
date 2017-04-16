@@ -34,7 +34,7 @@ let isEmailURL = URL => {
 
 export const routing = store => next => action => {
   if (action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) {
-    if (!action.authorized && !isEmailURL(URL))
+    if (!action.authorized && !isEmailURL(URL) && URL.indexOf(SIGN_URL) == -1)
       browserHistory.push(`/${SIGN_URL}`);
   }
   

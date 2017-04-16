@@ -6,15 +6,16 @@ import {Helmet} from "react-helmet";
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {login, register, restorePassword, ERROR_USER_EXISTS, ERROR_WRONG_PASS, NO_ERROR} from 'ducks/user';
+import {parseURLParams} from 'utils/common';
 
 import styles from './Sign.sss';
 
 
-const MODE_LOGIN          = 'MODE_LOGIN';
-const MODE_REG            = 'MODE_REG';
-const MODE_REG_MAIL       = 'MODE_REG_MAIL';
-const MODE_FORGOT         = 'MODE_FORGOT';
-const MODE_FORGOT_SENDED  = 'MODE_FORGOT_SENDED';
+const MODE_LOGIN        = 'login';
+const MODE_REG          = 'register';
+const MODE_REG_MAIL     = 'register_mail';
+const MODE_FORGOT       = 'forgot';
+const MODE_FORGOT_MAIL  = 'forgot_mail';
 
 @CSSModules(styles, {allowMultiple: true})
 export class Sign extends Component  {
@@ -33,7 +34,17 @@ export class Sign extends Component  {
   elmPassword;
   elmPasswordConfirm;
   
-
+  
+  constructor(props) {
+    super(props);
+    
+    let urlParams = parseURLParams();
+    if (urlParams.mode)
+      this.state.mode = urlParams.mode;
+    if (urlParams.email)
+      this.state.email = urlParams.email;
+  }
+  
   componentWillReceiveProps(nextProps) {
     let authError = nextProps.authError;
     
@@ -103,7 +114,7 @@ export class Sign extends Component  {
     
     const {restorePassword} = this.props.userActions;
     restorePassword(this.state.email);
-    this.setState({mode: MODE_FORGOT_SENDED});
+    this.setState({mode: MODE_FORGOT_MAIL});
     return false;
   };
   
@@ -248,7 +259,7 @@ export class Sign extends Component  {
         );
         break;
         
-      case MODE_FORGOT_SENDED:
+      case MODE_FORGOT_MAIL:
         content = (
           <form styleName="form" onSubmit={this.onRestore}>
             <div styleName="description">
