@@ -30,8 +30,9 @@ export class UserData {
     this.origin.set("lastName",  this.lastName);
     this.origin.set("avatar",    this.avatar);
     this.origin.set("sex",       this.sex);
-    this.origin.set("email",     this.email);
     this.origin.set("username",  this.email);
+    if (this.origin.get('email') != this.email)
+      this.origin.set("email",   this.email);
   }
 }
 
