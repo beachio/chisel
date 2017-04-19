@@ -6,7 +6,7 @@ import {Link} from 'react-router';
 
 import {USERSPACE_URL, PROFILE_URL} from 'ducks/nav';
 
-import styles, {activeBla} from './User.sss';
+import styles from './User.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -22,7 +22,7 @@ export default class User extends Component {
     
     return (
       <div styleName="user">
-        <Link styleName="profile" to={link} activeClassName={activeBla}>
+        <Link styleName="profile" to={link} activeClassName={styles.activeBla}>
           <div styleName="avatar">
             <Gravatar email={userData.email} styleName="gravatar"/>
           </div>
