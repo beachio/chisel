@@ -6,7 +6,6 @@ import {SiteData, ModelData, ModelFieldData, canBeTitle} from 'models/ModelData'
 import {getRandomColor} from 'utils/common';
 import {getNameId} from 'utils/data';
 import {LOGOUT} from './user';
-import {deleteItem} from './content'
 
 
 export const INIT_END                   = 'app/models/INIT_END';
