@@ -95,7 +95,7 @@ export function scrollUp() {
     mainArea.scrollTop = 0;
 }
 
-export function parseURLParams() {
+export function parseURLParams(querystring = null) {
   let urlParams = {};
   
   let pair; // Really a match. Index 0 is the full match; 1 & 2 are the key & val.
@@ -103,10 +103,18 @@ export function parseURLParams() {
   // decodeURIComponents escapes everything but will leave +s that should be ' '
   let reSpace = s => decodeURIComponent(s.replace(/\+/g, " "));
   // Substring to cut off the leading '?'
-  let querystring = window.location.search.substring(1);
+  if (!querystring)
+    querystring = location.search.substring(1);
   
   while (pair = tokenize.exec(querystring))
     urlParams[reSpace(pair[1])] = reSpace(pair[2]);
   
   return urlParams;
+}
+
+export function URLEncode(params) {
+  return Object
+    .keys(params)
+    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+    .join('&');
 }

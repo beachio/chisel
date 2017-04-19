@@ -9,7 +9,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {currentServerURL} from 'utils/initialize';
 import {USERSPACE_URL, SIGN_URL} from 'ducks/nav';
 import {login} from 'ducks/user';
-import {parseURLParams} from 'utils/common';
+import {parseURLParams, URLEncode} from 'utils/common';
 
 import styles from './PasswordSet.sss';
 
@@ -61,18 +61,13 @@ export class PasswordSet extends Component  {
       'new_password': this.state.password
     };
     
-    const form = Object
-      .keys(params)
-      .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
-      .join('&');
-    
     fetch(currentServerURL + '/apps/' + this.urlParams['id'] + '/request_password_reset', {
       method: 'POST',
       mode: 'no-cors',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: form
+      body: URLEncode(params)
     })
       .then(r => {
         const {login} = this.props.userActions;
