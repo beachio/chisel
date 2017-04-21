@@ -110,7 +110,8 @@ export class ModelData {
   }
 
   setTableName() {
-    this.tableName = `content__${this.site.nameId}__${this.nameId}`;
+    let email = filterSpecials(this.site.owner.email);
+    this.tableName = `ct__${email}__${this.site.nameId}__${this.nameId}`;
   }
 
   toJSON() {
