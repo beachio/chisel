@@ -142,7 +142,7 @@ export class UserProfile extends Component  {
         updatePassword(this.state.password);
         this.lastChange = CHG_PASSWORD;
     
-        this.setState({password: '', passwordConfirm: '', dirtyPassword: false});
+        this.setState({passwordOld: ``, password: '', passwordConfirm: '', dirtyPassword: false});
       })
       .catch(() => {});
   };
