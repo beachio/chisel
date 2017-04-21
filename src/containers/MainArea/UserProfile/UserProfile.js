@@ -7,9 +7,10 @@ import CSSModules from 'react-css-modules';
 import InputControl from 'components/elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
-import {update, updatePassword} from 'ducks/user';
+import {update, updateEmail, updatePassword} from 'ducks/user';
 import {currentServerURL, changeServerURL} from 'utils/initialize';
 import {checkURL, checkEmail} from 'utils/common';
+import {checkPassword} from 'utils/data';
 
 import styles from './UserProfile.sss';
 
@@ -26,6 +27,7 @@ export class UserProfile extends Component  {
     dirtyEmail: false,
     errorEmail: null,
     
+    passwordOld: ``,
     password: '',
     passwordConfirm: '',
     dirtyPassword: false,
@@ -82,12 +84,14 @@ export class UserProfile extends Component  {
   onSavePassword = e => {
     e.preventDefault();
     
-    if (this.validatePassword()) {
-      const {updatePassword} = this.props.userActions;
-      updatePassword(this.state.password);
-  
-      this.setState({password: '', passwordConfirm: '', dirtyPassword: false});
-    }
+    this.validatePassword()
+      .then(() => {
+        const {updatePassword} = this.props.userActions;
+        updatePassword(this.state.password);
+    
+        this.setState({password: '', passwordConfirm: '', dirtyPassword: false});
+      })
+      .catch(() => {});
   };
   
   onSaveServer = e => {
@@ -116,10 +120,14 @@ export class UserProfile extends Component  {
   validatePassword() {
     if (this.state.password != this.state.passwordConfirm) {
       this.setState({errorPassword: `Passwords don't match!`});
-      return false;
+      return Promise.reject();
     }
     
-    return true;
+    return checkPassword(this.state.passwordOld)
+      .catch((e) => {
+        this.setState({errorPassword: `Wrong old password!`});
+        return Promise.reject();
+      });
   }
   
   validateServer() {
@@ -146,15 +154,21 @@ export class UserProfile extends Component  {
     this.setState({email, dirtyEmail: true, errorEmail: null});
   };
   
+  onChangePasswordOld = event => {
+    let passwordOld = event.target.value;
+    let dirtyPassword = !!passwordOld || !!this.state.password || !!this.state.passwordConfirm;
+    this.setState({passwordOld, dirtyPassword, errorPassword: null});
+  };
+  
   onChangePassword = event => {
     let password = event.target.value;
-    let dirtyPassword = !!password || !!this.state.passwordConfirm;
+    let dirtyPassword = !!password || !!this.state.passwordOld || !!this.state.passwordConfirm;
     this.setState({password, dirtyPassword, errorPassword: null});
   };
   
   onChangePasswordConfirm = event => {
     let passwordConfirm = event.target.value;
-    let dirtyPassword = !!passwordConfirm || !!this.state.password;
+    let dirtyPassword = !!passwordConfirm || !!this.state.passwordOld || !!this.state.password;
     this.setState({passwordConfirm, dirtyPassword, errorPassword: null});
   };
   
@@ -232,6 +246,15 @@ export class UserProfile extends Component  {
             <form styleName="section" onSubmit={this.onSavePassword}>
               <div styleName="section-header">Changing password</div>
               <div styleName="field">
+                <div styleName="field-title">Enter old password</div>
+                <div styleName="input-wrapper">
+                  <InputControl type="big"
+                                inputType="password"
+                                value={this.state.passwordOld}
+                                onChange={this.onChangePasswordOld} />
+                </div>
+              </div>
+              <div styleName="field">
                 <div styleName="field-title">Enter new password</div>
                 <div styleName="input-wrapper">
                   <InputControl type="big"
@@ -302,7 +325,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators({update, updatePassword}, dispatch)
+    userActions: bindActionCreators({update, updateEmail, updatePassword}, dispatch)
   };
 }
 

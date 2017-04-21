@@ -260,3 +260,10 @@ export function getContentByO(origin, items) {
   }
   return null;
 }
+
+export function checkPassword(password) {
+  return new Promise((resolve, reject) => {
+    Parse.Cloud.run('checkPassword', {password})
+      .then(resolve, reject);
+  });
+}
