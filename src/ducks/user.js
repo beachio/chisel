@@ -9,11 +9,13 @@ export const REGISTER_REQUEST   = 'app/user/REGISTER_REQUEST';
 export const REGISTER_RESPONSE  = 'app/user/REGISTER_RESPONSE';
 export const LOGOUT             = 'app/user/LOGOUT';
 export const UPDATE             = 'app/user/UPDATE';
+export const UPDATE_EMAIL       = 'app/user/UPDATE_EMAIL';
 export const UPDATE_PASSWORD    = 'app/user/UPDATE_PASSWORD';
 export const RESTORE_PASSWORD   = 'app/user/RESTORE_PASSWORD';
 
 export const ERROR_USER_EXISTS  = 'app/user/ERROR_USER_EXISTS';
 export const ERROR_WRONG_PASS   = 'app/user/ERROR_WRONG_PASS';
+export const ERROR_OTHER        = 'app/user/ERROR_OTHER';
 export const NO_ERROR           = 'app/user/NO_ERROR';
 
 
@@ -175,6 +177,41 @@ export function update(data) {
   };
 }
 
+export function updateEmail(email) {
+  if (!email)
+    return null;
+  
+  return dispatch => {
+    let userData = Parse.User.current();
+    userData.set(`username`, email);
+    userData.set(`email`, email);
+    userData.save()
+      .then(() => {
+        let authStr = localStorage.getItem('authorization');
+        let password = JSON.parse(authStr).password;
+        localStorage.setItem('authorization', JSON.stringify({email, password}));
+        
+        dispatch({
+          type: UPDATE_EMAIL,
+          email
+        });
+        
+      }, error => {
+        if (error.code == 202)
+          dispatch({
+            type: UPDATE_EMAIL,
+            error: ERROR_USER_EXISTS
+          });
+        else
+          dispatch({
+            type: UPDATE_EMAIL,
+            error: ERROR_OTHER
+          });
+      });
+    
+  };
+}
+
 export function updatePassword(password) {
   if (!password)
     return null;
@@ -215,6 +252,7 @@ const initialState = {
 
   authorized: false,
   authError: null,
+  updateError: null,
 
   email: '',
   password: '',
@@ -260,6 +298,16 @@ export default function userReducer(state = initialState, action) {
         userData: action.data
       };
   
+    case UPDATE_EMAIL:
+      let userData = state.userData;
+      if (action.email)
+        userData.email = action.email;
+      return {
+        ...state,
+        userData,
+        updateError: action.error
+      };
+      
     case UPDATE_PASSWORD:
       return {...state};
       
