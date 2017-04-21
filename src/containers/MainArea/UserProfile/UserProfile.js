@@ -211,7 +211,7 @@ export class UserProfile extends Component  {
   
   onChangeEmail = event => {
     let email = event.target.value;
-    this.setState({email, dirtyEmail: true, errorEmail: null});
+    this.setState({email, dirtyEmail: email != this.userData.email, errorEmail: null});
   };
   
   onChangePasswordOld = event => {
