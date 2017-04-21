@@ -64,13 +64,16 @@ export function addItem(item) {
           type: ITEM_ADD,
           item
         });
+  
+        Parse.Cloud.run('onContentModify');
       });
   }
 }
 
 export function updateItem(item) {
   item.updateOrigin();
-  item.origin.save();
+  item.origin.save()
+    .then(() => Parse.Cloud.run('onContentModify'));
   
   return {
     type: ITEM_UPDATE
@@ -92,7 +95,7 @@ export function deleteItem(item) {
     itemId: item.origin.id,
   }, {
     success: status => {
-    
+      Parse.Cloud.run('onContentModify');
     },
     error: error => {
       console.log(error);
