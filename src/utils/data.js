@@ -4,6 +4,7 @@ import {store} from '../index';
 import {UserData} from 'models/UserData';
 import {removeOddSpaces, filterSpecials, checkURL} from 'utils/common';
 import {FIELD_NAMES_RESERVED} from 'models/ModelData';
+import {ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';
 
 
 export function getNameId(name, objects, curObj) {
@@ -257,6 +258,16 @@ export function getContentByO(origin, items) {
   for (let item of items) {
     if (item.origin && item.origin.id == origin.id)
       return item;
+  }
+  return null;
+}
+
+export function getRole(site) {
+  if (site.owner.origin.id == Parse.User.current().id)
+    return ROLE_OWNER;
+  for (let collab of site.collaborations) {
+    if (collab.user.origin.id == Parse.User.current().id)
+      return collab.role;
   }
   return null;
 }

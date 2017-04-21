@@ -35,7 +35,7 @@ export class Sidebar extends Component {
                  addSite={addSite}
                  updateSite={updateSite}
                  showAlert={showAlert}
-                 alertShowing={nav.alertShowing}/>
+                 alertShowing={nav.alertShowing} />
         </div>
         <div styleName="answer-wrapper">
           <div styleName="answer-question">

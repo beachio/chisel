@@ -3,7 +3,8 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
 import {SiteData} from 'models/ModelData';
-import {checkSiteName} from 'utils/data';
+import {checkSiteName, getRole} from 'utils/data';
+import {ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';
 
 import styles from './Sites.sss';
 
@@ -108,6 +109,10 @@ export default class Sites extends Component {
   }
 
   onDoubleClickSite(event, site) {
+    let role = getRole(site);
+    if (role != ROLE_OWNER && role != ROLE_ADMIN)
+      return;
+    
     this.newSite = site;
     this.setState({editing: true, newSiteName: site.name});
   }
