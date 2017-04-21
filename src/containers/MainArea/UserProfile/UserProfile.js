@@ -14,6 +14,11 @@ import {checkPassword} from 'utils/data';
 
 import styles from './UserProfile.sss';
 
+const CHG_DATA      = `CHG_DATA`;
+const CHG_EMAIL     = `CHG_EMAIL`;
+const CHG_PASSWORD  = `CHG_PASSWORD`;
+const CHG_SERVER    = `CHG_SERVER`;
+
 
 @CSSModules(styles, {allowMultiple: true})
 export class UserProfile extends Component  {
@@ -22,22 +27,27 @@ export class UserProfile extends Component  {
     lastName: '',
     dirtyData: false,
     errorData: null,
+    successData: ``,
     
     email: '',
     dirtyEmail: false,
     errorEmail: null,
+    successEmail: ``,
     
     passwordOld: ``,
     password: '',
     passwordConfirm: '',
     dirtyPassword: false,
     errorPassword: null,
+    successPassword: ``,
     
     serverURL: '',
     dirtyServer: false,
-    errorServer: null
+    errorServer: null,
+    successServer: ``
   };
   userData = null;
+  lastChange = null;
   
   
   componentWillMount() {
@@ -57,6 +67,13 @@ export class UserProfile extends Component  {
   componentWillReceiveProps(nextProps) {
     const {user} = nextProps;
     
+    switch (this.lastChange) {
+      case CHG_DATA:
+        this.setState({successData: `Data was successfully changed!`});
+        setTimeout(() => this.setState({successData: ``}), 2500);
+        break;
+        
+      case CHG_EMAIL:
         if (user.updateError == ERROR_USER_EXISTS) {
           this.setState({
             email: this.userData.email,
@@ -71,6 +88,13 @@ export class UserProfile extends Component  {
           this.setState({successEmail: `Email was successfully changed!`});
           setTimeout(() => this.setState({successEmail: ``}), 2500);
         }
+        break;
+        
+      case CHG_PASSWORD:
+        this.setState({successPassword: `Password was successfully changed!`});
+        setTimeout(() => this.setState({successPassword: ``}), 2500);
+        break;
+    }
   }
   
   onSaveData = e => {
@@ -81,6 +105,7 @@ export class UserProfile extends Component  {
     
     if (this.validateData()) {
       this.setState({dirtyData: false});
+      this.lastChange = CHG_DATA;
       
       this.userData.firstName = this.state.firstName;
       this.userData.lastName = this.state.lastName;
@@ -98,6 +123,7 @@ export class UserProfile extends Component  {
     
     if (this.validateEmail()) {
       this.setState({dirtyEmail: false});
+      this.lastChange = CHG_EMAIL;
       
       const {updateEmail} = this.props.userActions;
       updateEmail(this.state.email);
@@ -114,6 +140,7 @@ export class UserProfile extends Component  {
       .then(() => {
         const {updatePassword} = this.props.userActions;
         updatePassword(this.state.password);
+        this.lastChange = CHG_PASSWORD;
     
         this.setState({password: '', passwordConfirm: '', dirtyPassword: false});
       })
@@ -128,8 +155,12 @@ export class UserProfile extends Component  {
     
     if (this.validateServer()) {
       this.setState({dirtyServer: false});
+      this.lastChange = CHG_SERVER;
       
       changeServerURL(this.state.serverURL);
+      
+      this.setState({successServer: `Server was successfully changed!`});
+      setTimeout(() => this.setState({successServer: ``}), 2500);
     }
   };
   
@@ -240,12 +271,12 @@ export class UserProfile extends Component  {
                                disabled={!this.state.dirtyData || this.state.errorData}
                                value="Update personal data"/>
               </div>
-              {
-                this.state.errorData &&
-                  <div styleName="field-error">
-                    {this.state.errorData}
-                  </div>
-              }
+              <div styleName="field-success">
+                {this.state.successData}
+              </div>
+              <div styleName="field-error">
+                {this.state.errorData}
+              </div>
             </form>
   
             <form styleName="section" onSubmit={this.onSaveEmail}>
@@ -264,12 +295,12 @@ export class UserProfile extends Component  {
                                disabled={!this.state.dirtyEmail || this.state.errorEmail}
                                value="Change email"/>
               </div>
-              {
-                this.state.errorEmail &&
-                  <div styleName="field-error">
-                    {this.state.errorEmail}
-                  </div>
-              }
+              <div styleName="field-success">
+                {this.state.successEmail}
+              </div>
+              <div styleName="field-error">
+                {this.state.errorEmail}
+              </div>
             </form>
   
             <form styleName="section" onSubmit={this.onSavePassword}>
@@ -307,12 +338,12 @@ export class UserProfile extends Component  {
                                disabled={!this.state.dirtyPassword || this.state.errorPassword}
                                value="Set new password"/>
               </div>
-              {
-                this.state.errorPassword &&
-                  <div styleName="field-error">
-                    {this.state.errorPassword}
-                  </div>
-              }
+              <div styleName="field-success">
+                {this.state.successPassword}
+              </div>
+              <div styleName="field-error">
+                {this.state.errorPassword}
+              </div>
             </form>
   
             <form styleName="section" onSubmit={this.onSaveServer}>
@@ -331,12 +362,12 @@ export class UserProfile extends Component  {
                                disabled={!this.state.dirtyServer || this.state.errorServer}
                                value="Update server data"/>
               </div>
-              {
-                this.state.errorServer &&
-                  <div styleName="field-error">
-                    {this.state.errorServer}
-                  </div>
-              }
+              <div styleName="field-success">
+                {this.state.successServer}
+              </div>
+              <div styleName="field-error">
+                {this.state.errorServer}
+              </div>
             </form>
             
           </div>
