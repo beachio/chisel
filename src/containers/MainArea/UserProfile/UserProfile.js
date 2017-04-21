@@ -57,6 +57,9 @@ export class UserProfile extends Component  {
   onSaveData = e => {
     e.preventDefault();
     
+    if (!this.state.dirtyData || this.state.errorData)
+      return;
+    
     if (this.validateData()) {
       this.setState({dirtyData: false});
       
@@ -71,6 +74,9 @@ export class UserProfile extends Component  {
   onSaveEmail = e => {
     e.preventDefault();
     
+    if (!this.state.dirtyEmail || this.state.errorEmail)
+      return;
+    
     if (this.validateEmail()) {
       this.setState({dirtyEmail: false});
       
@@ -84,6 +90,9 @@ export class UserProfile extends Component  {
   onSavePassword = e => {
     e.preventDefault();
     
+    if (!this.state.dirtyPassword || this.state.errorPassword)
+      return;
+    
     this.validatePassword()
       .then(() => {
         const {updatePassword} = this.props.userActions;
@@ -96,6 +105,9 @@ export class UserProfile extends Component  {
   
   onSaveServer = e => {
     e.preventDefault();
+    
+    if (!this.state.dirtyServer || this.state.errorServer)
+      return;
     
     if (this.validateServer()) {
       this.setState({dirtyServer: false});
