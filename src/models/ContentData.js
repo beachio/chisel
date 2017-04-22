@@ -5,11 +5,17 @@ import {getMediaByO, getContentByO} from 'utils/data';
 import {FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCES} from 'models/ModelData';
 
 
+export const STATUS_DRAFT     = `Draft`;
+export const STATUS_PUBLISHED = `Published`;
+export const STATUS_UPDATED   = `Updated`;
+export const STATUS_ARCHIEVED = `Archieved`;
+
+
 export class ContentItemData {
   origin = null;
   
   color = "rgba(0, 0, 0, 1)";
-  published = false;
+  status = STATUS_DRAFT;
   fields = new Map();
   
   //setter
@@ -17,6 +23,8 @@ export class ContentItemData {
   
   //links
   _model = null;
+  draft = null;
+  owner = null;
   
   
   get titleField() {return this._titleField;}
@@ -54,8 +62,8 @@ export class ContentItemData {
   setOrigin(origin) {
     this.origin = origin;
     
-    if (origin.get('t__published'))  this.published  = origin.get('t__published');
-    if (origin.get('t__color'))      this.color      = origin.get('t__color');
+    if (origin.get('t__status'))  this.status = origin.get('t__status');
+    if (origin.get('t__color'))   this.color  = origin.get('t__color');
     
     for (let field of this.model.fields) {
       let value = origin.get(field.nameId);
@@ -106,8 +114,8 @@ export class ContentItemData {
     if (!this.origin)
       this.origin = new this.OriginClass;
     
-    this.origin.set("t__published",  this.published);
-    this.origin.set("t__color",      this.color);
+    this.origin.set("t__status",  this.status);
+    this.origin.set("t__color",   this.color);
   
     for (let [field, value] of this.fields) {
       let isRefList = field.type == FIELD_TYPE_REFERENCES ||
@@ -128,5 +136,10 @@ export class ContentItemData {
     }
     
     this.origin.set("t__model",  this.model.origin);
+    if (this.owner)
+      this.origin.set("t__owner",  this.owner.origin);
   }
 }
+
+
+export const FIELD_NAMES_RESERVED = ['t__color', `t__status`, 't__owner', 't__model'];

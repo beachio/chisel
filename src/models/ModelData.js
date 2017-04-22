@@ -224,8 +224,6 @@ export function canBeList(field) {
     field.type == FIELD_TYPE_REFERENCES && field.appearance == FIELD_APPEARANCE__REFERENCE_REFERENCE;
 }
 
-export const FIELD_NAMES_RESERVED = ['t__color', 't__published', 't__model'];
-
 
 export class ModelFieldData {
   static get OriginClass() {return Parse.Object.extend("ModelField");}

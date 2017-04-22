@@ -3,7 +3,7 @@ import {Parse} from 'parse';
 import {store} from '../index';
 import {UserData} from 'models/UserData';
 import {removeOddSpaces, filterSpecials, checkURL} from 'utils/common';
-import {FIELD_NAMES_RESERVED} from 'models/ModelData';
+import {FIELD_NAMES_RESERVED} from 'models/ContentData';
 import {ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';
 
 

@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
-import {ContentItemData} from 'models/ContentData';
+import {ContentItemData, STATUS_DRAFT, STATUS_PUBLISHED, STATUS_UPDATED, STATUS_ARCHIEVED} from 'models/ContentData';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
@@ -13,10 +13,7 @@ import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
 import styles from './ContentList.sss';
 
 
-const STATUS_ALL        = "STATUS_ALL";
-const STATUS_DRAFT      = "STATUS_DRAFT";
-const STATUS_PUBLISHED  = "STATUS_PUBLISHED";
-
+const allStatuses = [STATUS_DRAFT, STATUS_PUBLISHED, STATUS_UPDATED, STATUS_ARCHIEVED];
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentList extends Component {
@@ -25,7 +22,7 @@ export default class ContentList extends Component {
     itemTitle: "",
 
     activeModels: new Set(),
-    activeStatus: STATUS_ALL,
+    activeStatuses: new Set(),
 
     currentModel: null
   };
@@ -96,10 +93,12 @@ export default class ContentList extends Component {
   };
 
   onStatusClick = status => {
-    if (this.state.activeStatus == status)
-      this.setState({activeStatus: STATUS_ALL});
+    let statuses = this.state.activeStatuses;
+    if (statuses.has(status))
+      statuses.delete(status);
     else
-      this.setState({activeStatus: status});
+      statuses.add(status);
+    this.setState({activeStatuses: statuses});
   };
   
   onRemoveClick = (event, item) => {
@@ -154,16 +153,23 @@ export default class ContentList extends Component {
               <div styleName="filters-title filters-status">
                 Status
               </div>
-              <div styleName={this.state.activeStatus == STATUS_PUBLISHED ? "filters-type" : "filters-type filters-typeHidden"}
-                   onClick={() => this.onStatusClick(STATUS_PUBLISHED)}>
-                Published
-                {this.state.activeStatus == STATUS_PUBLISHED ? eyeEnabled : eyeDisabled}
-              </div>
-              <div styleName={this.state.activeStatus == STATUS_DRAFT ? "filters-type" : "filters-type filters-typeHidden"}
-                   onClick={() => this.onStatusClick(STATUS_DRAFT)}>
-                Draft
-                {this.state.activeStatus == STATUS_DRAFT ? eyeEnabled : eyeDisabled}
-              </div>
+              {
+                allStatuses.map(status => {
+                  let eye = eyeDisabled;
+                  let styleName = "filters-type filters-typeHidden";
+                  if (this.state.activeStatuses.has(status)) {
+                    eye = eyeEnabled;
+                    styleName = "filters-type";
+                  }
+      
+                  return(
+                    <div styleName={styleName} key={status} onClick={() => this.onStatusClick(status)}>
+                      {status}
+                      {eye}
+                    </div>
+                  );
+                })
+              }
             </div>
           </div>
           
@@ -180,17 +186,17 @@ export default class ContentList extends Component {
               {
                 this.state.items
                   .filter(item => !this.state.activeModels.size || this.state.activeModels.has(item.model))
-                  .filter(item => this.state.activeStatus == STATUS_ALL || (this.state.activeStatus == STATUS_PUBLISHED) == item.published)
+                  .filter(item => !this.state.activeStatuses.size || this.state.activeStatuses.has(item.status))
                   .map(item => {
-                    let updatedDate = item.origin.updatedAt;
+                    let title = item.draft ? item.draft.title : item.title;
+                    
+                    let updatedDate = item.draft ? item.draft.origin.updatedAt : item.origin.updatedAt;
                     if (!updatedDate)
                       updatedDate = new Date();
                     let updatedStr = getRelativeTime(updatedDate);
   
                     let colorStyle = {background: item.color};
                     let key = item.origin && item.origin.id ? item.origin.id : Math.random();
-                    
-                    let title = item.title;
   
                     return(
                       <div styleName="list-item"

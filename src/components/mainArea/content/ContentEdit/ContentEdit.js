@@ -21,7 +21,7 @@ import ContainerComponent from 'components/elements/ContainerComponent/Container
 import {filterSpecials, trimFileExt, checkURL} from 'utils/common';
 import {checkContentExistense} from 'utils/data';
 import {MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG, MODAL_TYPE_MODEL_CHOOSE} from 'ducks/nav';
-import {ContentItemData} from 'models/ContentData';
+import {ContentItemData, STATUS_ARCHIEVED, STATUS_PUBLISHED, STATUS_DRAFT, STATUS_UPDATED} from 'models/ContentData';
 import * as ftps from 'models/ModelData';
 import {MediaItemData} from 'models/MediaItemData';
 
@@ -38,7 +38,8 @@ export default class ContentEdit extends Component {
     title: "",
     color: "rgba(0, 0, 0, 1)",
     fields: new Map(),
-    fieldsErrors: new Map()
+    fieldsErrors: new Map(),
+    dirty: false
   };
   item = null;
   fieldsArchive = new Map();
@@ -52,7 +53,8 @@ export default class ContentEdit extends Component {
   }
 
   componentWillUnmount() {
-    this.saveItem();
+    if (this.state.dirty)
+      this.saveItem();
   }
   
   componentWillReceiveProps(nextProps) {
@@ -63,17 +65,22 @@ export default class ContentEdit extends Component {
   
   setItem(item) {
     this.item = item;
-    this.setState({
-      title:  item.title,
-      color:  item.color,
-      fields: new Map(item.fields)
-    });
     this.fieldsArchive = new Map(item.fields);
+    
+    let draft = item.draft ? item.draft : item;
+    this.setState({
+      title:  draft.title,
+      color:  draft.color,
+      fields: new Map(draft.fields)
+    });
   }
   
   saveItem() {
-    if (!this.item.published || this.validate()) {
-      this.item.fields = this.state.fields;
+    if (this.validate()) {
+      if (this.item.draft)
+        this.item.draft.fields = this.state.fields;
+      else
+        this.item.fields = this.state.fields;
       this.props.updateItem(this.item);
       clearTimeout(this.timeout);
     }
@@ -91,6 +98,8 @@ export default class ContentEdit extends Component {
           if (field2.appearance == ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG)
             this.setFieldValue(field2, filterSpecials(title));
         }
+        
+        break;
       }
     }
   };
@@ -100,14 +109,27 @@ export default class ContentEdit extends Component {
   };
 
   onDiscard = () => {
-    this.setState({fields: new Map(this.fieldsArchive)});
+    //this.setState({fields: new Map(this.fieldsArchive)});
+    this.props.discardItem(this.item);
+    this.setState({dirty: false});
   };
 
   onPublish = () => {
     if (!this.validate())
       return;
-
-    this.item.published = true;
+  
+    this.item.fields = this.state.fields;
+    this.props.publishItem(this.item);
+    this.setState({dirty: false});
+    //this.onClose();
+  };
+  
+  onArchieve = () => {
+    if (!this.validate())
+      return;
+    
+    this.item.fields = this.state.fields;
+    this.props.archieveItem(this.item);
     this.onClose();
   };
 
@@ -514,7 +536,7 @@ export default class ContentEdit extends Component {
   
   setFieldValue(field, value, save = false) {
     let fields = this.state.fields;
-    this.setState({fields: fields.set(field, value)});
+    this.setState({fields: fields.set(field, value), dirty: true});
     
     if (save)
       this.saveItem();
@@ -969,10 +991,8 @@ export default class ContentEdit extends Component {
     return (
       <div styleName="content">
         <div styleName="field-title status">
-          Status: {this.item.published ?
-            <span styleName="published">Published</span>
-              :
-            <span styleName="draft">Draft</span>}
+          Status:
+          <span styleName={this.item.status}> {this.item.status}</span>
         </div>
 
         {content}
@@ -980,17 +1000,23 @@ export default class ContentEdit extends Component {
         {
           isEditable &&
             <div styleName="buttons-wrapper">
-              {
-                ///!this.item.published &&
-                <div styleName="button-publish">
-                  <ButtonControl color="green"
-                                 value="Publish"
-                                 onClick={this.onPublish}/>
-                </div>
-              }
-              <ButtonControl color="gray"
-                             value="Discard changes"
-                             onClick={this.onDiscard}/>
+              <div styleName="button-publish">
+                <ButtonControl color="green"
+                               value="Publish"
+                               disabled={this.item.status == STATUS_PUBLISHED}
+                               onClick={this.onPublish}/>
+              </div>
+              <div styleName="button-publish">
+                <ButtonControl color="gray"
+                               value="Discard changes"
+                               onClick={this.onDiscard}/>
+              </div>
+              <div styleName="button-publish">
+                <ButtonControl color="gray"
+                               value="Archieve"
+                               disabled={this.item.status == STATUS_ARCHIEVED}
+                               onClick={this.onArchieve}/>
+              </div>
             </div>
         }
       </div>
