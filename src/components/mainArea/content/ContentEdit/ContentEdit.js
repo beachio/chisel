@@ -41,15 +41,19 @@ export default class ContentEdit extends Component {
     fieldsErrors: new Map(),
     dirty: false
   };
+  
   item = null;
   fieldsArchive = new Map();
-  timeout = 0;
-  mediaTimeouts = {};
   addingItem = null;
+  
+  wait = false;
+  waitSave = false;
+  mediaTimeouts = {};
   
 
   componentWillMount() {
-    this.setItem(this.props.item);
+    this.updateItem(this.props.item);
+    this.fieldsArchive = new Map(this.item.fields);
   }
 
   componentWillUnmount() {
@@ -58,49 +62,45 @@ export default class ContentEdit extends Component {
   }
   
   componentWillReceiveProps(nextProps) {
-    if (this.item != nextProps.item)
-      this.setItem(nextProps.item);
     this.checkAddingItem(nextProps.lastItem);
   }
   
-  setItem(item) {
+  updateItem(item = this.item) {
     this.item = item;
-    this.fieldsArchive = new Map(item.fields);
     
     let draft = item.draft ? item.draft : item;
     this.setState({
       title:  draft.title,
       color:  draft.color,
-      fields: new Map(draft.fields)
+      fields: draft.fields,
+      dirty:  false
     });
+    
+    this.waitSave = false;
   }
   
   saveItem() {
-    if (this.validate()) {
-      if (this.item.draft)
-        this.item.draft.fields = this.state.fields;
-      else
-        this.item.fields = this.state.fields;
-      this.props.updateItem(this.item);
-      clearTimeout(this.timeout);
-    }
-    this.timeout = 0;
+    if (!this.validate())
+      return;
+    
+    this.props.updateItem(this.item);
   }
 
   updateItemTitle = title => {
     this.setState({title});
     
     for (let [field, value] of this.state.fields) {
-      if (field.isTitle) {
-        this.setState({fields: this.state.fields.set(field, title)});
-        
-        for (let [field2, value2] of this.state.fields) {
-          if (field2.appearance == ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG)
-            this.setFieldValue(field2, filterSpecials(title));
-        }
-        
-        break;
+      if (!field.isTitle)
+        continue;
+      
+      this.setState({fields: this.state.fields.set(field, title)});
+      
+      for (let [field2, value2] of this.state.fields) {
+        if (field2.appearance == ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG)
+          this.setFieldValue(field2, filterSpecials(title));
       }
+      
+      break;
     }
   };
 
@@ -109,29 +109,49 @@ export default class ContentEdit extends Component {
   };
 
   onDiscard = () => {
-    //this.setState({fields: new Map(this.fieldsArchive)});
+    if (this.item.status == STATUS_DRAFT || this.item.status == STATUS_ARCHIEVED)
+      this.item.fields = new Map(this.fieldsArchive);
+    
     this.props.discardItem(this.item);
-    this.setState({dirty: false});
+    this.updateItem();
   };
 
   onPublish = () => {
     if (!this.validate())
       return;
   
-    this.item.fields = this.state.fields;
     this.props.publishItem(this.item);
-    this.setState({dirty: false});
-    //this.onClose();
+    this.updateItem();
   };
   
   onArchieve = () => {
     if (!this.validate())
       return;
-    
-    this.item.fields = this.state.fields;
+  
     this.props.archieveItem(this.item);
-    this.onClose();
+    this.updateItem();
   };
+  
+  setFieldValue(field, value, save = false) {
+    let fields = this.state.fields;
+    this.setState({fields: fields.set(field, value), dirty: true});
+    
+    if (save || !this.wait) {
+      this.saveItem();
+      this.wait = true;
+      
+      setTimeout(() => {
+        if (this.waitSave)
+          this.saveItem();
+        this.waitSave = false;
+        this.wait = false;
+      
+        }, AUTOSAVE_TIMEOUT);
+    
+    } else {
+      this.waitSave = true;
+    }
+  }
 
   validate() {
     let isValid = true;
@@ -532,16 +552,6 @@ export default class ContentEdit extends Component {
         callback: text => this.setFieldValue(field, text, true)
       }
     );
-  }
-  
-  setFieldValue(field, value, save = false) {
-    let fields = this.state.fields;
-    this.setState({fields: fields.set(field, value), dirty: true});
-    
-    if (save)
-      this.saveItem();
-    else if (!this.timeout)
-      this.timeout = setTimeout(() => this.saveItem(), AUTOSAVE_TIMEOUT);
   }
   
   generateElement(field, value) {
@@ -1009,6 +1019,7 @@ export default class ContentEdit extends Component {
               <div styleName="button-publish">
                 <ButtonControl color="gray"
                                value="Discard changes"
+                               disabled={this.item.status != STATUS_UPDATED && !this.state.dirty}
                                onClick={this.onDiscard}/>
               </div>
               <div styleName="button-publish">

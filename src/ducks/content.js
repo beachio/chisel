@@ -77,6 +77,14 @@ export function addItem(item) {
 }
 
 export function updateItem(item) {
+  if (item.draft) {
+    item.draft.updateOrigin();
+    item.draft.origin.save();
+    
+    if (item.status == STATUS_ARCHIEVED)
+      item.fields = new Map(item.draft.fields);
+  }
+  
   if (item.status == STATUS_PUBLISHED)
     item.status = STATUS_UPDATED;
   
@@ -84,7 +92,8 @@ export function updateItem(item) {
   item.origin.save();
   
   return {
-    type: ITEM_UPDATE
+    type: ITEM_UPDATE,
+    item
   };
 }
 
@@ -121,32 +130,35 @@ export function publishItem(item) {
 }
 
 export function discardItem(item) {
-  if (item.status == STATUS_UPDATED) {
+  if (item.status == STATUS_UPDATED)
     item.status = STATUS_PUBLISHED;
-    item.updateOrigin();
-    item.origin.save();
-  }
+  
+  item.updateOrigin();
+  item.origin.save();
   
   if (item.draft) {
     item.draft.fields = new Map(item.fields);
     item.draft.updateOrigin();
-    item.draft.save();
+    item.draft.origin.save();
   }
   
   return {
-    type: ITEM_ARCHIEVE,
+    type: ITEM_DISCARD,
     item
   };
 }
 
 export function archieveItem(item) {
-  let oldStatus = item.status;
+  let updateDeploy = item.status == STATUS_DRAFT;
   item.status = STATUS_ARCHIEVED;
+  
+  if (item.draft)
+    item.fields = new Map(item.draft.fields);
   
   item.updateOrigin();
   item.origin.save()
     .then(() => {
-      if (oldStatus == STATUS_PUBLISHED)
+      if (updateDeploy)
         Parse.Cloud.run('onContentModify');
     });
   
