@@ -55,6 +55,8 @@ export const routing = store => next => action => {
         let sites = store.getState().models.sites;
         if (sites.length)
           browserHistory.replace(`/${USERSPACE_URL}/${SITE_URL}${sites[0].nameId}`);
+        else if (path != `/${USERSPACE_URL}`)
+          browserHistory.replace(`/${USERSPACE_URL}`);
       }
     };
     
@@ -69,7 +71,7 @@ export const routing = store => next => action => {
           setDefaultSite();
       }
       
-    } else if (path == `/${USERSPACE_URL}`) {
+    } else {
       setDefaultSite();
     }
   };

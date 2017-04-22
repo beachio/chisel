@@ -537,9 +537,11 @@ export default function modelsReducer(state = initialState, action) {
     case SITE_DELETE:
       sites = state.sites;
       sites.splice(sites.indexOf(action.site), 1);
+      
       return {
         ...state,
-        sites
+        sites,
+        currentSite: sites[0]
       };
   
     case COLLABORATION_ADD:

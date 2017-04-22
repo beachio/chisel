@@ -24,8 +24,7 @@ export class SettingsContainer extends Component  {
     
     let onDeleteSite = site => {
       deleteSite(site);
-      browserHistory.push(
-        `/${USERSPACE_URL}/${SITE_URL}${models.sites[0].nameId}`);
+      browserHistory.push(`/${USERSPACE_URL}`);
     };
     
     return (
