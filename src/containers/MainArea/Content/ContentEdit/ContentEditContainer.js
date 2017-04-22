@@ -13,6 +13,9 @@ import {getContentByModelAndId} from 'utils/data';
 
 
 export class ContentEditContainer extends Component {
+  //TODO Костыль!
+  item = null;
+  
   componentWillMount() {
     this.setItem(this.props.params.item);
   }
@@ -30,15 +33,17 @@ export class ContentEditContainer extends Component {
       return;
   
     nameId = nameId.slice(ITEM_URL.length);
-    
-    let modelNameId = nameId.slice(0, nameId.indexOf('~'));
-    let itemId = nameId.slice(nameId.indexOf('~') + 1);
+  
+    const modelNameId = nameId.slice(0, nameId.indexOf('~'));
+    const itemId = nameId.slice(nameId.indexOf('~') + 1);
     if (modelNameId && itemId) {
-      let cItem = content.currentItem;
-      if (!cItem || modelNameId != cItem.model.nameId || itemId != cItem.origin.id) {
-        let item = getContentByModelAndId(modelNameId, itemId);
-        if (item)
+      this.item = content.currentItem;
+      if (!this.item || modelNameId != this.item.model.nameId || itemId != this.item.origin.id) {
+        const item = getContentByModelAndId(modelNameId, itemId);
+        if (item) {
           setCurrentItem(item);
+          this.item = item;
+        }
       }
     }
   }
@@ -49,32 +54,31 @@ export class ContentEditContainer extends Component {
     const {showModal} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
     
-    let curSite = models.currentSite;
-    let curItem = content.currentItem;
-    if (!curSite || !curItem)
+    const curSite = models.currentSite;
+    if (!curSite || !this.item)
       return null;
     
-    let closeItem = () => browserHistory.push(
-      `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${CONTENT_URL}`);
+    const basePath = `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${CONTENT_URL}`;
     
-    let gotoItem = item => {
+    const closeItem = () => browserHistory.push(basePath);
+  
+    const gotoItem = item => {
       let modelId = item.model.nameId;
       let itemId = item.origin.id;
-      browserHistory.push(
-        `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${CONTENT_URL}/${ITEM_URL}${modelId}~${itemId}`);
+      browserHistory.push(`${basePath}/${ITEM_URL}${modelId}~${itemId}`);
     };
   
-    let lastItem = content.items[content.items.length - 1];
-    
-    let itemTitle = curItem.title ? curItem.title : 'Untitled';
-    let title = `Item:${itemTitle} - Site: ${curSite.name} - Chisel`;
+    const lastItem = content.items[content.items.length - 1];
+  
+    const itemTitle = this.item.title ? this.item.title : 'Untitled';
+    const title = `Item: ${itemTitle} - Site: ${curSite.name} - Chisel`;
     
     return (
       <div className="mainArea">
         <Helmet>
           <title>{title}</title>
         </Helmet>
-        <ContentEdit item={curItem}
+        <ContentEdit item={this.item}
                      onClose={closeItem}
                      gotoItem={gotoItem}
                      addItem={addItem}
