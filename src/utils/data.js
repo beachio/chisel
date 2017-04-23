@@ -7,28 +7,52 @@ import {FIELD_NAMES_RESERVED} from 'models/ContentData';
 import {ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';
 
 
-export function getNameId(name, objects, curObj) {
-  if (!name)
-    return null;
-  
-  let nameId = filterSpecials(name);
-  
-  let getNameIdInc = (inc = 0) => {
-    let newNameId = inc ? `${nameId}_${inc}` : nameId;
-    for (let obj of objects) {
-      if (obj != curObj && obj.nameId == newNameId)
-        return getNameIdInc(++inc);
-    }
-    return newNameId;
-  };
-  
-  return getNameIdInc();
-}
+//==================== alert ==========
 
 export const NAME_CORRECT             = 0;
 export const NAME_ERROR_NAME_EXIST    = 1;
 export const NAME_ERROR_NAME_RESERVED = 2;
 export const NAME_ERROR_OTHER         = 3;
+
+export function getAlertForNameError(error) {
+  switch (error) {
+    case NAME_ERROR_NAME_EXIST: return {
+      title: "Warning",
+      description: "This name is already using. Please, select another one."
+    };
+    
+    case NAME_ERROR_NAME_RESERVED: return {
+      title: "Warning",
+      description: "This name is reserved. Please, select another one."
+    };
+    
+    default: return {
+      title: "Error",
+      description: "Unknown error."
+    };
+  }
+}
+
+//============= user =============
+
+export function getUser(username) {
+  if (!username)
+    return Promise.reject();
+  
+  return new Promise((resolve, reject) => {
+    new Parse.Query(Parse.User)
+      .equalTo("username", username)
+      .first()
+      .then(user_o => {
+        if (user_o)
+          resolve(new UserData().setOrigin(user_o));
+        else
+          reject();
+      }, reject)
+  });
+}
+
+//============= sites ==================
 
 export function checkSiteName(name, curSite) {
   if (!name)
@@ -75,11 +99,34 @@ export function getSiteByNameId(nameId) {
   return null;
 }
 
+//============= collaborations ============
+
+export const COLLAB_CORRECT     = 0;
+export const COLLAB_ERROR_EXIST = 1;
+export const COLLAB_ERROR_SELF  = 2;
+
+export function checkCollaboration(user) {
+  if (!user)
+    return COLLAB_ERROR_EXIST;
+  
+  if (user.username == Parse.User.current().get('username'))
+    return COLLAB_ERROR_SELF;
+  
+  let collabs = store.getState().models.currentSite.collaborations;
+  for (let collab of collabs) {
+    if (collab.email == user.email)
+      return COLLAB_ERROR_EXIST;
+  }
+  
+  return COLLAB_CORRECT;
+}
+
+//=============== models ==============
 
 export function checkModelName(name, curModel) {
   if (!name || !store.getState().models.currentSite)
     return NAME_ERROR_OTHER;
-
+  
   name = removeOddSpaces(name);
   
   let models = store.getState().models.currentSite.models;
@@ -90,6 +137,36 @@ export function checkModelName(name, curModel) {
   
   return NAME_CORRECT;
 }
+
+export function modelToJSON(model) {
+  return JSON.stringify(model, null, 2);
+}
+
+export function getModelByName(name) {
+  let site = store.getState().models.currentSite;
+  if (!site)
+    return;
+  let models = site.models;
+  for (let model of models) {
+    if (model.name == name)
+      return model;
+  }
+  return null;
+}
+
+export function getModelByNameId(nameId) {
+  let site = store.getState().models.currentSite;
+  if (!site)
+    return;
+  let models = site.models;
+  for (let model of models) {
+    if (model.nameId == nameId)
+      return model;
+  }
+  return null;
+}
+
+//============ fields ===========
 
 export function checkFieldName(name) {
   if (!name || !store.getState().models.currentModel)
@@ -114,65 +191,7 @@ export function checkFieldName(name) {
   return NAME_CORRECT;
 }
 
-export function getAlertForNameError(error) {
-  switch (error) {
-    case NAME_ERROR_NAME_EXIST: return {
-      title: "Warning",
-      description: "This name is already using. Please, select another one."
-    };
-  
-    case NAME_ERROR_NAME_RESERVED: return {
-      title: "Warning",
-      description: "This name is reserved. Please, select another one."
-    };
-  
-    default: return {
-      title: "Error",
-      description: "Unknown error."
-    };
-  }
-}
-
-export function getUser(username) {
-  if (!username)
-    return Promise.reject();
-  
-  return new Promise((resolve, reject) => {
-    new Parse.Query(Parse.User)
-      .equalTo("username", username)
-      .first()
-      .then(user_o => {
-        if (user_o)
-          resolve(new UserData().setOrigin(user_o));
-        else
-          reject();
-      }, reject)
-  });
-}
-
-export const COLLAB_CORRECT     = 0;
-export const COLLAB_ERROR_EXIST = 1;
-export const COLLAB_ERROR_SELF  = 2;
-
-export function checkCollaboration(user) {
-  if (!user)
-    return COLLAB_ERROR_EXIST;
-  
-  if (user.username == Parse.User.current().get('username'))
-    return COLLAB_ERROR_SELF;
-  
-  let collabs = store.getState().models.currentSite.collaborations;
-  for (let collab of collabs) {
-    if (collab.email == user.email)
-      return COLLAB_ERROR_EXIST;
-  }
-  
-  return COLLAB_CORRECT;
-}
-
-export function modelToJSON(model) {
-  return JSON.stringify(model, null, 2);
-}
+//========== content =========
 
 export function getContentForModel(model) {
   let items = store.getState().content.items;
@@ -204,6 +223,19 @@ export function getContentByModelAndId(modelNameId, id) {
   return null;
 }
 
+export function getContentByO(origin, items) {
+  if (!origin)
+    return null;
+  
+  if (!items)
+    items = store.getState().content.items;
+  for (let item of items) {
+    if (item.origin && item.origin.id == origin.id)
+      return item;
+  }
+  return null;
+}
+
 export function checkContentExistense(item) {
   let items = store.getState().content.items;
   for (let tempItem of items) {
@@ -213,29 +245,7 @@ export function checkContentExistense(item) {
   return false;
 }
 
-export function getModelByName(name) {
-  let site = store.getState().models.currentSite;
-  if (!site)
-    return;
-  let models = site.models;
-  for (let model of models) {
-    if (model.name == name)
-      return model;
-  }
-  return null;
-}
-
-export function getModelByNameId(nameId) {
-  let site = store.getState().models.currentSite;
-  if (!site)
-    return;
-  let models = site.models;
-  for (let model of models) {
-    if (model.nameId == nameId)
-      return model;
-  }
-  return null;
-}
+//============== media ============
 
 export function getMediaByO(origin) {
   if (!origin)
@@ -249,18 +259,7 @@ export function getMediaByO(origin) {
   return null;
 }
 
-export function getContentByO(origin, items) {
-  if (!origin)
-    return null;
-  
-  if (!items)
-    items = store.getState().content.items;
-  for (let item of items) {
-    if (item.origin && item.origin.id == origin.id)
-      return item;
-  }
-  return null;
-}
+//============ other ============
 
 export function getRole(site) {
   if (site.owner.origin.id == Parse.User.current().id)
@@ -277,4 +276,22 @@ export function checkPassword(password) {
     Parse.Cloud.run('checkPassword', {password})
       .then(resolve, reject);
   });
+}
+
+export function getNameId(name, objects, curObj) {
+  if (!name)
+    return null;
+  
+  let nameId = filterSpecials(name);
+  
+  let getNameIdInc = (inc = 0) => {
+    let newNameId = inc ? `${nameId}_${inc}` : nameId;
+    for (let obj of objects) {
+      if (obj != curObj && obj.nameId == newNameId)
+        return getNameIdInc(++inc);
+    }
+    return newNameId;
+  };
+  
+  return getNameIdInc();
 }
