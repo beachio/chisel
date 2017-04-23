@@ -1,13 +1,9 @@
 import {Parse} from 'parse';
 
-import {store} from '../index';
+import {store} from 'index';
 import {getLocalStorage} from 'ducks/user';
+import {SERVER_URL, APP_ID} from 'constants';
 
-
-//const SERVER_URL = "https://parse.nuwe.co:49178/parse";
-export const SERVER_URL = "http://localhost:1337/parse";
-export const SITE_URL = "http://localhost:3000";
-const APP_ID = "d5701a37cf242d5ee398005d997e4229";
 
 export let currentServerURL = SERVER_URL;
 

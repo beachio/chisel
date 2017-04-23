@@ -24,6 +24,7 @@ import {MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG, MODAL_TYPE_M
 import {ContentItemData, STATUS_ARCHIEVED, STATUS_PUBLISHED, STATUS_DRAFT, STATUS_UPDATED} from 'models/ContentData';
 import * as ftps from 'models/ModelData';
 import {MediaItemData} from 'models/MediaItemData';
+import {FILE_SIZE_MAX} from 'constants';
 
 
 import styles from './ContentEdit.sss';
@@ -443,6 +444,13 @@ export default class ContentEdit extends Component {
 
   onMediaNew(event, field) {
     let file = event.target.files[0];
+    if (file.size > FILE_SIZE_MAX) {
+      let fieldErrors = this.state.fieldsErrors;
+      fieldErrors.set(field, `Your file's size exceeds a limit of 10 MB.`);
+      this.setState({fieldErrors});
+      return;
+    }
+    
     let parseFile = new Parse.File(filterSpecials(file.name), file, file.type);
     parseFile.save().then(() => {
       const {addMediaItem} = this.props;
