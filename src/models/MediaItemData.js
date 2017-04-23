@@ -26,9 +26,9 @@ export class MediaItemData {
   setOrigin(origin) {
     this.origin = origin;
     
-    if (origin.get('name'))     this.name =     origin.get('name');
-    if (origin.get('type'))     this.type =     origin.get('type');
-    if (origin.get('file'))     this.file =     origin.get('file');
+    if (origin.get('name'))     this.name     = origin.get('name');
+    if (origin.get('type'))     this.type     = origin.get('type');
+    if (origin.get('file'))     this.file     = origin.get('file');
     if (origin.get('assigned')) this.assigned = origin.get('assigned');
   
     return this;
@@ -46,10 +46,10 @@ export class MediaItemData {
   
   clone() {
     let item = new MediaItemData();
-    item.file = this.file;
-    item.name = this.name;
-    item.type = this.type;
-    item.assigned = true;
+    item.file     = this.file;
+    item.name     = this.name;
+    item.type     = this.type;
+    item.assigned = this.assigned;
     return item;
   }
 }

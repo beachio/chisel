@@ -462,6 +462,7 @@ export default class ContentEdit extends Component {
       addMediaItem(item);
   
       item = item.clone();
+      item.assigned = true;
       addMediaItem(item);
   
       if (field.isList) {
