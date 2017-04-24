@@ -672,7 +672,7 @@ export default class ContentEdit extends Component {
                 {field.name}
                 <div styleName="link"
                      onClick={() => this.onShowWysiwygModal(field)} >
-                  <InlineSVG styleName="link-icon" src={require('./link.svg')}/>
+                  <InlineSVG styleName="link-icon" src={require('assets/images/link.svg')}/>
                 </div>
               </div>
             );
@@ -843,7 +843,7 @@ export default class ContentEdit extends Component {
                        onChange={e => this.onMediaNameChange(e, field, item)}
                        value={item.name} />
                 <InlineSVG styleName="media-cross"
-                           src={require('./cross.svg')}
+                           src={require('assets/images/cross.svg')}
                            onClick={() => this.onMediaClear(field, item)} />
               </div>
               <div styleName="media-content" style={imgStyle}></div>
@@ -933,7 +933,7 @@ export default class ContentEdit extends Component {
                   <span styleName={titleStyle}>{title}</span>
                 </span>
                 <InlineSVG styleName="reference-cross"
-                           src={require('./cross.svg')}
+                           src={require('assets/images/cross.svg')}
                            onClick={e => this.onReferenceClear(e, field, item)} />
               </div>
             );
