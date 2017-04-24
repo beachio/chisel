@@ -164,7 +164,7 @@ export default class Sites extends Component {
                          onKeyDown={this.onKeyDown}
                          ref={ref} />
                   <a href={`http://${site.domain}`} target="_blank">
-                    <InlineSVG styleName="link" src={require("./link.svg")} />
+                    <InlineSVG styleName="link" src={require("assets/images/link.svg")} />
                   </a>
                 </div>
               );
@@ -187,7 +187,7 @@ export default class Sites extends Component {
         {
           !this.state.adding &&
             <div styleName="section new-site" onClick={this.onClickAdd}>
-              <InlineSVG src={require("./plus.svg")} />
+              <InlineSVG src={require("assets/images/plus.svg")} />
               Add new site
             </div>
         }

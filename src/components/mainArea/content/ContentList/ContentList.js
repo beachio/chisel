@@ -218,7 +218,7 @@ export default class ContentList extends Component {
                             <div styleName="hidden-controls">
                               <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, item)}>
                                 <InlineSVG styleName="cross"
-                                           src={require("./cross.svg")}/>
+                                           src={require("assets/images/cross.svg")}/>
                               </div>
                             </div>
                         }

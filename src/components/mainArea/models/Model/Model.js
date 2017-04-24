@@ -170,7 +170,7 @@ export default class Model extends Component {
                         <div styleName="hidden-controls">
                           <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, field)}>
                             <InlineSVG styleName="cross"
-                                       src={require("./cross.svg")}/>
+                                       src={require("assets/images/cross.svg")}/>
                           </div>
                         </div>
                     }

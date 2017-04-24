@@ -21,7 +21,7 @@ export class Header extends Component  {
     return (
       <div styleName="header">
         <div styleName="logo">
-          <img src={require("./logo.png")} />
+          <img src={require("assets/images/chisel-logo.png")} />
         </div>
         <Menu siteNameId={nameId}
               openedPage={nav.openedPage} />
