@@ -65,7 +65,7 @@ class App extends React.Component {
       <div styleName="wrapper">
         {this.props.children}
         {
-          user.fetchingRequest &&
+          user.email && !nav.initEnded &&
             <SiteLoader />
         }
         {getModal()}

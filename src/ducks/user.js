@@ -248,7 +248,6 @@ export function restorePassword(email) {
 
 const initialState = {
   localStorageReady: false,
-  fetchingRequest: false,
 
   authorized: false,
   authError: null,
@@ -267,7 +266,6 @@ export default function userReducer(state = initialState, action) {
     case REGISTER_REQUEST:
       return {
         ...state,
-        fetchingRequest: true,
         authorized: false,
         authError: null,
         email: action.email,
@@ -278,18 +276,19 @@ export default function userReducer(state = initialState, action) {
     case REGISTER_RESPONSE:
       let result = {
         ...state,
-        fetchingRequest: false,
         authorized: action.authorized,
         authError:  action.authError,
         userData:   action.userData,
-        localStorageReady: true
+        localStorageReady: true,
+        password: ``
       };
       return result;
 
     case LOGOUT:
       return {
         ...state,
-        authorized: false
+        authorized: false,
+        email: ``
       };
       
     case UPDATE:
