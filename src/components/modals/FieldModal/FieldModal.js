@@ -44,7 +44,7 @@ export default class FieldModal extends Component {
       nameId:     this.field.nameId,
       type:       this.field.type,
       appearance: this.field.appearance,
-      isTitle:    this.field.isTitle,
+      isTitle:    this.field.isTitle || !this.field.model.hasTitle() && canBeTitle(this.field),
       isList:     this.field.isList,
 
       appList:    FIELD_TYPES.get(this.field.type)

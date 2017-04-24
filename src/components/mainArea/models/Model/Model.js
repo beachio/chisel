@@ -75,6 +75,7 @@ export default class Model extends Component {
     }
   
     let field = new ModelFieldData();
+    field.model = this.model;
     field.name = this.state.fieldName;
     field.nameId = getNameId(field.name, this.model.fields);
     this.props.showModal(MODAL_TYPE_FIELD, field);

@@ -418,15 +418,13 @@ function changeTitleField(field, value = true) {
 }
 
 export function addField(field) {
-  let currentModel = store.getState().models.currentModel;
   field.color = getRandomColor();
-  field.model = currentModel;
-  field.nameId = getNameId(field.name, currentModel.fields);
+  field.nameId = getNameId(field.name, field.model.fields);
   
   field.updateOrigin();
   field.origin.save();
   
-  if (!currentModel.hasTitle() && canBeTitle(field))
+  if (!field.model.hasTitle() && canBeTitle(field))
     changeTitleField(field);
   
   field.model.origin.save();
@@ -479,9 +477,9 @@ export function updateField(field) {
 export function deleteField(field) {
   field.origin.destroy();
   
-  if (!field.model.hasTitle()) {
+  if (field.isTitle) {
     for (let tempField of field.model.fields) {
-      if (canBeTitle(tempField)) {
+      if (tempField != field && canBeTitle(tempField)) {
         changeTitleField(tempField);
         break;
       }
