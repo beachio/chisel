@@ -17,6 +17,9 @@ export class MediaItemData {
   
   key = 0;
   
+  //links
+  site = null;
+  
   constructor() {
     while (keys.indexOf(this.key) != -1)
       this.key++;
@@ -42,6 +45,7 @@ export class MediaItemData {
     this.origin.set("type",     this.type);
     this.origin.set("file",     this.file);
     this.origin.set("assigned", this.assigned);
+    this.origin.set("site",     this.site.origin);
   }
   
   clone() {
@@ -49,6 +53,7 @@ export class MediaItemData {
     item.file     = this.file;
     item.name     = this.name;
     item.type     = this.type;
+    item.site     = this.site;
     item.assigned = this.assigned;
     return item;
   }

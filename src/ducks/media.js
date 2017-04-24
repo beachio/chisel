@@ -1,6 +1,8 @@
 import {Parse} from 'parse';
 
+import {store} from 'index';
 import {MediaItemData} from 'models/MediaItemData';
+import {getSiteByNameId} from 'utils/data';
 
 
 export const INIT_END       = 'app/media/INIT_END';
@@ -10,13 +12,20 @@ export const ITEM_DELETE    = 'app/media/ITEM_DELETE';
 
 
 function requestMedia() {
+  let sites = store.getState().models.sites;
+  let sites_o = [];
+  for (let site of sites)
+    sites_o.push(site.origin);
+  
   return new Promise((resolve, reject) => {
     new Parse.Query(MediaItemData.OriginClass)
+      .containedIn("site", sites_o)
       .find()
       .then(items_o => {
         let items = [];
         for (let item_o of items_o) {
           let item = new MediaItemData().setOrigin(item_o);
+          item.site = getSiteByNameId(item_o.get('site').id);
           items.push(item);
         }
         resolve(items);
@@ -38,7 +47,12 @@ export function init() {
 
 export function addMediaItem(item) {
   item.updateOrigin();
-  item.origin.save();
+  item.origin.save()
+    .then(() =>
+      Parse.Cloud.run('onMediaItemAdd', {
+        itemId: item.origin.id
+      })
+    );
   
   return {
     type: ITEM_ADD,

@@ -459,6 +459,7 @@ export default class ContentEdit extends Component {
       item.file = parseFile;
       item.name = trimFileExt(file.name);
       item.type = file.type;
+      item.site = this.item.model.site;
       addMediaItem(item);
   
       item = item.clone();
