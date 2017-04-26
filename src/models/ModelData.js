@@ -213,15 +213,18 @@ export const FIELD_TYPES = new Map([
 ]);
 
 export function canBeTitle(field) {
-  return field.type == FIELD_TYPE_SHORT_TEXT && field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE;
+  return field.type == FIELD_TYPE_SHORT_TEXT &&
+    field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE &&
+    !field.isList;
 }
 
 export function canBeList(field) {
-  return field.type == FIELD_TYPE_SHORT_TEXT && field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE ||
+  return (field.type == FIELD_TYPE_SHORT_TEXT && field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE ||
     field.type == FIELD_TYPE_INTEGER && field.appearance == FIELD_APPEARANCE__INTEGER__DECIMAL ||
     field.type == FIELD_TYPE_FLOAT && field.appearance == FIELD_APPEARANCE__FLOAT__DECIMAL ||
     field.type == FIELD_TYPE_MEDIA && field.appearance == FIELD_APPEARANCE__MEDIA__MEDIA ||
-    field.type == FIELD_TYPE_REFERENCES && field.appearance == FIELD_APPEARANCE__REFERENCE_REFERENCE;
+    field.type == FIELD_TYPE_REFERENCES && field.appearance == FIELD_APPEARANCE__REFERENCE_REFERENCE) &&
+    !field.isTitle;
 }
 
 

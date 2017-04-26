@@ -44,7 +44,7 @@ export default class FieldModal extends Component {
       nameId:     this.field.nameId,
       type:       this.field.type,
       appearance: this.field.appearance,
-      isTitle:    this.field.isTitle || !this.field.model.hasTitle() && canBeTitle(this.field),
+      isTitle:    this.field.isTitle,
       isList:     this.field.isList,
 
       appList:    FIELD_TYPES.get(this.field.type)
@@ -194,29 +194,23 @@ export default class FieldModal extends Component {
                                  current={this.state.appearance} />
               </div>
 
-              {
-                canBeList(this.state) &&
-                  <div styleName="input-wrapper">
-                    <div styleName="label">List (keeping multiple values instead of one)</div>
-                    <div styleName="switch">
-                      <SwitchControl checked={this.state.isList}
-                                     onChange={this.onChangeIsList}
-                                     disabled={this.state.isTitle || this.updating} />
-                    </div>
-                  </div>
-              }
+              <div styleName="input-wrapper">
+                <div styleName="label">List (keeping multiple values instead of one)</div>
+                <div styleName="switch">
+                  <SwitchControl checked={this.state.isList}
+                                 onChange={this.onChangeIsList}
+                                 disabled={!canBeList(this.state) || this.updating} />
+                </div>
+              </div>
               
-              {
-                canBeTitle(this.state) &&
-                  <div styleName="input-wrapper">
-                    <div styleName="label">Entry Title</div>
-                    <div styleName="switch">
-                      <SwitchControl checked={this.state.isTitle}
-                                     onChange={this.onChangeIsTitle}
-                                     disabled={this.state.isList} />
-                    </div>
-                  </div>
-              }
+              <div styleName="input-wrapper">
+                <div styleName="label">Entry Title</div>
+                <div styleName="switch">
+                  <SwitchControl checked={this.state.isTitle}
+                                 onChange={this.onChangeIsTitle}
+                                 disabled={!canBeTitle(this.state)} />
+                </div>
+              </div>
 
               <div styleName="input-wrapper buttons-wrapper">
                 <div styleName="buttons-inner">
