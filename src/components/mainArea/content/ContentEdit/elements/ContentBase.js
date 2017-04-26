@@ -22,15 +22,29 @@ export default class ContentBase extends Component {
     this.field = props.field;
     this.isEditable = props.isEditable;
     this.setFieldValue = props.setFieldValue;
+    
+    if (props.value)
+      this.state.value = props.value;
+    else
+      this.state.value = this.getDefaultValue();
   }
   
   componentWillReceiveProps(nextProps) {
-    this.setState({value: nextProps.value});
+    if (nextProps.value)
+      this.setState({value: nextProps.value});
+    else
+      this.setState({value: this.getDefaultValue()});
+  }
+  
+  getDefaultValue() {
+    return null;
   }
   
   setValue(value, save) {
-    //this.setState({value});
-    this.setState({error: null});
+    this.setState({
+    //  value,
+      error: null
+    });
     this.setFieldValue(this.field, value, save);
   }
   

@@ -18,13 +18,11 @@ const AUTOSAVE_TIMEOUT = 2000;
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentMedia extends ContentBase {
   site = null;
+  mediaTimeouts = [];
   
   
   constructor (props) {
     super(props);
-  
-    let value = props.value;
-    this.state.value = value ? value : null;
     
     this.site = props.site;
   }
@@ -54,7 +52,7 @@ export default class ContentMedia extends ContentBase {
     });
   };
   
-  onMediaNew = (event, field) => {
+  onMediaNew = event => {
     let file = event.target.files[0];
     if (file.size > FILE_SIZE_MAX) {
       let error = `Your file's size exceeds a limit of 10 MB.`;
@@ -77,7 +75,7 @@ export default class ContentMedia extends ContentBase {
       item.assigned = true;
       addMediaItem(item);
       
-      if (field.isList) {
+      if (this.field.isList) {
         let items = this.state.value;
         if (!items)
           items = [];

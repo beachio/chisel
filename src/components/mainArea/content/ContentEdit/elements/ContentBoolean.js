@@ -12,11 +12,8 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentBoolean extends ContentBase {
-  constructor(props) {
-    super(props);
-    
-    let value = props.value;
-    this.state.value = value ? value : false;
+  getDefaultValue() {
+    return false;
   }
   
   onChange = value => {

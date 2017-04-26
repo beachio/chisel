@@ -12,11 +12,13 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentReference extends ContentBase {
+  item = null;
+  addingItem = null;
+  
   constructor(props) {
     super(props);
     
-    let value = props.value;
-    this.state.value = value ? value : null;
+    this.item = this.props.item;
   }
   
   onReferenceNew = () => {
@@ -49,11 +51,6 @@ export default class ContentReference extends ContentBase {
     );
   };
   
-  onReferenceClick(newItem) {
-    this.saveItem();
-    this.props.gotoItem(newItem);
-  };
-  
   onReferenceClear = (event, item) => {
     event.stopPropagation();
     let refers = this.state.value;
@@ -69,6 +66,8 @@ export default class ContentReference extends ContentBase {
     
     let oneRefBlock = item => {
       let exist = checkContentExistense(item);
+      if (this.addingItem == item)
+        exist = true;
       let key = item.origin && item.origin.id ? item.origin.id : Math.random();
     
       if (exist) {
@@ -76,10 +75,10 @@ export default class ContentReference extends ContentBase {
         let titleStyle = item.title ? '' : 'untitled';
       
         return (
-          <div styleName="reference-item" key={key} onClick={() => this.onReferenceClick(item)}>
+          <div styleName="reference-item" key={key} onClick={() => this.props.onReferenceClick(item)}>
             <span styleName="reference-title">
               [{item.model.name}]
-              <span styleName={titleStyle}>{title}</span>
+              <span styleName={titleStyle}> {title}</span>
             </span>
             <InlineSVG styleName="reference-cross"
                        src={require('assets/images/cross.svg')}

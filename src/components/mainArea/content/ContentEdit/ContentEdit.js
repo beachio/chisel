@@ -55,6 +55,8 @@ export default class ContentEdit extends Component {
   
   componentWillReceiveProps(nextProps) {
     this.checkAddingItem(nextProps.lastItem);
+    if (nextProps.item.origin.id != this.item.origin.id)
+      this.updateItem(nextProps.item);
   }
   
   updateItem(item = this.item) {
@@ -148,12 +150,22 @@ export default class ContentEdit extends Component {
     }
   };
   
+  addItem = item => {
+    this.addingItem = item;
+    this.props.addItem(item);
+  };
+  
   checkAddingItem(lastItem) {
     if (this.addingItem && lastItem == this.addingItem) {
       this.props.gotoItem(this.addingItem);
       this.addingItem = null;
     }
   }
+  
+  onReferenceClick = newItem => {
+    this.saveItem();
+    this.props.gotoItem(newItem);
+  };
 
   generateElement(field, value, ref) {
     const {isEditable} = this.props;
@@ -190,16 +202,6 @@ export default class ContentEdit extends Component {
                                setFieldValue={this.setFieldValue} />;
         break;
 
-      case ftps.FIELD_TYPE_MEDIA:
-        return <ContentMedia ref={ref}
-                             field={field}
-                             key={field.nameId}
-                             value={value}
-                             isEditable={isEditable}
-                             setFieldValue={this.setFieldValue}
-                             site={this.item.model.site} />;
-        break;
-
       case ftps.FIELD_TYPE_DATE:
         return <ContentDate ref={ref}
                             field={field}
@@ -208,15 +210,32 @@ export default class ContentEdit extends Component {
                             isEditable={isEditable}
                             setFieldValue={this.setFieldValue} />;
         break;
+  
+      case ftps.FIELD_TYPE_MEDIA:
+        return <ContentMedia ref={ref}
+                             field={field}
+                             key={field.nameId}
+                             value={value}
+                             isEditable={isEditable}
+                             setFieldValue={this.setFieldValue}
+                             site={this.item.model.site}
+                             addMediaItem={this.props.addMediaItem}
+                             updateMediaItem={this.props.updateMediaItem}
+                             removeMediaItem={this.props.removeMediaItem}
+                             showModal={this.props.showModal} />;
+        break;
 
       case ftps.FIELD_TYPE_REFERENCES:
         return <ContentReference ref={ref}
                                  field={field}
                                  key={field.nameId}
                                  value={value}
+                                 item={this.item}
                                  isEditable={isEditable}
                                  setFieldValue={this.setFieldValue}
-                                 gotoItem={this.props.gotoItem} />;
+                                 showModal={this.props.showModal}
+                                 addItem={this.addItem}
+                                 onReferenceClick={this.onReferenceClick} />;
         break;
 
     }

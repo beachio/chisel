@@ -12,16 +12,10 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentNumber extends ContentBase {
-  constructor(props) {
-    super(props);
-  
-    let value = props.value;
-    if (value)
-      this.state.value = value;
-    else if (this.field.isList)
-      this.state.value = [];
-    else
-      this.state.value = 0;
+  getDefaultValue() {
+    if (this.field.isList)
+      return [];
+    return null;
   }
   
   getError () {
@@ -38,10 +32,18 @@ export default class ContentNumber extends ContentBase {
       case ftps.FIELD_TYPE_INTEGER:
         switch (this.field.appearance) {
           case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
-            if (!value)
-              value = 0;
-            if (Math.floor(value) != parseFloat(value))
-              return "You must type an integer value!";
+            if (this.field.isList) {
+              for (let item of value) {
+                if (Math.floor(item) != parseFloat(item))
+                  return "You must type an integer value!";
+              }
+            } else {
+              if (!value)
+                value = 0;
+              if (Math.floor(value) != parseFloat(value))
+                return "You must type an integer value!";
+            }
+            
             break;
       
           case ftps.FIELD_APPEARANCE__INTEGER__RATING:
@@ -58,20 +60,16 @@ export default class ContentNumber extends ContentBase {
     
     if (this.field.isList) {
       let items = this.state.value;
-      if (!items)
-        items = [];
       
       if (value)
         items[i] = value;
       else
         items.splice(i, 1);
       
-      this.setValue(items);
+      this.setState({value: items});
       
     } else {
-      this.setValue(value);
-      if (this.field.isTitle)
-        this.updateItemTitle(value);
+      this.setState({value});
     }
   };
   

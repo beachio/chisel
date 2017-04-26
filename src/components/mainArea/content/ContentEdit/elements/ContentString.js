@@ -18,18 +18,13 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentString extends ContentBase {
-  constructor (props) {
-    super(props);
-  
-    let value = props.value;
-    if (value)
-      this.state.value = value;
-    else if (this.field.isList)
-      this.state.value = [];
+  getDefaultValue () {
+    if (this.field.isList)
+      return [];
     else if (this.field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG)
-      this.state.value = `<p></p>`;
-    else
-      this.state.value = ``;
+      return `<p></p>`;
+    
+    return ``;
   }
   
   getError () {

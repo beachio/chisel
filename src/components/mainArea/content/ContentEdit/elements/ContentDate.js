@@ -13,11 +13,8 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentDate extends ContentBase {
-  constructor(props) {
-    super(props);
-    
-    let value = props.value;
-    this.state.value = value ? value : new Date();
+  getDefaultValue() {
+    return new Date();
   }
   
   onChangeDate = _date => {
