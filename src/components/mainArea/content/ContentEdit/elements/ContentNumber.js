@@ -12,6 +12,15 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentNumber extends ContentBase {
+  parseFunc = null;
+  
+  
+  constructor(props) {
+    super(props);
+    
+    this.parseFunc = this.field.type == ftps.FIELD_TYPE_INTEGER ? parseInt : parseFloat;
+  }
+  
   getDefaultValue() {
     if (this.field.isList)
       return [];
@@ -73,7 +82,7 @@ export default class ContentNumber extends ContentBase {
     }
   };
   
-  onKeyDown_INTEGER = (event, i, inputs) => {
+  onKeyDown = (event, i, inputs) => {
     event.stopPropagation();
   
     if (!this.field.isList)
@@ -85,11 +94,11 @@ export default class ContentNumber extends ContentBase {
     if (code == 13 || code == 40) {
       if (inputs[i + 1]) {
         let items = this.state.value;
-        let num = parseInt(items[i]);
+        let num = this.parseFunc(items[i]);
         if (!isNaN(num))
           inputs[i + 1].focus();
         else
-          this.onBlur_INTEGER(i);
+          this.onBlur(i);
       }
       
       //up pressed
@@ -99,58 +108,13 @@ export default class ContentNumber extends ContentBase {
     }
   };
   
-  onKeyDown_FLOAT = (event, i, inputs) => {
-    event.stopPropagation();
-  
-    if (!this.field.isList)
-      return;
-    
-    let code = event.keyCode;
-    
-    //Enter or down pressed
-    if (code == 13 || code == 40) {
-      if (inputs[i + 1]) {
-        let items = this.state.value;
-        let num = parseFloat(items[i]);
-        if (!isNaN(num))
-          inputs[i + 1].focus();
-        else
-          this.onBlur_FLOAT(i);
-      }
-      
-      //up pressed
-    } else if (code == 38) {
-      if (i)
-        inputs[--i].focus();
-    }
-  };
-  
-  onBlur_INTEGER = i => {
+  onBlur = i => {
     if (this.field.isList) {
       let items = this.state.value;
       if (!items)
         return;
       
-      let num = parseInt(items[i]);
-      if (!isNaN(num))
-        items[i] = num;
-      else
-        items.splice(i, 1);
-      
-      this.setValue(items);
-      
-    } else {
-      this.setValue(parseInt(this.state.value));
-    }
-  };
-  
-  onBlur_FLOAT = i => {
-    if (this.field.isList) {
-      let items = this.state.value;
-      if (!items)
-        return;
-      
-      let num = parseFloat(items[i]);
+      let num = this.parseFunc(items[i]);
       if (!isNaN(num))
         items[i] = num;
       else
@@ -160,7 +124,7 @@ export default class ContentNumber extends ContentBase {
       
     } else {
       let str = this.state.value;
-      this.setValue(parseFloat(str));
+      this.setValue(this.parseFunc(str));
     }
   };
   
@@ -174,75 +138,42 @@ export default class ContentNumber extends ContentBase {
     
     switch (this.field.type) {
       case ftps.FIELD_TYPE_FLOAT:
-        switch (this.field.appearance) {
-          case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
-            let innerFloat;
-        
-            if (this.field.isList) {
-              if (!value)
-                value = [];
-          
-              innerFloat = [];
-              let inputs = [];
-              for (let i = 0; i < value.length + 1; i++) {
-                innerFloat.push(<InputControl type="big"
-                                              key={i}
-                                              value={value[i]}
-                                              readOnly={!this.isEditable}
-                                              onChange={e => this.onChange(e, i)}
-                                              DOMRef={inp => inputs[i] = inp}
-                                              onBlur={e => this.onBlur_FLOAT(i)}
-                                              onKeyDown={e => this.onKeyDown_FLOAT(e, i, inputs)} />);
-              }
-          
-            } else {
-              innerFloat = <InputControl type="big"
-                                         value={value}
-                                         readOnly={!this.isEditable}
-                                         onChange={this.onChange}
-                                         onBlur={this.onBlur_FLOAT} />;
-            }
-        
-            return (
-              <div styleName="input-wrapper">
-                {innerFloat}
-              </div>
-            );
-        }
-  
       case ftps.FIELD_TYPE_INTEGER:
+        
         switch (this.field.appearance) {
           case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
-            let innerInt;
+          case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
+            
+            let inner;
         
             if (this.field.isList) {
               if (!value)
                 value = [];
           
-              innerInt = [];
+              inner = [];
               let inputs = [];
               for (let i = 0; i < value.length + 1; i++) {
-                innerInt.push(<InputControl type="big"
+                inner.push(<InputControl type="big"
                                             key={i}
                                             value={value[i]}
                                             readOnly={!this.isEditable}
                                             onChange={e => this.onChange(e, i)}
                                             DOMRef={inp => inputs[i] = inp}
-                                            onBlur={e => this.onBlur_INTEGER(i)}
-                                            onKeyDown={e => this.onKeyDown_INTEGER(e, i, inputs)} />);
+                                            onBlur={e => this.onBlur(i)}
+                                            onKeyDown={e => this.onKeyDown(e, i, inputs)} />);
               }
           
             } else {
-              innerInt = <InputControl type="big"
+              inner = <InputControl type="big"
                                        value={value}
                                        readOnly={!this.isEditable}
                                        onChange={this.onChange}
-                                       onBlur={this.onBlur_INTEGER} />;
+                                       onBlur={this.onBlur} />;
             }
         
             return (
               <div styleName="input-wrapper">
-                {innerInt}
+                {inner}
               </div>
             );
       

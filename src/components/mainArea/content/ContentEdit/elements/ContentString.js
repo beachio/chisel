@@ -56,19 +56,6 @@ export default class ContentString extends ContentBase {
             break;
         }
         break;
-      
-      case ftps.FIELD_TYPE_LONG_TEXT:
-        switch (this.field.appearance) {
-          case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
-            break;
-          
-          case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
-            break;
-          
-          case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
-            break;
-        }
-        break;
     }
     
     return null;
