@@ -12,18 +12,16 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentNumber extends ContentBase {
-  state = {
-    error: null,
-    value: 0
-  };
-  
-  
   constructor(props) {
     super(props);
   
     let value = props.value;
     if (value)
       this.state.value = value;
+    else if (this.field.isList)
+      this.state.value = [];
+    else
+      this.state.value = 0;
   }
   
   getError () {

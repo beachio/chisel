@@ -12,18 +12,11 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentReference extends ContentBase {
-  state = {
-    error: null,
-    value: null
-  };
-  
-  
   constructor(props) {
     super(props);
     
     let value = props.value;
-    if (value)
-      this.state.value = value;
+    this.state.value = value ? value : null;
   }
   
   onReferenceNew = () => {

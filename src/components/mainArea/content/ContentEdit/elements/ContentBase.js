@@ -6,6 +6,11 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentBase extends Component {
+  state = {
+    error: null,
+    value: null
+  };
+  
   field = null;
   isEditable = false;
   setFieldValue = null;
@@ -25,6 +30,7 @@ export default class ContentBase extends Component {
   
   setValue(value, save) {
     //this.setState({value});
+    this.setState({error: null});
     this.setFieldValue(this.field, value, save);
   }
   
@@ -35,7 +41,7 @@ export default class ContentBase extends Component {
   validate () {
     let error = this.getError();
     this.setState({error});
-    return error;
+    return !error;
   }
   
   getTitle() {

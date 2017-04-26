@@ -72,9 +72,6 @@ export default class ContentEdit extends Component {
   }
   
   saveItem() {
-    if (!this.validate())
-      return;
-    
     this.props.updateItem(this.item);
   }
 
@@ -99,9 +96,6 @@ export default class ContentEdit extends Component {
   };
   
   onArchieve = () => {
-    if (!this.validate())
-      return;
-  
     this.props.archieveItem(this.item);
     this.updateItem();
   };
@@ -129,8 +123,7 @@ export default class ContentEdit extends Component {
 
   validate() {
     for (let elm of this.fieldElementRefs) {
-      let error = elm.validate();
-      if (error)
+      if (!elm.validate())
         return false;
     }
 

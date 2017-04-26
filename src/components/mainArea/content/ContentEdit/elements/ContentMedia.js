@@ -17,11 +17,6 @@ const AUTOSAVE_TIMEOUT = 2000;
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentMedia extends ContentBase {
-  state = {
-    value: null,
-    error: null
-  };
-  
   site = null;
   
   
@@ -29,8 +24,7 @@ export default class ContentMedia extends ContentBase {
     super(props);
   
     let value = props.value;
-    if (value)
-      this.state.value = value;
+    this.state.value = value ? value : null;
     
     this.site = props.site;
   }

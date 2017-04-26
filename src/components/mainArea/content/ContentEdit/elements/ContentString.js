@@ -18,11 +18,6 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentString extends ContentBase {
-  state = {
-    error: null,
-    value: ``
-  };
-  
   constructor (props) {
     super(props);
   
@@ -33,6 +28,8 @@ export default class ContentString extends ContentBase {
       this.state.value = [];
     else if (this.field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG)
       this.state.value = `<p></p>`;
+    else
+      this.state.value = ``;
   }
   
   getError () {
