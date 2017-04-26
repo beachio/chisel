@@ -19,9 +19,10 @@ export default class ContentBoolean extends ContentBase {
     this.state.value = value ? value : false;
   }
   
-  onChange(value) {
-    this.setValue(value);
-  }
+  onChange = value => {
+    if (this.isEditable)
+      this.setValue(value);
+  };
   
   getInput() {
     let value = this.state.value;
@@ -56,7 +57,7 @@ export default class ContentBoolean extends ContentBase {
       case ftps.FIELD_APPEARANCE__BOOLEAN__SWITCH:
         return (
           <div styleName="switch-wrapper">
-            <SwitchControl checked={value} onChange={this.isEditable ? this.onChange : null}/>
+            <SwitchControl checked={value} onChange={this.onChange}/>
           </div>
         );
     }
