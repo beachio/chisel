@@ -19,7 +19,7 @@ export default class ContentBoolean extends ContentBase {
     this.state.value = value ? value : false;
   }
   
-  onChange_BOOLEAN(value) {
+  onChange(value) {
     this.setValue(value);
   }
   
@@ -38,7 +38,7 @@ export default class ContentBoolean extends ContentBase {
                      id={id1}
                      name="radio"
                      checked={value}
-                     onChange={e => this.onChange_BOOLEAN(true)} />
+                     onChange={e => this.onChange(true)} />
               <label styleName="radio-label" htmlFor={id1}>Yes</label>
             </div>
             <div styleName="radio-button">
@@ -47,7 +47,7 @@ export default class ContentBoolean extends ContentBase {
                      id={id2}
                      name="radio"
                      checked={!value}
-                     onChange={e => this.onChange_BOOLEAN(false)} />
+                     onChange={e => this.onChange(false)} />
               <label styleName="radio-label" htmlFor={id2}>No</label>
             </div>
           </div>
@@ -56,7 +56,7 @@ export default class ContentBoolean extends ContentBase {
       case ftps.FIELD_APPEARANCE__BOOLEAN__SWITCH:
         return (
           <div styleName="switch-wrapper">
-            <SwitchControl checked={value} onChange={this.isEditable ? this.onChange_BOOLEAN : null}/>
+            <SwitchControl checked={value} onChange={this.isEditable ? this.onChange : null}/>
           </div>
         );
     }

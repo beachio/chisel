@@ -53,7 +53,7 @@ export default class ContentNumber extends ContentBase {
     return null;
   }
   
-  onChange_STRING = (event, i) => {
+  onChange = (event, i) => {
     let value = event.target.value;
     
     if (this.field.isList) {
@@ -166,7 +166,7 @@ export default class ContentNumber extends ContentBase {
     }
   };
   
-  onChange_INTEGER__RATING = value => {
+  onChangeRating = value => {
     value *= 2;
     this.setValue(value);
   };
@@ -191,7 +191,7 @@ export default class ContentNumber extends ContentBase {
                                               key={i}
                                               value={value[i]}
                                               readOnly={!this.isEditable}
-                                              onChange={e => this.onChange_STRING(e, i)}
+                                              onChange={e => this.onChange(e, i)}
                                               DOMRef={inp => inputs[i] = inp}
                                               onBlur={e => this.onBlur_FLOAT(i)}
                                               onKeyDown={e => this.onKeyDown_FLOAT(e, i, inputs)} />);
@@ -200,8 +200,8 @@ export default class ContentNumber extends ContentBase {
             } else {
               innerFloat = <InputControl type="big"
                                          value={value}
-                                         readOnly={!isEditable}
-                                         onChange={this.onChange_STRING}
+                                         readOnly={!this.isEditable}
+                                         onChange={this.onChange}
                                          onBlur={this.onBlur_FLOAT} />;
             }
         
@@ -228,7 +228,7 @@ export default class ContentNumber extends ContentBase {
                                             key={i}
                                             value={value[i]}
                                             readOnly={!this.isEditable}
-                                            onChange={e => this.onChange_STRING(e, i)}
+                                            onChange={e => this.onChange(e, i)}
                                             DOMRef={inp => inputs[i] = inp}
                                             onBlur={e => this.onBlur_INTEGER(i)}
                                             onKeyDown={e => this.onKeyDown_INTEGER(e, i, inputs)} />);
@@ -238,9 +238,8 @@ export default class ContentNumber extends ContentBase {
               innerInt = <InputControl type="big"
                                        value={value}
                                        readOnly={!this.isEditable}
-                                       onChange={this.onChange_STRING}
-                                       onBlur={this.onBlur_INTEGER}
-                                       onKeyDown={this.onKeyDown} />;
+                                       onChange={this.onChange}
+                                       onBlur={this.onBlur_INTEGER} />;
             }
         
             return (
@@ -255,7 +254,7 @@ export default class ContentNumber extends ContentBase {
               <div styleName="input-wrapper">
                 <ReactStars styleName="react-stars"
                             value={value}
-                            onChange={this.onChange_INTEGER__RATING}
+                            onChange={this.onChangeRating}
                             size={32}
                             color1={'#F5F5F5'}
                             color2={'#5CA6DC'} />

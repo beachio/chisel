@@ -79,7 +79,7 @@ export default class ContentString extends ContentBase {
     return null;
   }
   
-  onChange_STRING = (event, i) => {
+  onChange = (event, i) => {
     let value = event.target.value;
     
     if (this.field.isList) {
@@ -101,11 +101,11 @@ export default class ContentString extends ContentBase {
     }
   };
   
-  onChange_LONG_TEXT_WYSIWYG = text => {
+  onChangeWysiwyg = text => {
     this.setValue(text);
   };
   
-  onKeyDown_TEXT = (event, i, inputs) => {
+  onKeyDown = (event, i, inputs) => {
     event.stopPropagation();
   
     if (!this.field.isList)
@@ -174,15 +174,15 @@ export default class ContentString extends ContentBase {
                                             value={value[i]}
                                             readOnly={!this.isEditable}
                                             DOMRef={inp => inputs[i] = inp}
-                                            onChange={e => this.onChange_STRING(e, i)}
-                                            onKeyDown={e => this.onKeyDown_TEXT(e, i, inputs)} />);
+                                            onChange={e => this.onChange(e, i)}
+                                            onKeyDown={e => this.onKeyDown(e, i, inputs)} />);
               }
           
             } else {
               innerStr = <InputControl type="big"
                                        value={value}
                                        readOnly={!this.isEditable}
-                                       onChange={this.onChange_STRING} />;
+                                       onChange={this.onChange} />;
             }
         
             return (
@@ -197,7 +197,7 @@ export default class ContentString extends ContentBase {
                 <InputControl type="big"
                               value={value}
                               readOnly={!this.isEditable}
-                              onChange={this.onChange_STRING} />
+                              onChange={this.onChange} />
               </div>
             );
       
@@ -207,7 +207,7 @@ export default class ContentString extends ContentBase {
                 <InputControl type="big"
                               value={value}
                               readOnly={!this.isEditable}
-                              onChange={this.onChange_STRING} />
+                              onChange={this.onChange} />
               </div>
             );
         }
@@ -220,7 +220,7 @@ export default class ContentString extends ContentBase {
                 <InputControl type="big"
                               value={value}
                               readOnly={!this.isEditable}
-                              onChange={this.onChange_STRING} />
+                              onChange={this.onChange} />
               </div>
             );
       
@@ -229,14 +229,14 @@ export default class ContentString extends ContentBase {
               <textarea styleName="textarea"
                         value={value}
                         readOnly={!this.isEditable}
-                        onChange={this.onChange_STRING} />
+                        onChange={this.onChange} />
             );
       
           case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
             return (
               <Editor styleName="wysiwig"
                       text={value}
-                      onChange={this.onChange_LONG_TEXT_WYSIWYG}
+                      onChange={this.onChangeWysiwyg}
                       options={{placeholder: false}} />
             );
         }

@@ -20,7 +20,7 @@ export default class ContentDate extends ContentBase {
     this.state.value = value ? value : new Date();
   }
   
-  onChange_DATE = _date => {
+  onChangeDate = _date => {
     let date = _date[0];
     let oldDate = this.state.value;
     if (!oldDate)
@@ -30,7 +30,7 @@ export default class ContentDate extends ContentBase {
     this.setValue(date);
   };
   
-  onChange_TIME = _time => {
+  onChangeTime = _time => {
     let time = _time[0];
     let date = this.state.value;
     if (!date)
@@ -51,7 +51,7 @@ export default class ContentDate extends ContentBase {
               <Flatpickr value={value}
                          data-click-opens={this.isEditable}
                          data-alt-input="true"
-                         onChange={this.onChange_DATE} />
+                         onChange={this.onChangeDate} />
             </div>
             <div styleName="time">
               <Flatpickr value={value}
@@ -60,7 +60,7 @@ export default class ContentDate extends ContentBase {
                          data-enable-time={true}
                          data-alt-format="h:i K"
                          data-alt-input="true"
-                         onChange={this.onChange_TIME} />
+                         onChange={this.onChangeTime} />
             </div>
           </div>
         );
