@@ -237,7 +237,10 @@ export default class ContentString extends ContentBase {
               <Editor styleName="wysiwig"
                       text={value}
                       onChange={this.onChangeWysiwyg}
-                      options={{placeholder: false}} />
+                      options={{
+                        placeholder: false,
+                        disableEditing: !this.isEditable
+                      }} />
             );
         }
     }
