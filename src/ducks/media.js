@@ -2,7 +2,7 @@ import {Parse} from 'parse';
 
 import {store} from 'index';
 import {MediaItemData} from 'models/MediaItemData';
-import {getSiteByNameId} from 'utils/data';
+import {getSite} from 'utils/data';
 
 
 export const INIT_END       = 'app/media/INIT_END';
@@ -25,7 +25,7 @@ function requestMedia() {
         let items = [];
         for (let item_o of items_o) {
           let item = new MediaItemData().setOrigin(item_o);
-          item.site = getSiteByNameId(item_o.get('site').id);
+          item.site = getSite(item_o.get('site').id);
           items.push(item);
         }
         resolve(items);

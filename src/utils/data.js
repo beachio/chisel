@@ -90,6 +90,15 @@ export function checkSiteDomain(domain, curSite) {
   return DOMAIN_CORRECT;
 }
 
+export function getSite(id) {
+  let sites = store.getState().models.sites;
+  for (let site of sites) {
+    if (site.origin.id == id)
+      return site;
+  }
+  return null;
+}
+
 export function getSiteByNameId(nameId) {
   let sites = store.getState().models.sites;
   for (let site of sites) {
