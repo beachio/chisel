@@ -21,6 +21,9 @@ export default class ContentNumber extends ContentBase {
     this.parseFunc = this.field.type == ftps.FIELD_TYPE_INTEGER ? parseInt : parseFloat;
   }
   
+  componentWillReceiveProps(nextProps) {
+  }
+  
   getDefaultValue() {
     if (this.field.isList)
       return [];
@@ -69,16 +72,33 @@ export default class ContentNumber extends ContentBase {
     
     if (this.field.isList) {
       let items = this.state.value;
+      let itemsNum = items.slice();
       
-      if (value)
+      if (value) {
         items[i] = value;
-      else
+        let num = this.parseFunc(value);
+        if (!isNaN(num))
+          itemsNum[i] = num;
+        else
+          itemsNum.splice(i, 1);
+      } else {
         items.splice(i, 1);
+        itemsNum.splice(i, 1);
+      }
       
       this.setState({value: items});
+  
+      this.setValue(itemsNum);
       
     } else {
       this.setState({value});
+      
+      let num = this.parseFunc(value);
+      if (!isNaN(num))
+        this.setValue(this.parseFunc(num));
+      else
+        this.setValue(this.parseFunc(0));
+      
     }
   };
   
@@ -98,7 +118,7 @@ export default class ContentNumber extends ContentBase {
         if (!isNaN(num))
           inputs[i + 1].focus();
         else
-          this.onBlur(i);
+          this.onBlur();
       }
       
       //up pressed
@@ -108,24 +128,8 @@ export default class ContentNumber extends ContentBase {
     }
   };
   
-  onBlur = i => {
-    if (this.field.isList) {
-      let items = this.state.value;
-      if (!items)
-        return;
-      
-      let num = this.parseFunc(items[i]);
-      if (!isNaN(num))
-        items[i] = num;
-      else
-        items.splice(i, 1);
-      
-      this.setValue(items);
-      
-    } else {
-      let str = this.state.value;
-      this.setValue(this.parseFunc(str));
-    }
+  onBlur = () => {
+    this.setState({value: this.props.value});
   };
   
   onChangeRating = value => {
@@ -159,7 +163,7 @@ export default class ContentNumber extends ContentBase {
                                             readOnly={!this.isEditable}
                                             onChange={e => this.onChange(e, i)}
                                             DOMRef={inp => inputs[i] = inp}
-                                            onBlur={e => this.onBlur(i)}
+                                            onBlur={this.onBlur}
                                             onKeyDown={e => this.onKeyDown(e, i, inputs)} />);
               }
           
