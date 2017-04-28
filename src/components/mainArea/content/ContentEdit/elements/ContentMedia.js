@@ -128,7 +128,9 @@ export default class ContentMedia extends ContentBase {
                        src={require('assets/images/cross.svg')}
                        onClick={() => this.onMediaClear(item)} />
           </div>
-          <div styleName="media-content" style={imgStyle}></div>
+          <a href={item.file.url()} target="_blank">
+            <div styleName="media-content" style={imgStyle}></div>
+          </a>
         </div>
       );
     };

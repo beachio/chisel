@@ -121,13 +121,13 @@ export default class MediaModal extends Component {
                       itemStyle += " media-chosen";
   
                     return (
-                      <div styleName={itemStyle}
-                           onClick={() => this.onSelect(item)}
-                           key={item.origin.id} >
-                        <div styleName="media-header">
+                      <div styleName={itemStyle} key={item.origin.id}>
+                        <div styleName="media-header" onClick={() => this.onSelect(item)}>
                           {item.name}
                         </div>
-                        <div styleName="media-content" style={imgStyle}></div>
+                        <a href={item.file.url()} target="_blank">
+                          <div styleName="media-content" style={imgStyle}></div>
+                        </a>
                       </div>
                     );
                   })
