@@ -3,6 +3,7 @@ import CSSModules from 'react-css-modules';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import InputControl from 'components/elements/InputControl/InputControl';
+import MediaView from 'components/elements/MediaView/MediaView';
 import {store} from 'index';
 
 import styles from './MediaModal.sss';
@@ -112,10 +113,6 @@ export default class MediaModal extends Component {
                   .filter(item => !item.assigned)
                   .filter(item => this.searchMatch(this.state.searchText, item.name))
                   .map(item => {
-                    let imgStyle = {};
-                    if (item.file)
-                      imgStyle = {backgroundImage: `url(${item.file.url()})`};
-  
                     let itemStyle = "media-item";
                     if (this.state.selectedItems.indexOf(item) != -1)
                       itemStyle += " media-chosen";
@@ -125,9 +122,7 @@ export default class MediaModal extends Component {
                         <div styleName="media-header" onClick={() => this.onSelect(item)}>
                           {item.name}
                         </div>
-                        <a href={item.file.url()} target="_blank">
-                          <div styleName="media-content" style={imgStyle}></div>
-                        </a>
+                        <MediaView item={item} />
                       </div>
                     );
                   })

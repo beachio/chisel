@@ -8,6 +8,7 @@ import {MediaItemData} from 'models/MediaItemData';
 import {FILE_SIZE_MAX} from 'constants';
 import {MODAL_TYPE_MEDIA} from 'ducks/nav';
 import {trimFileExt, filterSpecials} from 'utils/common';
+import MediaView from 'components/elements/MediaView/MediaView';
 
 import styles from '../ContentEdit.sss';
 
@@ -54,6 +55,8 @@ export default class ContentMedia extends ContentBase {
   
   onMediaNew = event => {
     let file = event.target.files[0];
+    if (!file)
+      return;
     if (file.size > FILE_SIZE_MAX) {
       let error = `Your file's size exceeds a limit of 10 MB.`;
       this.setState({error});
@@ -115,22 +118,18 @@ export default class ContentMedia extends ContentBase {
     let value = this.state.value;
     
     let oneMediaBlock = item => {
-      let imgStyle = {backgroundImage: `url(${item.file.url()})`};
-    
       return (
         <div styleName="media-item" key={item.key}>
           <div styleName="media-header">
             <input type="text"
-                   placeholder="Image name"
+                   placeholder="File name"
                    onChange={e => this.onMediaNameChange(e, item)}
                    value={item.name} />
             <InlineSVG styleName="media-cross"
                        src={require('assets/images/cross.svg')}
                        onClick={() => this.onMediaClear(item)} />
           </div>
-          <a href={item.file.url()} target="_blank">
-            <div styleName="media-content" style={imgStyle}></div>
-          </a>
+          <MediaView item={item} />
         </div>
       );
     };
