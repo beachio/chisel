@@ -107,6 +107,7 @@ export default class Sites extends Component {
           this.returnFocus = true;
         }
       }
+      
     } else {
       this.endEdit();
     }
