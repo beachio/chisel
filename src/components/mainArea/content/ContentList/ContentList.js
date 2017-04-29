@@ -26,8 +26,8 @@ export default class ContentList extends Component {
 
     currentModel: null
   };
-  activeInput = null;
 
+  
   componentWillMount() {
     this.setState({
       items: this.props.items,
@@ -36,8 +36,6 @@ export default class ContentList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.alertShowing && this.activeInput)
-      this.activeInput.focus();
     this.setState({items: nextProps.items});
     if (nextProps.items != this.state.items)
       this.setState({itemTitle: ""});
@@ -113,6 +111,7 @@ export default class ContentList extends Component {
       onConfirm: () => deleteItem(item)
     };
     showAlert(params);
+    this.alertShowed = true;
   };
 
   render() {
@@ -238,12 +237,10 @@ export default class ContentList extends Component {
                   <div styleName="input-wrapper">
                     <InputControl placeholder="Create a new Content Record"
                                   value={this.state.itemTitle}
-                                  autoFocus={true}
                                   icon="plus"
                                   onIconClick={this.onAddItem}
                                   onChange={this.onItemTitleChange}
-                                  onKeyDown={this.onKeyDown}
-                                  DOMRef={c => this.activeInput = c} />
+                                  onKeyDown={this.onKeyDown} />
                   </div>
                 </div>
             }

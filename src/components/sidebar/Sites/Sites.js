@@ -17,13 +17,22 @@ export default class Sites extends Component {
     editing: false,
     newSiteName: ""
   };
+  
   newSite = null;
+  
+  inputAdding = null;
   activeInput = null;
+  returnFocus = false;
 
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.alertShowing && this.activeInput)
-      this.activeInput.focus();
+    if (!nextProps.alertShowing && this.returnFocus) {
+      this.returnFocus = false;
+      if (this.activeInput)
+        this.activeInput.focus();
+      else if (this.inputAdding)
+        this.inputAdding.focus();
+    }
     this.setState({currentSite: nextProps.currentSite});
   }
 
@@ -95,6 +104,7 @@ export default class Sites extends Component {
             buttonText: "OK"
           };
           showAlert(params);
+          this.returnFocus = true;
         }
       }
     } else {
@@ -156,7 +166,6 @@ export default class Sites extends Component {
                   </div>
                   <input styleName={styleInput}
                          readOnly={!editing}
-                         autoFocus={editing}
                          placeholder="Type site name"
                          value={name}
                          onBlur={this.onSiteNameBlur}
@@ -180,7 +189,7 @@ export default class Sites extends Component {
                        onBlur={this.onSiteNameBlur}
                        onChange={this.onSiteNameChange}
                        onKeyDown={this.onKeyDown}
-                       ref={c => this.activeInput = c} />
+                       ref={c => this.inputAdding = c} />
               </div>
           }
         </div>

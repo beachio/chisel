@@ -21,8 +21,10 @@ export default class Model extends Component {
     fieldName: "",
     jsonVisibility: false
   };
+  
   model = null;
   activeInput = null;
+  returnFocus = false;
   titleActive = false;
   
 
@@ -32,11 +34,13 @@ export default class Model extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.alertShowing) {
+    if (!nextProps.alertShowing && !nextProps.modalShowing) {
       if (this.titleActive) {
-        this.controlTitle.onEditClick();
         this.titleActive = false;
-      } else if (this.activeInput) {
+        this.controlTitle.onEditClick();
+        
+      } else if (this.activeInput && this.returnFocus) {
+        this.returnFocus = false;
         this.activeInput.focus();
       }
     }
@@ -66,7 +70,9 @@ export default class Model extends Component {
 
     if (!this.state.fieldName)
       return;
-
+  
+    this.returnFocus = true;
+    
     let error = checkFieldName(this.state.fieldName);
     if (error) {
       const {showAlert} = this.props;
@@ -184,7 +190,6 @@ export default class Model extends Component {
               <div styleName="input-wrapper">
                 <InputControl placeholder="Add New Field"
                               value={this.state.fieldName}
-                              autoFocus={true}
                               onKeyDown={this.onAddKeyDown}
                               onChange={this.onFieldNameChange}
                               DOMRef={c => this.activeInput = c}

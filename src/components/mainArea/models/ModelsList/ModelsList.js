@@ -17,7 +17,9 @@ export default class ModelsList extends Component {
     models: [],
     modelName: ""
   };
+  
   activeInput = null;
+  returnFocus = false;
 
 
   componentWillMount() {
@@ -25,8 +27,11 @@ export default class ModelsList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.alertShowing && this.activeInput)
+    if (!nextProps.alertShowing && this.returnFocus && this.activeInput) {
+      this.returnFocus = false;
       this.activeInput.focus();
+    }
+    
     this.setState({models: nextProps.models});
     if (nextProps.models != this.state.models)
       this.setState({modelName: ""});
@@ -60,6 +65,7 @@ export default class ModelsList extends Component {
     if (error) {
       const {showAlert} = this.props;
       showAlert(getAlertForNameError(error));
+      this.returnFocus = true;
       return;
     }
 
@@ -153,7 +159,6 @@ export default class ModelsList extends Component {
             isEditable &&
               <div styleName="input-wrapper">
                 <InputControl value={this.state.modelName}
-                              autoFocus={true}
                               placeholder="Create a new Content Type"
                               onChange={this.onModelNameChange}
                               onKeyDown={this.onKeyDown}
