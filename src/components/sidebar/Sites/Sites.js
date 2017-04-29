@@ -15,10 +15,10 @@ export default class Sites extends Component {
     currentSite: null,
     adding: false,
     editing: false,
-    newSiteName: ""
+    siteName: ""
   };
   
-  newSite = null;
+  site = null;
   
   inputAdding = null;
   activeInput = null;
@@ -50,13 +50,13 @@ export default class Sites extends Component {
     if (this.state.adding)
       return;
 
-    this.newSite = new SiteData();
+    this.site = new SiteData();
     this.setState({adding: true});
   };
 
   onSiteNameChange = event => {
-    let newSiteName = event.target.value;
-    this.setState({newSiteName});
+    let siteName = event.target.value;
+    this.setState({siteName});
   };
 
   onSiteNameBlur = () => {
@@ -78,19 +78,19 @@ export default class Sites extends Component {
 
   onAddOrUpdateSite(endOnSameName) {
     if ((this.state.adding || this.state.editing) &&
-        this.state.newSiteName &&
-        this.state.newSiteName != this.newSite.name) {
+        this.state.siteName &&
+        this.state.siteName != this.site.name) {
       
-      if (!checkSiteName(this.state.newSiteName, this.state.currentSite)) {
-        this.newSite.name = this.state.newSiteName;
+      if (!checkSiteName(this.state.siteName)) {
+        this.site.name = this.state.siteName;
         const {addSite, gotoSite, updateSite} = this.props;
         
         if (this.state.adding)
-          addSite(this.newSite);
+          addSite(this.site);
         else if (this.state.editing)
-          updateSite(this.newSite);
+          updateSite(this.site);
         
-        gotoSite(this.newSite);
+        gotoSite(this.site);
         this.endEdit();
       
       } else {
@@ -114,9 +114,9 @@ export default class Sites extends Component {
   }
 
   endEdit() {
-    this.newSite = null;
+    this.site = null;
     this.activeInput = null;
-    this.setState({adding: false, editing: false, newSiteName: ""});
+    this.setState({adding: false, editing: false, siteName: ""});
   }
 
   onDoubleClickSite(event, site) {
@@ -124,8 +124,8 @@ export default class Sites extends Component {
     if (role != ROLE_OWNER && role != ROLE_ADMIN)
       return;
     
-    this.newSite = site;
-    this.setState({editing: true, newSiteName: site.name});
+    this.site = site;
+    this.setState({editing: true, siteName: site.name});
   }
 
   render() {
@@ -144,14 +144,14 @@ export default class Sites extends Component {
               if (this.state.currentSite == site)
                 style += " element-active";
 
-              let editing = this.state.editing && site == this.newSite;
+              let editing = this.state.editing && site == this.site;
 
               let styleInput = "site-name";
               let name = site.name;
               let ref = () => {};
               if (editing) {
                 styleInput += " site-name-editable";
-                name = this.state.newSiteName;
+                name = this.state.siteName;
                 ref = c => this.activeInput = c;
               }
 
@@ -184,7 +184,7 @@ export default class Sites extends Component {
             this.state.adding &&
               <div styleName="element">
                 <input styleName="site-name"
-                       value={this.state.newSiteName}
+                       value={this.state.siteName}
                        placeholder="Type site name"
                        autoFocus={true}
                        onBlur={this.onSiteNameBlur}
