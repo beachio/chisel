@@ -33,7 +33,7 @@ module.exports = {
         loader: 'url',
         query: {
           limit: 3000,
-          name: 'assets/images/[name].[hash:7].[ext]'
+          name: 'assets/images/[name].[ext]'
         }
       },
       {
