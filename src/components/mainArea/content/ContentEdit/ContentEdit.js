@@ -134,20 +134,8 @@ export default class ContentEdit extends Component {
   
   updateItemTitle = title => {
     this.setState({title});
-    
-    for (let [field, value] of this.state.fields) {
-      if (!field.isTitle)
-        continue;
-      
-      this.setState({fields: this.state.fields.set(field, title)});
-      
-      for (let [field2, value2] of this.state.fields) {
-        if (field2.appearance == ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG)
-          this.setFieldValue(field2, filterSpecials(title));
-      }
-      
-      break;
-    }
+    let draft = this.item.draft ? this.item.draft : this.item;
+    draft.title = title;
   };
   
   addItem = item => {

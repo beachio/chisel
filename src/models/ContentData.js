@@ -1,8 +1,8 @@
 import {Parse} from 'parse';
 
-import {removeOddSpaces} from 'utils/common';
+import {removeOddSpaces, filterSpecials} from 'utils/common';
 import {getMediaByO, getContentByO} from 'utils/data';
-import {FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCES} from 'models/ModelData';
+import {FIELD_APPEARANCE__SHORT_TEXT__SLUG, FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCES} from 'models/ModelData';
 
 
 export const STATUS_DRAFT     = `Draft`;
@@ -36,6 +36,11 @@ export class ContentItemData {
     
     title = removeOddSpaces(title);
     this.fields.set(this.titleField, title);
+  
+    for (let [field, value2] of this.fields) {
+      if (field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SLUG)
+        this.fields.set(field, filterSpecials(title));
+    }
   }
   
   get model() {return this._model;}
