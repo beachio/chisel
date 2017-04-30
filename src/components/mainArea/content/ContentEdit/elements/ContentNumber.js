@@ -22,6 +22,7 @@ export default class ContentNumber extends ContentBase {
   }
   
   componentWillReceiveProps(nextProps) {
+    this.setState({isEditable: nextProps.isEditable});
   }
   
   getDefaultValue() {
@@ -160,7 +161,7 @@ export default class ContentNumber extends ContentBase {
                 inner.push(<InputControl type="big"
                                          key={i}
                                          value={value[i]}
-                                         readOnly={!this.isEditable}
+                                         readOnly={!this.state.isEditable}
                                          onChange={e => this.onChange(e, i)}
                                          DOMRef={inp => inputs[i] = inp}
                                          onBlur={this.onBlur}
@@ -170,7 +171,7 @@ export default class ContentNumber extends ContentBase {
             } else {
               inner = <InputControl type="big"
                                     value={value}
-                                    readOnly={!this.isEditable}
+                                    readOnly={!this.state.isEditable}
                                     onChange={this.onChange}
                                     onBlur={this.onBlur} />;
             }
@@ -189,7 +190,7 @@ export default class ContentNumber extends ContentBase {
                             value={value}
                             onChange={this.onChangeRating}
                             size={32}
-                            edit={this.isEditable}
+                            edit={this.state.isEditable}
                             color1={'#F5F5F5'}
                             color2={'#5CA6DC'} />
               </div>

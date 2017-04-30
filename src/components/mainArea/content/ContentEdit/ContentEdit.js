@@ -156,7 +156,9 @@ export default class ContentEdit extends Component {
   };
 
   generateElement(field, value, ref) {
-    const {isEditable} = this.props;
+    let {isEditable} = this.props;
+    if (this.item.status == STATUS_ARCHIEVED)
+      isEditable = false;
 
     switch (field.type) {
       case ftps.FIELD_TYPE_SHORT_TEXT:

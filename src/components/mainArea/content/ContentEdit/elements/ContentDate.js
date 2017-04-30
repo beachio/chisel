@@ -46,13 +46,13 @@ export default class ContentDate extends ContentBase {
           <div styleName="input-wrapper data-time-wrapper">
             <div styleName="date">
               <Flatpickr value={value}
-                         data-click-opens={this.isEditable}
+                         data-click-opens={this.state.isEditable}
                          data-alt-input="true"
                          onChange={this.onChangeDate} />
             </div>
             <div styleName="time">
               <Flatpickr value={value}
-                         data-click-opens={this.isEditable}
+                         data-click-opens={this.state.isEditable}
                          data-no-calendar={true}
                          data-enable-time={true}
                          data-alt-format="h:i K"

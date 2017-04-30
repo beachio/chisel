@@ -22,7 +22,7 @@ export default class ContentReference extends ContentBase {
   }
   
   onReferenceNew = () => {
-    if (!this.isEditable)
+    if (!this.state.isEditable)
       return;
     
     this.props.showModal(MODAL_TYPE_MODEL_CHOOSE, {
@@ -41,7 +41,7 @@ export default class ContentReference extends ContentBase {
   };
   
   onReferencesChoose = () => {
-    if (!this.isEditable)
+    if (!this.state.isEditable)
       return;
     let refers = this.state.value;
     if (!refers)
@@ -58,7 +58,7 @@ export default class ContentReference extends ContentBase {
   
   onReferenceClear = (event, item) => {
     event.stopPropagation();
-    if (!this.isEditable)
+    if (!this.state.isEditable)
       return;
     
     let refers = this.state.value;
@@ -104,7 +104,7 @@ export default class ContentReference extends ContentBase {
     };
   
     let btnStyle = `reference-button`;
-    if (!this.isEditable)
+    if (!this.state.isEditable)
       btnStyle += ` reference-button-disabled`;
     let addRefBlock = (
       <div styleName="reference-buttons">

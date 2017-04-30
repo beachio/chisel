@@ -29,7 +29,7 @@ export default class ContentMedia extends ContentBase {
   }
   
   onMediaChoose = () => {
-    if (!this.isEditable)
+    if (!this.state.isEditable)
       return;
     
     this.props.showModal(MODAL_TYPE_MEDIA, {
@@ -126,11 +126,11 @@ export default class ContentMedia extends ContentBase {
           <div styleName="media-header">
             <input type="text"
                    placeholder="File name"
-                   readOnly={!this.isEditable}
+                   readOnly={!this.state.isEditable}
                    onChange={e => this.onMediaNameChange(e, item)}
                    value={item.name} />
             {
-              this.isEditable &&
+              this.state.isEditable &&
                 <InlineSVG styleName="media-cross"
                            src={require('assets/images/cross.svg')}
                            onClick={() => this.onMediaClear(item)}/>
@@ -142,7 +142,7 @@ export default class ContentMedia extends ContentBase {
     };
   
     let btnStyle = `media-button`;
-    if (!this.isEditable)
+    if (!this.state.isEditable)
       btnStyle += ` media-button-disabled`;
     let addMediaBlock = (
       <div styleName="media-buttons">
@@ -150,7 +150,7 @@ export default class ContentMedia extends ContentBase {
           Upload New
           <input styleName="media-hidden"
                  type="file"
-                 disabled={!this.isEditable}
+                 disabled={!this.state.isEditable}
                  onChange={this.onMediaNew} />
         </div>
         <div styleName={btnStyle + ` media-insert`}

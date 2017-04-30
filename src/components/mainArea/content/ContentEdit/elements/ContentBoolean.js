@@ -17,7 +17,7 @@ export default class ContentBoolean extends ContentBase {
   }
   
   onChange = value => {
-    if (this.isEditable)
+    if (this.state.isEditable)
       this.setValue(value);
   };
   

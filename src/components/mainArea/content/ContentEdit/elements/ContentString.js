@@ -154,7 +154,7 @@ export default class ContentString extends ContentBase {
                 innerStr.push(<InputControl type="big"
                                             key={i}
                                             value={value[i]}
-                                            readOnly={!this.isEditable}
+                                            readOnly={!this.state.isEditable}
                                             DOMRef={inp => inputs[i] = inp}
                                             onChange={e => this.onChange(e, i)}
                                             onKeyDown={e => this.onKeyDown(e, i, inputs)} />);
@@ -163,7 +163,7 @@ export default class ContentString extends ContentBase {
             } else {
               innerStr = <InputControl type="big"
                                        value={value}
-                                       readOnly={!this.isEditable}
+                                       readOnly={!this.state.isEditable}
                                        onChange={this.onChange} />;
             }
         
@@ -178,7 +178,7 @@ export default class ContentString extends ContentBase {
               <div styleName="input-wrapper">
                 <InputControl type="big"
                               value={value}
-                              readOnly={!this.isEditable}
+                              readOnly={!this.state.isEditable}
                               onChange={this.onChange} />
               </div>
             );
@@ -188,7 +188,7 @@ export default class ContentString extends ContentBase {
               <div styleName="input-wrapper url">
                 <InputControl type="big"
                               value={value}
-                              readOnly={!this.isEditable}
+                              readOnly={!this.state.isEditable}
                               onChange={this.onChange} />
               </div>
             );
@@ -201,7 +201,7 @@ export default class ContentString extends ContentBase {
               <div styleName="input-wrapper">
                 <InputControl type="big"
                               value={value}
-                              readOnly={!this.isEditable}
+                              readOnly={!this.state.isEditable}
                               onChange={this.onChange} />
               </div>
             );
@@ -210,7 +210,7 @@ export default class ContentString extends ContentBase {
             return (
               <textarea styleName="textarea"
                         value={value}
-                        readOnly={!this.isEditable}
+                        readOnly={!this.state.isEditable}
                         onChange={this.onChange} />
             );
       
@@ -221,7 +221,7 @@ export default class ContentString extends ContentBase {
                       onChange={this.onChangeWysiwyg}
                       options={{
                         placeholder: false,
-                        disableEditing: !this.isEditable
+                        disableEditing: !this.state.isEditable
                       }} />
             );
         }

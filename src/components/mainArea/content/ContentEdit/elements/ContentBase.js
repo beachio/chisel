@@ -8,11 +8,11 @@ import styles from '../ContentEdit.sss';
 export default class ContentBase extends Component {
   state = {
     error: null,
-    value: null
+    value: null,
+    isEditable: false
   };
   
   field = null;
-  isEditable = false;
   setFieldValue = null;
   
   
@@ -20,9 +20,9 @@ export default class ContentBase extends Component {
     super(props);
     
     this.field = props.field;
-    this.isEditable = props.isEditable;
     this.setFieldValue = props.setFieldValue;
     
+    this.state.isEditable = props.isEditable;
     if (props.value)
       this.state.value = props.value;
     else
@@ -30,6 +30,7 @@ export default class ContentBase extends Component {
   }
   
   componentWillReceiveProps(nextProps) {
+    this.setState({isEditable: nextProps.isEditable});
     if (nextProps.value)
       this.setState({value: nextProps.value});
     else
