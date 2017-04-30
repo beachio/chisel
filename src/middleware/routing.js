@@ -5,7 +5,7 @@ import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';
 import {setCurrentSite} from 'ducks/models';
 import {getSiteByNameId} from 'utils/data';
 import {scrollUp} from 'utils/common';
-import {INIT_END, SIGN_URL, SITE_URL, USERSPACE_URL, EMAIL_URLS} from 'ducks/nav';
+import {INIT_END, SIGN_URL, SITE_URL, USERSPACE_URL, EMAIL_URLS, PROFILE_URL} from 'ducks/nav';
 
 
 let URL = '/';
@@ -71,7 +71,7 @@ export const routing = store => next => action => {
           setDefaultSite();
       }
       
-    } else {
+    } else if (path.indexOf(PROFILE_URL) == -1) {
       setDefaultSite();
     }
   };
