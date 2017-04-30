@@ -102,6 +102,11 @@ export default class ContentEdit extends Component {
     this.updateItem();
   };
   
+  onRestore = () => {
+    this.props.restoreItem(this.item);
+    this.updateItem();
+  };
+  
   setFieldValue = (field, value, save = false) => {
     let fields = this.state.fields;
     this.setState({fields: fields.set(field, value), dirty: true});
@@ -260,7 +265,7 @@ export default class ContentEdit extends Component {
               <div styleName="button-publish">
                 <ButtonControl color="green"
                                value="Publish"
-                               disabled={this.item.status == STATUS_PUBLISHED}
+                               disabled={this.item.status == STATUS_PUBLISHED || this.item.status == STATUS_ARCHIEVED}
                                onClick={this.onPublish}/>
               </div>
               <div styleName="button-publish">
@@ -269,12 +274,20 @@ export default class ContentEdit extends Component {
                                disabled={this.item.status != STATUS_UPDATED && !this.state.dirty}
                                onClick={this.onDiscard}/>
               </div>
-              <div styleName="button-publish">
-                <ButtonControl color="gray"
-                               value="Archieve"
-                               disabled={this.item.status == STATUS_ARCHIEVED}
-                               onClick={this.onArchieve}/>
-              </div>
+              {
+                this.item.status == STATUS_ARCHIEVED ?
+                  <div styleName="button-publish">
+                    <ButtonControl color="gray"
+                                   value="Restore from archieve"
+                                   onClick={this.onRestore}/>
+                  </div>
+                :
+                  <div styleName="button-publish">
+                    <ButtonControl color="gray"
+                                   value="Archieve"
+                                   onClick={this.onArchieve}/>
+                  </div>
+              }
             </div>
         }
       </div>

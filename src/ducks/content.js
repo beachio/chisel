@@ -14,6 +14,7 @@ export const ITEM_UPDATE        = 'app/content/ITEM_UPDATE';
 export const ITEM_PUBLISH       = 'app/content/ITEM_PUBLISH';
 export const ITEM_DISCARD       = 'app/content/ITEM_DISCARD';
 export const ITEM_ARCHIEVE      = 'app/content/ITEM_ARCHIEVE';
+export const ITEM_RESTORE       = 'app/content/ITEM_RESTORE';
 export const ITEM_DELETE        = 'app/content/ITEM_DELETE';
 export const SET_CURRENT_ITEM   = 'app/content/SET_CURRENT_ITEM';
 
@@ -168,6 +169,18 @@ export function archieveItem(item) {
   };
 }
 
+export function restoreItem(item) {
+  item.status = STATUS_DRAFT;
+  
+  item.updateOrigin();
+  item.origin.save();
+  
+  return {
+    type: ITEM_RESTORE,
+    item
+  };
+}
+
 export function setCurrentItem(currentItem) {
   return {
     type: SET_CURRENT_ITEM,
@@ -249,6 +262,7 @@ export default function contentReducer(state = initialState, action) {
     case ITEM_PUBLISH:
     case ITEM_DISCARD:
     case ITEM_ARCHIEVE:
+    case ITEM_RESTORE:
       return {...state};
       
     case ITEM_DELETE:
