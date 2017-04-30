@@ -29,6 +29,9 @@ export default class ContentMedia extends ContentBase {
   }
   
   onMediaChoose = () => {
+    if (!this.isEditable)
+      return;
+    
     this.props.showModal(MODAL_TYPE_MEDIA, {
       isMult: this.field.isList,
       
@@ -123,26 +126,34 @@ export default class ContentMedia extends ContentBase {
           <div styleName="media-header">
             <input type="text"
                    placeholder="File name"
+                   readOnly={!this.isEditable}
                    onChange={e => this.onMediaNameChange(e, item)}
                    value={item.name} />
-            <InlineSVG styleName="media-cross"
-                       src={require('assets/images/cross.svg')}
-                       onClick={() => this.onMediaClear(item)} />
+            {
+              this.isEditable &&
+                <InlineSVG styleName="media-cross"
+                           src={require('assets/images/cross.svg')}
+                           onClick={() => this.onMediaClear(item)}/>
+            }
           </div>
           <MediaView item={item} />
         </div>
       );
     };
   
+    let btnStyle = `media-button`;
+    if (!this.isEditable)
+      btnStyle += ` media-button-disabled`;
     let addMediaBlock = (
       <div styleName="media-buttons">
-        <div type="file" styleName="media-button media-upload">
+        <div type="file" styleName={btnStyle + ` media-upload`}>
           Upload New
           <input styleName="media-hidden"
                  type="file"
+                 disabled={!this.isEditable}
                  onChange={this.onMediaNew} />
         </div>
-        <div styleName="media-button media-insert"
+        <div styleName={btnStyle + ` media-insert`}
              onClick={this.onMediaChoose}>
           Insert Existing
         </div>

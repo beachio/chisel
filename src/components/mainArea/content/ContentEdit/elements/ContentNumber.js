@@ -158,21 +158,21 @@ export default class ContentNumber extends ContentBase {
               let inputs = [];
               for (let i = 0; i < value.length + 1; i++) {
                 inner.push(<InputControl type="big"
-                                            key={i}
-                                            value={value[i]}
-                                            readOnly={!this.isEditable}
-                                            onChange={e => this.onChange(e, i)}
-                                            DOMRef={inp => inputs[i] = inp}
-                                            onBlur={this.onBlur}
-                                            onKeyDown={e => this.onKeyDown(e, i, inputs)} />);
+                                         key={i}
+                                         value={value[i]}
+                                         readOnly={!this.isEditable}
+                                         onChange={e => this.onChange(e, i)}
+                                         DOMRef={inp => inputs[i] = inp}
+                                         onBlur={this.onBlur}
+                                         onKeyDown={e => this.onKeyDown(e, i, inputs)} />);
               }
           
             } else {
               inner = <InputControl type="big"
-                                       value={value}
-                                       readOnly={!this.isEditable}
-                                       onChange={this.onChange}
-                                       onBlur={this.onBlur} />;
+                                    value={value}
+                                    readOnly={!this.isEditable}
+                                    onChange={this.onChange}
+                                    onBlur={this.onBlur} />;
             }
         
             return (
@@ -189,6 +189,7 @@ export default class ContentNumber extends ContentBase {
                             value={value}
                             onChange={this.onChangeRating}
                             size={32}
+                            edit={this.isEditable}
                             color1={'#F5F5F5'}
                             color2={'#5CA6DC'} />
               </div>

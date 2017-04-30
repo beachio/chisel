@@ -22,6 +22,9 @@ export default class ContentReference extends ContentBase {
   }
   
   onReferenceNew = () => {
+    if (!this.isEditable)
+      return;
+    
     this.props.showModal(MODAL_TYPE_MODEL_CHOOSE, {
       callback: model => {
         this.addingItem = new ContentItemData();
@@ -38,6 +41,8 @@ export default class ContentReference extends ContentBase {
   };
   
   onReferencesChoose = () => {
+    if (!this.isEditable)
+      return;
     let refers = this.state.value;
     if (!refers)
       refers = [];
@@ -53,6 +58,9 @@ export default class ContentReference extends ContentBase {
   
   onReferenceClear = (event, item) => {
     event.stopPropagation();
+    if (!this.isEditable)
+      return;
+    
     let refers = this.state.value;
     if (item)
       refers.splice(refers.indexOf(item), 1);
@@ -95,12 +103,15 @@ export default class ContentReference extends ContentBase {
       }
     };
   
+    let btnStyle = `reference-button`;
+    if (!this.isEditable)
+      btnStyle += ` reference-button-disabled`;
     let addRefBlock = (
       <div styleName="reference-buttons">
-        <div styleName="reference-button reference-new" onClick={this.onReferenceNew}>
+        <div styleName={btnStyle + ` reference-new`} onClick={this.onReferenceNew}>
           Create new entry
         </div>
-        <div styleName="reference-button reference-insert" onClick={this.onReferencesChoose}>
+        <div styleName={btnStyle + ` reference-insert`} onClick={this.onReferencesChoose}>
           Insert Existing Entry
         </div>
       </div>
