@@ -128,11 +128,10 @@ export default class ModelsList extends Component {
                 let updatedStr = getRelativeTime(updatedDate);
 
                 let colorStyle = {background: model.color};
-                let key = model.origin && model.origin.id ? model.origin.id : Math.random();
 
                 return(
                   <div styleName="list-item"
-                       key={key}
+                       key={model.name}
                        onClick={() => this.onModelClick(model)}>
                     <div styleName="colorLabel" style={colorStyle}></div>
                     <div styleName="type">
