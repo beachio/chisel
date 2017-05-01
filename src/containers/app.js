@@ -2,6 +2,8 @@ import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
+import FlipMove from 'react-flip-move';
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import FieldModal from 'components/modals/FieldModal/FieldModal';
@@ -61,6 +63,13 @@ class App extends React.Component {
       }
     };
     
+    const trans = {
+      enter: styles['modal-enter'],
+      enterActive: styles['modal-enter-active'],
+      leave: styles['modal-leave'],
+      leaveActive: styles['modal-leave-active']
+    };
+    
     let res = (
       <div styleName="wrapper">
         {this.props.children}
@@ -68,7 +77,11 @@ class App extends React.Component {
           (user.pending || user.authorized && !nav.initEnded) &&
             <SiteLoader />
         }
-        {getModal()}
+        <CSSTransitionGroup transitionName={trans}
+                            transitionEnterTimeout={200}
+                            transitionLeaveTimeout={200}>
+          {getModal()}
+        </CSSTransitionGroup>
       </div>
     );
     

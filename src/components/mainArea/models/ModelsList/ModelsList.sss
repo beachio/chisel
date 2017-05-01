@@ -92,3 +92,24 @@
   .cross
     height: 24px
     width: 24px
+
+
+.listTrans-enter
+  opacity: 0.01
+  transform: scale(1, 0.4)
+  transform-origin: 50% 0
+
+.listTrans-enter.listTrans-enter-active
+  opacity: 1
+  transform: scale(1, 1)
+  transition: opacity 500ms, transform 500ms
+
+.listTrans-leave
+  opacity: 1
+  transform-origin: 50% 0
+
+.listTrans-leave.listTrans-leave-active
+  opacity: 0.01
+  transform: scale(1, 0.4)
+  transform-origin: 50% 0
+  transition: opacity 500ms, transform 500ms

@@ -149,41 +149,38 @@ export default class Model extends Component {
       content = (
         <div styleName="model-wrapper">
           <div styleName="list">
-            {
-              this.state.fields.map(field => {
-                let colorStyle = {background: field.color};
-                let key = field.origin && field.origin.id ? field.origin.id : Math.random();
-                
-                let style = "list-item";
-                if (isEditable)
-                  style += " list-item_pointer";
+            {this.state.fields.map(field => {
+              let colorStyle = {background: field.color};
+              
+              let style = "list-item";
+              if (isEditable)
+                style += " list-item_pointer";
 
-                return (
-                  <div styleName={style}
-                       key={key}
-                       onClick={() => this.onFieldClick(field)}>
-                    <div styleName="list-item-color" style={colorStyle}></div>
-                    <div styleName="list-item-text">
-                      <div styleName="list-item-name">{field.name}</div>
-                      <div styleName="list-item-type">{field.type} — {field.appearance}</div>
-                    </div>
-                    {
-                      field.isTitle &&
-                        <div styleName="title-button">TITLE</div>
-                    }
-                    {
-                      isEditable &&
-                        <div styleName="hidden-controls">
-                          <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, field)}>
-                            <InlineSVG styleName="cross"
-                                       src={require("assets/images/cross.svg")}/>
-                          </div>
-                        </div>
-                    }
+              return (
+                <div styleName={style}
+                     key={field.name}
+                     onClick={() => this.onFieldClick(field)}>
+                  <div styleName="list-item-color" style={colorStyle}></div>
+                  <div styleName="list-item-text">
+                    <div styleName="list-item-name">{field.name}</div>
+                    <div styleName="list-item-type">{field.type} — {field.appearance}</div>
                   </div>
-                );
-              })
-            }
+                  {
+                    field.isTitle &&
+                      <div styleName="title-button">TITLE</div>
+                  }
+                  {
+                    isEditable &&
+                      <div styleName="hidden-controls">
+                        <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, field)}>
+                          <InlineSVG styleName="cross"
+                                     src={require("assets/images/cross.svg")}/>
+                        </div>
+                      </div>
+                  }
+                </div>
+              );
+            })}
           </div>
           {
             isEditable &&

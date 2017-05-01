@@ -8,3 +8,18 @@
     display: flex
     flex-flow: row nowrap
     height: 100%
+
+
+.modal-enter
+  opacity: 0.01
+
+.modal-enter.modal-enter-active
+  opacity: 1
+  transition: opacity 200ms ease-in-out
+
+.modal-leave
+  opacity: 1
+
+.modal-leave.modal-leave-active
+  opacity: 0.01
+  transition: opacity 200ms ease-in-out

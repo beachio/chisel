@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
+import FlipMove from 'react-flip-move';
 
 import {checkModelName, getAlertForNameError, getContentForModel} from 'utils/data';
 import {getRelativeTime} from 'utils/common';
@@ -106,6 +107,13 @@ export default class ModelsList extends Component {
 
   render() {
     const {isEditable} = this.props;
+    
+    const transitions = {
+      enter: styles[`listTrans-enter`],
+      enterActive: styles[`listTrans-enter-active`],
+      leave: styles[`listTrans-leave`],
+      leaveActive: styles[`listTrans-leave-active`]
+    };
 
     return (
       <ContainerComponent title='Models'>
@@ -120,8 +128,12 @@ export default class ModelsList extends Component {
                   <div styleName="updated">UPDATED</div>
                 </div>
             }
-            {
-              this.state.models.map(model => {
+            <FlipMove duration={500}
+                      enterAnimation="fade"
+                      leaveAnimation="fade"
+                      maintainContainerHeight
+                      easing="ease-out">
+              {this.state.models.map(model => {
                 let updatedDate = model.origin.updatedAt;
                 if (!updatedDate)
                   updatedDate = new Date();
@@ -151,8 +163,8 @@ export default class ModelsList extends Component {
                     }
                   </div>
                 );
-              })
-            }
+              })}
+            </FlipMove>
           </div>
           {
             isEditable &&
