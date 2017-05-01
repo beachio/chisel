@@ -60,7 +60,7 @@ ReactDOM.render(
           <Redirect from='/userspace/:site' to='/userspace/:site/models' />
         </Route>
         <IndexRedirect to='/userspace' />
-        <Redirect from='/*' to='/userspace' />
+        <Redirect from='/*' to='/invalid-link' />
       </Route>
     </Router>
   </Provider>,

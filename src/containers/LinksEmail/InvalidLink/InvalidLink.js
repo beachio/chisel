@@ -38,7 +38,7 @@ export class InvalidLink extends Component  {
             <div styleName="button">
               <ButtonControl color="green"
                              type="submit"
-                             value="OK" />
+                             value="Goto home" />
             </div>
           </form>
         </div>
