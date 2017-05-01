@@ -139,6 +139,7 @@ export class Sign extends Component  {
   render() {
     this.elmEmail = <input styleName="input"
                            type="text"
+                           autoFocus
                            value={this.state.email}
                            placeholder="Enter email"
                            onChange={this.onEmailChange} />;

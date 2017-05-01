@@ -256,7 +256,9 @@ const initialState = {
   email: '',
   password: '',
 
-  userData: null
+  userData: null,
+  
+  pending: false
 };
 
 export default function userReducer(state = initialState, action) {
@@ -269,7 +271,8 @@ export default function userReducer(state = initialState, action) {
         authorized: false,
         authError: null,
         email: action.email,
-        password: action.password
+        password: action.password,
+        pending: true
       };
 
     case LOGIN_RESPONSE:
@@ -280,7 +283,8 @@ export default function userReducer(state = initialState, action) {
         authError:  action.authError,
         userData:   action.userData,
         localStorageReady: true,
-        password: ``
+        password: ``,
+        pending: false
       };
       return result;
 
