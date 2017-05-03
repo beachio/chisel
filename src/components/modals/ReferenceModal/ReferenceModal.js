@@ -110,6 +110,8 @@ export default class ReferenceModal extends Component {
   render() {
     return (
       <div styleName="modal">
+        <div styleName="bg" onClick={this.onClose}></div>
+        
         <div styleName="modal-inner">
           <div styleName="content">
             <div styleName="input-wrapper">

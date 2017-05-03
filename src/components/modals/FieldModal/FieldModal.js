@@ -139,6 +139,8 @@ export default class FieldModal extends Component {
 
     return (
       <div styleName="modal">
+        <div styleName="bg" onClick={this.onClose}></div>
+        
         <div styleName="modal-inner">
           <div styleName="modal-header">
             <div styleName="title">{headName}</div>

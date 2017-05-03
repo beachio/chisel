@@ -69,6 +69,8 @@ export default class ModelChooseModal extends Component {
   render() {
     return (
       <div styleName="modal">
+        <div styleName="bg" onClick={this.onClose}></div>
+        
         <div styleName="modal-inner">
           <div styleName="modal-header">
             <div styleName="title">Please, select model for new item</div>
