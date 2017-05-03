@@ -16,8 +16,10 @@ export class ContentEditContainer extends Component {
   //TODO Костыль!
   item = null;
   
-  componentWillMount() {
-    this.setItem(this.props.params.item);
+  constructor(props) {
+    super(props);
+    
+    this.setItem(props.params.item);
   }
   
   componentWillReceiveProps(nextProps) {

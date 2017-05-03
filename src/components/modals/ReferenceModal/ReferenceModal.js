@@ -22,15 +22,16 @@ export default class ReferenceModal extends Component {
   active = false;
   
   
-  componentWillMount() {
-    this.isMult = this.props.params.isMult;
-    this.callback = this.props.params.callback;
-    this.onClose = this.props.onClose;
+  constructor(props) {
+    super(props);
     
-    let currentItem = this.props.params.currentItem;
-    let existingItems = this.props.params.existingItems;
-    let allItems = this.props.contentItems;
-    let curSite = this.props.currentSite;
+    this.isMult = props.params.isMult;
+    this.callback = props.params.callback;
+    this.onClose = props.onClose;
+    
+    const {currentItem, existingItems} = props.params;
+    const allItems = props.contentItems;
+    const curSite = props.currentSite;
     
     for (let item of allItems) {
       if ((!item.model.site || item.model.site == curSite) &&
@@ -54,7 +55,7 @@ export default class ReferenceModal extends Component {
   }
   
   onKeyPress = () => {
-    let event = window.event;
+    const event = window.event;
     event.stopPropagation();
     
     //Enter or Esc pressed
@@ -65,7 +66,7 @@ export default class ReferenceModal extends Component {
   };
   
   onSearch = (event) => {
-    let searchText = event.target.value;
+    const searchText = event.target.value;
   
     //if there is no selected item in search results, reset selected item
     //if (this.state.selectedItem && !this.searchMatch(searchText, this.state.selectedItem.title))
@@ -77,7 +78,8 @@ export default class ReferenceModal extends Component {
   searchMatch(target) {
     if (!this.state.searchText)
       return true;
-    let text = this.state.searchText.toLowerCase();
+    
+    const text = this.state.searchText.toLowerCase();
     return target.toLowerCase().indexOf(text) != -1;
   }
   

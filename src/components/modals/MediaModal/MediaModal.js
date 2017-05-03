@@ -24,10 +24,12 @@ export default class MediaModal extends Component {
   focusElm = null;
 
 
-  componentWillMount() {
-    this.isMult = this.props.params.isMult;
-    this.callback = this.props.params.callback;
-    this.onClose = this.props.onClose;
+  constructor(props) {
+    super(props);
+    
+    this.isMult = props.params.isMult;
+    this.callback = props.params.callback;
+    this.onClose = props.onClose;
     
     this.items = store.getState().media.items;
   }

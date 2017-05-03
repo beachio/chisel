@@ -13,7 +13,7 @@ export default class Menu extends Component  {
   render() {
     const {siteNameId, openedPage} = this.props;
     
-    let prefix = `/${USERSPACE_URL}/${SITE_URL}${siteNameId}/`;
+    const prefix = `/${USERSPACE_URL}/${SITE_URL}${siteNameId}/`;
 
     return (
       <div styleName="menu">

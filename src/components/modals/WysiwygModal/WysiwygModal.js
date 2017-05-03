@@ -15,9 +15,11 @@ export default class WysiwygModal extends Component  {
   onClose = null;
   callback = null;
   
-  componentWillMount() {
-    this.onClose = this.props.onClose;
-    this.callback = this.props.params.callback;
+  constructor(props) {
+    super(props);
+    
+    this.onClose = props.onClose;
+    this.callback = props.params.callback;
   }
   
   onClosing = () => {
@@ -25,7 +27,7 @@ export default class WysiwygModal extends Component  {
     this.onClose();
   };
   
-  onChange = (text, medium) => {
+  onChange = text => {
     this.text = text;
   };
   
@@ -34,13 +36,11 @@ export default class WysiwygModal extends Component  {
       <div styleName="wrapper">
         <div styleName="return" onClick={this.onClosing}>
           <InlineSVG styleName="cross"
-                     src={require("assets/images/cross.svg")}/>
+                     src={require("assets/images/cross.svg")} />
         </div>
-        <Editor
-          styleName="editor"
-          text={this.props.params.text}
-          onChange={this.onChange}
-        />
+        <Editor styleName="editor"
+                text={this.props.params.text}
+                onChange={this.onChange} />
       </div>
     );
   }

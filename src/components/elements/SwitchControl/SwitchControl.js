@@ -9,7 +9,9 @@ import styles from './SwitchControl.sss';
 export default class SwitchControl extends Component {
   id = '0';
   
-  componentWillMount() {
+  constructor(props) {
+    super(props);
+    
     this.id = _.uniqueId('switch_');
   }
   

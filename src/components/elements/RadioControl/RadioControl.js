@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
-import styles from './DropdownControl.sss';
+import styles from './RadioControl.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})

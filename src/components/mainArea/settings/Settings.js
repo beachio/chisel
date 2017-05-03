@@ -27,12 +27,13 @@ export default class Settings extends Component {
   site = null;
   
   
-  componentWillMount() {
-    this.site = this.props.site;
-    this.setState({
-      name: this.site.name,
-      domain: this.site.domain
-    });
+  constructor(props) {
+    super(props);
+    
+    this.site = props.site;
+    
+    this.state.name   = this.site.name;
+    this.state.domain = this.site.domain;
   }
   
   componentWillReceiveProps(nextProps) {
@@ -41,10 +42,6 @@ export default class Settings extends Component {
       name: this.site.name,
       domain: this.site.domain
     });
-  }
-  
-  componentWillUnmount() {
-    
   }
   
   onChangeName = event => {

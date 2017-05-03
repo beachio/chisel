@@ -25,7 +25,10 @@ export default class InputControl extends Component {
 
     let iconEl;
     if (icon)
-      iconEl = (<div onClick={onIconClick} styleName={icon}><IconsComponent icon={icon} /></div>);
+      iconEl = (
+        <div onClick={onIconClick} styleName={icon}>
+          <IconsComponent icon={icon} />
+        </div>);
   
     return (
       <div styleName="InputControl">

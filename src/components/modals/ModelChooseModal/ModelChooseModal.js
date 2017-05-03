@@ -21,11 +21,13 @@ export default class ModelChooseModal extends Component {
   active = false;
   
   
-  componentWillMount() {
-    this.callback = this.props.params.callback;
-    this.onClose = this.props.onClose;
+  constructor(props) {
+    super(props);
     
-    this.models = this.props.models;
+    this.callback = props.params.callback;
+    this.onClose = props.onClose;
+    
+    this.models = props.models;
   }
   
   componentDidMount() {

@@ -22,9 +22,10 @@ export default class Sharing extends Component {
   activeInput = null;
 
 
-  componentWillMount() {
-    const {collaborations} = this.props;
-    this.setState({collaborations});
+  constructor(props) {
+    super(props);
+    
+    this.state.collaborations = props.collaborations;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -36,13 +37,14 @@ export default class Sharing extends Component {
   }
 
   onInputChange = event => {
-    let input = event.target.value;
+    const input = event.target.value;
     this.setState({input});
   };
 
   onKeyDown = event => {
     if (this.props.alertShowing)
       return;
+    
     //Enter pressed
     if (event.keyCode == 13) {
       this.onAddCollaboration();
@@ -88,7 +90,7 @@ export default class Sharing extends Component {
         }
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
   
         let params = {
           type: ALERT_TYPE_CONFIRM,

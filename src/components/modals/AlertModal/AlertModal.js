@@ -24,9 +24,11 @@ export default class AlertModal extends Component {
   focusBtn = null;
   
   
-  componentWillMount() {
-    if (this.props.params.confirmString)
-      this.confirmString = this.props.params.confirmString;
+  constructor(props) {
+    super(props);
+    
+    if (props.params.confirmString)
+      this.confirmString = props.params.confirmString;
   }
   
   componentDidMount() {

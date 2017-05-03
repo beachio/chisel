@@ -8,11 +8,9 @@ import styles from './JSONView.sss';
 export default class JSONView extends Component {
 
   render() {
-    const {content} = this.props;
-
     return (
       <pre styleName="json-wrapper">
-        {content}
+        {this.props.content}
       </pre>
     );
   }

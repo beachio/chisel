@@ -23,8 +23,10 @@ export default class ModelsList extends Component {
   returnFocus = false;
 
 
-  componentWillMount() {
-    this.setState({models: this.props.models});
+  constructor(props) {
+    super(props);
+    
+    this.state.models = props.models;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -62,31 +64,25 @@ export default class ModelsList extends Component {
     if (!this.state.modelName)
       return;
 
-    let error = checkModelName(this.state.modelName);
+    const error = checkModelName(this.state.modelName);
     if (error) {
-      const {showAlert} = this.props;
-      showAlert(getAlertForNameError(error));
+      this.props.showAlert(getAlertForNameError(error));
       this.returnFocus = true;
-      return;
+    } else {
+      this.props.addModel(this.state.modelName);
+      this.setState({modelName: ""});
     }
-
-    const {addModel} = this.props;
-    addModel(this.state.modelName);
-
-    this.setState({modelName: ""});
   };
 
   onModelClick = model => {
-    const {gotoModel} = this.props;
-    gotoModel(model);
+    this.props.gotoModel(model);
   };
   
   onRemoveClick = (event, model) => {
     event.stopPropagation();
-    const {showAlert, deleteModel} = this.props;
   
     let params;
-    let contentCount = getContentForModel(model).length;
+    const contentCount = getContentForModel(model).length;
     if (contentCount) {
       params = {
         type: ALERT_TYPE_ALERT,
@@ -98,22 +94,15 @@ export default class ModelsList extends Component {
         type: ALERT_TYPE_CONFIRM,
         title: `Deleting ${model.name} model`,
         description: "Are you sure?",
-        onConfirm: () => deleteModel(model)
+        onConfirm: () => this.props.deleteModel(model)
       };
     }
-     
-    showAlert(params);
+  
+    this.props.showAlert(params);
   };
 
   render() {
     const {isEditable} = this.props;
-    
-    const transitions = {
-      enter: styles[`listTrans-enter`],
-      enterActive: styles[`listTrans-enter-active`],
-      leave: styles[`listTrans-leave`],
-      leaveActive: styles[`listTrans-leave-active`]
-    };
 
     return (
       <ContainerComponent title='Models'>

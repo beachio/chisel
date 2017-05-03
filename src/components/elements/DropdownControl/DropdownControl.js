@@ -15,27 +15,31 @@ export default class DropdownControl extends Component {
   suggestionsList = [];
   onSuggest = null;
 
-  componentWillMount() {
-    const {suggestionsList, suggest, current} = this.props;
+  constructor(props) {
+    super(props);
+    
+    const {suggestionsList, suggest, current} = props;
     this.onSuggest = suggest;
     this.suggestionsList = suggestionsList;
-    this.setCurrent(current);
+  
+    this.state.suggestionValue = current;
+    if (suggestionsList.indexOf(current) == -1)
+      this.state.suggestionValue = suggestionsList[0];
   }
 
   componentWillReceiveProps(nextProps) {
-    this.suggestionsList = nextProps.suggestionsList;
-    this.setCurrent(nextProps.current);
-  }
-
-  setCurrent(cur) {
-    if (this.suggestionsList.indexOf(cur) == -1)
-      this.setState({suggestionValue: this.suggestionsList[0]});
+    const {suggestionsList, current} = nextProps;
+    
+    this.suggestionsList = suggestionsList;
+  
+    if (suggestionsList.indexOf(current) != -1)
+      this.setState({suggestionValue: current});
     else
-      this.setState({suggestionValue: cur});
+      this.setState({suggestionValue: suggestionsList[0]});
   }
 
   onSuggestionClick = event => {
-    let item = event.target.innerText;
+    const item = event.target.innerText;
     this.setState({
       suggestionValue: item,
       suggestionsVisibility: false
@@ -57,7 +61,7 @@ export default class DropdownControl extends Component {
   };
 
   render() {
-    const { label, type } = this.props;
+    const {label, type} = this.props;
 
     let wrapperClasses = classNames({
       'input-wrapper type-wrapper': type === undefined,
@@ -74,26 +78,21 @@ export default class DropdownControl extends Component {
       'arrow-down arrow-rotated': this.state.suggestionsVisibility
     });
 
-    let Suggestions = this.suggestionsList.map(suggestionsItem => {
-      return (
-        <div onMouseDown={this.onSuggestionClick}
-             styleName="suggestion"
-             key={suggestionsItem}>
-          {suggestionsItem}
-        </div>
-      )
-    });
+    let suggestions = this.suggestionsList.map(suggestionsItem => (
+      <div onMouseDown={this.onSuggestionClick}
+           styleName="suggestion"
+           key={suggestionsItem}>
+        {suggestionsItem}
+      </div>
+    ));
 
     let icon = <InlineSVG styleName={arrowClasses} src={require("./arrow-down.svg")} />;
     if (type === 'big')
       icon = <InlineSVG styleName="arrows" src={require("./arrows.svg")} />;
 
     let labelEl;
-    if (label) {
-      labelEl = (
-        <div styleName="label">{label}</div>
-      );
-    }
+    if (label)
+      labelEl = (<div styleName="label">{label}</div>);
 
     return (
       <div styleName={wrapperClasses} onBlur={this.onSuggestionBlur}>
@@ -105,7 +104,7 @@ export default class DropdownControl extends Component {
                  onClick={this.onSuggestionInputClick}
                  readOnly />
           <div styleName="suggestions">
-            {Suggestions}
+            {suggestions}
           </div>
         </div>
       </div>

@@ -28,9 +28,11 @@ export default class Model extends Component {
   titleActive = false;
   
 
-  componentWillMount() {
-    this.model = this.props.model;
-    this.setState({fields: this.props.model.fields});
+  constructor(props) {
+    super(props);
+    
+    this.model = props.model;
+    this.state.fields = props.model.fields;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -114,27 +116,30 @@ export default class Model extends Component {
   };
 
   updateModelName = (name, callback, silent) => {
-    if (name != this.model.name) {
-      let error = checkModelName(name);
-      if (!error) {
-        this.model.name = name;
-        this.props.updateModel(this.model);
-      } else if (error != NAME_ERROR_OTHER) {
-        if (!silent) {
-          this.props.showAlert(getAlertForNameError(error));
-          this.titleActive = true;
-        } else if (callback != undefined) {
-          callback(this.model.name);
-        }
+    if (name == this.model.name)
+      return;
+      
+    let error = checkModelName(name);
+    if (!error) {
+      this.model.name = name;
+      this.props.updateModel(this.model);
+      
+    } else if (error != NAME_ERROR_OTHER) {
+      if (!silent) {
+        this.props.showAlert(getAlertForNameError(error));
+        this.titleActive = true;
+      } else if (callback != undefined) {
+        callback(this.model.name);
       }
     }
   };
 
   updateModelDescription = description => {
-    if (description != this.model.description) {
-      this.model.description = description;
-      this.props.updateModel(this.model);
-    }
+    if (description == this.model.description)
+      return;
+  
+    this.model.description = description;
+    this.props.updateModel(this.model);
   };
 
   render() {
@@ -142,9 +147,9 @@ export default class Model extends Component {
 
     let content;
     if (this.state.jsonVisibility) {
-      content = (
-        <JSONView content={modelToJSON(this.model)} />
-      )
+      let json = modelToJSON(this.model);
+      content = <JSONView content={json} />;
+      
     } else {
       content = (
         <div styleName="model-wrapper">

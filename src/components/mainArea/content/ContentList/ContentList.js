@@ -28,11 +28,11 @@ export default class ContentList extends Component {
   };
 
   
-  componentWillMount() {
-    this.setState({
-      items: this.props.items,
-      currentModel: this.props.models[0]
-    });
+  constructor(props) {
+    super(props);
+    
+    this.state.items = props.items;
+    this.state.currentModel = props.models[0];
   }
 
   componentWillReceiveProps(nextProps) {
@@ -55,6 +55,7 @@ export default class ContentList extends Component {
   onKeyDown = event => {
     if (this.props.alertShowing)
       return;
+    
     //Enter pressed
     if (event.keyCode == 13) {
       this.onAddItem();
@@ -77,8 +78,7 @@ export default class ContentList extends Component {
   };
 
   onItemClick = item => {
-    const {gotoItem} = this.props;
-    gotoItem(item);
+    this.props.gotoItem(item);
   };
 
   onModelClick = model => {
@@ -102,23 +102,22 @@ export default class ContentList extends Component {
   onRemoveClick = (event, item) => {
     event.stopPropagation();
     const {showAlert, deleteItem} = this.props;
-    let title = item.title ? item.title : 'content item';
-    
-    let params = {
+    const title = item.title ? item.title : 'content item';
+  
+    const params = {
       type: ALERT_TYPE_CONFIRM,
       title: `Deleting ${title}`,
       description: "Are you sure?",
       onConfirm: () => deleteItem(item)
     };
     showAlert(params);
-    this.alertShowed = true;
   };
 
   render() {
     const {isEditable, models} = this.props;
-
-    let eyeDisabled = <img styleName="eye" src={require("./eye-gray.png")} />;
-    let eyeEnabled = <img styleName="eye eye-active" src={require("./eye.png")} />;
+  
+    const eyeDisabled = <img styleName="eye" src={require("./eye-gray.png")} />;
+    const eyeEnabled = <img styleName="eye eye-active" src={require("./eye.png")} />;
 
     return (
       <ContainerComponent title="Content">

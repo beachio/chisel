@@ -50,18 +50,17 @@ export class UserProfile extends Component  {
   lastChange = null;
   
   
-  componentWillMount() {
-    const {user} = this.props;
+  constructor(props) {
+    super(props);
+    
+    const {user} = props;
     
     this.userData = user.userData;
-    this.setState({
-      firstName: user.userData.firstName,
-      lastName: user.userData.lastName,
-      
-      email: user.email,
-      
-      serverURL: currentServerURL
-    });
+    
+    this.state.firstName = user.userData.firstName;
+    this.state.lastName = user.userData.lastName;
+    this.state.email = user.email;
+    this.state.serverURL = currentServerURL;
   }
   
   componentWillReceiveProps(nextProps) {

@@ -34,21 +34,20 @@ export default class FieldModal extends Component {
   onClose = null;
 
 
-  componentWillMount() {
-    this.field = this.props.params;
-    this.updating = !!this.field.origin;
-    this.onClose = this.props.onClose;
+  constructor(props) {
+    super(props);
     
-    this.setState({
-      name:       this.field.name,
-      nameId:     this.field.nameId,
-      type:       this.field.type,
-      appearance: this.field.appearance,
-      isTitle:    this.field.isTitle,
-      isList:     this.field.isList,
-
-      appList:    FIELD_TYPES.get(this.field.type)
-    });
+    this.field = props.params;
+    this.updating = !!this.field.origin;
+    this.onClose = props.onClose;
+    
+    this.state.name       = this.field.name;
+    this.state.nameId     = this.field.nameId;
+    this.state.type       = this.field.type;
+    this.state.appearance = this.field.appearance;
+    this.state.isTitle    = this.field.isTitle;
+    this.state.isList     = this.field.isList;
+    this.state.appList    = FIELD_TYPES.get(this.field.type);
   }
   
   componentDidMount() {
