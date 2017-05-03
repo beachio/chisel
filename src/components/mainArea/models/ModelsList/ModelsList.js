@@ -32,7 +32,7 @@ export default class ModelsList extends Component {
   componentWillReceiveProps(nextProps) {
     if (!nextProps.alertShowing && this.returnFocus && this.activeInput) {
       this.returnFocus = false;
-      this.activeInput.focus();
+      setTimeout(() => this.activeInput.focus(), 1);
     }
     
     this.setState({models: nextProps.models});
@@ -99,6 +99,7 @@ export default class ModelsList extends Component {
     }
   
     this.props.showAlert(params);
+    this.returnFocus = true;
   };
 
   render() {

@@ -20,7 +20,9 @@ export default class Sharing extends Component {
     collaborations: [],
     input: ""
   };
+  
   activeInput = null;
+  returnFocus = false;
 
 
   constructor(props) {
@@ -30,8 +32,10 @@ export default class Sharing extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.alertShowing && this.activeInput)
-      this.activeInput.focus();
+    if (!nextProps.alertShowing && this.activeInput && this.returnFocus) {
+      this.returnFocus = false;
+      setTimeout(() => this.activeInput.focus(), 1);
+    }
     this.setState({collaborations: nextProps.collaborations});
     if (nextProps.collaborations != this.state.collaborations)
       this.setState({input: ""});
@@ -62,7 +66,6 @@ export default class Sharing extends Component {
     
     getUser(email)
       .then(user => {
-        let params;
         let error = checkCollaboration(user);
         
         switch (error) {
@@ -72,35 +75,34 @@ export default class Sharing extends Component {
             break;
             
           case COLLAB_ERROR_SELF:
-            params = {
+            this.props.showAlert({
               title: "Error",
               description: "You are trying to add yourself!",
               buttonText: "OK"
-            };
-            this.props.showAlert(params);
+            });
+            this.returnFocus = true;
             break;
   
           case COLLAB_ERROR_EXIST:
-            params = {
+            this.props.showAlert({
               title: "Error",
               description: "This user is also exist",
               buttonText: "OK"
-            };
-            this.props.showAlert(params);
+            });
+            this.returnFocus = true;
             break;
         }
       })
       .catch(error => {
         console.error(error);
   
-        let params = {
+        this.props.showAlert({
           type: ALERT_TYPE_CONFIRM,
           title: `Not registered user`,
           description: `The user ${email} is not registered at Chisel. Would you like to send an invitation to them?`,
           onConfirm: () => this.props.addInviteCollaboration(email)
-        };
-        this.props.showAlert(params);
-        
+        });
+        this.returnFocus = true;
         this.setState({input: ``});
       });
   };
@@ -123,28 +125,27 @@ export default class Sharing extends Component {
   
   onDeleteClick(event, collab) {
     event.stopPropagation();
-    const {showAlert, deleteCollaboration, deleteSelfCollaboration} = this.props;
   
     let description = "This action cannot be undone. Are you sure?";
-    let delFunc = deleteCollaboration;
+    let delFunc = this.props.deleteCollaboration;
     let confirmString = '';
     let user = collab.email;
     
     if (collab.user && collab.user.origin.id == Parse.User.current().id) {
-      user = 'self';
-      description = "You are trying to stop managing this site. " + description + "<br><br>Please, type site name to confirm:";
-      delFunc = deleteSelfCollaboration;
+      description = `You are trying to stop managing this site. ${description}<br><br>Please, type site name to confirm:`;
+      delFunc = this.props.deleteSelfCollaboration;
       confirmString = collab.site.name;
+      user = 'self';
     }
-    
-    let params = {
+  
+    this.props.showAlert({
       type: ALERT_TYPE_CONFIRM,
       title: `Deleting ${user} from collaborators`,
       description,
       confirmString,
       onConfirm: () => delFunc(collab)
-    };
-    showAlert(params);
+    });
+    this.returnFocus = true;
   }
 
   render() {

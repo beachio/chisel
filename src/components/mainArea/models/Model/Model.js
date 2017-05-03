@@ -44,7 +44,7 @@ export default class Model extends Component {
         
       } else if (this.activeInput && this.returnFocus) {
         this.returnFocus = false;
-        this.activeInput.focus();
+        setTimeout(() => this.activeInput.focus(), 1);
       }
     }
     this.setState({fields: nextProps.model.fields});
@@ -94,20 +94,23 @@ export default class Model extends Component {
 
   onRemoveClick(event, field) {
     event.stopPropagation();
-    const {showAlert, deleteField} = this.props;
-    let params = {
+  
+    this.returnFocus = true;
+    
+    this.props.showAlert({
       type: ALERT_TYPE_CONFIRM,
       title: `Deleting ${field.name} field`,
       description: "Are you sure?",
-      onConfirm: () => deleteField(field)
-    };
-    showAlert(params);
+      onConfirm: () => this.props.deleteField(field)
+    });
   }
 
   onFieldClick = field => {
-    const {showModal, isEditable} = this.props;
-    if (isEditable)
-      showModal(MODAL_TYPE_FIELD, field);
+    if (!this.props.isEditable)
+      return;
+  
+    this.returnFocus = true;
+    this.props.showModal(MODAL_TYPE_FIELD, field);
   };
 
   onJSONClick = () => {
@@ -127,6 +130,7 @@ export default class Model extends Component {
       
     } else if (error != NAME_ERROR_OTHER) {
       if (!silent) {
+        this.returnFocus = true;
         this.props.showAlert(getAlertForNameError(error));
         this.titleActive = true;
       } else if (callback != undefined) {
@@ -192,21 +196,19 @@ export default class Model extends Component {
                   </div>
                 );
               })}
-              {
-                isEditable &&
-                  <div styleName="input-wrapper">
-                    <InputControl placeholder="Add New Field"
-                                  value={this.state.fieldName}
-                                  onKeyDown={this.onAddKeyDown}
-                                  onChange={this.onFieldNameChange}
-                                  DOMRef={c => this.activeInput = c}
-                                  icon="plus"
-                                  onIconClick={this.onAddField} />
-                  </div>
+              {isEditable &&
+                <div styleName="input-wrapper">
+                  <InputControl placeholder="Add New Field"
+                                value={this.state.fieldName}
+                                onKeyDown={this.onAddKeyDown}
+                                onChange={this.onFieldNameChange}
+                                DOMRef={c => this.activeInput = c}
+                                icon="plus"
+                                onIconClick={this.onAddField} />
+                </div>
               }
             </FlipMove>
           </div>
-          
         </div>
       );
     }

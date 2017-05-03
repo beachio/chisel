@@ -29,9 +29,9 @@ export default class Sites extends Component {
     if (!nextProps.alertShowing && this.returnFocus) {
       this.returnFocus = false;
       if (this.activeInput)
-        this.activeInput.focus();
+        setTimeout(() => this.activeInput.focus(), 1);
       else if (this.inputAdding)
-        this.inputAdding.focus();
+        setTimeout(() => this.inputAdding.focus(), 1);
     }
     this.setState({currentSite: nextProps.currentSite});
   }
