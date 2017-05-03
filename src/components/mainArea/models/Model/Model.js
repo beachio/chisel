@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import JSONView from '../../../elements/JSONView/JSONView';
+import FlipMove from 'react-flip-move';
 
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
@@ -154,51 +155,58 @@ export default class Model extends Component {
       content = (
         <div styleName="model-wrapper">
           <div styleName="list">
-            {this.state.fields.map(field => {
-              let colorStyle = {background: field.color};
-              
-              let style = "list-item";
-              if (isEditable)
-                style += " list-item_pointer";
-
-              return (
-                <div styleName={style}
-                     key={field.name}
-                     onClick={() => this.onFieldClick(field)}>
-                  <div styleName="list-item-color" style={colorStyle}></div>
-                  <div styleName="list-item-text">
-                    <div styleName="list-item-name">{field.name}</div>
-                    <div styleName="list-item-type">{field.type} — {field.appearance}</div>
-                  </div>
-                  {
-                    field.isTitle &&
-                      <div styleName="title-button">TITLE</div>
-                  }
-                  {
-                    isEditable &&
-                      <div styleName="hidden-controls">
-                        <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, field)}>
-                          <InlineSVG styleName="cross"
-                                     src={require("assets/images/cross.svg")}/>
+            <FlipMove duration={500}
+                      enterAnimation="fade"
+                      leaveAnimation="fade"
+                      maintainContainerHeight
+                      easing="ease-out">
+              {this.state.fields.map(field => {
+                let colorStyle = {background: field.color};
+                
+                let style = "list-item";
+                if (isEditable)
+                  style += " list-item_pointer";
+  
+                return (
+                  <div styleName={style}
+                       key={field.name}
+                       onClick={() => this.onFieldClick(field)}>
+                    <div styleName="list-item-color" style={colorStyle}></div>
+                    <div styleName="list-item-text">
+                      <div styleName="list-item-name">{field.name}</div>
+                      <div styleName="list-item-type">{field.type} — {field.appearance}</div>
+                    </div>
+                    {
+                      field.isTitle &&
+                        <div styleName="title-button">TITLE</div>
+                    }
+                    {
+                      isEditable &&
+                        <div styleName="hidden-controls">
+                          <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, field)}>
+                            <InlineSVG styleName="cross"
+                                       src={require("assets/images/cross.svg")}/>
+                          </div>
                         </div>
-                      </div>
-                  }
-                </div>
-              );
-            })}
+                    }
+                  </div>
+                );
+              })}
+              {
+                isEditable &&
+                  <div styleName="input-wrapper">
+                    <InputControl placeholder="Add New Field"
+                                  value={this.state.fieldName}
+                                  onKeyDown={this.onAddKeyDown}
+                                  onChange={this.onFieldNameChange}
+                                  DOMRef={c => this.activeInput = c}
+                                  icon="plus"
+                                  onIconClick={this.onAddField} />
+                  </div>
+              }
+            </FlipMove>
           </div>
-          {
-            isEditable &&
-              <div styleName="input-wrapper">
-                <InputControl placeholder="Add New Field"
-                              value={this.state.fieldName}
-                              onKeyDown={this.onAddKeyDown}
-                              onChange={this.onFieldNameChange}
-                              DOMRef={c => this.activeInput = c}
-                              icon="plus"
-                              onIconClick={this.onAddField} />
-              </div>
-          }
+          
         </div>
       );
     }

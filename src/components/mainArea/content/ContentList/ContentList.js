@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
+import FlipMove from 'react-flip-move';
 
 import {ContentItemData, STATUS_DRAFT, STATUS_PUBLISHED, STATUS_UPDATED, STATUS_ARCHIEVED} from 'models/ContentData';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
@@ -173,16 +174,19 @@ export default class ContentList extends Component {
           
           <div styleName="list-wrapper">
             <div styleName="list">
-              {
-                this.state.items.length > 0 &&
-                  <div styleName="list-item">
-                    <div styleName="colorLabel"></div>
-                    <div styleName="type"></div>
-                    <div styleName="updated">UPDATED</div>
-                  </div>
+              {this.state.items.length > 0 &&
+                <div styleName="list-item">
+                  <div styleName="colorLabel"></div>
+                  <div styleName="type"></div>
+                  <div styleName="updated">UPDATED</div>
+                </div>
               }
-              {
-                this.state.items
+              <FlipMove duration={500}
+                        enterAnimation="fade"
+                        leaveAnimation="fade"
+                        maintainContainerHeight
+                        easing="ease-out">
+                {this.state.items
                   .filter(item => !this.state.activeModels.size || this.state.activeModels.has(item.model))
                   .filter(item => !this.state.activeStatuses.size || this.state.activeStatuses.has(item.status))
                   .map(item => {
@@ -223,26 +227,27 @@ export default class ContentList extends Component {
                       </div>
                     );
                   })
-              }
+                }
+                {isEditable &&
+                  <div styleName="inputs-wrapper">
+                    <div styleName="dropdown-wrapper">
+                      <DropdownControl suggestionsList={models.map(m => m.name)}
+                                       suggest={this.onChangeModel}
+                                       current={this.state.currentModel.name} />
+                    </div>
+                    <div styleName="input-wrapper">
+                      <InputControl placeholder="Create a new Content Record"
+                                    value={this.state.itemTitle}
+                                    icon="plus"
+                                    onIconClick={this.onAddItem}
+                                    onChange={this.onItemTitleChange}
+                                    onKeyDown={this.onKeyDown} />
+                    </div>
+                  </div>
+                }
+              </FlipMove>
             </div>
-            {
-              isEditable &&
-                <div styleName="inputs-wrapper">
-                  <div styleName="dropdown-wrapper">
-                    <DropdownControl suggestionsList={models.map(m => m.name)}
-                                     suggest={this.onChangeModel}
-                                     current={this.state.currentModel.name} />
-                  </div>
-                  <div styleName="input-wrapper">
-                    <InputControl placeholder="Create a new Content Record"
-                                  value={this.state.itemTitle}
-                                  icon="plus"
-                                  onIconClick={this.onAddItem}
-                                  onChange={this.onItemTitleChange}
-                                  onKeyDown={this.onKeyDown} />
-                  </div>
-                </div>
-            }
+            
           </div>
         </div>
       </ContainerComponent>

@@ -3,6 +3,7 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import Gravatar from 'react-gravatar';
 import {Parse} from 'parse';
+import FlipMove from 'react-flip-move';
 
 import {ROLE_ADMIN, ROLE_EDITOR, ROLE_DEVELOPER, CollaborationData} from 'models/UserData';
 import {getUser, checkCollaboration, COLLAB_CORRECT, COLLAB_ERROR_EXIST, COLLAB_ERROR_SELF} from 'utils/data';
@@ -167,8 +168,12 @@ export default class Sharing extends Component {
                   OWNER
                 </div>
               </div>
-              {
-                this.state.collaborations.map((collaboration, index) => {
+              <FlipMove duration={500}
+                        enterAnimation="fade"
+                        leaveAnimation="fade"
+                        maintainContainerHeight
+                        easing="ease-out">
+                {this.state.collaborations.map((collaboration, index) => {
                   let user = collaboration.user;
                   
                   let localDelete = isEditable;
@@ -236,28 +241,26 @@ export default class Sharing extends Component {
                       }
                     </div>
                   );
-                })
-              }
-            </div>
-
-            {
-              isEditable &&
-                <div styleName="input-wrapper">
-                  <InputControl placeholder="Enter one or more emails"
-                                value={this.state.input}
-                                autoFocus={true}
-                                onChange={this.onInputChange}
-                                onKeyDown={this.onKeyDown}
-                                icon="users"
-                                onIconClick={this.onAddCollaboration}
-                                DOMRef={c => this.activeInput = c}/>
-
-
-                  <div styleName="footer">
-                    If the recipient doesn’t yet have a Chisel account, they will be sent an invitation to join.
+                })}
+                {isEditable &&
+                  <div styleName="input-wrapper">
+                    <InputControl placeholder="Enter one or more emails"
+                                  value={this.state.input}
+                                  autoFocus={true}
+                                  onChange={this.onInputChange}
+                                  onKeyDown={this.onKeyDown}
+                                  icon="users"
+                                  onIconClick={this.onAddCollaboration}
+                                  DOMRef={c => this.activeInput = c}/>
+      
+      
+                    <div styleName="footer">
+                      If the recipient doesn’t yet have a Chisel account, they will be sent an invitation to join.
+                    </div>
                   </div>
-                </div>
-            }
+                }
+              </FlipMove>
+            </div>
           </div>
         </ContainerComponent>
         {
