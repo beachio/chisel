@@ -15,6 +15,7 @@ export const RESTORE_PASSWORD   = 'app/user/RESTORE_PASSWORD';
 
 export const ERROR_USER_EXISTS  = 'app/user/ERROR_USER_EXISTS';
 export const ERROR_WRONG_PASS   = 'app/user/ERROR_WRONG_PASS';
+export const ERROR_UNVERIF      = 'app/user/ERROR_UNVERIF';
 export const ERROR_OTHER        = 'app/user/ERROR_OTHER';
 export const NO_ERROR           = 'app/user/NO_ERROR';
 
@@ -37,12 +38,12 @@ export function register(email, password) {
         localStorage.setItem('authorization', JSON.stringify({email, password}));
         dispatch({
           type: REGISTER_RESPONSE,
-          authError: NO_ERROR
+          error: NO_ERROR
         });
       }, () => {
         dispatch({
           type: REGISTER_RESPONSE,
-          authError: ERROR_USER_EXISTS
+          error: ERROR_USER_EXISTS
         });
       });
   };
@@ -62,14 +63,20 @@ export function login(email, password) {
         let userData = new UserData().setOrigin();
         dispatch({
           type: LOGIN_RESPONSE,
-          authError: NO_ERROR,
+          error: NO_ERROR,
           authorized: true,
           userData
         });
-      }, () => {
+      }, _error => {
+        let error = ERROR_OTHER;
+        switch (_error.code) {
+          case 101: error = ERROR_WRONG_PASS; break;
+          case 205: error = ERROR_UNVERIF;    break;
+        }
+  
         dispatch({
           type: LOGIN_RESPONSE,
-          authError: ERROR_WRONG_PASS
+          error
         });
       });
   };
@@ -89,7 +96,7 @@ export function loginOrRegister(email, password) {
         let userData = new UserData().setOrigin();
         dispatch({
           type: LOGIN_RESPONSE,
-          authError: NO_ERROR,
+          error: NO_ERROR,
           authorized: true,
           userData
         });
@@ -101,7 +108,6 @@ export function loginOrRegister(email, password) {
         user.set("password", password);
         user
           .signUp()
-          
           .then(() => {
             Parse.User.logIn(email, password)
               .then(() => {
@@ -110,17 +116,20 @@ export function loginOrRegister(email, password) {
                 dispatch({
                   type: LOGIN_RESPONSE,
                   authorized: true,
-                  authError: NO_ERROR,
+                  error: NO_ERROR,
                   userData
                 });
               }, () => {
-                console.log('FATAL ERROR!!! AAAAAA!!!');
+                dispatch({
+                  type: LOGIN_RESPONSE,
+                  error: ERROR_OTHER
+                });
               });
             
           }, () => {
             dispatch({
               type: LOGIN_RESPONSE,
-              authError: ERROR_WRONG_PASS
+              error: ERROR_WRONG_PASS
             });
           });
       });
@@ -146,11 +155,14 @@ export function getLocalStorage() {
         dispatch({
           type: LOGIN_RESPONSE,
           authorized: true,
-          authError: NO_ERROR,
+          error: NO_ERROR,
           userData
         });
       }, () => {
-        dispatch({type: LOGIN_RESPONSE});
+        dispatch({
+          type: LOGIN_RESPONSE,
+          error: ERROR_WRONG_PASS
+        });
       });
   };
 }
@@ -193,20 +205,19 @@ export function updateEmail(email) {
         
         dispatch({
           type: UPDATE_EMAIL,
+          error: NO_ERROR,
           email
         });
         
-      }, error => {
-        if (error.code == 202)
-          dispatch({
-            type: UPDATE_EMAIL,
-            error: ERROR_USER_EXISTS
-          });
-        else
-          dispatch({
-            type: UPDATE_EMAIL,
-            error: ERROR_OTHER
-          });
+      }, _error => {
+        let error = ERROR_OTHER;
+        switch (_error.code) {
+          case 202: error = ERROR_USER_EXISTS; break;
+        }
+        dispatch({
+          type: UPDATE_EMAIL,
+          error
+        });
       });
     
   };
@@ -235,12 +246,13 @@ export function restorePassword(email) {
       .then(result => {
         dispatch({
           type: RESTORE_PASSWORD,
+          error: NO_ERROR,
           result
         });
       }, error => {
         dispatch({
           type: RESTORE_PASSWORD,
-          error
+          error: ERROR_OTHER
         });
       });
   };
@@ -250,8 +262,7 @@ const initialState = {
   localStorageReady: false,
 
   authorized: false,
-  authError: null,
-  updateError: null,
+  error: null,
 
   email: '',
   password: '',
@@ -269,7 +280,7 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         authorized: false,
-        authError: null,
+        error: null,
         email: action.email,
         password: action.password,
         pending: true
@@ -280,7 +291,7 @@ export default function userReducer(state = initialState, action) {
       let result = {
         ...state,
         authorized: action.authorized,
-        authError:  action.authError,
+        error:      action.error,
         userData:   action.userData,
         localStorageReady: true,
         password: ``,
@@ -308,7 +319,13 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         userData,
-        updateError: action.error
+        error: action.error
+      };
+      
+    case RESTORE_PASSWORD:
+      return {
+        ...state,
+        error: action.error
       };
       
     case UPDATE_PASSWORD:

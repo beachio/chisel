@@ -73,20 +73,22 @@ export class UserProfile extends Component  {
         break;
         
       case CHG_EMAIL:
-        if (user.updateError == ERROR_USER_EXISTS) {
+        let errorEmail = null;
+        switch (user.error) {
+          case ERROR_USER_EXISTS: errorEmail = 'The user with this email also exists!'; break;
+          case ERROR_OTHER:       errorEmail = 'Unknown error!';                        break;
+        }
+        
+        if (errorEmail) {
           this.setState({
             email: this.userData.email,
-            errorEmail: 'The user with this email also exists!'
-          });
-        } else if (user.updateError == ERROR_OTHER) {
-          this.setState({
-            email: this.userData.email,
-            errorEmail: 'Unknown error!'
+            errorEmail
           });
         } else {
           this.setState({successEmail: `Email was successfully changed!`});
           setTimeout(() => this.setState({successEmail: ``}), 2500);
         }
+        
         break;
         
       case CHG_PASSWORD:

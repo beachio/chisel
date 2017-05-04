@@ -162,14 +162,14 @@ export function init() {
         for (let site_o of sites_o) {
           let site = new SiteData().setOrigin(site_o);
   
-          promises.push(new Promise((inResolve, inReject) => {
+          promises.push(new Promise((resolve, reject) => {
             site_o.get('owner')
               .fetch()
               .then(owner_o => {
                 let owner = new UserData().setOrigin(owner_o);
                 site.owner = owner;
-                inResolve();
-              }, inReject);
+                resolve();
+              }, reject);
           }));
           
           sites.push(site);

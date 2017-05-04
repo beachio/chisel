@@ -5,7 +5,7 @@ import CSSModules from 'react-css-modules';
 import {Helmet} from "react-helmet";
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
-import {login, register, restorePassword, ERROR_USER_EXISTS, ERROR_WRONG_PASS, NO_ERROR} from 'ducks/user';
+import {login, register, restorePassword, ERROR_USER_EXISTS, ERROR_WRONG_PASS, ERROR_UNVERIF, ERROR_OTHER, NO_ERROR} from 'ducks/user';
 import {parseURLParams} from 'utils/common';
 
 import styles from './Sign.sss';
@@ -14,6 +14,7 @@ import styles from './Sign.sss';
 const MODE_LOGIN        = 'login';
 const MODE_REG          = 'register';
 const MODE_REG_MAIL     = 'register_mail';
+const MODE_UNVERIF      = 'unverified';
 const MODE_FORGOT       = 'forgot';
 const MODE_FORGOT_MAIL  = 'forgot_mail';
 
@@ -25,8 +26,8 @@ export class Sign extends Component  {
     email: '',
     password: '',
     passwordConfirm: '',
-    
-    authError: null,
+  
+    error: null,
     lock: false
   };
   
@@ -46,15 +47,17 @@ export class Sign extends Component  {
   }
   
   componentWillReceiveProps(nextProps) {
-    let authError = nextProps.authError;
+    let error = nextProps.error;
     
     let mode = this.state.mode;
-    if (mode == MODE_REG && nextProps.authError == NO_ERROR)
+    if (mode == MODE_REG && error == NO_ERROR)
       mode = MODE_REG_MAIL;
+    if (mode == MODE_FORGOT && error == NO_ERROR)
+      mode = MODE_FORGOT_MAIL;
     
     this.setState({
-      authError,
-      lock: !authError,
+      error,
+      lock: !error,
       mode
     });
   }
@@ -62,21 +65,21 @@ export class Sign extends Component  {
   onEmailChange = event => {
     this.setState({
       email: event.target.value,
-      authError: null
+      error: null
     });
   };
 
   onPasswordChange = event => {
     this.setState({
       password: event.target.value,
-      authError: null
+      error: null
     });
   };
   
   onPasswordConfirmChange = event => {
     this.setState({
       passwordConfirm: event.target.value,
-      authError: null
+      error: null
     });
   };
 
@@ -114,7 +117,8 @@ export class Sign extends Component  {
     
     const {restorePassword} = this.props.userActions;
     restorePassword(this.state.email);
-    this.setState({mode: MODE_FORGOT_MAIL});
+    this.setState({lock: true});
+    
     return false;
   };
   
@@ -175,15 +179,15 @@ export class Sign extends Component  {
     
             <div styleName="errors">
               {
-                this.state.authError == ERROR_WRONG_PASS &&
+                this.state.error == ERROR_WRONG_PASS &&
                   <div styleName="error">Wrong email or password!</div>
               }
             </div>
   
-            <div styleName="forgot" onClick={() => this.setState({mode: MODE_FORGOT, authError: null, password: ''})}>
+            <div styleName="forgot" onClick={() => this.setState({mode: MODE_FORGOT, error: null, password: ''})}>
               Forgot password?
             </div>
-            <div styleName="forgot" onClick={() => this.setState({mode: MODE_REG, authError: null, password: ''})}>
+            <div styleName="forgot" onClick={() => this.setState({mode: MODE_REG, error: null, password: ''})}>
               Registration
             </div>
           </form>
@@ -206,12 +210,12 @@ export class Sign extends Component  {
         
             <div styleName="errors">
               {
-                this.state.authError ==  ERROR_USER_EXISTS &&
+                this.state.error ==  ERROR_USER_EXISTS &&
                   <div styleName="error">This email is already in use!</div>
               }
             </div>
   
-            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, authError: null, password: '', passwordConfirm: ''})}>
+            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, error: null, password: '', passwordConfirm: ''})}>
               Log in
             </div>
           </form>
@@ -220,12 +224,12 @@ export class Sign extends Component  {
   
       case MODE_REG_MAIL:
         content = (
-          <form styleName="form" onSubmit={this.onRestore}>
+          <form styleName="form">
             <div styleName="description">
               We send to your email a link to confirm your registration. Please, open it.
             </div>
   
-            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, authError: null})}>
+            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, error: null})}>
               Return to log in
             </div>
           </form>
@@ -247,13 +251,12 @@ export class Sign extends Component  {
             </div>
       
             <div styleName="errors">
-              {
-                this.state.authError == ERROR_WRONG_PASS &&
-                  <div styleName="error">Wrong email!</div>
+              {this.state.error == ERROR_OTHER &&
+                <div styleName="error">Wrong email!</div>
               }
             </div>
   
-            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, authError: null})}>
+            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, error: null})}>
               Return to log in
             </div>
           </form>
@@ -267,7 +270,7 @@ export class Sign extends Component  {
               The mail have sended. Please, check your inbox.
             </div>
   
-            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, authError: null})}>
+            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, error: null})}>
               Return to log in
             </div>
           </form>
@@ -294,7 +297,7 @@ export class Sign extends Component  {
 
 function mapStateToProps(state) {
   return {
-    authError: state.user.authError
+    error: state.user.error
   };
 }
 
