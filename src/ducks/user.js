@@ -1,6 +1,8 @@
 import {Parse} from 'parse';
 
 import {UserData} from 'models/UserData';
+import {currentServerURL} from 'utils/initialize';
+import {APP_ID} from 'constants';
 
 
 export const LOGIN_REQUEST      = 'app/user/LOGIN_REQUEST';
@@ -12,6 +14,7 @@ export const UPDATE             = 'app/user/UPDATE';
 export const UPDATE_EMAIL       = 'app/user/UPDATE_EMAIL';
 export const UPDATE_PASSWORD    = 'app/user/UPDATE_PASSWORD';
 export const RESTORE_PASSWORD   = 'app/user/RESTORE_PASSWORD';
+export const RESEND_VERIF       = 'app/user/RESEND_VERIF';
 
 export const ERROR_USER_EXISTS  = 'app/user/ERROR_USER_EXISTS';
 export const ERROR_WRONG_PASS   = 'app/user/ERROR_WRONG_PASS';
@@ -258,6 +261,34 @@ export function restorePassword(email) {
   };
 }
 
+export function resendVerEmail(email) {
+  if (!email)
+    return null;
+  
+  return dispatch => {
+    fetch(currentServerURL + '/verificationEmailRequest', {
+      method: 'POST',
+      headers: {
+        'X-Parse-Application-Id': APP_ID
+      },
+      body: JSON.stringify({email})
+    })
+      .then(r => {
+        
+        dispatch({
+          type: RESEND_VERIF,
+          error: NO_ERROR
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: RESEND_VERIF,
+          error: ERROR_OTHER
+        });
+      });
+  };
+}
+
 const initialState = {
   localStorageReady: false,
 
@@ -329,6 +360,7 @@ export default function userReducer(state = initialState, action) {
       };
       
     case UPDATE_PASSWORD:
+    case RESEND_VERIF:
       return {...state};
       
     default:

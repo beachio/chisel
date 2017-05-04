@@ -5,7 +5,7 @@ import CSSModules from 'react-css-modules';
 import {Helmet} from "react-helmet";
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
-import {login, register, restorePassword, ERROR_USER_EXISTS, ERROR_WRONG_PASS, ERROR_UNVERIF, ERROR_OTHER, NO_ERROR} from 'ducks/user';
+import {login, register, restorePassword, resendVerEmail, ERROR_USER_EXISTS, ERROR_WRONG_PASS, ERROR_UNVERIF, ERROR_OTHER, NO_ERROR} from 'ducks/user';
 import {parseURLParams} from 'utils/common';
 
 import styles from './Sign.sss';
@@ -54,6 +54,8 @@ export class Sign extends Component  {
       mode = MODE_REG_MAIL;
     if (mode == MODE_FORGOT && error == NO_ERROR)
       mode = MODE_FORGOT_MAIL;
+    if (mode == MODE_LOGIN && error == ERROR_UNVERIF)
+      mode = MODE_UNVERIF;
     
     this.setState({
       error,
@@ -120,6 +122,12 @@ export class Sign extends Component  {
     this.setState({lock: true});
     
     return false;
+  };
+  
+  onResend = () => {
+    const {resendVerEmail} = this.props.userActions;
+    resendVerEmail(this.state.email);
+    this.setState({mode: MODE_REG_MAIL});
   };
   
   getLoginAvail() {
@@ -235,6 +243,25 @@ export class Sign extends Component  {
           </form>
         );
         break;
+  
+      case MODE_UNVERIF:
+        content = (
+          <form styleName="form">
+            <div styleName="description">
+              <p>It looks like your email is not verified yet.</p>
+              <p>We've sended to your email a link to confirm your registration. Please, open it.</p>
+            </div>
+  
+            <div styleName="forgot" onClick={this.onResend}>
+              Resend verification email
+            </div>
+            
+            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, error: null})}>
+              Return to log in
+            </div>
+          </form>
+        );
+        break;
         
       case MODE_FORGOT:
         content = (
@@ -303,7 +330,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators({login, register, restorePassword}, dispatch)
+    userActions: bindActionCreators({login, register, restorePassword, resendVerEmail}, dispatch)
   };
 }
 
