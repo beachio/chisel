@@ -239,6 +239,7 @@ export default class ContentList extends Component {
                       <InputControl placeholder="Create a new Content Record"
                                     value={this.state.itemTitle}
                                     icon="plus"
+                                    autoFocus
                                     onIconClick={this.onAddItem}
                                     onChange={this.onItemTitleChange}
                                     onKeyDown={this.onKeyDown} />

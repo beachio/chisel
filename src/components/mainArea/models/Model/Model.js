@@ -204,6 +204,7 @@ export default class Model extends Component {
                                 onChange={this.onFieldNameChange}
                                 DOMRef={c => this.activeInput = c}
                                 icon="plus"
+                                autoFocus
                                 onIconClick={this.onAddField} />
                 </div>
               }
