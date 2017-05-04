@@ -259,10 +259,10 @@ export function deleteSite(site) {
   };
 }
 
-export function addCollaboration(user) {
+export function addCollaboration(user, email) {
   let collab = new CollaborationData();
   collab.user = user;
-  collab.email = user.email;
+  collab.email = email;
   
   let currentSite = store.getState().models.currentSite;
   collab.site = currentSite;

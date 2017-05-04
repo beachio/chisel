@@ -70,7 +70,7 @@ export default class Sharing extends Component {
         
         switch (error) {
           case COLLAB_CORRECT:
-            this.props.addCollaboration(user);
+            this.props.addCollaboration(user, email);
             this.setState({input: ``});
             break;
             
