@@ -2,7 +2,7 @@ import {Parse} from 'parse';
 
 import {store} from 'index';
 import {getLocalStorage} from 'ducks/user';
-import {SERVER_URL, APP_ID} from 'constants';
+import {SERVER_URL, APP_ID, JS_KEY} from 'constants';
 
 
 export let currentServerURL = SERVER_URL;
@@ -15,7 +15,7 @@ function subInitParse() {
   else
     localStorage.setItem('parseServerURL', currentServerURL);
   
-  Parse.initialize(APP_ID);
+  Parse.initialize(APP_ID, JS_KEY);
   Parse.serverURL = currentServerURL;
 }
 

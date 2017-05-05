@@ -2,7 +2,7 @@ import {Parse} from 'parse';
 
 import {UserData} from 'models/UserData';
 import {currentServerURL} from 'utils/initialize';
-import {APP_ID} from 'constants';
+import {APP_ID, REST_KEY} from 'constants';
 
 
 export const LOGIN_REQUEST      = 'app/user/LOGIN_REQUEST';
@@ -269,7 +269,8 @@ export function resendVerEmail(email) {
     fetch(currentServerURL + '/verificationEmailRequest', {
       method: 'POST',
       headers: {
-        'X-Parse-Application-Id': APP_ID
+        'X-Parse-Application-Id': APP_ID,
+        'X-Parse-REST-API-Key': REST_KEY
       },
       body: JSON.stringify({email})
     })
