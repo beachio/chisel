@@ -544,7 +544,7 @@ export default function modelsReducer(state = initialState, action) {
       return {
         ...state,
         sites,
-        currentSite: sites[0]
+        currentSite: null
       };
   
     case COLLABORATION_ADD:
