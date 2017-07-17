@@ -422,7 +422,12 @@ export function addField(field) {
   field.nameId = getNameId(field.name, field.model.fields);
   
   field.updateOrigin();
-  field.origin.save();
+  field.origin.save()
+    .then(() =>
+      Parse.Cloud.run('onFieldAdd', {
+        fieldId: field.origin.id
+      })
+    );
   
   if (!field.model.hasTitle() && canBeTitle(field))
     changeTitleField(field);
