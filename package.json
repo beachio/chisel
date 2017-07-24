@@ -15,12 +15,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/beachio/scriven"
+    "url": "https://github.com/beachio/chisel"
   },
   "author": "Beach.io <beach.io>",
   "license": "Proprietary",
   "bugs": {
-    "url": "https://github.com/beachio/scriven/issues"
+    "url": "https://github.com/beachio/chisel/issues"
   },
   "homepage": "http://beach.io",
   "devDependencies": {
