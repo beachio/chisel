@@ -135,7 +135,7 @@ export default class Sites extends Component {
       <div styleName="sites">
         <div styleName="section header">
           <div styleName="title">Your sites</div>
-          <div styleName="counter">{sites.length}/10</div>
+          <div styleName="counter">{sites.length}</div>
         </div>
         <div styleName="section list">
           {
