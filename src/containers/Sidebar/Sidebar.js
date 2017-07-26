@@ -38,9 +38,9 @@ export class Sidebar extends Component {
                  alertShowing={nav.alertShowing} />
         </div>
         <div styleName="answer-wrapper">
-          <div styleName="answer-question">
+          <a styleName="answer-question" href="http://guild.beach.io" target="_blank">
             <InlineSVG styleName="icon" src={require("./question.svg")} />
-          </div>
+          </a>
         </div>
       </div>
     );
