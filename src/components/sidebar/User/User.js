@@ -21,19 +21,19 @@ export default class User extends Component {
       name = `${userData.firstName} ${userData.lastName}`;
     
     return (
-      <div styleName="user">
-        <Link styleName="profile" to={link} activeClassName={styles.activeBla}>
+      <Link styleName="user" to={link} activeClassName={styles.activeBla}>
+        <div styleName="profile">
           <div styleName="avatar">
             <Gravatar email={userData.email} styleName="gravatar"/>
           </div>
           <div styleName="avatar-name">
             {name}
           </div>
-        </Link>
+        </div>
         <div styleName="settings">
           <InlineSVG src={require("./settings.svg")} />
         </div>
-      </div>
+      </Link>
     );
   }
 }
