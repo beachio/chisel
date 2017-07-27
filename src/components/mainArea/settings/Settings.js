@@ -28,18 +28,18 @@ export default class Settings extends Component {
     icon: null
   };
   site = null;
-  
-  
+
+
   constructor(props) {
     super(props);
-    
+
     this.site = props.site;
-    
+
     this.state.name   = this.site.name;
     this.state.domain = this.site.domain;
     this.state.icon   = this.site.icon;
   }
-  
+
   componentWillReceiveProps(nextProps) {
     this.site = nextProps.site;
     this.setState({
@@ -47,12 +47,12 @@ export default class Settings extends Component {
       domain: this.site.domain
     });
   }
-  
+
   onChangeName = event => {
     let name = event.target.value;
     this.setState({name, dirty: true, error: null});
   };
-  
+
   onChangeDomain = event => {
     let domain = event.target.value;
     this.setState({domain, dirty: true, error: null});
@@ -86,7 +86,7 @@ export default class Settings extends Component {
       this.setState({error: ERROR_BLANK_NAME});
       return false;
     }
-    
+
     let domainStatus = checkSiteDomain(this.state.domain);
     if (domainStatus == DOMAIN_ERROR_SYNTAX) {
       this.setState({error: ERROR_URL_SYNTAX});
@@ -95,16 +95,16 @@ export default class Settings extends Component {
       this.setState({error: ERROR_URL_EXIST});
       return false;
     }
-    
+
     if (checkSiteName(this.state.name, this.site)) {
       this.setState({error: ERROR_NAME_EXIST});
       return false;
     }
-    
+
     this.setState({error: null});
     return true;
   }
-  
+
   onSave = e => {
     e.preventDefault();
 
@@ -117,10 +117,10 @@ export default class Settings extends Component {
     this.site.icon = this.state.icon;
     this.props.updateSite(this.site);
   };
-  
+
   onDelete = () => {
     const {showAlert, deleteSite} = this.props;
-  
+
     let params = {
       type: ALERT_TYPE_CONFIRM,
       title: `Deleting ${this.state.name}`,
@@ -163,7 +163,7 @@ export default class Settings extends Component {
 
   render() {
     const {isEditable} = this.props;
-    
+
     return (
       <ContainerComponent title="Site settings">
         <form styleName="content" onSubmit={this.onSave}>
