@@ -1,10 +1,10 @@
 export const SERVER_URL = "http://localhost:1337/parse";
-//export const SERVER_URL = "https://pg-app-89ruw0d0g8ew95dp7dy7sgeqvbp7f6.scalabl.cloud/1/";
+//export const SERVER_URL = "https://pg-app-mjx6kfptatphej7zd7ccy9ctlkdtix.scalabl.cloud/1/";
 
 export const APP_ID = "d5701a37cf242d5ee398005d997e4229";
-//export const APP_ID = "R6T4Eal4vaNrw6RnwSLvEWtNMmrRPjLiS3FRG4MI";
+//export const APP_ID = "tUZa9hFloenXnR1pnwAW8644VJTRWUOjjPMJPH3n";
 
-export const JS_KEY = `X6YmDRtbQ2DcXc6KEIYDZlF3S3MrPOFGLNVjRmWR`;
-export const REST_KEY = `uWNXs6UTfJve9NGhCRiijUZMmNSRGjLsbrA3PfVF`;
+export const JS_KEY = `liYLwLfENUIiiD6bz8TerwIZPPnJWP3VVHCSUUOT`;
+export const REST_KEY = `AMMaWJMu4u6hSANZfbBFZHLhU83DWOXHXPVnPHJE`;
 
 export const FILE_SIZE_MAX = 10 * 1024 * 1024;
