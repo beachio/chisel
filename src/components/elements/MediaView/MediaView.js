@@ -48,13 +48,19 @@ export default class MediaView extends Component {
     
     } else if (item.type.slice(0, 6) == `audio/`) {
       return (
-        <audio src={item.file.url()} styleName="audio">
+        <audio src={item.file.url()}
+               type={item.type}
+               controls
+               styleName="audio">
         </audio>
       );
     
     } else if (item.type.slice(0, 6) == `video/`) {
       return (
-        <video src={item.file.url()} styleName="audio">
+        <video src={item.file.url()}
+               type={item.type}
+               controls
+               styleName="video">
         </video>
       );
     
