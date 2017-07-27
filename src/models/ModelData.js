@@ -9,6 +9,7 @@ export class SiteData {
   origin = null;
 
   domain = "";
+  icon = null;
 
   //setter
   _name = "";
@@ -37,6 +38,7 @@ export class SiteData {
     if (origin.get('name'))   this.name   = origin.get('name');
     if (origin.get('nameId')) this.nameId = origin.get('nameId');
     if (origin.get('domain')) this.domain = origin.get('domain');
+    if (origin.get('icon'))   this.icon =   origin.get('icon');
 
     return this;
   }
@@ -48,6 +50,7 @@ export class SiteData {
     this.origin.set("name",   this.name);
     this.origin.set("nameId", this.nameId);
     this.origin.set("domain", this.domain);
+    this.origin.set("icon",   this.icon);
 
     this.origin.set("owner",  this.owner.origin);
   }

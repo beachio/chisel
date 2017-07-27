@@ -56,4 +56,47 @@
   margin-top: 50px
   display: flex
   flex-flow: row nowrap
-  No newline at end of file
+
+.icon
+  &-img
+    height: 50px
+    width: 50px
+
+  &-button
+    background: rgba(255,255,255,0.80)
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10)
+    border-radius: 10px
+    border: 2px solid #DDDDDD
+
+    font-size: 24px
+    color: #666666
+    letter-spacing: 0.54px
+
+    transition: border-color 0.2s ease
+    will-change: border-color
+
+    cursor: pointer
+    position: relative
+
+    &:hover
+      border-color: #258BF8
+
+    &-disabled
+      cursor: auto
+      color: #b2b2b2
+
+      &:hover
+        border-color: #DDDDDD
+
+  &-upload
+    padding: 9px 36px 10px
+    margin-right: 20px
+
+  &-hidden
+    width: 100%
+    height: 100%
+    opacity: 0
+    position: absolute
+    left: 0
+    top: 0
+    cursor: pointer

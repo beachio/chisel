@@ -162,9 +162,18 @@ export default class Sites extends Component {
                      onDoubleClick={event => this.onDoubleClickSite(event, site)}
                      onClick={() => this.onClickSite(site)}
                      key={key}>
-                  <div styleName="icon">
-                    <InlineSVG src={require("assets/images/hammer.svg")} />
-                  </div>
+
+                  {
+                    !!site.icon ?
+                      <img styleName="icon-img"
+                           src={site.icon.url()}>
+                      </img>
+                      :
+                      <div styleName="icon">
+                        <InlineSVG src={require("assets/images/hammer.svg")}/>
+                      </div>
+                  }
+
                   <input styleName={styleInput}
                          readOnly={!editing}
                          placeholder="Type site name"
