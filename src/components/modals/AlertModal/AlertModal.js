@@ -85,7 +85,8 @@ export default class AlertModal extends Component {
     const {title, description, type} = this.props.params;
     if (type)
       this.type = type;
-  
+
+    let titleHTML = {__html: title || ''};
     let descriptionHTML = {__html: description || ''};
 
     return (
@@ -94,8 +95,7 @@ export default class AlertModal extends Component {
 
         <div styleName="modal-inner">
           <div styleName="modal-header">
-            <div styleName="title">
-              {title || ''}
+            <div styleName="title" dangerouslySetInnerHTML={titleHTML}>
             </div>
           </div>
 
