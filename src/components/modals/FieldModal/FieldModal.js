@@ -19,7 +19,7 @@ export default class FieldModal extends Component {
     nameId: '',
     type: '',
     appearance: '',
-    isTitle: '',
+    isTitle: false,
     isList: false,
     isDisabled: false,
 
