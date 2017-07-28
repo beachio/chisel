@@ -218,7 +218,7 @@ export const FIELD_TYPES = new Map([
 export function canBeTitle(field) {
   return field.type == FIELD_TYPE_SHORT_TEXT &&
     field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE &&
-    !field.isList;
+    !field.isList && !field.isDisabled;
 }
 
 export function canBeList(field) {
@@ -241,6 +241,7 @@ export class ModelFieldData {
   color = "rgba(0, 0, 0, 1)";
   isTitle = false;
   isList = false;
+  isDisabled = false;
 
   //setter
   _name = "";
@@ -270,6 +271,7 @@ export class ModelFieldData {
     if (origin.get('color'))      this.color      = origin.get('color');
     if (origin.get('isTitle'))    this.isTitle    = true;
     if (origin.get('isList'))     this.isList     = true;
+    if (origin.get('isDisabled')) this.isDisabled = true;
 
     return this;
   }
@@ -285,6 +287,7 @@ export class ModelFieldData {
     this.origin.set("color",      this.color);
     this.origin.set("isTitle",    this.isTitle);
     this.origin.set("isList",     this.isList);
+    this.origin.set("isDisabled", this.isDisabled);
     
     this.origin.set("model",      this.model.origin);
   }
@@ -297,7 +300,8 @@ export class ModelFieldData {
       appearance: this.appearance,
       color:      this.color,
       isTitle:    this.isTitle,
-      isList:     this.isList
+      isList:     this.isList,
+      isDisabled: this.isDisabled
     };
   }
 }

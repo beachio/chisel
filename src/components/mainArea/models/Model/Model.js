@@ -7,9 +7,9 @@ import FlipMove from 'react-flip-move';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
 import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
-import {getNameId, checkModelName, checkFieldName, getAlertForNameError, modelToJSON, NAME_ERROR_OTHER} from 'utils/data';
+import {getNameId, checkModelName, checkFieldName, getAlertForNameError, modelToJSON, getContentForModel, NAME_ERROR_OTHER} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
-import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
+import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
 import {ModelFieldData} from 'models/ModelData';
 
 import styles from './Model.sss';
@@ -94,15 +94,27 @@ export default class Model extends Component {
 
   onRemoveClick(event, field) {
     event.stopPropagation();
-  
+
+    let params;
+
+    const contentCount = getContentForModel(this.model).length;
+    if (field.isDisabled || !contentCount) {
+      params = {
+        title: `Deleting <strong>${field.name}</strong> field`,
+        type: ALERT_TYPE_CONFIRM,
+        description: "Are you sure?",
+        onConfirm: () => this.props.deleteField(field)
+      };
+    } else {
+      params = {
+        title: `Deleting <strong>${field.name}</strong> field`,
+        type: ALERT_TYPE_ALERT,
+        description: `There are ${contentCount} content items using the model. You should disable this field first.`
+      };
+    }
+
+    this.props.showAlert(params);
     this.returnFocus = true;
-    
-    this.props.showAlert({
-      type: ALERT_TYPE_CONFIRM,
-      title: `Deleting ${field.name} field`,
-      description: "Are you sure?",
-      onConfirm: () => this.props.deleteField(field)
-    });
   }
 
   onFieldClick = field => {
@@ -170,6 +182,8 @@ export default class Model extends Component {
                 let style = "list-item";
                 if (isEditable)
                   style += " list-item_pointer";
+                if (field.isDisabled)
+                  style += " list-item_disabled";
   
                 return (
                   <div styleName={style}

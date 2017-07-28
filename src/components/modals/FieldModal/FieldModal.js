@@ -21,6 +21,7 @@ export default class FieldModal extends Component {
     appearance: '',
     isTitle: '',
     isList: false,
+    isDisabled: false,
 
     error: null,
 
@@ -47,6 +48,7 @@ export default class FieldModal extends Component {
     this.state.appearance = this.field.appearance;
     this.state.isTitle    = this.field.isTitle;
     this.state.isList     = this.field.isList;
+    this.state.isDisabled = this.field.isDisabled;
     this.state.appList    = FIELD_TYPES.get(this.field.type);
   }
   
@@ -103,6 +105,10 @@ export default class FieldModal extends Component {
     this.setState({isList});
   };
 
+  onChangeIsDisabled = isDisabled => {
+    this.setState({isDisabled});
+  };
+
   onSave = () => {
     if (!this.active)
       return;
@@ -125,6 +131,7 @@ export default class FieldModal extends Component {
     this.field.appearance = this.state.appearance;
     this.field.isTitle    = this.state.isTitle;
     this.field.isList     = this.state.isList;
+    this.field.isDisabled = this.state.isDisabled;
 
     const {addField, updateField} = this.props;
     if (this.updating)
@@ -210,6 +217,15 @@ export default class FieldModal extends Component {
                   <SwitchControl checked={this.state.isTitle}
                                  onChange={this.onChangeIsTitle}
                                  disabled={!canBeTitle(this.state)} />
+                </div>
+              </div>
+
+              <div styleName="input-wrapper">
+                <div styleName="label">Disabled</div>
+                <div styleName="switch">
+                  <SwitchControl checked={this.state.isDisabled}
+                                 onChange={this.onChangeIsDisabled}
+                                 disabled={this.state.isTitle} />
                 </div>
               </div>
 
