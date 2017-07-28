@@ -411,16 +411,14 @@ export function deleteModel(model) {
   };
 }
 
-function changeTitleField(field, value = true) {
-  field.isTitle = value;
-  field.updateOrigin();
-  field.origin.save();
-}
-
 export function addField(field) {
   field.color = getRandomColor();
   field.nameId = getNameId(field.name, field.model.fields);
   
+  if (!field.model.hasTitle() && canBeTitle(field))
+    field.isTitle = true;
+
+
   field.updateOrigin();
   field.origin.save()
     .then(() =>
@@ -428,10 +426,6 @@ export function addField(field) {
         fieldId: field.origin.id
       })
     );
-  
-  if (!field.model.hasTitle() && canBeTitle(field))
-    changeTitleField(field);
-  
   field.model.origin.save();
   
   return {
@@ -440,10 +434,13 @@ export function addField(field) {
   };
 }
 
-export function updateField(field) {
+function changeTitleField(field, value = true) {
+  field.isTitle = value;
   field.updateOrigin();
   field.origin.save();
-  
+}
+
+export function updateField(field) {
   if (field.isTitle) {
     //if current field is title, remove other titles
     if (canBeTitle(field)) {
@@ -452,7 +449,7 @@ export function updateField(field) {
           changeTitleField(tempField, false);
       }
     } else {
-      changeTitleField(field, false);
+      field.isTitle = false;
     }
   }
   
@@ -468,9 +465,11 @@ export function updateField(field) {
     }
     //if we can't, we try to make title current field
     if (!titleSet && canBeTitle(field))
-      changeTitleField(field);
+      field.isTitle = true;
   }
-  
+
+  field.updateOrigin();
+  field.origin.save();
   field.model.origin.save();
   
   return {
