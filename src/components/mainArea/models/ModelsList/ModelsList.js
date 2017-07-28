@@ -85,14 +85,14 @@ export default class ModelsList extends Component {
     const contentCount = getContentForModel(model).length;
     if (contentCount) {
       params = {
+        title: `Deleting <strong>${model.name}</strong> model`,
         type: ALERT_TYPE_ALERT,
-        title: `Deleting ${model.name} model`,
         description: `There are ${contentCount} content items using the model. You should delete them first.`
       };
     } else {
       params = {
+        title: `Deleting <strong>${model.name}</strong> model`,
         type: ALERT_TYPE_CONFIRM,
-        title: `Deleting ${model.name} model`,
         description: "Are you sure?",
         onConfirm: () => this.props.deleteModel(model)
       };

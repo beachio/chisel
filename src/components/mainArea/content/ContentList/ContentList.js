@@ -102,12 +102,13 @@ export default class ContentList extends Component {
   
   onRemoveClick = (event, item) => {
     event.stopPropagation();
+    
     const {showAlert, deleteItem} = this.props;
     const title = item.title ? item.title : 'content item';
   
     const params = {
       type: ALERT_TYPE_CONFIRM,
-      title: `Deleting ${title}`,
+      title: `Deleting <strong>${title}</strong>`,
       description: "Are you sure?",
       onConfirm: () => deleteItem(item)
     };
