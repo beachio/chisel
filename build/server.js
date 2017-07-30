@@ -2,33 +2,31 @@ const express = require('express');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
-const path = require('path');
+const history = require('connect-history-api-fallback');
 
 const config = require('./webpack.dev.config');
 
 
-let app = new express();
+let server = new express();
 let port = process.env.PORT || 3000;
 
+server.use(history());
+
 let compiler = webpack(config);
-app.use(webpackDevMiddleware(compiler, {
+server.use(webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath,
   stats: {
     colors: true,
     chunks: false
   }
 }));
-app.use(webpackHotMiddleware(compiler));
+server.use(webpackHotMiddleware(compiler));
 
 // serve pure static assets
-app.use('/', express.static('./static'));
-
-app.get(/.*/, function root(req, res) {
-  res.sendFile(path.join(__dirname, '../src/index.html'));
-});
+server.use('/', express.static('./static'));
 
 
-app.listen(port, error => {
+server.listen(port, error => {
   if (error)
     console.error(error);
   else

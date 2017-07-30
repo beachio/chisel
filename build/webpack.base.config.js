@@ -10,8 +10,15 @@ module.exports = {
     filename: '[name].js',
     publicPath: '/'
   },
+  resolve: {
+    modulesDirectories: ['src', 'node_modules'],
+    extensions: ['', '.js']
+  },
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin()
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new HtmlWebpackPlugin({
+      template: 'src/index.pug'
+    }),
   ],
   module: {
     loaders: [
@@ -19,6 +26,10 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel',
         exclude: /node_modules/
+      },
+      {
+        test: /\.pug$/,
+        loader: 'pug'
       },
       {
         test: /\.svg$/,
@@ -45,10 +56,6 @@ module.exports = {
         }
       }
     ]
-  },
-  resolve: {
-    modulesDirectories: ['src', 'node_modules'],
-    extensions: ['', '.js']
   },
   postcss: function () {
     return [
