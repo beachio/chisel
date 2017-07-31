@@ -180,6 +180,15 @@ export function init() {
             requestCollaborationsPost(sites_o, sites),
             requestModels(sites_o, sites, models_o, models)
               .then(() => requestFields(models_o, models))
+              .then(() => {
+                for (let model of models) {
+                  model.fields.sort((a, b) => {
+                    if (a.order > b.order)
+                      return 1;
+                    return -1;
+                  });
+                }
+              })
           ]));
       })
       .then(() =>
@@ -613,7 +622,14 @@ export default function modelsReducer(state = initialState, action) {
     case SITE_UPDATE:
     case COLLABORATION_UPDATE:
     case MODEL_UPDATE:
+      return {...state};
+
     case FIELD_UPDATE:
+      action.field.model.fields.sort((a, b) => {
+        if (a.order > b.order)
+          return 1;
+        return -1;
+      });
       return {...state};
     
     case LOGOUT:

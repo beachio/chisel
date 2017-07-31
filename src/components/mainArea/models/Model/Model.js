@@ -84,14 +84,7 @@ export default class Model extends Component {
     super(props);
     
     this.model = props.model;
-
-    let fields = props.model.fields.slice();
-    fields.sort((a, b) => {
-      if (a.order > b.order)
-        return 1;
-      return -1;
-    });
-    this.state.fields = fields;
+    this.state.fields = props.model.fields;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -106,13 +99,7 @@ export default class Model extends Component {
       }
     }
 
-    let fields = nextProps.model.fields.slice();
-    fields.sort((a, b) => {
-      if (a.order > b.order)
-        return 1;
-      return -1;
-    });
-    this.setState({fields});
+    this.setState({fields: nextProps.model.fields});
   }
 
   onFieldNameChange = event => {
