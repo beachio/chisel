@@ -414,10 +414,10 @@ export function deleteModel(model) {
 export function addField(field) {
   field.color = getRandomColor();
   field.nameId = getNameId(field.name, field.model.fields);
+  field.order = field.model.fields.length;
   
   if (!field.model.hasTitle() && canBeTitle(field))
     field.isTitle = true;
-
 
   field.updateOrigin();
   field.origin.save()

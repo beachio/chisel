@@ -10,7 +10,7 @@
   margin: 0 auto
   margin-top: 22px
 
-  &-item
+  &Item
     display: flex
     flex-flow: row nowrap
     align-items: center
@@ -18,18 +18,19 @@
     margin-bottom: 9px
 
     &:hover
-      .hidden-controls
+      .hiddenControls
         opacity: 0.999
 
-    &_pointer
+    &Pointer
       cursor: pointer
 
-    &_disabled
-      .list-item-color,
-      .list-item-text
+    &Disabled
+      .listItemColor
+        opacity: 0.5
+      .listItemText
         opacity: 0.5
 
-    &-color
+    &Color
       height: 20px
       width: 20px
       border-radius: 100%
@@ -38,24 +39,24 @@
       top: 50%
       transform: translateY(-50%)
 
-    &-text
+    &Text
       flex: 1
 
-    &-name,
-    &-type
+    &Name,
+    &Type
       font-size: 13px
       color: #666666
       letter-spacing: 0.5px
       text-align: left
 
-    &-name
+    &Name
       font-weight: 600
 
-    &-type
+    &Type
       margin-top: 3px
       letter-spacing: 0.46px
 
-.title-button
+.titleButton
   background-image: linear-gradient(-180deg, #607D8B 0%, #3E5059 150%)
   box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.20)
   border-radius: 2px
@@ -68,7 +69,7 @@
   text-transform: uppercase
 
 .hidden
-  &-controls
+  &Controls
     opacity: 0.001
     transition: opacity 0.1s ease
     will-change: opacity
@@ -77,7 +78,7 @@
     flex-flow: row nowrap
     align-items: center
 
-  &-remove
+  &Remove
     margin-left: 25px
     height: 24px
     width: 24px

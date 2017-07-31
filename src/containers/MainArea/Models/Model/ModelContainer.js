@@ -5,7 +5,7 @@ import {browserHistory} from 'react-router';
 import {Helmet} from "react-helmet";
 
 import Model from 'components/mainArea/models/Model/Model';
-import {setCurrentModel, updateModel, deleteField} from 'ducks/models';
+import {setCurrentModel, updateModel, updateField, deleteField} from 'ducks/models';
 import {showAlert, showModal, USERSPACE_URL, SITE_URL, MODELS_URL, MODEL_URL} from 'ducks/nav';
 import {getModelByNameId} from 'utils/data';
 
@@ -36,7 +36,7 @@ export class ModelContainer extends Component  {
   
   render() {
     const {models, nav} = this.props;
-    const {updateModel, deleteField} = this.props.modelsActions;
+    const {updateModel, updateField, deleteField} = this.props.modelsActions;
     const {showAlert, showModal} = this.props.navActions;
     
     let curSite = models.currentSite;
@@ -56,6 +56,7 @@ export class ModelContainer extends Component  {
         <Model model={this.model}
                onClose={closeModel}
                updateModel={updateModel}
+               updateField={updateField}
                deleteField={deleteField}
                showAlert={showAlert}
                showModal={showModal}
@@ -76,7 +77,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelsActions: bindActionCreators({setCurrentModel, updateModel, deleteField}, dispatch),
+    modelsActions: bindActionCreators({setCurrentModel, updateModel, updateField, deleteField}, dispatch),
     navActions: bindActionCreators({showAlert, showModal}, dispatch)
   }
 }

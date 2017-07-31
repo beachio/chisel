@@ -242,6 +242,7 @@ export class ModelFieldData {
   isTitle = false;
   isList = false;
   isDisabled = false;
+  order = -1;
 
   //setter
   _name = "";
@@ -273,6 +274,8 @@ export class ModelFieldData {
     if (origin.get('isList'))     this.isList     = true;
     if (origin.get('isDisabled')) this.isDisabled = true;
 
+    if (origin.get('order') || origin.get('order') === 0)  this.order = origin.get('order');
+
     return this;
   }
 
@@ -288,6 +291,7 @@ export class ModelFieldData {
     this.origin.set("isTitle",    this.isTitle);
     this.origin.set("isList",     this.isList);
     this.origin.set("isDisabled", this.isDisabled);
+    this.origin.set("order",      this.order);
     
     this.origin.set("model",      this.model.origin);
   }
@@ -301,7 +305,8 @@ export class ModelFieldData {
       color:      this.color,
       isTitle:    this.isTitle,
       isList:     this.isList,
-      isDisabled: this.isDisabled
+      isDisabled: this.isDisabled,
+      order:      this.order
     };
   }
 }

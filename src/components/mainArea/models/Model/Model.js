@@ -1,8 +1,9 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import JSONView from '../../../elements/JSONView/JSONView';
 import FlipMove from 'react-flip-move';
+import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
@@ -13,6 +14,58 @@ import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal
 import {ModelFieldData} from 'models/ModelData';
 
 import styles from './Model.sss';
+
+
+const DragHandle = SortableHandle(({color}) =>
+  (<div className={styles.listItemColor} style={{background: color}}></div>)
+);
+
+const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemoveClick}) => {
+  let style = [styles.listItem];
+  if (isEditable)
+    style.push(styles.listItemPointer);
+  if (field.isDisabled)
+    style.push(styles.listItemDisabled);
+
+  return (
+    <div className={style.join(' ')}
+         onClick={() => onFieldClick(field)}>
+      <DragHandle color={field.color} />
+      <div className={styles.listItemText}>
+        <div className={styles.listItemName}>{field.name}</div>
+        <div className={styles.listItemType}>{field.type} — {field.appearance}</div>
+      </div>
+      {field.isTitle &&
+        <div className={styles.titleButton}>TITLE</div>
+      }
+      {isEditable &&
+        <div className={styles.hiddenControls}>
+          <div className={styles.hiddenRemove}
+               onClick={event => onRemoveClick(event, field)}>
+            <InlineSVG className={styles.cross}
+                       src={require("assets/images/cross.svg")}/>
+          </div>
+        </div>
+      }
+    </div>
+  );
+});
+//const SortableItem = CSSModules(_SortableItem, styles, {allowMultiple: true});
+
+const SortableList = SortableContainer(({fields, isEditable, onFieldClick, onRemoveClick}) => {
+  return (
+    <div>
+      {fields.map((field, index) => (
+        <SortableItem key={`item-${index}`}
+                      index={index}
+                      field={field}
+                      isEditable={isEditable}
+                      onFieldClick={onFieldClick}
+                      onRemoveClick={onRemoveClick} />
+      ))}
+    </div>
+  );
+});
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -27,13 +80,19 @@ export default class Model extends Component {
   activeInput = null;
   returnFocus = false;
   titleActive = false;
-  
 
   constructor(props) {
     super(props);
     
     this.model = props.model;
-    this.state.fields = props.model.fields;
+
+    let fields = props.model.fields.slice();
+    fields.sort((a, b) => {
+      if (a.order > b.order)
+        return 1;
+      return -1;
+    });
+    this.state.fields = fields;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -47,7 +106,14 @@ export default class Model extends Component {
         setTimeout(() => this.activeInput.focus(), 1);
       }
     }
-    this.setState({fields: nextProps.model.fields});
+
+    let fields = nextProps.model.fields.slice();
+    fields.sort((a, b) => {
+      if (a.order > b.order)
+        return 1;
+      return -1;
+    });
+    this.setState({fields});
   }
 
   onFieldNameChange = event => {
@@ -92,7 +158,7 @@ export default class Model extends Component {
     this.setState({fieldName: ""});
   };
 
-  onRemoveClick(event, field) {
+  onRemoveClick = (event, field) => {
     event.stopPropagation();
 
     let params;
@@ -115,7 +181,7 @@ export default class Model extends Component {
 
     this.props.showAlert(params);
     this.returnFocus = true;
-  }
+  };
 
   onFieldClick = field => {
     if (!this.props.isEditable)
@@ -159,6 +225,20 @@ export default class Model extends Component {
     this.props.updateModel(this.model);
   };
 
+  onSortEnd = ({oldIndex, newIndex}) => {
+    const {updateField} = this.props;
+
+    let fields = arrayMove(this.state.fields, oldIndex, newIndex);
+
+    for (let i = 0; i < fields.length; i++) {
+      let field = fields[i];
+      field.order = i;
+      updateField(field);
+    }
+
+    this.setState({fields});
+  };
+
   render() {
     const {onClose, isEditable, alertShowing} = this.props;
 
@@ -171,58 +251,24 @@ export default class Model extends Component {
       content = (
         <div styleName="model-wrapper">
           <div styleName="list">
-            <FlipMove duration={500}
-                      enterAnimation="fade"
-                      leaveAnimation="fade"
-                      maintainContainerHeight
-                      easing="ease-out">
-              {this.state.fields.map(field => {
-                let colorStyle = {background: field.color};
-                
-                let style = "list-item";
-                if (isEditable)
-                  style += " list-item_pointer";
-                if (field.isDisabled)
-                  style += " list-item_disabled";
-  
-                return (
-                  <div styleName={style}
-                       key={field.name}
-                       onClick={() => this.onFieldClick(field)}>
-                    <div styleName="list-item-color" style={colorStyle}></div>
-                    <div styleName="list-item-text">
-                      <div styleName="list-item-name">{field.name}</div>
-                      <div styleName="list-item-type">{field.type} — {field.appearance}</div>
-                    </div>
-                    {
-                      field.isTitle &&
-                        <div styleName="title-button">TITLE</div>
-                    }
-                    {
-                      isEditable &&
-                        <div styleName="hidden-controls">
-                          <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, field)}>
-                            <InlineSVG styleName="cross"
-                                       src={require("assets/images/cross.svg")}/>
-                          </div>
-                        </div>
-                    }
-                  </div>
-                );
-              })}
-              {isEditable &&
-                <div styleName="input-wrapper">
-                  <InputControl placeholder="Add New Field"
-                                value={this.state.fieldName}
-                                onKeyDown={this.onAddKeyDown}
-                                onChange={this.onFieldNameChange}
-                                DOMRef={c => this.activeInput = c}
-                                icon="plus"
-                                autoFocus
-                                onIconClick={this.onAddField} />
-                </div>
-              }
-            </FlipMove>
+            <SortableList onSortEnd={this.onSortEnd}
+                          useDragHandle={true}
+                          fields={this.state.fields}
+                          isEditable={isEditable}
+                          onFieldClick={this.onFieldClick}
+                          onRemoveClick={this.onRemoveClick} />
+            {isEditable &&
+              <div styleName="input-wrapper">
+                <InputControl placeholder="Add New Field"
+                              value={this.state.fieldName}
+                              onKeyDown={this.onAddKeyDown}
+                              onChange={this.onFieldNameChange}
+                              DOMRef={c => this.activeInput = c}
+                              icon="plus"
+                              autoFocus
+                              onIconClick={this.onAddField} />
+              </div>
+            }
           </div>
         </div>
       );
