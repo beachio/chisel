@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import JSONView from '../../../elements/JSONView/JSONView';
-import FlipMove from 'react-flip-move';
 import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
