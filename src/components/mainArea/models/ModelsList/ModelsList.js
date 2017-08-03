@@ -22,6 +22,9 @@ export default class ModelsList extends Component {
   activeInput = null;
   returnFocus = false;
 
+  animate = true;
+  input;
+
 
   constructor(props) {
     super(props);
@@ -36,8 +39,22 @@ export default class ModelsList extends Component {
     }
     
     this.setState({models: nextProps.models});
-    if (nextProps.models != this.state.models)
+
+    /*
+    if (nextProps.models.length)
+      this.input.style.transform = `translateY(${24 + 34 * nextProps.models.length}px)`;
+    else
+      this.input.style.transform = `translateY(0)`;
+    */
+
+    if (nextProps.models != this.state.models) {
       this.setState({modelName: ""});
+      this.animate = false;
+    }
+  }
+
+  componentDidUpdate() {
+    this.animate = true;
   }
 
   onModelNameChange = event => {
@@ -109,20 +126,22 @@ export default class ModelsList extends Component {
       <ContainerComponent title='Models'>
         <div styleName="content">
           <div styleName="list">
-            {
-              this.state.models.length > 0 &&
+            <FlipMove duration={350}
+                      delay={100}
+                      staggerDelayBy={70}
+                      enterAnimation="fade"
+                      leaveAnimation="fade"
+                      maintainContainerHeight
+                      disableAllAnimations={!this.animate}
+                      easing="ease-out">
+              {this.state.models.length > 0 &&
                 <div styleName="list-item list-header">
                   <div styleName="colorLabel"></div>
                   <div styleName="type"></div>
                   <div styleName="fields">FIELDS</div>
                   <div styleName="updated">UPDATED</div>
                 </div>
-            }
-            <FlipMove duration={500}
-                      enterAnimation="fade"
-                      leaveAnimation="fade"
-                      maintainContainerHeight
-                      easing="ease-out">
+              }
               {this.state.models.map(model => {
                 let updatedDate = model.origin.updatedAt;
                 if (!updatedDate)
@@ -154,20 +173,19 @@ export default class ModelsList extends Component {
                   </div>
                 );
               })}
-              {
-                isEditable &&
-                  <div styleName="input-wrapper">
-                    <InputControl value={this.state.modelName}
-                                  placeholder="Create a new Content Type"
-                                  onChange={this.onModelNameChange}
-                                  onKeyDown={this.onKeyDown}
-                                  DOMRef={c => this.activeInput = c}
-                                  icon="plus"
-                                  autoFocus
-                                  onIconClick={this.onAddModel} />
-                  </div>
-              }
             </FlipMove>
+            {isEditable &&
+              <div styleName="input-wrapper" ref={r => this.input = r}>
+                <InputControl value={this.state.modelName}
+                              placeholder="Create a new Content Type"
+                              onChange={this.onModelNameChange}
+                              onKeyDown={this.onKeyDown}
+                              DOMRef={c => this.activeInput = c}
+                              icon="plus"
+                              autoFocus
+                              onIconClick={this.onAddModel} />
+              </div>
+            }
           </div>
           
         </div>

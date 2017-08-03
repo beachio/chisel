@@ -28,6 +28,8 @@ export default class ContentList extends Component {
     currentModel: null
   };
 
+  animate = true;
+
   
   constructor(props) {
     super(props);
@@ -38,8 +40,15 @@ export default class ContentList extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({items: nextProps.items});
-    if (nextProps.items != this.state.items)
+
+    if (nextProps.items != this.state.items) {
       this.setState({itemTitle: ""});
+      this.animate = false;
+    }
+  }
+
+  componentDidUpdate() {
+    this.animate = true;
   }
 
   //TODO криво как-то
@@ -175,18 +184,21 @@ export default class ContentList extends Component {
           
           <div styleName="list-wrapper">
             <div styleName="list">
-              {this.state.items.length > 0 &&
-                <div styleName="list-item">
-                  <div styleName="colorLabel"></div>
-                  <div styleName="type"></div>
-                  <div styleName="updated">UPDATED</div>
-                </div>
-              }
-              <FlipMove duration={500}
+              <FlipMove duration={350}
+                        delay={100}
+                        staggerDelayBy={70}
                         enterAnimation="fade"
                         leaveAnimation="fade"
                         maintainContainerHeight
+                        disableAllAnimations={!this.animate}
                         easing="ease-out">
+                {this.state.items.length > 0 &&
+                  <div styleName="list-item">
+                    <div styleName="colorLabel"></div>
+                    <div styleName="type"></div>
+                    <div styleName="updated">UPDATED</div>
+                  </div>
+                }
                 {this.state.items
                   .filter(item => !this.state.activeModels.size || this.state.activeModels.has(item.model))
                   .filter(item => !this.state.activeStatuses.size || this.state.activeStatuses.has(item.status))
@@ -229,25 +241,25 @@ export default class ContentList extends Component {
                     );
                   })
                 }
-                {isEditable &&
-                  <div styleName="inputs-wrapper">
-                    <div styleName="dropdown-wrapper">
-                      <DropdownControl suggestionsList={models.map(m => m.name)}
-                                       suggest={this.onChangeModel}
-                                       current={this.state.currentModel.name} />
-                    </div>
-                    <div styleName="input-wrapper">
-                      <InputControl placeholder="Create a new Content Record"
-                                    value={this.state.itemTitle}
-                                    icon="plus"
-                                    autoFocus
-                                    onIconClick={this.onAddItem}
-                                    onChange={this.onItemTitleChange}
-                                    onKeyDown={this.onKeyDown} />
-                    </div>
-                  </div>
-                }
               </FlipMove>
+              {isEditable &&
+                <div styleName="inputs-wrapper">
+                  <div styleName="dropdown-wrapper">
+                    <DropdownControl suggestionsList={models.map(m => m.name)}
+                                     suggest={this.onChangeModel}
+                                     current={this.state.currentModel.name} />
+                  </div>
+                  <div styleName="input-wrapper">
+                    <InputControl placeholder="Create a new Content Record"
+                                  value={this.state.itemTitle}
+                                  icon="plus"
+                                  autoFocus
+                                  onIconClick={this.onAddItem}
+                                  onChange={this.onItemTitleChange}
+                                  onKeyDown={this.onKeyDown} />
+                  </div>
+                </div>
+              }
             </div>
             
           </div>
