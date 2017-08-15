@@ -1,6 +1,6 @@
 {
-  "name": "Chisel",
-  "version": "0.1.0",
+  "name": "chisel-cms",
+  "version": "0.1.2",
   "description": "Parse CMS",
   "main": "dist/main.js",
   "files": [
@@ -14,7 +14,7 @@
     "localrun": "NODE_ENV=production node build/local.run.js"
   },
   "bin": {
-    "chisel": "./chisel"
+    "chisel-cms": "./bin/chisel-cms"
   },
   "repository": {
     "type": "git",
