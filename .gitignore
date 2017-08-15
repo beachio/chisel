@@ -3,5 +3,4 @@ logs
 npm-debug.log
 .DS_Store
 .idea
-dist
 *.zip
