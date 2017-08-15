@@ -18,18 +18,20 @@ export default class ModelsList extends Component {
     models: [],
     modelName: ""
   };
-  
+
+  site = null;
+
   activeInput = null;
   returnFocus = false;
 
   animate = true;
-  input;
 
 
   constructor(props) {
     super(props);
-    
-    this.state.models = props.models;
+
+    this.site = props.site;
+    this.state.models = this.site.models.slice();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,20 +39,14 @@ export default class ModelsList extends Component {
       this.returnFocus = false;
       setTimeout(() => this.activeInput.focus(), 1);
     }
-    
-    this.setState({models: nextProps.models});
 
-    /*
-    if (nextProps.models.length)
-      this.input.style.transform = `translateY(${24 + 34 * nextProps.models.length}px)`;
-    else
-      this.input.style.transform = `translateY(0)`;
-    */
-
-    if (nextProps.models != this.state.models) {
-      this.setState({modelName: ""});
+    if (nextProps.site != this.site) {
       this.animate = false;
+      this.setState({modelName: ""});
     }
+
+    this.site = nextProps.site;
+    this.setState({models: this.site.models.slice()});
   }
 
   componentDidUpdate() {
@@ -123,14 +119,12 @@ export default class ModelsList extends Component {
     const {isEditable} = this.props;
 
     return (
-      <ContainerComponent title='Models'>
+      <ContainerComponent title='Models' backgroundOffset={110}>
         <div styleName="content">
           <div styleName="list">
-            <FlipMove duration={350}
-                      delay={100}
-                      staggerDelayBy={70}
-                      enterAnimation="fade"
-                      leaveAnimation="fade"
+            <FlipMove duration={250}
+                      enterAnimation="accordionVertical"
+                      leaveAnimation="accordionVertical"
                       maintainContainerHeight
                       disableAllAnimations={!this.animate}
                       easing="ease-out">
@@ -173,21 +167,23 @@ export default class ModelsList extends Component {
                   </div>
                 );
               })}
+              {isEditable &&
+                <div styleName="input-wrapper">
+                  <div styleName="input-wrapper-back"></div>
+                  <div styleName="input">
+                    <InputControl value={this.state.modelName}
+                                  placeholder="Create a new Content Type"
+                                  onChange={this.onModelNameChange}
+                                  onKeyDown={this.onKeyDown}
+                                  DOMRef={c => this.activeInput = c}
+                                  icon="plus"
+                                  autoFocus
+                                  onIconClick={this.onAddModel} />
+                  </div>
+                </div>
+              }
             </FlipMove>
-            {isEditable &&
-              <div styleName="input-wrapper" ref={r => this.input = r}>
-                <InputControl value={this.state.modelName}
-                              placeholder="Create a new Content Type"
-                              onChange={this.onModelNameChange}
-                              onKeyDown={this.onKeyDown}
-                              DOMRef={c => this.activeInput = c}
-                              icon="plus"
-                              autoFocus
-                              onIconClick={this.onAddModel} />
-              </div>
-            }
           </div>
-          
         </div>
       </ContainerComponent>
     );

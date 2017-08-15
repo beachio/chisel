@@ -29,7 +29,7 @@ export class ModelsListContainer extends Component  {
         <Helmet>
           <title>{title}</title>
         </Helmet>
-        <ModelsList models={curSite.models}
+        <ModelsList site={curSite}
                     gotoModel={gotoModel}
                     addModel={addModel}
                     deleteModel={deleteModel}

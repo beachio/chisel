@@ -1,12 +1,17 @@
 .ContainerComponent
   width: 90%
-  background: #fff
-  border-radius: 5px
-  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.10)
   position: relative
   margin-top: 40px
 
-  padding-bottom: 65px
+  padding-bottom: 40px
+
+  .back
+    position: absolute
+    height: 100%
+    width: 100%
+    background: #fff
+    border-radius: 5px
+    box-shadow: 0px 2px 4px 0px rgba(230,230,230,1)
 
   .header
     border-bottom: 1px solid #E5E5E5
@@ -21,6 +26,7 @@
     text-align: center
   
     margin-bottom: 22px
+    z-index: 3
     
     .title
       font-size: 20px

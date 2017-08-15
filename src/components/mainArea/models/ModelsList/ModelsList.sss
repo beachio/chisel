@@ -1,12 +1,13 @@
 .content
-  padding: 0 10%
   text-align: center
+  position: relative
 
 .list
   display: flex
   flex-flow: column nowrap
   width: 100%
   margin: 0 auto
+  position: relative
 
   &-item
     display: flex
@@ -14,10 +15,13 @@
     align-items: center
     position: relative
     cursor: pointer
+    background: #fff
 
-    margin-top: 3px
-    margin-bottom: 3px
+    margin: 3px 10%
+
     padding: 5px
+
+    z-index: 3
 
     &:hover
       .hidden-controls
@@ -72,7 +76,28 @@
       color: #999999
 
 .input-wrapper
+  background: #fff
   margin-top: 9px
+  width: 100%
+
+  position: relative
+
+  .input
+    padding-left: 10%
+    padding-right: 10%
+    position: relative
+    z-index: 3
+
+  .input-wrapper-back
+    position: absolute
+    top: -70px
+    width: 100%
+    height: calc(70px + 100% + 20px)
+    background: #fff
+    z-index: 2
+    box-shadow: 0px 2px 4px 0px rgba(230,230,230,1)
+    border-width: 0px 1px 1px 1px
+    border-radius: 5px
 
 .hidden
   &-controls

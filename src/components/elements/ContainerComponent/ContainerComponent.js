@@ -6,7 +6,7 @@ import styles from './ContainerComponent.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class ContainerComponent extends Component {
   render() {
-    const {haveTitle2, title, titles, children, onClickBack, onClickRLink, rLinkTitle} = this.props;
+    const {haveTitle2, title, titles, children, onClickBack, onClickRLink, rLinkTitle, backgroundOffset} = this.props;
     
     let headerStyles = 'header';
     if (haveTitle2)
@@ -15,9 +15,14 @@ export default class ContainerComponent extends Component {
     let titlesCmp = titles;
     if (title)
       titlesCmp = <div styleName="title">{title}</div>;
-    
+
+    let backStyle = {};
+    if (backgroundOffset)
+      backStyle = {height: `calc(100% - ${backgroundOffset}px)`};
+
     return (
       <div styleName='ContainerComponent'>
+        <div styleName="back" style={backStyle}></div>
         <div styleName={headerStyles}>
           {
             onClickBack &&

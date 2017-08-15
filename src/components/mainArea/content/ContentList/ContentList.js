@@ -28,9 +28,7 @@ export default class ContentList extends Component {
     currentModel: null
   };
 
-  animate = true;
 
-  
   constructor(props) {
     super(props);
     
@@ -40,15 +38,6 @@ export default class ContentList extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({items: nextProps.items});
-
-    if (nextProps.items != this.state.items) {
-      this.setState({itemTitle: ""});
-      this.animate = false;
-    }
-  }
-
-  componentDidUpdate() {
-    this.animate = true;
   }
 
   //TODO криво как-то
@@ -184,13 +173,10 @@ export default class ContentList extends Component {
           
           <div styleName="list-wrapper">
             <div styleName="list">
-              <FlipMove duration={350}
-                        delay={100}
-                        staggerDelayBy={70}
-                        enterAnimation="fade"
-                        leaveAnimation="fade"
+              <FlipMove duration={250}
+                        enterAnimation="accordionVertical"
+                        leaveAnimation="accordionVertical"
                         maintainContainerHeight
-                        disableAllAnimations={!this.animate}
                         easing="ease-out">
                 {this.state.items.length > 0 &&
                   <div styleName="list-item">
@@ -241,25 +227,25 @@ export default class ContentList extends Component {
                     );
                   })
                 }
+                {isEditable &&
+                  <div styleName="inputs-wrapper">
+                    <div styleName="dropdown-wrapper">
+                      <DropdownControl suggestionsList={models.map(m => m.name)}
+                                       suggest={this.onChangeModel}
+                                       current={this.state.currentModel.name} />
+                    </div>
+                    <div styleName="input-wrapper">
+                      <InputControl placeholder="Create a new Content Record"
+                                    value={this.state.itemTitle}
+                                    icon="plus"
+                                    autoFocus
+                                    onIconClick={this.onAddItem}
+                                    onChange={this.onItemTitleChange}
+                                    onKeyDown={this.onKeyDown} />
+                    </div>
+                  </div>
+                }
               </FlipMove>
-              {isEditable &&
-                <div styleName="inputs-wrapper">
-                  <div styleName="dropdown-wrapper">
-                    <DropdownControl suggestionsList={models.map(m => m.name)}
-                                     suggest={this.onChangeModel}
-                                     current={this.state.currentModel.name} />
-                  </div>
-                  <div styleName="input-wrapper">
-                    <InputControl placeholder="Create a new Content Record"
-                                  value={this.state.itemTitle}
-                                  icon="plus"
-                                  autoFocus
-                                  onIconClick={this.onAddItem}
-                                  onChange={this.onItemTitleChange}
-                                  onKeyDown={this.onKeyDown} />
-                  </div>
-                </div>
-              }
             </div>
             
           </div>
