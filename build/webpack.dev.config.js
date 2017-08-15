@@ -1,4 +1,3 @@
-const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
@@ -15,7 +14,12 @@ module.exports = merge(baseWebpackConfig, {
       'shorthands': true
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': '"development"'
+      }
+    })
   ],
   module: {
     loaders: [

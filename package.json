@@ -9,9 +9,12 @@
   ],
   "scripts": {
     "start": "node ./build/server.js",
-    "lint": "eslint .",
     "bundle": "rimraf dist && webpack --config ./build/webpack.dev.config.js",
-    "build": "node build/build.js"
+    "build": "NODE_ENV=production node build/build.js",
+    "localrun": "NODE_ENV=production node build/local.run.js"
+  },
+  "bin": {
+    "chisel": "./chisel"
   },
   "repository": {
     "type": "git",
