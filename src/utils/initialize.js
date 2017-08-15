@@ -20,7 +20,8 @@ function requestConfig() {
       config.appId      = res.configAppId;
       config.JSkey      = res.configJSkey;
       config.RESTkey    = res.configRESTkey;
-    });
+    })
+    .catch(() => {});
 }
 
 function subInitParse() {
