@@ -1,11 +1,14 @@
 {
   "name": "chisel-cms",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "description": "Parse CMS",
   "main": "dist/main.js",
   "files": [
+    "bin",
+    "build",
+    "dist",
     "src",
-    "dist"
+    "README.md"
   ],
   "scripts": {
     "start": "node ./build/server.js",
