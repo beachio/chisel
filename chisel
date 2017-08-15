@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('build/local.run');
+require('./build/local.run');

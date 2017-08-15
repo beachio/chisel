@@ -2,29 +2,46 @@ import {Parse} from 'parse';
 
 import {store} from 'index';
 import {getLocalStorage} from 'ducks/user';
-import {SERVER_URL, APP_ID, JS_KEY} from 'constants';
+import {config} from 'constants';
 
 
-export let currentServerURL = SERVER_URL;
+export let currentServerURL;
 
+
+function requestConfig() {
+  return fetch('/chisel-config.json')
+    .then(response => {
+      if (response.ok)
+        return response.json();
+      throw new Error(response.statusText);
+    })
+    .then(res => {
+      config.serverURL  = res.configServerURL;
+      config.appId      = res.configAppId;
+      config.JSkey      = res.configJSkey;
+      config.RESTkey    = res.configRESTkey;
+    });
+}
 
 function subInitParse() {
-  let serverLS = localStorage.getItem('parseServerURL');
+  currentServerURL = config.serverURL;
+
+  /*let serverLS = localStorage.getItem('parseServerURL');
   if (serverLS)
     currentServerURL = serverLS;
   else
-    localStorage.setItem('parseServerURL', currentServerURL);
+    localStorage.setItem('parseServerURL', currentServerURL);*/
   
-  Parse.initialize(APP_ID, JS_KEY);
+  Parse.initialize(config.appId, config.JSkey);
   Parse.serverURL = currentServerURL;
 }
 
 export function initApp() {
-  subInitParse();
-
-  new Promise((resolve, reject) => {
-    store.dispatch(getLocalStorage());
-  })
+  requestConfig()
+    .then(() => {
+      subInitParse();
+      store.dispatch(getLocalStorage());
+    })
     .catch(e => {
       setTimeout(() => {
         localStorage.clear();
