@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
@@ -7,7 +7,7 @@ import {Helmet} from "react-helmet";
 import Settings from 'components/mainArea/settings/Settings';
 import {ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';
 import {updateSite, deleteSite} from 'ducks/models';
-import {showAlert, USERSPACE_URL, SITE_URL} from 'ducks/nav';
+import {showAlert, USERSPACE_URL} from 'ducks/nav';
 
 
 export class SettingsContainer extends Component  {

@@ -1,11 +1,11 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import Gravatar from 'react-gravatar';
 import {Parse} from 'parse';
 import FlipMove from 'react-flip-move';
 
-import {ROLE_ADMIN, ROLE_EDITOR, ROLE_DEVELOPER, CollaborationData} from 'models/UserData';
+import {ROLE_ADMIN, ROLE_EDITOR, ROLE_DEVELOPER} from 'models/UserData';
 import {getUser, checkCollaboration, COLLAB_CORRECT, COLLAB_ERROR_EXIST, COLLAB_ERROR_SELF} from 'utils/data';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';

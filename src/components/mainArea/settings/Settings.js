@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import {Parse} from 'parse';
 
@@ -7,7 +7,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {checkSiteName, checkSiteDomain, DOMAIN_ERROR_EXIST, DOMAIN_ERROR_SYNTAX} from 'utils/data';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
-import {trimFileExt, filterSpecials} from 'utils/common';
+import {filterSpecials} from 'utils/common';
 
 
 import styles from './Settings.sss';

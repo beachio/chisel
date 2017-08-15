@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
