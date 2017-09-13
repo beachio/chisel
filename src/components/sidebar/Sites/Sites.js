@@ -182,7 +182,7 @@ export default class Sites extends Component {
                          onChange={this.onSiteNameChange}
                          onKeyDown={this.onKeyDown}
                          ref={ref} />
-                  <a href={`http://${site.domain}`} target="_blank">
+                  <a href={site.domain} target="_blank">
                     <InlineSVG styleName="link" src={require("assets/images/link.svg")} />
                   </a>
                 </div>
