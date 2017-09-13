@@ -87,7 +87,7 @@ export default class Settings extends Component {
       return false;
     }
 
-    let domainStatus = checkSiteDomain(this.state.domain);
+    let domainStatus = checkSiteDomain(this.state.domain, this.site);
     if (domainStatus == DOMAIN_ERROR_SYNTAX) {
       this.setState({error: ERROR_URL_SYNTAX});
       return false;
