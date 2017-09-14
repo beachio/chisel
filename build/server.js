@@ -8,7 +8,7 @@ const config = require('./webpack.dev.config');
 
 
 let server = new express();
-let port = process.env.PORT || 3000;
+let port = process.env.PORT || 9000;
 
 server.use(history());
 
