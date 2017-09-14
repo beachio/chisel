@@ -22,7 +22,7 @@ export default class ContainerComponent extends Component {
 
     return (
       <div styleName='ContainerComponent'>
-        <div styleName="back" style={backStyle}></div>
+        <div styleName="background" style={backStyle}></div>
         <div styleName={headerStyles}>
           {
             onClickBack &&
