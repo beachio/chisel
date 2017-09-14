@@ -73,7 +73,7 @@ export default class ModelChooseModal extends Component {
         
         <div styleName="modal-inner">
           <div styleName="modal-header">
-            <div styleName="title">Please, select model for new item</div>
+            <div styleName="title">Select model for new item</div>
           </div>
           <div styleName="content">
             <div styleName="model">
