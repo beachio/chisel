@@ -42,7 +42,7 @@ export default class ContentString extends ContentBase {
             if (!value)
               break;
             
-            let slug = filterSpecials(value);
+            let slug = filterSpecials(value, "-");
             if (slug !== value)
               return "Slug must not contain special symbols!";
             break;

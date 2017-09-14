@@ -4,11 +4,11 @@ export function removeOddSpaces(str) {
   return str.trim().replace(/\s+/g, ' ');
 }
 
-export function filterSpecials(str) {
+export function filterSpecials(str, symb = "_") {
   if (!str)
     return '';
   str = removeOddSpaces(str);
-  return str.replace(/\W/g, "_");
+  return str.replace(/\W/g, symb);
 }
 
 export function getRandomColor() {

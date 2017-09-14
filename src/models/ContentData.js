@@ -39,7 +39,7 @@ export class ContentItemData {
   
     for (let [field, value2] of this.fields) {
       if (field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SLUG)
-        this.fields.set(field, filterSpecials(title));
+        this.fields.set(field, filterSpecials(title, '-'));
     }
   }
   
