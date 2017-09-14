@@ -242,6 +242,9 @@ export default class ContentEdit extends Component {
     this.fieldElements = [];
     this.fieldElementRefs = [];
     for (let [field, value] of this.state.fields) {
+      if (field.isDisabled)
+        continue;
+
       let ref = e => {
         if (e)
           this.fieldElementRefs.push(e);
