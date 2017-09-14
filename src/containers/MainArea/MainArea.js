@@ -75,15 +75,15 @@ export class MainArea extends Component {
     }
     
     return (
-      <div>
+      <div styleName="wrapper">
         <Helmet>
           <title>{title}</title>
         </Helmet>
-        <Header />
         <div styleName="wrapper-inner">
           <Sidebar />
           {area}
         </div>
+        <Header />
       </div>
     );
   }
