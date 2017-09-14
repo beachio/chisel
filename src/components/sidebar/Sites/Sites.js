@@ -133,11 +133,11 @@ export default class Sites extends Component {
 
     return (
       <div styleName="sites">
-        <div styleName="section header">
+        <div styleName="header">
           <div styleName="title">Your sites</div>
           <div styleName="counter">{sites.length}</div>
         </div>
-        <div styleName="section list">
+        <div styleName="list">
           {
             sites.map(site => {
               let style = "element";
@@ -205,7 +205,7 @@ export default class Sites extends Component {
         </div>
         {
           !this.state.adding &&
-            <div styleName="section new-site" onClick={this.onClickAdd}>
+            <div styleName="new-site" onClick={this.onClickAdd}>
               <InlineSVG src={require("assets/images/plus.svg")} />
               Add new site
             </div>
