@@ -22,6 +22,7 @@ export default class WysiwygModal extends Component {
     
     this.onClose = props.onClose;
     this.callback = props.params.callback;
+    this.text = props.params.text;
   }
   
   onClosing = () => {
@@ -41,7 +42,7 @@ export default class WysiwygModal extends Component {
                      src={require("assets/images/cross.svg")} />
         </div>
         <Editor styleName="editor"
-                text={this.props.params.text}
+                text={this.text}
                 onChange={this.onChange} />
       </div>
     );
