@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
+
 // load theme styles with webpack
-require('medium-editor/dist/css/medium-editor.css');
-require('medium-editor/dist/css/themes/default.css');
+import 'medium-editor/dist/css/medium-editor.css';
+import 'medium-editor/dist/css/themes/default.css';
 
 import Editor from 'components/elements/ReactMediumEditor';
 
@@ -11,7 +12,7 @@ import styles from './WysiwygModal.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export default class WysiwygModal extends Component  {
+export default class WysiwygModal extends Component {
   text = "";
   onClose = null;
   callback = null;

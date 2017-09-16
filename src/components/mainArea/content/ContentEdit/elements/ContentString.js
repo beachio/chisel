@@ -142,7 +142,9 @@ export default class ContentString extends ContentBase {
     let value = this.state.value;
     
     switch (this.field.type) {
+
       case ftps.FIELD_TYPE_SHORT_TEXT:
+
         switch (this.field.appearance) {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
             let innerStr;
@@ -194,7 +196,9 @@ export default class ContentString extends ContentBase {
             );
         }
   
+
       case ftps.FIELD_TYPE_LONG_TEXT:
+
         switch (this.field.appearance) {
           case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
             return (
