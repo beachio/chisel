@@ -23,6 +23,12 @@ export const ERROR_OTHER        = 'app/user/ERROR_OTHER';
 export const NO_ERROR           = 'app/user/NO_ERROR';
 
 
+function halt () {
+  // halt! cleaning local storage and reload page
+  localStorage.clear();
+  window.location = "/";
+}
+
 export function register(email, password) {
   return dispatch => {
     dispatch({
@@ -43,10 +49,16 @@ export function register(email, password) {
           type: REGISTER_RESPONSE,
           error: NO_ERROR
         });
-      }, () => {
+      }, _error => {
+        let error = ERROR_OTHER;
+        switch (_error.code) {
+          case 202: error = ERROR_USER_EXISTS; break;
+          case 209: halt(); return;
+        }
+
         dispatch({
           type: REGISTER_RESPONSE,
-          error: ERROR_USER_EXISTS
+          error
         });
       });
   };
@@ -75,6 +87,7 @@ export function login(email, password) {
         switch (_error.code) {
           case 101: error = ERROR_WRONG_PASS; break;
           case 205: error = ERROR_UNVERIF;    break;
+          case 209: halt(); return;
         }
   
         dispatch({
@@ -143,31 +156,9 @@ export function getLocalStorage() {
   let authStr = localStorage.getItem('authorization');
   if (!authStr)
     return {type: LOGIN_RESPONSE};
-  
-  return dispatch => {
-    let auth = JSON.parse(authStr);
-    dispatch({
-      type: LOGIN_REQUEST,
-      email: auth.email,
-      password: auth.password
-    });
 
-    Parse.User.logIn(auth.email, auth.password)
-      .then(() => {
-        let userData = new UserData().setOrigin();
-        dispatch({
-          type: LOGIN_RESPONSE,
-          authorized: true,
-          error: NO_ERROR,
-          userData
-        });
-      }, () => {
-        dispatch({
-          type: LOGIN_RESPONSE,
-          error: ERROR_WRONG_PASS
-        });
-      });
-  };
+  let auth = JSON.parse(authStr);
+  return login(auth.email, auth.password);
 }
 
 export function logout() {
@@ -320,7 +311,7 @@ export default function userReducer(state = initialState, action) {
 
     case LOGIN_RESPONSE:
     case REGISTER_RESPONSE:
-      let result = {
+      return {
         ...state,
         authorized: action.authorized,
         error:      action.error,
@@ -329,7 +320,6 @@ export default function userReducer(state = initialState, action) {
         password: ``,
         pending: false
       };
-      return result;
 
     case LOGOUT:
       return {
