@@ -1,7 +1,7 @@
 import React from 'react';
 import CSSModules from 'react-css-modules';
 
-import 'flatpickr/dist/flatpickr.min.css';
+import 'react-flatpickr/node_modules/flatpickr/dist/flatpickr.min.css';
 import Flatpickr from 'react-flatpickr';
 
 import ContentBase from './ContentBase';

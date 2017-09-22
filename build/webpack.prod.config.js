@@ -1,24 +1,25 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const StatsPlugin = require('stats-webpack-plugin');
+//const StatsPlugin = require('stats-webpack-plugin');
 
 const baseWebpackConfig = require('./webpack.base.config');
 
 
 module.exports = merge(baseWebpackConfig, {
   plugins: [
-    new ExtractTextPlugin('[name].min.css'),
+    new ExtractTextPlugin({
+      filename: '[name].min.css'
+    }),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
-        warnings: false,
         screw_ie8: true
       }
     }),
-    new StatsPlugin('webpack.stats.json', {
+    /*new StatsPlugin('webpack.stats.json', {
       source: false,
       modules: false
-    }),
+    }),*/
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': '"production"'
@@ -26,27 +27,44 @@ module.exports = merge(baseWebpackConfig, {
     })
   ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style-loader', [
-          'css-loader',
-          'postcss-loader'
-        ])
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            'css-loader',
+            'postcss-loader'
+          ]
+        })
       },
       {
         test: /\.global\.sss$/,
-        loader: ExtractTextPlugin.extract('style-loader', [
-          'css-loader',
-          'postcss-loader?parser=sugarss'
-        ])
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            'css-loader',
+            'postcss-loader'
+          ]
+        })
       },
       {
         test: /^((?!\.global).)*\.sss$/,
-        loader: ExtractTextPlugin.extract('style-loader', [
-          'css-loader?modules&localIdentName==[name]---[local]---[hash:base64:5]&importLoaders=1',
-          'postcss-loader?parser=sugarss'
-        ])
-    }]
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                localIdentName: "[name]---[local]---[hash:base64:5]",
+                importLoaders: 1
+              }
+            },
+            'postcss-loader'
+          ]
+        })
+      }
+    ]
   }
 });

@@ -14,7 +14,6 @@ module.exports = merge(baseWebpackConfig, {
       'shorthands': true
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': '"development"'
@@ -22,10 +21,10 @@ module.exports = merge(baseWebpackConfig, {
     })
   ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.css$/,
-        loaders: [
+        use: [
           'style-loader',
           'css-loader',
           'postcss-loader'
@@ -33,18 +32,25 @@ module.exports = merge(baseWebpackConfig, {
       },
       {
         test: /\.global\.sss$/,
-        loaders: [
+        use: [
           'style-loader',
           'css-loader',
-          'postcss-loader?parser=sugarss'
+          'postcss-loader'
         ]
       },
       {
         test: /^((?!\.global).)*\.sss$/,
-        loaders: [
+        use: [
           'style-loader',
-          'css-loader?modules&localIdentName==[name]---[local]---[hash:base64:5]&importLoaders=1',
-          'postcss-loader?parser=sugarss'
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              localIdentName: "[name]---[local]---[hash:base64:5]",
+              importLoaders: 1
+            }
+          },
+          'postcss-loader'
         ]
       }
     ]

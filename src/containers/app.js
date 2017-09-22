@@ -3,7 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 import FlipMove from 'react-flip-move';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import FieldModal from 'components/modals/FieldModal/FieldModal';
@@ -26,7 +26,7 @@ class App extends React.Component {
     const {closeAlert, closeModal} = this.props.navActions;
     const {addField, updateField} = this.props.modelActions;
   
-    let getModal = () => {
+    const getModal = () => {
       if (nav.alertShowing)
         return <AlertModal params={nav.alertParams} onClose={closeAlert}/>;
     
@@ -62,6 +62,18 @@ class App extends React.Component {
       
       }
     };
+    const getModalAnim = () => {
+      let modal = getModal();
+      if (!modal)
+        return null;
+
+      return (
+        <CSSTransition classNames={trans}
+                       timeout={200}>
+          {modal}
+        </CSSTransition>
+      );
+    };
     
     const trans = {
       enter: styles['modal-enter'],
@@ -77,11 +89,7 @@ class App extends React.Component {
           (user.pending || user.authorized && !nav.initEnded) &&
             <SiteLoader />
         }
-        <CSSTransitionGroup transitionName={trans}
-                            transitionEnterTimeout={200}
-                            transitionLeaveTimeout={200}>
-          {getModal()}
-        </CSSTransitionGroup>
+        {getModalAnim()}
       </div>
     );
     

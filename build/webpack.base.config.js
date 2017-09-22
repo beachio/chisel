@@ -11,58 +11,45 @@ module.exports = {
     publicPath: '/'
   },
   resolve: {
-    modulesDirectories: ['src', 'node_modules'],
-    extensions: ['', '.js']
+    modules: ['src', 'node_modules'],
+    extensions: ['.js']
   },
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
     new HtmlWebpackPlugin({
       template: 'src/index.pug'
     }),
   ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         exclude: /node_modules/
       },
       {
         test: /\.pug$/,
-        loader: 'pug'
+        loader: 'pug-loader'
       },
       {
         test: /\.svg$/,
-        loader: 'svg-inline'
-      },
-      {
-        test: /\.json?$/,
-        loader: 'json'
+        loader: 'svg-inline-loader'
       },
       {
         test: /\.(png|jpe?g|gif)(\?.*)?$/,
-        loader: 'url',
-        query: {
+        loader: 'url-loader',
+        options: {
           limit: 3000,
           name: 'assets/images/[name].[ext]'
         }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url',
-        query: {
+        loader: 'url-loader',
+        options: {
           limit: 3000,
           name: 'assets/fonts/[name].[hash:7].[ext]'
         }
       }
     ]
-  },
-  postcss: function () {
-    return [
-      require('postcss-flexibility'),
-      require('postcss-flexbugs-fixes'),
-      require('autoprefixer')(),
-      require('precss')()
-    ];
   }
 };

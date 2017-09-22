@@ -5,7 +5,7 @@ import {Parse} from 'parse';
 
 import ContentBase from './ContentBase';
 import {MediaItemData} from 'models/MediaItemData';
-import {FILE_SIZE_MAX} from 'constants';
+import {FILE_SIZE_MAX} from 'ConnectConstants';
 import {MODAL_TYPE_MEDIA} from 'ducks/nav';
 import {trimFileExt, filterSpecials} from 'utils/common';
 import MediaView from 'components/elements/MediaView/MediaView';

@@ -2,7 +2,7 @@ import {Parse} from 'parse';
 
 import {UserData} from 'models/UserData';
 import {currentServerURL} from 'utils/initialize';
-import {config} from 'constants';
+import {config} from 'ConnectConstants';
 
 
 export const LOGIN_REQUEST      = 'app/user/LOGIN_REQUEST';

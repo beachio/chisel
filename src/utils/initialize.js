@@ -2,7 +2,7 @@ import {Parse} from 'parse';
 
 import {store} from 'index';
 import {getLocalStorage} from 'ducks/user';
-import {config} from 'constants';
+import {config} from 'ConnectConstants';
 
 
 export let currentServerURL;
