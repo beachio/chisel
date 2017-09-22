@@ -44,10 +44,11 @@ export function initApp() {
       store.dispatch(getLocalStorage());
     })
     .catch(e => {
-      setTimeout(() => {
+      console.log(e);
+      /*setTimeout(() => {
         localStorage.clear();
         window.location = "/";
-      }, 1000);
+      }, 1000);*/
     });
 }
 
