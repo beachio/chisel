@@ -6,7 +6,7 @@ import InlineSVG from 'svg-inline-react';
 import 'medium-editor/dist/css/medium-editor.css';
 import 'medium-editor/dist/css/themes/default.css';
 
-import Editor from 'components/elements/ReactMediumEditor';
+import Editor from 'react-medium-editor';
 
 import styles from './WysiwygModal.sss';
 
