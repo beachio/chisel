@@ -1,9 +1,22 @@
-module.exports = ({file, options, env}) => ({
-  parser: file.extname === '.sss' ? 'sugarss' : false,
-  plugins: [
-    require('postcss-flexibility'),
-    require('postcss-flexbugs-fixes'),
-    require('autoprefixer'),
-    require('precss')
-  ]
-});
+module.exports = ({file, options, env}) => {
+
+  if (file.extname === '.sss')
+    return {
+      parser: 'sugarss',
+      plugins: {
+        'postcss-flexibility': {},
+        'postcss-flexbugs-fixes': {},
+        'autoprefixer': {},
+        'precss': {}
+      }
+    };
+
+  else
+    return {
+      plugins: {
+        'postcss-flexibility': {},
+        'postcss-flexbugs-fixes': {},
+        'autoprefixer': {}
+      }
+    };
+};

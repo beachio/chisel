@@ -23,15 +23,7 @@ module.exports = merge(baseWebpackConfig, {
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'postcss-loader'
-        ]
-      },
-      {
-        test: /\.global\.sss$/,
+        test: /\.css$|\.global\.sss$/,
         use: [
           'style-loader',
           'css-loader',
