@@ -73,9 +73,9 @@ class App extends React.Component {
       exit: styles['modal-exit'],
       exitActive: styles['modal-exit-active']
     };
-    let modalCurrent = getModal();
-    if (modalCurrent)
-      this.lastModal = modalCurrent;
+    let modal = getModal();
+    if (modal)
+      this.lastModal = modal;
     
     let res = (
       <div styleName="wrapper">
@@ -84,7 +84,7 @@ class App extends React.Component {
           (user.pending || user.authorized && !nav.initEnded) &&
             <SiteLoader />
         }
-        <CSSTransition in={!!modalCurrent}
+        <CSSTransition in={!!modal}
                        timeout={300}
                        classNames={trans}
                        mountOnEnter={true}
