@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 import FlipMove from 'react-flip-move';
 import CSSTransition from 'react-transition-group/CSSTransition';
+import Transition from 'react-transition-group/Transition';
 
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import FieldModal from 'components/modals/FieldModal/FieldModal';
@@ -21,6 +22,8 @@ import styles from './app.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 class App extends React.Component {
+  lastModal = <span></span>;
+
   render() {
     const {nav, user, content, models} = this.props;
     const {closeAlert, closeModal} = this.props.navActions;
@@ -62,25 +65,17 @@ class App extends React.Component {
       
       }
     };
-    const getModalAnim = () => {
-      let modal = getModal();
-      if (!modal)
-        return null;
 
-      return (
-        <CSSTransition classNames={trans}
-                       timeout={200}>
-          {modal}
-        </CSSTransition>
-      );
-    };
-    
+    //костыльно чот, блин
     const trans = {
       enter: styles['modal-enter'],
       enterActive: styles['modal-enter-active'],
-      leave: styles['modal-leave'],
-      leaveActive: styles['modal-leave-active']
+      exit: styles['modal-exit'],
+      exitActive: styles['modal-exit-active']
     };
+    let modalCurrent = getModal();
+    if (modalCurrent)
+      this.lastModal = modalCurrent;
     
     let res = (
       <div styleName="wrapper">
@@ -89,7 +84,13 @@ class App extends React.Component {
           (user.pending || user.authorized && !nav.initEnded) &&
             <SiteLoader />
         }
-        {getModalAnim()}
+        <CSSTransition in={!!modalCurrent}
+                       timeout={300}
+                       classNames={trans}
+                       mountOnEnter={true}
+                       unmountOnExit={true}>
+          {this.lastModal}
+        </CSSTransition>
       </div>
     );
     
