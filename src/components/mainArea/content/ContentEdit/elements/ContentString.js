@@ -230,5 +230,7 @@ export default class ContentString extends ContentBase {
             );
         }
     }
+
+    return null;
   }
 }
