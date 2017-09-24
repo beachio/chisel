@@ -66,12 +66,21 @@ export default class ModelChooseModal extends Component {
     this.onClose();
   };
   
+  rejectClick = false;
+  onClickInner = () => {
+    this.rejectClick = true;
+  };
+  onClickBg = () => {
+    if (!this.rejectClick)
+      this.onClose();
+    this.rejectClick = false;
+  };
+
   render() {
     return (
-      <div styleName="modal">
-        <div styleName="bg" onClick={this.onClose}></div>
-        
-        <div styleName="modal-inner">
+      <div styleName="modal" onClick={this.onClickBg}>
+
+        <div styleName="modal-inner" onClick={this.onClickInner}>
           <div styleName="modal-header">
             <div styleName="title">Select model for new item</div>
           </div>

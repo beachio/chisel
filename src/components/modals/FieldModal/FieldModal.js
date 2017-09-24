@@ -141,14 +141,24 @@ export default class FieldModal extends Component {
     this.onClose();
   };
 
+  rejectClick = false;
+  onClickInner = () => {
+    this.rejectClick = true;
+  };
+  onClickBg = () => {
+    if (!this.rejectClick)
+      this.onClose();
+    this.rejectClick = false;
+  };
+
+
   render() {
     let headName = this.state.name.length ? this.state.name : '?';
 
     return (
-      <div styleName="modal">
-        <div styleName="bg" onClick={this.onClose}></div>
-        
-        <div styleName="modal-inner">
+      <div styleName="modal" onClick={this.onClickBg}>
+
+        <div styleName="modal-inner" onClick={this.onClickInner}>
           <div styleName="modal-header">
             <div styleName="title">{headName}</div>
             <div styleName="subtitle">{this.state.type} — {this.state.appearance}</div>
