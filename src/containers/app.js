@@ -2,9 +2,7 @@ import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
-import FlipMove from 'react-flip-move';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import Transition from 'react-transition-group/Transition';
 
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import FieldModal from 'components/modals/FieldModal/FieldModal';
