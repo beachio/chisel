@@ -43,7 +43,7 @@ export default class ContentBase extends Component {
   
   setValue(value, save) {
     this.setState({
-    //  value,
+      value,
       error: null
     });
     this.setFieldValue(this.field, value, save);
