@@ -1,11 +1,13 @@
 import {Parse} from 'parse';
 
 import {store} from '../index';
-import {UserData, CollaborationData, ROLE_ADMIN, ROLE_DEVELOPER, ROLE_EDITOR, ROLE_OWNER} from 'models/UserData';
+import {UserData, CollaborationData, ROLE_OWNER} from 'models/UserData';
 import {SiteData, ModelData, ModelFieldData, canBeTitle} from 'models/ModelData';
 import {getRandomColor} from 'utils/common';
 import {getNameId} from 'utils/data';
 import {LOGOUT} from './user';
+
+import {logRequest, logResponse} from "ducks/serverStatus";
 
 
 export const INIT_END                   = 'app/models/INIT_END';
@@ -233,8 +235,14 @@ export function addSite(site) {
   site.updateOrigin();
   
   site.origin.setACL(new Parse.ACL(Parse.User.current()));
-  site.origin.save();
   
+  let time = Date.now();
+  store.dispatch(logRequest(time));
+  site.origin.save()
+    .then(
+      () => store.dispatch(logResponse(time)),
+      (e) => console.log(e));
+
   return {
     type: SITE_ADD,
     site
@@ -372,12 +380,19 @@ export function addModel(name) {
   model.setTableName();
   
   model.updateOrigin();
+
+  let time = Date.now();
+  store.dispatch(logRequest(time));
   model.origin.save()
-    .then(() =>
-      Parse.Cloud.run('onModelAdd', {
+    .then(() => {
+      store.dispatch(logResponse(time));
+      time = Date.now();
+      store.dispatch(logRequest(time));
+      return Parse.Cloud.run('onModelAdd', {
         modelId: model.origin.id
-      })
-    );
+      });
+    })
+    .then(() => store.dispatch(logResponse(time)));
   
   return {
     type: MODEL_ADD,

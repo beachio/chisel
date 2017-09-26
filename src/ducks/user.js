@@ -1,8 +1,10 @@
 import {Parse} from 'parse';
 
+import {store} from 'index';
 import {UserData} from 'models/UserData';
 import {currentServerURL} from 'utils/initialize';
 import {config} from 'ConnectConstants';
+import {logResponse, logRequest} from 'ducks/serverStatus';
 
 
 export const LOGIN_REQUEST      = 'app/user/LOGIN_REQUEST';
@@ -41,15 +43,25 @@ export function register(email, password) {
     user.set("username", email);
     user.set("email", email);
     user.set("password", password);
+
+    let time = Date.now();
+    store.dispatch(logRequest(time));
+
     user
       .signUp()
+
       .then(() => {
+        store.dispatch(logResponse(time));
+
         localStorage.setItem('authorization', JSON.stringify({email, password}));
         dispatch({
           type: REGISTER_RESPONSE,
           error: NO_ERROR
         });
+
       }, _error => {
+        store.dispatch(logResponse(time));
+
         let error = ERROR_OTHER;
         switch (_error.code) {
           case 202: error = ERROR_USER_EXISTS; break;
@@ -72,9 +84,16 @@ export function login(email, password) {
       password
     });
 
+    let time = Date.now();
+    store.dispatch(logRequest(time));
+
     Parse.User.logIn(email, password)
+
       .then(() => {
+        store.dispatch(logResponse(time));
+
         localStorage.setItem('authorization', JSON.stringify({email, password}));
+
         let userData = new UserData().setOrigin();
         dispatch({
           type: LOGIN_RESPONSE,
@@ -82,7 +101,11 @@ export function login(email, password) {
           authorized: true,
           userData
         });
+
       }, _error => {
+        console.log(_error);
+        store.dispatch(logResponse(time));
+
         let error = ERROR_OTHER;
         switch (_error.code) {
           case 101: error = ERROR_WRONG_PASS; break;
@@ -170,7 +193,14 @@ export function logout() {
 
 export function update(data) {
   data.updateOrigin();
-  data.origin.save();
+
+  let time = Date.now();
+  store.dispatch(logRequest(time));
+
+  data.origin.save()
+    .then(
+      () => store.dispatch(logResponse(time)),
+      () => store.dispatch(logResponse(time)));
   
   const {email} = data;
   let authStr = localStorage.getItem('authorization');

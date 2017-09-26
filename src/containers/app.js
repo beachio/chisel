@@ -23,10 +23,20 @@ class App extends React.Component {
   lastModal = <span></span>;
 
   render() {
-    const {nav, user, content, models} = this.props;
+    const {nav, user, content, models, serverStatus} = this.props;
     const {closeAlert, closeModal} = this.props.navActions;
     const {addField, updateField} = this.props.modelActions;
   
+    const getAlarm = () => {
+      if (serverStatus.problemA)
+        return (
+          <div styleName="alarm">
+            There is a problem with server. Please wait...
+          </div>
+        );
+      return null;
+    };
+
     const getModal = () => {
       if (nav.alertShowing)
         return <AlertModal params={nav.alertParams} onClose={closeAlert}/>;
@@ -89,6 +99,7 @@ class App extends React.Component {
                        unmountOnExit={true}>
           {this.lastModal}
         </CSSTransition>
+        {getAlarm()}
       </div>
     );
     
@@ -101,10 +112,11 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    content:  state.content,
-    models:   state.models,
-    nav:      state.nav,
-    user:     state.user
+    content:      state.content,
+    models:       state.models,
+    nav:          state.nav,
+    serverStatus: state.serverStatus,
+    user:         state.user
   };
 }
 

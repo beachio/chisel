@@ -23,3 +23,31 @@
 .modal-exit.modal-exit-active
   opacity: 0.01
   transition: opacity 200ms ease-in-out
+
+
+.alarm
+  position: absolute
+  top: 100vh
+  left: 100vw
+  width: 330px
+  padding: 6px 15px
+  text-align: right
+  transform: translate(-100%, -100%)
+  background: rgba(0, 0, 0, 0.06)
+  color: #ff5656
+  z-index: 1000
+  animation-name: blinking
+  animation-duration: 2s
+  animation-iteration-count: infinite
+  animation-timing-function: cubic-bezier(0.1, 0, 1, 1)
+  animation-direction: alternate
+
+  font-size: 13px
+  letter-spacing: 0.5px
+
+
+@keyframes blinking
+  0%
+    opacity: 1
+  50%
+    opacity: .31
