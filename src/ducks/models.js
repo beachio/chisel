@@ -6,8 +6,7 @@ import {SiteData, ModelData, ModelFieldData, canBeTitle} from 'models/ModelData'
 import {getRandomColor} from 'utils/common';
 import {getNameId} from 'utils/data';
 import {LOGOUT} from './user';
-
-import {logRequest, logResponse} from "ducks/serverStatus";
+import {sendRequest} from 'utils/server';
 
 
 export const INIT_END                   = 'app/models/INIT_END';
@@ -168,8 +167,7 @@ export function init() {
             site_o.get('owner')
               .fetch()
               .then(owner_o => {
-                let owner = new UserData().setOrigin(owner_o);
-                site.owner = owner;
+                site.owner = new UserData().setOrigin(owner_o);
                 resolve();
               }, reject);
           }));
@@ -235,13 +233,7 @@ export function addSite(site) {
   site.updateOrigin();
   
   site.origin.setACL(new Parse.ACL(Parse.User.current()));
-  
-  let time = Date.now();
-  store.dispatch(logRequest(time));
-  site.origin.save()
-    .then(
-      () => store.dispatch(logResponse(time)),
-      (e) => console.log(e));
+  sendRequest(site.origin.save);
 
   return {
     type: SITE_ADD,
@@ -251,7 +243,7 @@ export function addSite(site) {
 
 export function updateSite(site) {
   site.updateOrigin();
-  site.origin.save();
+  sendRequest(site.origin.save);
   
   return {
     type: SITE_UPDATE
@@ -261,14 +253,7 @@ export function updateSite(site) {
 export function deleteSite(site) {
   //site.origin.destroy();
   
-  Parse.Cloud.run('deleteSite', {siteId: site.origin.id}, {
-    success: status => {
-      
-    },
-    error: error => {
-      console.log(error);
-    }
-  });
+  sendRequest(Parse.Cloud.run, 'deleteSite', {siteId: site.origin.id});
   
   return {
     type: SITE_DELETE,
@@ -287,11 +272,11 @@ export function addCollaboration(user, email) {
   collab.updateOrigin();
   
   collab.origin.setACL(new Parse.ACL(currentSite.owner.origin));
-  collab.origin.save()
+  sendRequest(collab.origin.save)
     .then(() =>
-      Parse.Cloud.run('onCollaborationModify', {
-        collabId: collab.origin.id
-      })
+      sendRequest(
+        Parse.Cloud.run, 'onCollaborationModify', {collabId: collab.origin.id}
+      )
     );
   
   return {
@@ -310,12 +295,14 @@ export function addInviteCollaboration(email) {
   collab.updateOrigin();
   
   collab.origin.setACL(new Parse.ACL(currentSite.owner.origin));
-  collab.origin.save();
-  
-  Parse.Cloud.run('inviteUser', {
-    email,
-    siteName: currentSite.name
-  });
+  sendRequest(collab.origin.save);
+
+  sendRequest(
+    Parse.Cloud.run, 'inviteUser', {
+      email,
+      siteName: currentSite.name
+    }
+  );
   
   return {
     type: COLLABORATION_ADD,
@@ -325,11 +312,11 @@ export function addInviteCollaboration(email) {
 
 export function updateCollaboration(collab) {
   collab.updateOrigin();
-  collab.origin.save()
+  sendRequest(collab.origin.save)
     .then(() =>
-      Parse.Cloud.run('onCollaborationModify', {
-        collabId: collab.origin.id
-      })
+      sendRequest(
+        Parse.Cloud.run, 'onCollaborationModify', {collabId: collab.origin.id}
+      )
     );
   
   return {
@@ -339,12 +326,14 @@ export function updateCollaboration(collab) {
 }
 
 export function deleteCollaboration(collab) {
-  Parse.Cloud.run('onCollaborationModify', {
-    collabId: collab.origin.id,
-    deleting: true
-  })
+  sendRequest(
+    Parse.Cloud.run, 'onCollaborationModify', {
+      collabId: collab.origin.id,
+      deleting: true
+    }
+  )
     .then(() =>
-      collab.origin.destroy()
+      sendRequest(collab.origin.destroy())
     );
   
   return {
@@ -354,12 +343,14 @@ export function deleteCollaboration(collab) {
 }
 
 export function deleteSelfCollaboration(collab) {
-  Parse.Cloud.run('onCollaborationModify', {
-    collabId: collab.origin.id,
-    deleting: true
-  })
+  sendRequest(
+    Parse.Cloud.run, 'onCollaborationModify', {
+      collabId: collab.origin.id,
+      deleting: true
+    }
+  )
     .then(() =>
-      collab.origin.destroy()
+      sendRequest(collab.origin.destroy)
     );
   
   return {
@@ -380,20 +371,11 @@ export function addModel(name) {
   model.setTableName();
   
   model.updateOrigin();
+  sendRequest(model.origin.save)
+    .then(() =>
+      sendRequest(Parse.Cloud.run, 'onModelAdd', {modelId: model.origin.id})
+    );
 
-  let time = Date.now();
-  store.dispatch(logRequest(time));
-  model.origin.save()
-    .then(() => {
-      store.dispatch(logResponse(time));
-      time = Date.now();
-      store.dispatch(logRequest(time));
-      return Parse.Cloud.run('onModelAdd', {
-        modelId: model.origin.id
-      });
-    })
-    .then(() => store.dispatch(logResponse(time)));
-  
   return {
     type: MODEL_ADD,
     model
@@ -402,7 +384,7 @@ export function addModel(name) {
 
 export function updateModel(model) {
   model.updateOrigin();
-  model.origin.save();
+  sendRequest(model.origin.save);
   
   return{
     type: MODEL_UPDATE,
@@ -420,14 +402,7 @@ export function setCurrentModel(currentModel) {
 export function deleteModel(model) {
   //model.origin.destroy();
   
-  Parse.Cloud.run('deleteModel', {modelId: model.origin.id}, {
-    success: status => {
-      
-    },
-    error: error => {
-      console.log(error);
-    }
-  });
+  sendRequest(Parse.Cloud.run, 'deleteModel', {modelId: model.origin.id});
   
   return {
     type: MODEL_DELETE,
@@ -444,13 +419,11 @@ export function addField(field) {
     field.isTitle = true;
 
   field.updateOrigin();
-  field.origin.save()
+  sendRequest(field.origin.save)
     .then(() =>
-      Parse.Cloud.run('onFieldAdd', {
-        fieldId: field.origin.id
-      })
+      sendRequest(Parse.Cloud.run, 'onFieldAdd', {fieldId: field.origin.id})
     );
-  field.model.origin.save();
+  sendRequest(field.model.origin.save);
   
   return {
     type: FIELD_ADD,
@@ -461,7 +434,7 @@ export function addField(field) {
 function changeTitleField(field, value = true) {
   field.isTitle = value;
   field.updateOrigin();
-  field.origin.save();
+  sendRequest(field.origin.save);
 }
 
 export function updateField(field) {
@@ -493,8 +466,8 @@ export function updateField(field) {
   }
 
   field.updateOrigin();
-  field.origin.save();
-  field.model.origin.save();
+  sendRequest(field.origin.save);
+  sendRequest(field.model.origin.save);
   
   return {
     type: FIELD_UPDATE,
@@ -503,7 +476,7 @@ export function updateField(field) {
 }
 
 export function deleteField(field) {
-  field.origin.destroy();
+  sendRequest(field.origin.destroy);
   
   if (field.isTitle) {
     for (let tempField of field.model.fields) {
@@ -513,7 +486,7 @@ export function deleteField(field) {
       }
     }
   }
-  field.model.origin.save();
+  sendRequest(field.model.origin.save);
   
   return {
     type: FIELD_DELETE,
