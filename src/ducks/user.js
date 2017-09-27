@@ -1,10 +1,9 @@
 import {Parse} from 'parse';
 
-import {store} from 'index';
 import {UserData} from 'models/UserData';
 import {currentServerURL} from 'utils/initialize';
 import {config} from 'ConnectConstants';
-import {logResponse, logRequest} from 'ducks/serverStatus';
+import {send} from 'utils/server';
 
 
 export const LOGIN_REQUEST      = 'app/user/LOGIN_REQUEST';
@@ -44,15 +43,9 @@ export function register(email, password) {
     user.set("email", email);
     user.set("password", password);
 
-    let time = Date.now();
-    store.dispatch(logRequest(time));
-
-    user
-      .signUp()
+    send(user.signUp())
 
       .then(() => {
-        store.dispatch(logResponse(time));
-
         localStorage.setItem('authorization', JSON.stringify({email, password}));
         dispatch({
           type: REGISTER_RESPONSE,
@@ -60,8 +53,6 @@ export function register(email, password) {
         });
 
       }, _error => {
-        store.dispatch(logResponse(time));
-
         let error = ERROR_OTHER;
         switch (_error.code) {
           case 202: error = ERROR_USER_EXISTS; break;
@@ -84,14 +75,9 @@ export function login(email, password) {
       password
     });
 
-    let time = Date.now();
-    store.dispatch(logRequest(time));
-
-    Parse.User.logIn(email, password)
+    send(Parse.User.logIn(email, password))
 
       .then(() => {
-        store.dispatch(logResponse(time));
-
         localStorage.setItem('authorization', JSON.stringify({email, password}));
 
         let userData = new UserData().setOrigin();
@@ -103,9 +89,6 @@ export function login(email, password) {
         });
 
       }, _error => {
-        console.log(_error);
-        store.dispatch(logResponse(time));
-
         let error = ERROR_OTHER;
         switch (_error.code) {
           case 101: error = ERROR_WRONG_PASS; break;
@@ -186,22 +169,15 @@ export function getLocalStorage() {
 
 export function logout() {
   localStorage.setItem('authorization', '');
-  Parse.User.logOut();
+  send(Parse.User.logOut());
   
   return {type: LOGOUT};
 }
 
 export function update(data) {
   data.updateOrigin();
+  send(data.origin.save());
 
-  let time = Date.now();
-  store.dispatch(logRequest(time));
-
-  data.origin.save()
-    .then(
-      () => store.dispatch(logResponse(time)),
-      () => store.dispatch(logResponse(time)));
-  
   const {email} = data;
   let authStr = localStorage.getItem('authorization');
   let password = JSON.parse(authStr).password;
@@ -221,7 +197,7 @@ export function updateEmail(email) {
     let userData = Parse.User.current();
     userData.set(`username`, email);
     userData.set(`email`, email);
-    userData.save()
+    send(userData.save())
       .then(() => {
         let authStr = localStorage.getItem('authorization');
         let password = JSON.parse(authStr).password;
@@ -232,8 +208,8 @@ export function updateEmail(email) {
           error: NO_ERROR,
           email
         });
-        
-      }, _error => {
+      })
+      .catch(_error => {
         let error = ERROR_OTHER;
         switch (_error.code) {
           case 202: error = ERROR_USER_EXISTS; break;
@@ -243,7 +219,6 @@ export function updateEmail(email) {
           error
         });
       });
-    
   };
 }
 
@@ -253,7 +228,7 @@ export function updatePassword(password) {
   
   let userData = Parse.User.current();
   userData.set(`password`, password);
-  userData.save();
+  send(userData.save());
   
   let email = userData.get('email');
   localStorage.setItem('authorization', JSON.stringify({email, password}));
@@ -266,19 +241,20 @@ export function restorePassword(email) {
     return null;
   
   return dispatch => {
-    Parse.User.requestPasswordReset(email)
-      .then(result => {
+    send(Parse.User.requestPasswordReset(email))
+      .then(result =>
         dispatch({
           type: RESTORE_PASSWORD,
           error: NO_ERROR,
           result
-        });
-      }, error => {
+        })
+      )
+      .catch(error =>
         dispatch({
           type: RESTORE_PASSWORD,
           error: ERROR_OTHER
-        });
-      });
+        })
+      );
   };
 }
 
@@ -287,27 +263,26 @@ export function resendVerEmail(email) {
     return null;
   
   return dispatch => {
-    fetch(currentServerURL + '/verificationEmailRequest', {
+    send(fetch(currentServerURL + '/verificationEmailRequest', {
       method: 'POST',
       headers: {
         'X-Parse-Application-Id': config.appId,
         'X-Parse-REST-API-Key': config.RESTkey
       },
       body: JSON.stringify({email})
-    })
-      .then(r => {
-        
+    }))
+      .then(r =>
         dispatch({
           type: RESEND_VERIF,
           error: NO_ERROR
-        });
-      })
-      .catch(error => {
+        })
+      )
+      .catch(error =>
         dispatch({
           type: RESEND_VERIF,
           error: ERROR_OTHER
-        });
-      });
+        })
+      );
   };
 }
 

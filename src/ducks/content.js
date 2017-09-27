@@ -6,6 +6,7 @@ import {SITE_DELETE, MODEL_DELETE, FIELD_ADD, FIELD_UPDATE, FIELD_DELETE} from '
 import {LOGOUT} from './user';
 import {getRandomColor} from 'utils/common';
 import {getContentForModel, getContentForSite} from 'utils/data';
+import {send} from 'utils/server';
 
 
 export const INIT_END           = 'app/content/INIT_END';
@@ -19,22 +20,21 @@ export const ITEM_DELETE        = 'app/content/ITEM_DELETE';
 export const SET_CURRENT_ITEM   = 'app/content/SET_CURRENT_ITEM';
 
 function requestContentItems(model, items, itemsDraft) {
-  return new Promise((resolve, reject) => {
+  send(
     new Parse.Query(Parse.Object.extend(model.tableName))
       .find()
-      .then(items_o => {
-        for (let item_o of items_o) {
-          let item = new ContentItemData();
-          item.model = model;
-          item.setOrigin(item_o);
-          if (item_o.get('t__owner'))
-            itemsDraft.push(item);
-          else
-            items.push(item);
-        }
-        resolve();
-      }, resolve);
-  });
+  )
+    .then(items_o => {
+      for (let item_o of items_o) {
+        let item = new ContentItemData();
+        item.model = model;
+        item.setOrigin(item_o);
+        if (item_o.get('t__owner'))
+          itemsDraft.push(item);
+        else
+          items.push(item);
+      }
+    });
 }
 
 export function init() {
@@ -67,7 +67,7 @@ export function addItem(item) {
     item.color = getRandomColor();
   
     item.updateOrigin();
-    item.origin.save()
+    send(item.origin.save())
       .then(() => {
         dispatch({
           type: ITEM_ADD,
@@ -80,7 +80,7 @@ export function addItem(item) {
 export function updateItem(item) {
   if (item.draft) {
     item.draft.updateOrigin();
-    item.draft.origin.save();
+    send(item.draft.origin.save());
     
     if (item.status == STATUS_ARCHIEVED)
       item.fields = new Map(item.draft.fields);
@@ -90,7 +90,7 @@ export function updateItem(item) {
     item.status = STATUS_UPDATED;
   
   item.updateOrigin();
-  item.origin.save();
+  send(item.origin.save());
   
   return {
     type: ITEM_UPDATE,
@@ -120,9 +120,9 @@ export function publishItem(item) {
   
   item.updateOrigin();
   
-  itemD.origin.save()
-    .then(() => item.origin.save())
-    .then(() => Parse.Cloud.run('onContentModify'));
+  send(itemD.origin.save())
+    .then(() => send(item.origin.save()))
+    .then(() => send(Parse.Cloud.run('onContentModify')));
   
   return {
     type: ITEM_PUBLISH,
@@ -135,12 +135,12 @@ export function discardItem(item) {
     item.status = STATUS_PUBLISHED;
   
   item.updateOrigin();
-  item.origin.save();
+  send(item.origin.save);
   
   if (item.draft) {
     item.draft.fields = new Map(item.fields);
     item.draft.updateOrigin();
-    item.draft.origin.save();
+    send(item.draft.origin.save());
   }
   
   return {
@@ -157,10 +157,10 @@ export function archieveItem(item) {
     item.fields = new Map(item.draft.fields);
   
   item.updateOrigin();
-  item.origin.save()
+  send(item.origin.save())
     .then(() => {
       if (updateDeploy)
-        Parse.Cloud.run('onContentModify');
+        return send(Parse.Cloud.run('onContentModify'));
     });
   
   return {
@@ -173,7 +173,7 @@ export function restoreItem(item) {
   item.status = STATUS_DRAFT;
   
   item.updateOrigin();
-  item.origin.save();
+  send(item.origin.save());
   
   return {
     type: ITEM_RESTORE,
@@ -191,15 +191,11 @@ export function setCurrentItem(currentItem) {
 export function deleteItem(item) {
   //item.origin.destroy();
   
-  Parse.Cloud.run('deleteContentItem', {
+  send(Parse.Cloud.run('deleteContentItem', {
     tableName: item.model.tableName,
     itemId: item.origin.id,
-  }, {
-    success: status => {
-      Parse.Cloud.run('onContentModify');
-    },
-    error: console.log
-  });
+  }))
+    .then(() => send(Parse.Cloud.run('onContentModify')));
   
   return {
     type: ITEM_DELETE,

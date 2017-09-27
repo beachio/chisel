@@ -6,7 +6,7 @@ import {SiteData, ModelData, ModelFieldData, canBeTitle} from 'models/ModelData'
 import {getRandomColor} from 'utils/common';
 import {getNameId} from 'utils/data';
 import {LOGOUT} from './user';
-import {sendRequest} from 'utils/server';
+import {send} from 'utils/server';
 
 
 export const INIT_END                   = 'app/models/INIT_END';
@@ -30,118 +30,106 @@ export const SET_CURRENT_MODEL          = 'app/models/SET_CURRENT_MODEL';
 
 
 function requestCollaborationsPre() {
-  return new Promise((resolve, reject) => {
+  let sites = [];
+  return send(
     new Parse.Query(CollaborationData.OriginClass)
       .equalTo("user", Parse.User.current())
       .find()
-      .then(collabs => {
-        let sites = [];
-        for (let collab of collabs) {
-          sites.push(collab.get('site'));
-        }
+  )
+    .then(collabs => {
+      for (let collab of collabs)
+        sites.push(collab.get('site'));
 
-        Parse.Object.fetchAllIfNeeded(sites)
-          .then(() => resolve(sites), reject);
-      }, reject);
-  });
+      return send(Parse.Object.fetchAllIfNeeded(sites));
+    })
+    .then(() => sites);
 }
 
 function requestUserSites() {
-  return new Promise((resolve, reject) => {
+  return send(
     new Parse.Query(SiteData.OriginClass)
       .equalTo("owner", Parse.User.current())
       .find()
-      .then(resolve, reject);
-  });
+  );
 }
 
 function requestCollaborationsPost(sites_o, sites) {
-  return new Promise((resolve, reject) => {
+  return send(
     new Parse.Query(CollaborationData.OriginClass)
       .containedIn("site", sites_o)
       .find()
-      .then(collabs_o => {
-        let promises = [];
-        for (let collab_o of collabs_o) {
-          let collab = new CollaborationData().setOrigin(collab_o);
-          
-          promises.push(new Promise((inResolve, inReject) => {
-            let user_o = collab_o.get('user');
-            if (user_o)
-              user_o
-                .fetch()
-                .then(user_o => {
-                  let user = new UserData().setOrigin(user_o);
-                  collab.user = user;
-                  inResolve();
-                }, inReject);
-            else
-              inResolve();
-          }));
-          
-          let site_o = collab_o.get("site");
-          for (let site of sites) {
-            if (site.origin.id == site_o.id) {
-              collab.site = site;
-              site.collaborations.push(collab);
-              break;
-            }
+  )
+    .then(collabs_o => {
+      let promises = [];
+      for (let collab_o of collabs_o) {
+        let collab = new CollaborationData().setOrigin(collab_o);
+        let user_o = collab_o.get('user');
+        if (user_o)
+          promises.push(
+            send(user_o.fetch())
+              .then(user_o => {
+                let user = new UserData().setOrigin(user_o);
+                collab.user = user;
+              })
+          );
+
+        let site_o = collab_o.get("site");
+        for (let site of sites) {
+          if (site.origin.id == site_o.id) {
+            collab.site = site;
+            site.collaborations.push(collab);
+            break;
           }
         }
-  
-        Promise.all(promises)
-          .then(() => resolve())
-          .catch(reject);
-      }, reject);
-  });
+      }
+
+      return Promise.all(promises);
+    });
 }
 
 function requestModels(sites_o, sites, models_o, models) {
-  return new Promise((resolve, reject) => {
+  return send(
     new Parse.Query(ModelData.OriginClass)
       .containedIn("site", sites_o)
       .find()
-      .then(_models_o => {
-        Array.prototype.push.apply(models_o, _models_o);
-        
-        for (let model_o of models_o) {
-          let model = new ModelData().setOrigin(model_o);
-          let site_o = model_o.get("site");
-          for (let site of sites) {
-            if (site.origin.id == site_o.id) {
-              model.site = site;
-              site.models.push(model);
-              models.push(model);
-              break;
-            }
+  )
+    .then(_models_o => {
+      Array.prototype.push.apply(models_o, _models_o);
+
+      for (let model_o of models_o) {
+        let model = new ModelData().setOrigin(model_o);
+        let site_o = model_o.get("site");
+        for (let site of sites) {
+          if (site.origin.id == site_o.id) {
+            model.site = site;
+            site.models.push(model);
+            models.push(model);
+            break;
           }
         }
-        
-        resolve();
-      }, reject);
-  });
+      }
+    });
 }
 
 function requestFields(models_o, models) {
-  return new Promise((resolve, reject) => {
+  return send(
     new Parse.Query(ModelFieldData.OriginClass)
       .containedIn("model", models_o)
       .find()
-      .then(fields_o => {
-        for (let field_o of fields_o) {
-          let field = new ModelFieldData().setOrigin(field_o);
-          let model_o = field_o.get("model");
-          for (let model of models) {
-            if (model.origin.id == model_o.id) {
-              field.model = model;
-              model.fields.push(field);
-              break;
-            }
+  )
+    .then(fields_o => {
+      for (let field_o of fields_o) {
+        let field = new ModelFieldData().setOrigin(field_o);
+        let model_o = field_o.get("model");
+        for (let model of models) {
+          if (model.origin.id == model_o.id) {
+            field.model = model;
+            model.fields.push(field);
+            break;
           }
         }
-        resolve();
-      }, reject);
-  });
+      }
+    });
 }
 
 export function init() {
@@ -163,14 +151,14 @@ export function init() {
         for (let site_o of sites_o) {
           let site = new SiteData().setOrigin(site_o);
   
-          promises.push(new Promise((resolve, reject) => {
-            site_o.get('owner')
-              .fetch()
-              .then(owner_o => {
-                site.owner = new UserData().setOrigin(owner_o);
-                resolve();
-              }, reject);
-          }));
+          promises.push(
+            send(
+              site_o.get('owner').fetch()
+            )
+              .then(owner_o =>
+                site.owner = new UserData().setOrigin(owner_o)
+              )
+          );
           
           sites.push(site);
         }
@@ -233,7 +221,7 @@ export function addSite(site) {
   site.updateOrigin();
   
   site.origin.setACL(new Parse.ACL(Parse.User.current()));
-  sendRequest(site.origin.save);
+  send(site.origin.save());
 
   return {
     type: SITE_ADD,
@@ -243,7 +231,7 @@ export function addSite(site) {
 
 export function updateSite(site) {
   site.updateOrigin();
-  sendRequest(site.origin.save);
+  send(site.origin.save());
   
   return {
     type: SITE_UPDATE
@@ -253,7 +241,7 @@ export function updateSite(site) {
 export function deleteSite(site) {
   //site.origin.destroy();
   
-  sendRequest(Parse.Cloud.run, 'deleteSite', {siteId: site.origin.id});
+  send(Parse.Cloud.run('deleteSite', {siteId: site.origin.id}));
   
   return {
     type: SITE_DELETE,
@@ -272,10 +260,10 @@ export function addCollaboration(user, email) {
   collab.updateOrigin();
   
   collab.origin.setACL(new Parse.ACL(currentSite.owner.origin));
-  sendRequest(collab.origin.save)
+  send(collab.origin.save())
     .then(() =>
-      sendRequest(
-        Parse.Cloud.run, 'onCollaborationModify', {collabId: collab.origin.id}
+      send(
+        Parse.Cloud.run('onCollaborationModify', {collabId: collab.origin.id})
       )
     );
   
@@ -295,13 +283,13 @@ export function addInviteCollaboration(email) {
   collab.updateOrigin();
   
   collab.origin.setACL(new Parse.ACL(currentSite.owner.origin));
-  sendRequest(collab.origin.save);
+  send(collab.origin.save());
 
-  sendRequest(
-    Parse.Cloud.run, 'inviteUser', {
+  send(
+    Parse.Cloud.run('inviteUser', {
       email,
       siteName: currentSite.name
-    }
+    })
   );
   
   return {
@@ -312,10 +300,10 @@ export function addInviteCollaboration(email) {
 
 export function updateCollaboration(collab) {
   collab.updateOrigin();
-  sendRequest(collab.origin.save)
+  send(collab.origin.save())
     .then(() =>
-      sendRequest(
-        Parse.Cloud.run, 'onCollaborationModify', {collabId: collab.origin.id}
+      send(
+        Parse.Cloud.run('onCollaborationModify', {collabId: collab.origin.id})
       )
     );
   
@@ -326,14 +314,14 @@ export function updateCollaboration(collab) {
 }
 
 export function deleteCollaboration(collab) {
-  sendRequest(
-    Parse.Cloud.run, 'onCollaborationModify', {
+  send(
+    Parse.Cloud.run('onCollaborationModify', {
       collabId: collab.origin.id,
       deleting: true
-    }
+    })
   )
     .then(() =>
-      sendRequest(collab.origin.destroy())
+      send(collab.origin.destroy())
     );
   
   return {
@@ -343,14 +331,14 @@ export function deleteCollaboration(collab) {
 }
 
 export function deleteSelfCollaboration(collab) {
-  sendRequest(
-    Parse.Cloud.run, 'onCollaborationModify', {
+  send(
+    Parse.Cloud.run('onCollaborationModify', {
       collabId: collab.origin.id,
       deleting: true
-    }
+    })
   )
     .then(() =>
-      sendRequest(collab.origin.destroy)
+      send(collab.origin.destroy())
     );
   
   return {
@@ -371,9 +359,9 @@ export function addModel(name) {
   model.setTableName();
   
   model.updateOrigin();
-  sendRequest(model.origin.save)
+  send(model.origin.save())
     .then(() =>
-      sendRequest(Parse.Cloud.run, 'onModelAdd', {modelId: model.origin.id})
+      send(Parse.Cloud.run('onModelAdd', {modelId: model.origin.id}))
     );
 
   return {
@@ -384,7 +372,7 @@ export function addModel(name) {
 
 export function updateModel(model) {
   model.updateOrigin();
-  sendRequest(model.origin.save);
+  send(model.origin.save());
   
   return{
     type: MODEL_UPDATE,
@@ -402,7 +390,7 @@ export function setCurrentModel(currentModel) {
 export function deleteModel(model) {
   //model.origin.destroy();
   
-  sendRequest(Parse.Cloud.run, 'deleteModel', {modelId: model.origin.id});
+  send(Parse.Cloud.run('deleteModel', {modelId: model.origin.id}));
   
   return {
     type: MODEL_DELETE,
@@ -419,11 +407,11 @@ export function addField(field) {
     field.isTitle = true;
 
   field.updateOrigin();
-  sendRequest(field.origin.save)
+  send(field.origin.save())
     .then(() =>
-      sendRequest(Parse.Cloud.run, 'onFieldAdd', {fieldId: field.origin.id})
+      send(Parse.Cloud.run('onFieldAdd', {fieldId: field.origin.id}))
     );
-  sendRequest(field.model.origin.save);
+  send(field.model.origin.save());
   
   return {
     type: FIELD_ADD,
@@ -434,7 +422,7 @@ export function addField(field) {
 function changeTitleField(field, value = true) {
   field.isTitle = value;
   field.updateOrigin();
-  sendRequest(field.origin.save);
+  send(field.origin.save());
 }
 
 export function updateField(field) {
@@ -466,8 +454,8 @@ export function updateField(field) {
   }
 
   field.updateOrigin();
-  sendRequest(field.origin.save);
-  sendRequest(field.model.origin.save);
+  send(field.origin.save());
+  send(field.model.origin.save());
   
   return {
     type: FIELD_UPDATE,
@@ -476,7 +464,7 @@ export function updateField(field) {
 }
 
 export function deleteField(field) {
-  sendRequest(field.origin.destroy);
+  send(field.origin.destroy());
   
   if (field.isTitle) {
     for (let tempField of field.model.fields) {
@@ -486,7 +474,7 @@ export function deleteField(field) {
       }
     }
   }
-  sendRequest(field.model.origin.save);
+  send(field.model.origin.save());
   
   return {
     type: FIELD_DELETE,

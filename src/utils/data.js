@@ -1,10 +1,11 @@
 import {Parse} from 'parse';
 
-import {store} from '../index';
+import {store} from 'index';
 import {UserData} from 'models/UserData';
 import {removeOddSpaces, filterSpecials, checkURL} from 'utils/common';
 import {FIELD_NAMES_RESERVED} from 'models/ContentData';
-import {ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';
+import {ROLE_OWNER} from 'models/UserData';
+import {send} from 'utils/server';
 
 
 //==================== alert ==========
@@ -39,17 +40,17 @@ export function getUser(username) {
   if (!username)
     return Promise.reject();
   
-  return new Promise((resolve, reject) => {
+  return send(
     new Parse.Query(Parse.User)
       .equalTo("username", username)
       .first()
+    )
       .then(user_o => {
         if (user_o)
-          resolve(new UserData().setOrigin(user_o));
+          return new UserData().setOrigin(user_o);
         else
-          reject();
-      }, reject)
-  });
+          return Promise.reject();
+      });
 }
 
 //============= sites ==================
@@ -281,10 +282,9 @@ export function getRole(site) {
 }
 
 export function checkPassword(password) {
-  return new Promise((resolve, reject) => {
+  return send(
     Parse.Cloud.run('checkPassword', {password})
-      .then(resolve, reject);
-  });
+  );
 }
 
 export function getNameId(name, objects, curObj) {

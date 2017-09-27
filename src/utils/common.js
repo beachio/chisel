@@ -118,3 +118,7 @@ export function URLEncode(params) {
     .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
     .join('&');
 }
+
+export function promisify (pp) {
+  return new Promise((rs, rj) => pp.then(rs, rj));
+}
