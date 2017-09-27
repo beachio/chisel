@@ -9,7 +9,7 @@ import ContainerComponent from 'components/elements/ContainerComponent/Container
 import InputControl from 'components/elements/InputControl/InputControl';
 import {getModelByName} from 'utils/data';
 import {getRelativeTime} from 'utils/common';
-import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
+import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
 
 import styles from './ContentList.sss';
 
@@ -103,13 +103,21 @@ export default class ContentList extends Component {
     
     const {showAlert, deleteItem} = this.props;
     const title = item.title ? item.title : 'content item';
-  
-    const params = {
-      type: ALERT_TYPE_CONFIRM,
-      title: `Deleting <strong>${title}</strong>`,
-      description: "Are you sure?",
-      onConfirm: () => deleteItem(item)
-    };
+
+    let params;
+    if (item.status == STATUS_DRAFT || item.status == STATUS_ARCHIEVED)
+      params = {
+        type: ALERT_TYPE_CONFIRM,
+        title: `Deleting <strong>${title}</strong>`,
+        description: "Are you sure?",
+        onConfirm: () => deleteItem(item)
+      };
+    else
+      params = {
+        type: ALERT_TYPE_ALERT,
+        title: `Deleting <strong>${title}</strong>`,
+        description: "Please, archieve item before delete it."
+      };
     showAlert(params);
   };
 
