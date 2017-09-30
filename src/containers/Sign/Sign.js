@@ -147,6 +147,15 @@ export class Sign extends Component  {
     return !this.state.lock &&
       this.state.email;
   }
+
+  setMode(mode) {
+    this.setState({
+      mode,
+      error: null,
+      password: '',
+      passwordConfirm: ''
+    });
+  }
   
   render() {
     this.elmEmail = <input styleName="input"
@@ -192,10 +201,10 @@ export class Sign extends Component  {
               }
             </div>
   
-            <div styleName="forgot" onClick={() => this.setState({mode: MODE_FORGOT, error: null, password: ''})}>
+            <div styleName="forgot" onClick={() => this.setMode(MODE_FORGOT)}>
               Forgot password?
             </div>
-            <div styleName="forgot" onClick={() => this.setState({mode: MODE_REG, error: null, password: ''})}>
+            <div styleName="forgot" onClick={() => this.setMode(MODE_REG)}>
               Registration
             </div>
           </form>
@@ -223,7 +232,7 @@ export class Sign extends Component  {
               }
             </div>
   
-            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, error: null, password: '', passwordConfirm: ''})}>
+            <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
               Log in
             </div>
           </form>
@@ -237,7 +246,7 @@ export class Sign extends Component  {
               We send to your email a link to confirm your registration. Please, open it.
             </div>
   
-            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, error: null})}>
+            <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
               Return to log in
             </div>
           </form>
@@ -256,7 +265,7 @@ export class Sign extends Component  {
               Resend verification email
             </div>
             
-            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, error: null})}>
+            <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
               Return to log in
             </div>
           </form>
@@ -283,7 +292,7 @@ export class Sign extends Component  {
               }
             </div>
   
-            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, error: null})}>
+            <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
               Return to log in
             </div>
           </form>
@@ -292,15 +301,15 @@ export class Sign extends Component  {
         
       case MODE_FORGOT_MAIL:
         content = (
-          <form styleName="form" onSubmit={this.onRestore}>
+          <div styleName="form">
             <div styleName="description">
               The mail have sended. Please, check your inbox.
             </div>
   
-            <div styleName="forgot" onClick={() => this.setState({mode: MODE_LOGIN, error: null})}>
+            <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
               Return to log in
             </div>
-          </form>
+          </div>
         );
         break;
     }
