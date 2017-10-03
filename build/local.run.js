@@ -12,8 +12,8 @@ program.parse(process.argv);
 
 let port = program.port || process.env.PORT || 9000;
 
-let configServerURL = program.serverURL || process.env.CHISEL_SERVER_URL || "http://localhost:1337/parse";
-let configAppId = program.appId || process.env.CHISEL_APP_ID || "d5701a37cf242d5ee398005d997e4229";
+let configServerURL = program.serverURL || process.env.REACT_APP_CHISEL_SERVER_URL || "http://localhost:1337/parse";
+let configAppId = program.appId || process.env.REACT_APP_CHISEL_APP_ID || "d5701a37cf242d5ee398005d997e4229";
 let configJSkey = program.JSkey || process.env.CHISEL_JS_KEY;
 let configRESTkey = program.RESTkey || process.env.CHISEL_REST_KEY;
 
