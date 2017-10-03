@@ -9,8 +9,8 @@ export let currentServerURL;
 
 
 function requestConfig() {
-  config.serverURL = process.env.SERVER_URL ||  config.serverURL;
-  config.appId = process.env.APP_ID || config.appId;
+  config.serverURL = process.env.REACT_APP_SERVER_URL ||  config.serverURL;
+  config.appId = process.env.REACT_APP_APP_ID || config.appId;
   config.JSkey = process.env.JS_KEY || config.JSkey;
   config.RESTkey = process.env.REST_KEY || config.RESTkey;
 
