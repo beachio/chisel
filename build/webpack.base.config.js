@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 
 module.exports = {
@@ -15,6 +16,9 @@ module.exports = {
     extensions: ['.js']
   },
   plugins: [
+    new Dotenv({
+      'systemvars': true
+    }),
     new HtmlWebpackPlugin({
       template: 'src/index.pug'
     }),
