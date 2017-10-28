@@ -5,7 +5,8 @@ import CSSModules from 'react-css-modules';
 import {Helmet} from "react-helmet";
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
-import {login, register, restorePassword, resendVerEmail, ERROR_USER_EXISTS, ERROR_WRONG_PASS, ERROR_UNVERIF, ERROR_OTHER, NO_ERROR} from 'ducks/user';
+import {login, register, restorePassword, resendVerEmail,
+  ERROR_USER_EXISTS, ERROR_WRONG_PASS, ERROR_UNVERIF, ERROR_OTHER, NO_ERROR} from 'ducks/user';
 import {parseURLParams} from 'utils/common';
 
 import styles from './Sign.sss';
@@ -241,7 +242,7 @@ export class Sign extends Component  {
   
       case MODE_REG_MAIL:
         content = (
-          <form styleName="form">
+          <div styleName="form">
             <div styleName="description">
               We send to your email a link to confirm your registration. Please, open it.
             </div>
@@ -249,13 +250,13 @@ export class Sign extends Component  {
             <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
               Return to log in
             </div>
-          </form>
+          </div>
         );
         break;
   
       case MODE_UNVERIF:
         content = (
-          <form styleName="form">
+          <div styleName="form">
             <div styleName="description">
               <p>It looks like your email is not verified yet.</p>
               <p>We've sended to your email a link to confirm your registration. Please, open it.</p>
@@ -268,7 +269,7 @@ export class Sign extends Component  {
             <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
               Return to log in
             </div>
-          </form>
+          </div>
         );
         break;
         
