@@ -36,6 +36,7 @@ export default class AlertModal extends Component {
   
   componentDidMount() {
     this.active = true;
+    //TODO: плохая функция
     document.onkeydown = this.onKeyPress;
   
     if (this.focusElm)
@@ -91,9 +92,12 @@ export default class AlertModal extends Component {
   };
 
   render() {
-    const {title, description, type} = this.props.params;
+    const {title, description, type, btnText} = this.props.params;
+
     if (type)
       this.type = type;
+
+    let btnOKText = btnText || 'OK';
 
     let titleHTML = {__html: title || ''};
     let descriptionHTML = {__html: description || ''};
@@ -122,7 +126,7 @@ export default class AlertModal extends Component {
               this.type == ALERT_TYPE_ALERT &&
                 <div styleName="button">
                   <ButtonControl color="green"
-                                 value="OK"
+                                 value={btnOKText}
                                  DOMRef={btn => this.focusBtn = btn}
                                  onClick={this.onClose} />
                 </div>
