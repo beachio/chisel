@@ -52,7 +52,8 @@ export function register(email, password) {
           error: NO_ERROR
         });
 
-      }, _error => {
+      })
+      .catch(_error => {
         let error = ERROR_OTHER;
         switch (_error.code) {
           case 202: error = ERROR_USER_EXISTS; break;
