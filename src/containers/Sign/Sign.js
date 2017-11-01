@@ -18,6 +18,7 @@ const MODE_REG_MAIL     = 'register_mail';
 const MODE_UNVERIF      = 'unverified';
 const MODE_FORGOT       = 'forgot';
 const MODE_FORGOT_MAIL  = 'forgot_mail';
+const MODE_SERVER_DOWN  = 'server_down';
 
 @CSSModules(styles, {allowMultiple: true})
 export class Sign extends Component  {
@@ -48,7 +49,7 @@ export class Sign extends Component  {
   }
   
   componentWillReceiveProps(nextProps) {
-    let error = nextProps.error;
+    const {error, serverStatus} = nextProps;
     
     let mode = this.state.mode;
     if (mode == MODE_REG && error == NO_ERROR)
@@ -57,6 +58,8 @@ export class Sign extends Component  {
       mode = MODE_FORGOT_MAIL;
     if (mode == MODE_LOGIN && error == ERROR_UNVERIF)
       mode = MODE_UNVERIF;
+    if (serverStatus.problemB)
+      mode = MODE_SERVER_DOWN;
     
     this.setState({
       error,
@@ -313,6 +316,20 @@ export class Sign extends Component  {
           </div>
         );
         break;
+
+      case MODE_SERVER_DOWN:
+        content = (
+          <div styleName="form">
+            <div styleName="description">
+              We are sorry, but we have some problems with our service. Please, come back later.
+            </div>
+
+            <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
+              Return to log in
+            </div>
+          </div>
+        );
+        break;
     }
     
     return (
@@ -334,7 +351,8 @@ export class Sign extends Component  {
 
 function mapStateToProps(state) {
   return {
-    error: state.user.error
+    error:        state.user.error,
+    serverStatus: state.serverStatus
   };
 }
 

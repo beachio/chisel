@@ -10,7 +10,7 @@ import MediaModal from 'components/modals/MediaModal/MediaModal';
 import WysiwygModal from 'components/modals/WysiwygModal/WysiwygModal';
 import ReferenceModal from 'components/modals/ReferenceModal/ReferenceModal';
 import ModelChooseModal from 'components/modals/ModelChooseModal/ModelChooseModal';
-import AlertModal from 'components/modals/AlertModal/AlertModal';
+import AlertModal, {ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
 import {closeAlert, closeModal, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG,
   MODAL_TYPE_MODEL_CHOOSE} from 'ducks/nav';
 import {addField, updateField} from 'ducks/models';
@@ -28,7 +28,7 @@ class App extends React.Component {
     const {addField, updateField} = this.props.modelActions;
   
     const getAlarm = () => {
-      if (serverStatus.problemA)
+      if (serverStatus.problemA && !serverStatus.problemB)
         return (
           <div styleName="alarm">
             There is a problem with server. Please wait...
@@ -41,8 +41,19 @@ class App extends React.Component {
       if (nav.alertShowing)
         return <AlertModal params={nav.alertParams} onClose={closeAlert}/>;
     
-      if (!nav.modalShowing)
-        return null;
+      if (!nav.modalShowing) {
+        if (!serverStatus.problemB || !nav.initEnded)
+          return null;
+
+        let params = {
+          type: ALERT_TYPE_ALERT,
+          title: `Service problem`,
+          description: "There are problems with our service or internet connection. You should try later.",
+          btnText: 'Reload page'
+        };
+        return <AlertModal params={params}
+                           onClose={() => window.location = '/'}/>;
+      }
     
       switch (nav.modalType) {
         case MODAL_TYPE_FIELD:
@@ -85,11 +96,14 @@ class App extends React.Component {
     if (modal)
       this.lastModal = modal;
     
+    const showModalLoader =
+      (user.pending || user.authorized && !nav.initEnded) &&
+      !serverStatus.problemB;
     let res = (
       <div styleName="wrapper">
         {this.props.children}
         {
-          (user.pending || user.authorized && !nav.initEnded) &&
+          showModalLoader &&
             <SiteLoader />
         }
         <CSSTransition in={!!modal}
