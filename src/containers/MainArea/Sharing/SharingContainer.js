@@ -21,24 +21,23 @@ export class SharingContainer extends Component  {
     
     let title = `Sharing - Site: ${curSite.name} - Chisel`;
     
-    return (
-      <div className="mainArea">
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
-        <Sharing collaborations={curSite.collaborations}
-                 owner={curSite.owner}
-                 user={user.userData}
-                 addCollaboration={addCollaboration}
-                 addInviteCollaboration={addInviteCollaboration}
-                 updateCollaboration={updateCollaboration}
-                 deleteCollaboration={deleteCollaboration}
-                 deleteSelfCollaboration={deleteSelfCollaboration}
-                 showAlert={showAlert}
-                 alertShowing={nav.alertShowing}
-                 isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
-      </div>
-    );
+    return [
+      <Helmet key="helmet">
+        <title>{title}</title>
+      </Helmet>,
+      <Sharing key="container"
+               collaborations={curSite.collaborations}
+               owner={curSite.owner}
+               user={user.userData}
+               addCollaboration={addCollaboration}
+               addInviteCollaboration={addInviteCollaboration}
+               updateCollaboration={updateCollaboration}
+               deleteCollaboration={deleteCollaboration}
+               deleteSelfCollaboration={deleteSelfCollaboration}
+               showAlert={showAlert}
+               alertShowing={nav.alertShowing}
+               isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
+    ];
   }
 }
 

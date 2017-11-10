@@ -88,13 +88,6 @@ export function getRelativeTime(date) {
   return fullDate;
 }
 
-//TODO костыль особой циничности
-export function scrollUp() {
-  let mainArea = document.querySelector('.mainArea');
-  if (mainArea)
-    mainArea.scrollTop = 0;
-}
-
 export function parseURLParams(querystring = null) {
   let urlParams = {};
   

@@ -240,147 +240,154 @@ export class UserProfile extends Component  {
   
   render() {
     return (
-      <div className="mainArea">
-        <Helmet>
-          <title>User profile - Chisel</title>
-        </Helmet>
-        
-        <ContainerComponent title="User profile">
-          <div styleName="content">
-            
-            <form styleName="section" onSubmit={this.onSaveData}>
-              <div styleName="section-header">Your personal data</div>
-              <div styleName="field">
-                <div styleName="field-title">First name</div>
-                <div styleName="input-wrapper">
-                  <InputControl type="big"
-                                value={this.state.firstName}
-                                onChange={this.onChangeFirstName} />
-                </div>
+      <ContainerComponent title="User profile">
+        <div styleName="content">
+
+          <form styleName="section" onSubmit={this.onSaveData}>
+            <div styleName="section-header">Your personal data</div>
+            <div styleName="field">
+              <div styleName="field-title">First name</div>
+              <div styleName="input-wrapper">
+                <InputControl type="big"
+                              value={this.state.firstName}
+                              onChange={this.onChangeFirstName} />
               </div>
-              <div styleName="field">
-                <div styleName="field-title">Last name</div>
-                <div styleName="input-wrapper">
-                  <InputControl type="big"
-                                value={this.state.lastName}
-                                onChange={this.onChangeLastName} />
-                </div>
+            </div>
+            <div styleName="field">
+              <div styleName="field-title">Last name</div>
+              <div styleName="input-wrapper">
+                <InputControl type="big"
+                              value={this.state.lastName}
+                              onChange={this.onChangeLastName} />
               </div>
-              <div styleName="buttons-wrapper">
-                <ButtonControl color="green"
-                               type="submit"
-                               disabled={!this.state.dirtyData || this.state.errorData}
-                               value="Update personal data"/>
+            </div>
+            <div styleName="buttons-wrapper">
+              <ButtonControl color="green"
+                             type="submit"
+                             disabled={!this.state.dirtyData || this.state.errorData}
+                             value="Update personal data"/>
+            </div>
+            <div styleName="field-success">
+              {this.state.successData}
+            </div>
+            <div styleName="field-error">
+              {this.state.errorData}
+            </div>
+          </form>
+
+          <form styleName="section" onSubmit={this.onSaveEmail}>
+            <div styleName="section-header">Your email</div>
+            <div styleName="field">
+              <div styleName="field-title">Email</div>
+              <div styleName="input-wrapper">
+                <InputControl type="big"
+                              value={this.state.email}
+                              onChange={this.onChangeEmail} />
               </div>
-              <div styleName="field-success">
-                {this.state.successData}
+            </div>
+            <div styleName="buttons-wrapper">
+              <ButtonControl color="green"
+                             type="submit"
+                             disabled={!this.state.dirtyEmail || this.state.errorEmail}
+                             value="Change email"/>
+            </div>
+            <div styleName="field-success">
+              {this.state.successEmail}
+            </div>
+            <div styleName="field-error">
+              {this.state.errorEmail}
+            </div>
+          </form>
+
+          <form styleName="section" onSubmit={this.onSavePassword}>
+            <div styleName="section-header">Changing password</div>
+            <div styleName="field">
+              <div styleName="field-title">Enter old password</div>
+              <div styleName="input-wrapper">
+                <InputControl type="big"
+                              inputType="password"
+                              value={this.state.passwordOld}
+                              onChange={this.onChangePasswordOld} />
               </div>
-              <div styleName="field-error">
-                {this.state.errorData}
+            </div>
+            <div styleName="field">
+              <div styleName="field-title">Enter new password</div>
+              <div styleName="input-wrapper">
+                <InputControl type="big"
+                              inputType="password"
+                              value={this.state.password}
+                              onChange={this.onChangePassword} />
               </div>
-            </form>
-  
-            <form styleName="section" onSubmit={this.onSaveEmail}>
-              <div styleName="section-header">Your email</div>
-              <div styleName="field">
-                <div styleName="field-title">Email</div>
-                <div styleName="input-wrapper">
-                  <InputControl type="big"
-                                value={this.state.email}
-                                onChange={this.onChangeEmail} />
-                </div>
+            </div>
+            <div styleName="field">
+              <div styleName="field-title">Confirm new password</div>
+              <div styleName="input-wrapper">
+                <InputControl type="big"
+                              inputType="password"
+                              value={this.state.passwordConfirm}
+                              onChange={this.onChangePasswordConfirm} />
               </div>
-              <div styleName="buttons-wrapper">
-                <ButtonControl color="green"
-                               type="submit"
-                               disabled={!this.state.dirtyEmail || this.state.errorEmail}
-                               value="Change email"/>
+            </div>
+            <div styleName="buttons-wrapper">
+              <ButtonControl color="green"
+                             type="submit"
+                             disabled={!this.state.dirtyPassword || this.state.errorPassword}
+                             value="Set new password"/>
+            </div>
+            <div styleName="field-success">
+              {this.state.successPassword}
+            </div>
+            <div styleName="field-error">
+              {this.state.errorPassword}
+            </div>
+          </form>
+
+          <form styleName="section" onSubmit={this.onSaveServer}>
+            <div styleName="section-header">Parse server data</div>
+            <div styleName="field">
+              <div styleName="field-title">Server URL</div>
+              <div styleName="input-wrapper">
+                <InputControl type="big"
+                              value={this.state.serverURL}
+                              onChange={this.onChangeServerURL} />
               </div>
-              <div styleName="field-success">
-                {this.state.successEmail}
-              </div>
-              <div styleName="field-error">
-                {this.state.errorEmail}
-              </div>
-            </form>
-  
-            <form styleName="section" onSubmit={this.onSavePassword}>
-              <div styleName="section-header">Changing password</div>
-              <div styleName="field">
-                <div styleName="field-title">Enter old password</div>
-                <div styleName="input-wrapper">
-                  <InputControl type="big"
-                                inputType="password"
-                                value={this.state.passwordOld}
-                                onChange={this.onChangePasswordOld} />
-                </div>
-              </div>
-              <div styleName="field">
-                <div styleName="field-title">Enter new password</div>
-                <div styleName="input-wrapper">
-                  <InputControl type="big"
-                                inputType="password"
-                                value={this.state.password}
-                                onChange={this.onChangePassword} />
-                </div>
-              </div>
-              <div styleName="field">
-                <div styleName="field-title">Confirm new password</div>
-                <div styleName="input-wrapper">
-                  <InputControl type="big"
-                                inputType="password"
-                                value={this.state.passwordConfirm}
-                                onChange={this.onChangePasswordConfirm} />
-                </div>
-              </div>
-              <div styleName="buttons-wrapper">
-                <ButtonControl color="green"
-                               type="submit"
-                               disabled={!this.state.dirtyPassword || this.state.errorPassword}
-                               value="Set new password"/>
-              </div>
-              <div styleName="field-success">
-                {this.state.successPassword}
-              </div>
-              <div styleName="field-error">
-                {this.state.errorPassword}
-              </div>
-            </form>
-  
-            <form styleName="section" onSubmit={this.onSaveServer}>
-              <div styleName="section-header">Parse server data</div>
-              <div styleName="field">
-                <div styleName="field-title">Server URL</div>
-                <div styleName="input-wrapper">
-                  <InputControl type="big"
-                                value={this.state.serverURL}
-                                onChange={this.onChangeServerURL} />
-                </div>
-              </div>
-              <div styleName="buttons-wrapper">
-                <ButtonControl color="green"
-                               type="submit"
-                               disabled={!this.state.dirtyServer || this.state.errorServer}
-                               value="Update server data"/>
-              </div>
-              <div styleName="field-success">
-                {this.state.successServer}
-              </div>
-              <div styleName="field-error">
-                {this.state.errorServer}
-              </div>
-            </form>
-            
-          </div>
-        </ContainerComponent>
-      </div>
+            </div>
+            <div styleName="buttons-wrapper">
+              <ButtonControl color="green"
+                             type="submit"
+                             disabled={!this.state.dirtyServer || this.state.errorServer}
+                             value="Update server data"/>
+            </div>
+            <div styleName="field-success">
+              {this.state.successServer}
+            </div>
+            <div styleName="field-error">
+              {this.state.errorServer}
+            </div>
+          </form>
+
+        </div>
+      </ContainerComponent>
     );
   }
 }
 
+export class UserProfileContainer extends Component  {
+  render () {
+    return [
+      <Helmet key="helmet">
+        <title>User profile - Chisel</title>
+      </Helmet>,
+
+      <UserProfile {...this.props} key="container" />
+    ];
+  }
+}
+
+
 function mapStateToProps(state) {
   return {
-    user:   state.user
+    user: state.user
   };
 }
 
@@ -390,4 +397,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfileContainer);

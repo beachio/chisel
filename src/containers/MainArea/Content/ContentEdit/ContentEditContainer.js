@@ -73,28 +73,27 @@ export class ContentEditContainer extends Component {
     const itemTitle = this.item.title ? this.item.title : 'Untitled';
     const title = `Item: ${itemTitle} - Site: ${curSite.name} - Chisel`;
     
-    return (
-      <div className="mainArea">
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
-        <ContentEdit item={this.item}
-                     onClose={closeItem}
-                     gotoItem={gotoItem}
-                     addItem={addItem}
-                     updateItem={updateItem}
-                     publishItem={publishItem}
-                     archieveItem={archieveItem}
-                     restoreItem={restoreItem}
-                     discardItem={discardItem}
-                     addMediaItem={addMediaItem}
-                     updateMediaItem={updateMediaItem}
-                     removeMediaItem={removeMediaItem}
-                     lastItem={lastItem}
-                     showModal={showModal}
-                     isEditable={models.role != ROLE_DEVELOPER}/>
-      </div>
-    );
+    return [
+      <Helmet key="helmet">
+        <title>{title}</title>
+      </Helmet>,
+      <ContentEdit key="container"
+                   item={this.item}
+                   onClose={closeItem}
+                   gotoItem={gotoItem}
+                   addItem={addItem}
+                   updateItem={updateItem}
+                   publishItem={publishItem}
+                   archieveItem={archieveItem}
+                   restoreItem={restoreItem}
+                   discardItem={discardItem}
+                   addMediaItem={addMediaItem}
+                   updateMediaItem={updateMediaItem}
+                   removeMediaItem={removeMediaItem}
+                   lastItem={lastItem}
+                   showModal={showModal}
+                   isEditable={models.role != ROLE_DEVELOPER} />
+    ];
   }
 }
 

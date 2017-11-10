@@ -18,7 +18,7 @@ export class ContentListContainer extends Component  {
     const {showAlert} = this.props.navActions;
     
     let cmpContent = (
-      <div className="start-working">
+      <div className="start-working" key="container">
         <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
         There are no models.
       </div>
@@ -44,32 +44,31 @@ export class ContentListContainer extends Component  {
           `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${CONTENT_URL}/${ITEM_URL}${modelId}~${itemId}`);
       };
       
-      cmpContent = <ContentList items={items}
+      cmpContent = <ContentList key="container"
+                                items={items}
                                 models={curSite.models}
                                 gotoItem={gotoItem}
                                 addItem={addItem}
                                 deleteItem={deleteItem}
                                 showAlert={showAlert}
                                 alertShowing={nav.alertShowing}
-                                isEditable={models.role != ROLE_DEVELOPER}/>;
+                                isEditable={models.role != ROLE_DEVELOPER} />;
       
     } else if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN) {
       cmpContent = (
-        <div className="start-working">
+        <div className="start-working" key="container">
           <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
           There are no models. Add any model to start creating content.
         </div>
       );
     }
     
-    return (
-      <div className="mainArea">
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
-        {cmpContent}
-      </div>
-    );
+    return [
+      <Helmet key="helmet">
+        <title>{title}</title>
+      </Helmet>,
+      cmpContent
+    ];
   }
 }
 

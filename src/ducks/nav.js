@@ -8,13 +8,15 @@ export const SHOW_MODAL       = 'app/nav/SHOW_MODAL';
 export const CLOSE_MODAL      = 'app/nav/CLOSE_MODAL';
 export const SET_CURRENT_PAGE = 'app/nav/SET_CURRENT_PAGE';
 
-export const PAGE_NO_SITES  = 'app/nav/pages/PAGE_NO_SITES';
-export const PAGE_MODELS    = 'app/nav/pages/PAGE_MODELS';
-export const PAGE_CONTENT   = 'app/nav/pages/PAGE_CONTENT';
-export const PAGE_API       = 'app/nav/pages/PAGE_API';
-export const PAGE_SETTINGS  = 'app/nav/pages/PAGE_SETTINGS';
-export const PAGE_SHARING   = 'app/nav/pages/PAGE_SHARING';
-export const PAGE_PROFILE   = 'app/nav/pages/PAGE_PROFILE';
+export const PAGE_NO_SITES      = 'app/nav/pages/PAGE_NO_SITES';
+export const PAGE_MODELS        = 'app/nav/pages/PAGE_MODELS';
+export const PAGE_MODELS_ITEM   = 'app/nav/pages/PAGE_MODELS_ITEM';
+export const PAGE_CONTENT       = 'app/nav/pages/PAGE_CONTENT';
+export const PAGE_CONTENT_ITEM  = 'app/nav/pages/PAGE_CONTENT_ITEM';
+export const PAGE_API           = 'app/nav/pages/PAGE_API';
+export const PAGE_SETTINGS      = 'app/nav/pages/PAGE_SETTINGS';
+export const PAGE_SHARING       = 'app/nav/pages/PAGE_SHARING';
+export const PAGE_PROFILE       = 'app/nav/pages/PAGE_PROFILE';
 
 export const MODAL_TYPE_FIELD         = 'app/nav/modals/MODAL_TYPE_FIELD';
 export const MODAL_TYPE_MEDIA         = 'app/nav/modals/MODAL_TYPE_MEDIA';

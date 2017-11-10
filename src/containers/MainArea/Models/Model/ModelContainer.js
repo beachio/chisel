@@ -48,23 +48,22 @@ export class ModelContainer extends Component  {
     let closeModel = () => browserHistory.push(
       `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${MODELS_URL}`);
     
-    return (
-      <div className="mainArea">
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
-        <Model model={this.model}
-               onClose={closeModel}
-               updateModel={updateModel}
-               updateField={updateField}
-               deleteField={deleteField}
-               showAlert={showAlert}
-               showModal={showModal}
-               modalShowing={nav.modalShowing}
-               alertShowing={nav.alertShowing}
-               isEditable={true}/>
-      </div>
-    );
+    return [
+      <Helmet key="helmet">
+        <title>{title}</title>
+      </Helmet>,
+      <Model key="container"
+             model={this.model}
+             onClose={closeModel}
+             updateModel={updateModel}
+             updateField={updateField}
+             deleteField={deleteField}
+             showAlert={showAlert}
+             showModal={showModal}
+             modalShowing={nav.modalShowing}
+             alertShowing={nav.alertShowing}
+             isEditable={true}/>
+    ];
   }
 }
 
