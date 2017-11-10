@@ -8,7 +8,8 @@ import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
 import {ROLE_ADMIN, ROLE_DEVELOPER, ROLE_OWNER} from 'models/UserData';
-import {PAGE_SHARING, PAGE_SETTINGS, PAGE_API, PAGE_MODELS, PAGE_CONTENT, PAGE_PROFILE} from 'ducks/nav';
+import {PAGE_SHARING, PAGE_SETTINGS, PAGE_API, PAGE_MODELS, PAGE_CONTENT, PAGE_PROFILE,
+  PAGE_CONTENT_ITEM, PAGE_MODELS_ITEM} from 'ducks/nav';
 
 import styles from './MainArea.sss';
 
@@ -77,6 +78,7 @@ export class MainArea extends Component {
             break;
             
           case PAGE_MODELS:
+          case PAGE_MODELS_ITEM:
             if (role == ROLE_OWNER || role == ROLE_ADMIN)
               area = this.props.children;
             break;
@@ -84,6 +86,7 @@ export class MainArea extends Component {
           case PAGE_SHARING:
           case PAGE_SETTINGS:
           case PAGE_CONTENT:
+          case PAGE_CONTENT_ITEM:
             area = this.props.children;
         }
         
