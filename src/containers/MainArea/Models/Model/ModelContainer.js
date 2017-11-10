@@ -14,6 +14,7 @@ export class ModelContainer extends Component  {
   //TODO Костыль!
   model = null;
   
+  //on mount: get model ID from URL, then send action "setCurrentModel"
   componentWillMount() {
     let modelId = this.props.params.model;
     if (modelId.indexOf(MODEL_URL) != 0)
@@ -26,7 +27,7 @@ export class ModelContainer extends Component  {
     
     this.model = models.currentModel;
     if (!this.model || modelId != this.model.nameId) {
-      let newModel = getModelByNameId(modelId);
+      const newModel = getModelByNameId(modelId);
       if (newModel) {
         setCurrentModel(newModel);
         this.model = newModel;

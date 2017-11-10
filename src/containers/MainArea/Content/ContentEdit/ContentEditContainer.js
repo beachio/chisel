@@ -25,25 +25,27 @@ export class ContentEditContainer extends Component {
       this.setItem(nextProps.params.item);
   }
   
+  // on mount / change item:
+  // get item ID from URL, then send action "setCurrentItem"
   setItem(nameId) {
-    const {setCurrentItem} = this.props.contentActions;
-    const {content} = this.props;
-  
     if (nameId.indexOf(ITEM_URL) != 0)
       return;
   
     nameId = nameId.slice(ITEM_URL.length);
-  
     const modelNameId = nameId.slice(0, nameId.indexOf('~'));
     const itemId = nameId.slice(nameId.indexOf('~') + 1);
-    if (modelNameId && itemId) {
-      this.item = content.currentItem;
-      if (!this.item || modelNameId != this.item.model.nameId || itemId != this.item.origin.id) {
-        const item = getContentByModelAndId(modelNameId, itemId);
-        if (item) {
-          setCurrentItem(item);
-          this.item = item;
-        }
+    if (!modelNameId || !itemId)
+      return;
+
+    const {setCurrentItem} = this.props.contentActions;
+    const {content} = this.props;
+  
+    this.item = content.currentItem;
+    if (!this.item || modelNameId != this.item.model.nameId || itemId != this.item.origin.id) {
+      const item = getContentByModelAndId(modelNameId, itemId);
+      if (item) {
+        setCurrentItem(item);
+        this.item = item;
       }
     }
   }
