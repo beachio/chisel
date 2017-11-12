@@ -100,7 +100,8 @@ export function updateItem(item) {
 
 export function publishItem(item) {
   let itemD = item.draft;
-  if (!itemD) {
+  let isNewDraft = !itemD;
+  if (isNewDraft) {
     itemD = new ContentItemData();
     itemD.model = item.model;
     itemD.title = item.title;
@@ -126,7 +127,8 @@ export function publishItem(item) {
   
   return {
     type: ITEM_PUBLISH,
-    item
+    item,
+    isNewDraft
   };
 }
 
@@ -255,12 +257,23 @@ export default function contentReducer(state = initialState, action) {
       };
       
     case ITEM_UPDATE:
-    case ITEM_PUBLISH:
     case ITEM_DISCARD:
     case ITEM_ARCHIEVE:
     case ITEM_RESTORE:
       return {...state};
-      
+
+    case ITEM_PUBLISH:
+      if (!action.isNewDraft)
+        return {...state};
+
+      itemsDraft = state.itemsDraft;
+      itemsDraft.push(action.item.draft);
+
+      return {
+        ...state,
+        itemsDraft
+      };
+
     case ITEM_DELETE:
       let item = action.item;
       items = state.items;

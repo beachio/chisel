@@ -24,6 +24,7 @@ export class ContentItemData {
   //links
   _model = null;
   draft = null;
+  //when it's draft, owner — its original content item
   owner = null;
   
   
