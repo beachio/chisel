@@ -37,23 +37,33 @@ export class ContentListContainer extends Component  {
           items.push(item);
       }
 
-      let gotoItem = item => {
-        let modelId = item.model.nameId;
-        let itemId = item.origin.id;
-        browserHistory.push(
-          `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${CONTENT_URL}/${ITEM_URL}${modelId}~${itemId}`);
-      };
-      
-      cmpContent = <ContentList key="container"
-                                items={items}
-                                models={curSite.models}
-                                gotoItem={gotoItem}
-                                addItem={addItem}
-                                deleteItem={deleteItem}
-                                showAlert={showAlert}
-                                alertShowing={nav.alertShowing}
-                                isEditable={models.role != ROLE_DEVELOPER} />;
-      
+      if (!items.length && models.role == ROLE_DEVELOPER) {
+        cmpContent = (
+          <div className="start-working" key="container">
+            <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
+            There are no items.
+          </div>
+        );
+
+      } else {
+        let gotoItem = item => {
+          let modelId = item.model.nameId;
+          let itemId = item.origin.id;
+          browserHistory.push(
+            `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${CONTENT_URL}/${ITEM_URL}${modelId}~${itemId}`);
+        };
+
+        cmpContent = <ContentList key="container"
+                                  items={items}
+                                  models={curSite.models}
+                                  gotoItem={gotoItem}
+                                  addItem={addItem}
+                                  deleteItem={deleteItem}
+                                  showAlert={showAlert}
+                                  alertShowing={nav.alertShowing}
+                                  isEditable={models.role != ROLE_DEVELOPER}/>;
+      }
+
     } else if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN) {
       cmpContent = (
         <div className="start-working" key="container">
