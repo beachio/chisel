@@ -2,7 +2,7 @@ import {Parse} from 'parse';
 
 import {removeOddSpaces, filterSpecials} from 'utils/common';
 import {getMediaByO, getContentByO} from 'utils/data';
-import {FIELD_APPEARANCE__SHORT_TEXT__SLUG, FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCES} from 'models/ModelData';
+import {FIELD_APPEARANCE__SHORT_TEXT__SLUG, FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCE} from 'models/ModelData';
 
 
 export const STATUS_DRAFT     = `Draft`;
@@ -86,7 +86,7 @@ export class ContentItemData {
   
   postInit(items) {
     for (let field of this.model.fields) {
-      if (field.type == FIELD_TYPE_REFERENCES) {
+      if (field.type == FIELD_TYPE_REFERENCE) {
         let refersO = this.fields.get(field);
         if (!refersO)
           refersO = [];
@@ -123,7 +123,7 @@ export class ContentItemData {
     this.origin.set("t__color",   this.color);
   
     for (let [field, value] of this.fields) {
-      let isRefList = field.type == FIELD_TYPE_REFERENCES ||
+      const isRefList = field.type == FIELD_TYPE_REFERENCE ||
           field.type == FIELD_TYPE_MEDIA && field.isList;
       
       if (isRefList && value) {

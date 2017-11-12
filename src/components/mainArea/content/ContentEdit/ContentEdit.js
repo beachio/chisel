@@ -220,7 +220,7 @@ export default class ContentEdit extends Component {
                              showModal={this.props.showModal} />;
         break;
 
-      case ftps.FIELD_TYPE_REFERENCES:
+      case ftps.FIELD_TYPE_REFERENCE:
         return <ContentReference ref={ref}
                                  field={field}
                                  key={field.nameId}
