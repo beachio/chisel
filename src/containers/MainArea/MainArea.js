@@ -21,18 +21,18 @@ export class MainArea extends Component {
 
   cmpNoSites = (
     <div styleName="mainArea">
-      <div styleName="start-working">
-        <InlineSVG styleName="hammer" src={require("assets/images/hammer.svg")}/>
+      <div className="start-working">
+        <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
         Add new site to start working
-        <div styleName="hint">Find "Add new site" button at sidebar</div>
+        <div className="hint">Find "Add new site" button at sidebar</div>
       </div>
     </div>
   );
   
   cmpNoRights = (
     <div styleName="mainArea">
-      <div styleName="start-working">
-        <InlineSVG styleName="hammer" src={require("assets/images/hammer.svg")}/>
+      <div className="start-working">
+        <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
         You don't have rights to access this section.
       </div>
     </div>
