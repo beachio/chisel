@@ -13,9 +13,6 @@ import {getContentByModelAndId} from 'utils/data';
 
 
 export class ContentEditContainer extends Component {
-  //TODO Костыль!
-  item = null;
-  
   componentWillMount() {
     this.setItem(this.props.params.item);
   }
@@ -40,13 +37,11 @@ export class ContentEditContainer extends Component {
     const {setCurrentItem} = this.props.contentActions;
     const {content} = this.props;
   
-    this.item = content.currentItem;
-    if (!this.item || modelNameId != this.item.model.nameId || itemId != this.item.origin.id) {
+    const oldItem = content.currentItem;
+    if (!oldItem || modelNameId != oldItem.model.nameId || itemId != oldItem.origin.id) {
       const item = getContentByModelAndId(modelNameId, itemId);
-      if (item) {
+      if (item)
         setCurrentItem(item);
-        this.item = item;
-      }
     }
   }
   
@@ -57,7 +52,8 @@ export class ContentEditContainer extends Component {
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
     
     const curSite = models.currentSite;
-    if (!curSite || !this.item)
+    const item = content.currentItem;
+    if (!curSite || !item)
       return null;
     
     const basePath = `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${CONTENT_URL}`;
@@ -72,7 +68,7 @@ export class ContentEditContainer extends Component {
   
     const lastItem = content.items[content.items.length - 1];
   
-    const itemTitle = this.item.title ? this.item.title : 'Untitled';
+    const itemTitle = item.title ? item.title : 'Untitled';
     const title = `Item: ${itemTitle} - Site: ${curSite.name} - Chisel`;
     
     return [
@@ -80,7 +76,7 @@ export class ContentEditContainer extends Component {
         <title>{title}</title>
       </Helmet>,
       <ContentEdit key="container"
-                   item={this.item}
+                   item={item}
                    onClose={closeItem}
                    gotoItem={gotoItem}
                    addItem={addItem}
