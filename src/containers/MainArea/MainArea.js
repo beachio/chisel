@@ -4,7 +4,6 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import {Helmet} from "react-helmet";
 
-import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
 import {ROLE_ADMIN, ROLE_DEVELOPER, ROLE_OWNER} from 'models/UserData';
@@ -58,7 +57,7 @@ export class MainArea extends Component {
   
     let title = "Userspace - Chisel";
     
-    let area = <SiteLoader/>;
+    let area = null;
     
     if (nav.initEnded) {
       let curSite = models.currentSite;
