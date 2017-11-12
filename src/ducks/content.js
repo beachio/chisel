@@ -20,7 +20,7 @@ export const ITEM_DELETE        = 'app/content/ITEM_DELETE';
 export const SET_CURRENT_ITEM   = 'app/content/SET_CURRENT_ITEM';
 
 function requestContentItems(model, items, itemsDraft) {
-  send(
+  return send(
     new Parse.Query(Parse.Object.extend(model.tableName))
       .find()
   )
