@@ -99,6 +99,7 @@ export default class Model extends Component {
       }
     }
 
+    this.model = nextProps.model;
     this.setState({fields: nextProps.model.fields});
   }
 

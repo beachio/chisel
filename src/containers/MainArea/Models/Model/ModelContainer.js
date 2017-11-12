@@ -11,9 +11,6 @@ import {getModelByNameId} from 'utils/data';
 
 
 export class ModelContainer extends Component  {
-  //TODO Костыль!
-  model = null;
-  
   //on mount: get model ID from URL, then send action "setCurrentModel"
   componentWillMount() {
     let modelId = this.props.params.model;
@@ -25,13 +22,11 @@ export class ModelContainer extends Component  {
     const {setCurrentModel} = this.props.modelsActions;
     const {models} = this.props;
     
-    this.model = models.currentModel;
-    if (!this.model || modelId != this.model.nameId) {
+    let model = models.currentModel;
+    if (!model || modelId != model.nameId) {
       const newModel = getModelByNameId(modelId);
-      if (newModel) {
+      if (newModel)
         setCurrentModel(newModel);
-        this.model = newModel;
-      }
     }
   }
   
@@ -43,8 +38,12 @@ export class ModelContainer extends Component  {
     let curSite = models.currentSite;
     if (!curSite)
       return null;
-    
-    let title = `Model: ${this.model.name} - Site: ${curSite.name} - Chisel`;
+
+    let model = models.currentModel;
+    if (!model)
+      return null;
+
+    let title = `Model: ${model.name} - Site: ${curSite.name} - Chisel`;
     
     let closeModel = () => browserHistory.push(
       `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${MODELS_URL}`);
@@ -54,7 +53,7 @@ export class ModelContainer extends Component  {
         <title>{title}</title>
       </Helmet>,
       <Model key="container"
-             model={this.model}
+             model={model}
              onClose={closeModel}
              updateModel={updateModel}
              updateField={updateField}
