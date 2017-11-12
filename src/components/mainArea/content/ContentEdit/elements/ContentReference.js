@@ -23,6 +23,7 @@ export default class ContentReference extends ContentBase {
   
   componentWillReceiveProps(nextProps) {
     this.item = nextProps.item;
+    super.componentWillReceiveProps(nextProps);
   }
   
   onReferenceNew = () => {
