@@ -148,10 +148,6 @@ export function checkModelName(name, curModel) {
   return NAME_CORRECT;
 }
 
-export function modelToJSON(model) {
-  return JSON.stringify(model, null, 2);
-}
-
 export function getModelByName(name) {
   let site = store.getState().models.currentSite;
   if (!site)

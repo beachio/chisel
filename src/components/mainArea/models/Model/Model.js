@@ -7,7 +7,7 @@ import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'rea
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
 import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
-import {getNameId, checkModelName, checkFieldName, getAlertForNameError, modelToJSON, getContentForModel, NAME_ERROR_OTHER} from 'utils/data';
+import {getNameId, checkModelName, checkFieldName, getAlertForNameError, getContentForModel, NAME_ERROR_OTHER} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
 import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
 import {ModelFieldData} from 'models/ModelData';
@@ -231,8 +231,7 @@ export default class Model extends Component {
 
     let content;
     if (this.state.jsonVisibility) {
-      let json = modelToJSON(this.model);
-      content = <JSONView content={json} />;
+      content = <JSONView model={this.model} />;
       
     } else {
       content = (
