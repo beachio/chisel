@@ -3,6 +3,9 @@ import InlineSVG from 'svg-inline-react';
 import {connect} from 'react-redux';
 import {Helmet} from "react-helmet";
 
+import {ROLE_EDITOR} from 'models/UserData';
+import {NoRights} from "components/mainArea/common/NoRights";
+
 
 export class APIPage extends Component  {
   render() {
@@ -21,18 +24,23 @@ export class APIPageContainer extends Component  {
   render () {
     const {models} = this.props;
   
-    let curSite = models.currentSite;
-    if (!curSite)
-      return null;
-    
-    let title = `API - Site: ${curSite.name} - Chisel`;
+    let title = `Chisel`;
+    let content = <NoRights key="container" />;
+
+    const curSite = models.currentSite;
+    if (curSite) {
+      title = `API - Site: ${curSite.name} - Chisel`;
+
+      const role = models.role;
+      if (role != ROLE_EDITOR)
+        content = <APIPage key="container"/>;
+    }
     
     return [
       <Helmet key="helmet">
         <title>{title}</title>
       </Helmet>,
-
-      <APIPage key="container" />
+      content
     ];
   }
 }

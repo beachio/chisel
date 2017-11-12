@@ -6,9 +6,7 @@ import {Helmet} from "react-helmet";
 
 import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
-import {ROLE_ADMIN, ROLE_DEVELOPER, ROLE_OWNER} from 'models/UserData';
-import {PAGE_SHARING, PAGE_SETTINGS, PAGE_API, PAGE_MODELS, PAGE_CONTENT, PAGE_PROFILE,
-  PAGE_CONTENT_ITEM, PAGE_MODELS_ITEM} from 'ducks/nav';
+import {PAGE_PROFILE} from 'ducks/nav';
 
 import styles from './MainArea.sss';
 
@@ -19,21 +17,10 @@ export class MainArea extends Component {
   lastPage;
 
   cmpNoSites = (
-    <div styleName="mainArea">
-      <div className="start-working">
-        <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
-        Add new site to start working
-        <div className="hint">Find "Add new site" button at sidebar</div>
-      </div>
-    </div>
-  );
-  
-  cmpNoRights = (
-    <div styleName="mainArea">
-      <div className="start-working">
-        <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
-        You don't have rights to access this section.
-      </div>
+    <div className="start-working">
+      <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
+      Add new site to start working
+      <div className="hint">Find "Add new site" button at sidebar</div>
     </div>
   );
 
@@ -56,41 +43,17 @@ export class MainArea extends Component {
     const {models, nav} = this.props;
   
     let title = "Userspace - Chisel";
-    
-    let area = null;
+    let content = null;
     
     if (nav.initEnded) {
       let curSite = models.currentSite;
-      let role = models.role;
-      
-      if (nav.openedPage == PAGE_PROFILE) {
-        area = this.props.children;
-        
-      } else if (curSite) {
+
+      if (curSite || nav.openedPage == PAGE_PROFILE) {
         title = `Site: ${curSite.name} - Chisel`;
-        area = this.cmpNoRights;
-        
-        switch (nav.openedPage) {
-          case PAGE_API:
-            if (role == ROLE_OWNER || role == ROLE_ADMIN || role == ROLE_DEVELOPER)
-              area = this.props.children;
-            break;
-            
-          case PAGE_MODELS:
-          case PAGE_MODELS_ITEM:
-            if (role == ROLE_OWNER || role == ROLE_ADMIN)
-              area = this.props.children;
-            break;
-  
-          case PAGE_SHARING:
-          case PAGE_SETTINGS:
-          case PAGE_CONTENT:
-          case PAGE_CONTENT_ITEM:
-            area = this.props.children;
-        }
+        content = this.props.children;
         
       } else {
-        area = this.cmpNoSites;
+        content = this.cmpNoSites;
       }
     }
     
@@ -102,7 +65,7 @@ export class MainArea extends Component {
         <div styleName="wrapper-inner">
           <Sidebar />
           <div styleName="mainArea" ref={c => this.scrollArea = c}>
-            {area}
+            {content}
           </div>
         </div>
         <Header />

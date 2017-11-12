@@ -8,6 +8,8 @@ import Model from 'components/mainArea/models/Model/Model';
 import {setCurrentModel, updateModel, updateField, deleteField} from 'ducks/models';
 import {showAlert, showModal, USERSPACE_URL, SITE_URL, MODELS_URL, MODEL_URL} from 'ducks/nav';
 import {getModelByNameId} from 'utils/data';
+import {ROLE_ADMIN, ROLE_OWNER} from 'models/UserData';
+import {NoRights} from "components/mainArea/common/NoRights";
 
 
 export class ModelContainer extends Component  {
@@ -35,31 +37,39 @@ export class ModelContainer extends Component  {
     const {updateModel, updateField, deleteField} = this.props.modelsActions;
     const {showAlert, showModal} = this.props.navActions;
     
-    let curSite = models.currentSite;
-    let model = models.currentModel;
-    if (!curSite || !model)
-      return null;
+    let title = `Chisel`;
+    let content = <NoRights key="container" />;
 
-    let title = `Model: ${model.name} - Site: ${curSite.name} - Chisel`;
-    
-    let closeModel = () => browserHistory.push(
-      `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${MODELS_URL}`);
+    const curSite = models.currentSite;
+    const model = models.currentModel;
+    if (curSite && model) {
+      title = `Model: ${model.name} - Site: ${curSite.name} - Chisel`;
+
+      const closeModel = () => browserHistory.push(
+        `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${MODELS_URL}`);
+
+      const role = models.role;
+      if (role == ROLE_ADMIN || role == ROLE_OWNER)
+        content = (
+          <Model key="container"
+                 model={model}
+                 onClose={closeModel}
+                 updateModel={updateModel}
+                 updateField={updateField}
+                 deleteField={deleteField}
+                 showAlert={showAlert}
+                 showModal={showModal}
+                 modalShowing={nav.modalShowing}
+                 alertShowing={nav.alertShowing}
+                 isEditable={true}/>
+        );
+    }
     
     return [
       <Helmet key="helmet">
         <title>{title}</title>
       </Helmet>,
-      <Model key="container"
-             model={model}
-             onClose={closeModel}
-             updateModel={updateModel}
-             updateField={updateField}
-             deleteField={deleteField}
-             showAlert={showAlert}
-             showModal={showModal}
-             modalShowing={nav.modalShowing}
-             alertShowing={nav.alertShowing}
-             isEditable={true}/>
+      content
     ];
   }
 }
