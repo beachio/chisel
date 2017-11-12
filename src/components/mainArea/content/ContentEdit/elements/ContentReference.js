@@ -21,6 +21,10 @@ export default class ContentReference extends ContentBase {
     this.item = this.props.item;
   }
   
+  componentWillReceiveProps(nextProps) {
+    this.item = nextProps.item;
+  }
+  
   onReferenceNew = () => {
     if (!this.state.isEditable)
       return;
