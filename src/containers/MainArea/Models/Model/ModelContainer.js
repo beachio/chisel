@@ -36,11 +36,8 @@ export class ModelContainer extends Component  {
     const {showAlert, showModal} = this.props.navActions;
     
     let curSite = models.currentSite;
-    if (!curSite)
-      return null;
-
     let model = models.currentModel;
-    if (!model)
+    if (!curSite || !model)
       return null;
 
     let title = `Model: ${model.name} - Site: ${curSite.name} - Chisel`;
