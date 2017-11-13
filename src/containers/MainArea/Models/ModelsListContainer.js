@@ -11,14 +11,20 @@ import {ROLE_ADMIN, ROLE_OWNER} from 'models/UserData';
 import {NoRights} from "components/mainArea/common/NoRights";
 
 
-export class ModelsListContainer extends Component  {
+export class ModelsListContainer extends Component {
+  mainArea;
+
+  componentDidMount() {
+    this.mainArea.scrollTop = 0;
+  }
+
   render() {
     const {models, nav} = this.props;
     const {addModel, deleteModel} = this.props.modelsActions;
     const {showAlert} = this.props.navActions;
     
     let title = `Chisel`;
-    let content = <NoRights key="container" />;
+    let content = <NoRights />;
 
     const curSite = models.currentSite;
     if (curSite) {
@@ -30,8 +36,7 @@ export class ModelsListContainer extends Component  {
       const role = models.role;
       if (role == ROLE_ADMIN || role == ROLE_OWNER)
         content = (
-          <ModelsList key="container"
-                      site={curSite}
+          <ModelsList site={curSite}
                       gotoModel={gotoModel}
                       addModel={addModel}
                       deleteModel={deleteModel}
@@ -41,12 +46,14 @@ export class ModelsListContainer extends Component  {
         );
     }
     
-    return [
-      <Helmet key="helmet">
-        <title>{title}</title>
-      </Helmet>,
-      content
-    ];
+    return (
+      <div className="mainArea" ref={c => this.mainArea = c}>
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
+        {content}
+      </div>
+    );
   }
 }
 

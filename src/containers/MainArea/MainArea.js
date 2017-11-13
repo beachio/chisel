@@ -17,27 +17,14 @@ export class MainArea extends Component {
   lastPage;
 
   cmpNoSites = (
-    <div className="start-working">
-      <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
-      Add new site to start working
-      <div className="hint">Find "Add new site" button at sidebar</div>
+    <div className="mainArea">
+      <div className="start-working">
+        <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
+        Add new site to start working
+        <div className="hint">Find "Add new site" button at sidebar</div>
+      </div>
     </div>
   );
-
-  //TODO: костыльно
-  componentDidUpdate() {
-    const {nav} = this.props;
-
-    if (!this.scrollArea || !nav.initEnded || this.lastPage == nav.openedPage)
-      return;
-
-    if (this.lastPage)
-      this.scrollArea.scrollTop = 0;
-    else
-      setTimeout(() => this.scrollArea.scrollTop = 0, 1);
-
-    this.lastPage = nav.openedPage;
-  }
 
   render() {
     const {models, nav} = this.props;
@@ -64,9 +51,7 @@ export class MainArea extends Component {
         </Helmet>
         <div styleName="wrapper-inner">
           <Sidebar />
-          <div styleName="mainArea" ref={c => this.scrollArea = c}>
-            {content}
-          </div>
+          {content}
         </div>
         <Header />
       </div>

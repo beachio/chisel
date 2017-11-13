@@ -13,6 +13,8 @@ import {NoRights} from "components/mainArea/common/NoRights";
 
 
 export class ModelContainer extends Component  {
+  mainArea;
+
   //on mount: get model ID from URL, then send action "setCurrentModel"
   componentWillMount() {
     let modelId = this.props.params.model;
@@ -31,6 +33,10 @@ export class ModelContainer extends Component  {
         setCurrentModel(newModel);
     }
   }
+
+  componentDidMount() {
+    this.mainArea.scrollTop = 0;
+  }
   
   render() {
     const {models, nav} = this.props;
@@ -38,7 +44,7 @@ export class ModelContainer extends Component  {
     const {showAlert, showModal} = this.props.navActions;
     
     let title = `Chisel`;
-    let content = <NoRights key="container" />;
+    let content = <NoRights />;
 
     const curSite = models.currentSite;
     const model = models.currentModel;
@@ -51,8 +57,7 @@ export class ModelContainer extends Component  {
       const role = models.role;
       if (role == ROLE_ADMIN || role == ROLE_OWNER)
         content = (
-          <Model key="container"
-                 model={model}
+          <Model model={model}
                  onClose={closeModel}
                  updateModel={updateModel}
                  updateField={updateField}
@@ -65,12 +70,14 @@ export class ModelContainer extends Component  {
         );
     }
     
-    return [
-      <Helmet key="helmet">
-        <title>{title}</title>
-      </Helmet>,
-      content
-    ];
+    return (
+      <div className="mainArea" ref={c => this.mainArea = c}>
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
+        {content}
+      </div>
+    );
   }
 }
 

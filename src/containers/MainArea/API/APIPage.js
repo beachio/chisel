@@ -10,7 +10,7 @@ import {NoRights} from "components/mainArea/common/NoRights";
 export class APIPage extends Component  {
   render() {
     return (
-      <div className="start-working" key="container">
+      <div className="start-working">
         <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
         <div className="docs">
           Check <a className="docs-link" href="http://parseplatform.github.io/docs/" target="_blank">Parse</a> docs!
@@ -25,7 +25,7 @@ export class APIPageContainer extends Component  {
     const {models} = this.props;
   
     let title = `Chisel`;
-    let content = <NoRights key="container" />;
+    let content = <NoRights />;
 
     const curSite = models.currentSite;
     if (curSite) {
@@ -33,15 +33,17 @@ export class APIPageContainer extends Component  {
 
       const role = models.role;
       if (role != ROLE_EDITOR)
-        content = <APIPage key="container"/>;
+        content = <APIPage />;
     }
     
-    return [
-      <Helmet key="helmet">
-        <title>{title}</title>
-      </Helmet>,
-      content
-    ];
+    return (
+      <div className="mainArea">
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
+        {content}
+      </div>
+    );
   }
 }
 

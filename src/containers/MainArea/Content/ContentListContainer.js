@@ -11,14 +11,20 @@ import {addItem, deleteItem} from 'ducks/content';
 import {showAlert, CONTENT_URL, ITEM_URL, USERSPACE_URL, SITE_URL} from 'ducks/nav';
 
 
-export class ContentListContainer extends Component  {
+export class ContentListContainer extends Component {
+  mainArea;
+
+  componentDidMount() {
+    this.mainArea.scrollTop = 0;
+  }
+
   render() {
     const {models, content, nav} = this.props;
     const {addItem, deleteItem} = this.props.contentActions;
     const {showAlert} = this.props.navActions;
     
     let cmpContent = (
-      <div className="start-working" key="container">
+      <div className="start-working">
         <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
         There are no models.
       </div>
@@ -39,7 +45,7 @@ export class ContentListContainer extends Component  {
 
       if (!items.length && models.role == ROLE_DEVELOPER) {
         cmpContent = (
-          <div className="start-working" key="container">
+          <div className="start-working">
             <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
             There are no items.
           </div>
@@ -53,8 +59,7 @@ export class ContentListContainer extends Component  {
             `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${CONTENT_URL}/${ITEM_URL}${modelId}~${itemId}`);
         };
 
-        cmpContent = <ContentList key="container"
-                                  items={items}
+        cmpContent = <ContentList items={items}
                                   models={curSite.models}
                                   gotoItem={gotoItem}
                                   addItem={addItem}
@@ -66,19 +71,21 @@ export class ContentListContainer extends Component  {
 
     } else if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN) {
       cmpContent = (
-        <div className="start-working" key="container">
+        <div className="start-working">
           <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
           There are no models. Add any model to start creating content.
         </div>
       );
     }
     
-    return [
-      <Helmet key="helmet">
-        <title>{title}</title>
-      </Helmet>,
-      cmpContent
-    ];
+    return (
+      <div className="mainArea" ref={c => this.mainArea = c}>
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
+        {cmpContent}
+      </div>
+    );
   }
 }
 
