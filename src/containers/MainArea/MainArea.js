@@ -13,9 +13,6 @@ import styles from './MainArea.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export class MainArea extends Component {
-  scrollArea;
-  lastPage;
-
   cmpNoSites = (
     <div className="mainArea">
       <div className="start-working">
@@ -35,13 +32,13 @@ export class MainArea extends Component {
     if (nav.initEnded) {
       let curSite = models.currentSite;
 
-      if (curSite || nav.openedPage == PAGE_PROFILE) {
+      if (curSite)
         title = `Site: ${curSite.name} - Chisel`;
+
+      if (curSite || nav.openedPage == PAGE_PROFILE)
         content = this.props.children;
-        
-      } else {
+      else
         content = this.cmpNoSites;
-      }
     }
     
     return (
