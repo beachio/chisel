@@ -13,10 +13,24 @@ import {showAlert, CONTENT_URL, ITEM_URL, USERSPACE_URL, SITE_URL} from 'ducks/n
 
 export class ContentListContainer extends Component {
   mainArea;
+  lastScroll = 0;
 
   componentDidMount() {
     this.mainArea.scrollTop = 0;
+    this.mainArea.addEventListener('scroll', this.onScroll);
   }
+
+  onScroll = () => {
+    this.lastScroll = this.mainArea.scrollTop;
+  };
+
+  componentWillUnmount() {
+    this.mainArea.removeEventListener('scroll', this.onScroll);
+  }
+
+  keepScroll = () => {
+    this.mainArea.scrollTop = this.lastScroll;
+  };
 
   render() {
     const {models, content, nav} = this.props;
@@ -64,6 +78,7 @@ export class ContentListContainer extends Component {
                                   gotoItem={gotoItem}
                                   addItem={addItem}
                                   deleteItem={deleteItem}
+                                  keepScroll={this.keepScroll}
                                   showAlert={showAlert}
                                   alertShowing={nav.alertShowing}
                                   isEditable={models.role != ROLE_DEVELOPER}/>;

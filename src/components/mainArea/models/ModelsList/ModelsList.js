@@ -37,7 +37,10 @@ export default class ModelsList extends Component {
   componentWillReceiveProps(nextProps) {
     if (!nextProps.alertShowing && this.returnFocus && this.activeInput) {
       this.returnFocus = false;
-      setTimeout(() => this.activeInput.focus(), 1);
+      setTimeout(() => {
+        this.activeInput.focus();
+        this.props.keepScroll();
+      }, 1);
     }
 
     if (nextProps.site != this.site) {
@@ -80,11 +83,11 @@ export default class ModelsList extends Component {
     const error = checkModelName(this.state.modelName);
     if (error) {
       this.props.showAlert(getAlertForNameError(error));
-      this.returnFocus = true;
     } else {
       this.props.addModel(this.state.modelName);
       this.setState({modelName: ""});
     }
+    this.returnFocus = true;
   };
 
   onModelClick = model => {

@@ -14,6 +14,7 @@ import {NoRights} from "components/mainArea/common/NoRights";
 
 export class ModelContainer extends Component  {
   mainArea;
+  lastScroll = 0;
 
   //on mount: get model ID from URL, then send action "setCurrentModel"
   componentWillMount() {
@@ -36,7 +37,20 @@ export class ModelContainer extends Component  {
 
   componentDidMount() {
     this.mainArea.scrollTop = 0;
+    this.mainArea.addEventListener('scroll', this.onScroll);
   }
+
+  onScroll = () => {
+    this.lastScroll = this.mainArea.scrollTop;
+  };
+
+  componentWillUnmount() {
+    this.mainArea.removeEventListener('scroll', this.onScroll);
+  }
+
+  keepScroll = () => {
+    this.mainArea.scrollTop = this.lastScroll;
+  };
   
   render() {
     const {models, nav} = this.props;
@@ -59,6 +73,7 @@ export class ModelContainer extends Component  {
         content = (
           <Model model={model}
                  onClose={closeModel}
+                 keepScroll={this.keepScroll}
                  updateModel={updateModel}
                  updateField={updateField}
                  deleteField={deleteField}

@@ -28,6 +28,9 @@ export default class ContentList extends Component {
     currentModel: null
   };
 
+  activeInput;
+  returnFocus = false;
+
 
   constructor(props) {
     super(props);
@@ -37,6 +40,14 @@ export default class ContentList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!nextProps.alertShowing && this.returnFocus && this.activeInput) {
+      this.returnFocus = false;
+      setTimeout(() => {
+        this.activeInput.focus();
+        this.props.keepScroll();
+      }, 1);
+    }
+
     this.setState({items: nextProps.items});
   }
 
@@ -68,6 +79,8 @@ export default class ContentList extends Component {
     if (event)
       event.preventDefault();
   
+    this.returnFocus = true;
+
     let item = new ContentItemData();
     item.model = this.state.currentModel;
     item.title = this.state.itemTitle;
@@ -119,6 +132,7 @@ export default class ContentList extends Component {
         description: "Please, archieve item before delete it."
       };
     showAlert(params);
+    this.returnFocus = true;
   };
 
   render() {

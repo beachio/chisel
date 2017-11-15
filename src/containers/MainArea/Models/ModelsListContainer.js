@@ -13,10 +13,24 @@ import {NoRights} from "components/mainArea/common/NoRights";
 
 export class ModelsListContainer extends Component {
   mainArea;
+  lastScroll = 0;
 
   componentDidMount() {
     this.mainArea.scrollTop = 0;
+    this.mainArea.addEventListener('scroll', this.onScroll);
   }
+
+  onScroll = () => {
+    this.lastScroll = this.mainArea.scrollTop;
+  };
+
+  componentWillUnmount() {
+    this.mainArea.removeEventListener('scroll', this.onScroll);
+  }
+
+  keepScroll = () => {
+    this.mainArea.scrollTop = this.lastScroll;
+  };
 
   render() {
     const {models, nav} = this.props;
@@ -39,6 +53,7 @@ export class ModelsListContainer extends Component {
           <ModelsList site={curSite}
                       gotoModel={gotoModel}
                       addModel={addModel}
+                      keepScroll={this.keepScroll}
                       deleteModel={deleteModel}
                       showAlert={showAlert}
                       alertShowing={nav.alertShowing}
