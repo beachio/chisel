@@ -8,8 +8,8 @@ export const TIMER_TICK   = 'app/serverStatus/TIMER_TICK';
 
 let timer = 0;
 
-const TIME_A = 3 * 1000;
-const TIME_B = 10 * 1000;
+const TIME_A = 7 * 1000;
+const TIME_B = 20 * 1000;
 
 
 export function logRequest (time) {
