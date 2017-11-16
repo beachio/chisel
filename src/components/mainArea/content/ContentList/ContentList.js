@@ -201,7 +201,7 @@ export default class ContentList extends Component {
                         maintainContainerHeight
                         easing="ease-out">
                 {this.state.items.length > 0 &&
-                  <div styleName="list-item">
+                  <div styleName="list-item" key="header!">
                     <div styleName="colorLabel"></div>
                     <div styleName="type"></div>
                     <div styleName="updated">UPDATED</div>
@@ -250,7 +250,7 @@ export default class ContentList extends Component {
                   })
                 }
                 {isEditable &&
-                  <div styleName="inputs-wrapper">
+                  <div styleName="inputs-wrapper" key="input!">
                     <div styleName="dropdown-wrapper">
                       <DropdownControl suggestionsList={models.map(m => m.name)}
                                        suggest={this.onChangeModel}

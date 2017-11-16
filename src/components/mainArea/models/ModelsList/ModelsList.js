@@ -132,7 +132,7 @@ export default class ModelsList extends Component {
                       disableAllAnimations={!this.animate}
                       easing="ease-out">
               {this.state.models.length > 0 &&
-                <div styleName="list-item list-header">
+                <div styleName="list-item list-header" key="header!">
                   <div styleName="colorLabel"></div>
                   <div styleName="type"></div>
                   <div styleName="fields">FIELDS</div>
@@ -149,7 +149,7 @@ export default class ModelsList extends Component {
 
                 return(
                   <div styleName="list-item"
-                       key={model.name}
+                       key={model.nameId}
                        onClick={() => this.onModelClick(model)}>
                     <div styleName="colorLabel" style={colorStyle}></div>
                     <div styleName="type">
@@ -171,7 +171,7 @@ export default class ModelsList extends Component {
                 );
               })}
               {isEditable &&
-                <div styleName="input-wrapper">
+                <div styleName="input-wrapper" key="input!">
                   <div styleName="input-wrapper-back"></div>
                   <div styleName="input">
                     <InputControl value={this.state.modelName}

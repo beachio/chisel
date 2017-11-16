@@ -244,7 +244,7 @@ export default class Sharing extends Component {
                   );
                 })}
                 {isEditable &&
-                  <div styleName="input-wrapper">
+                  <div styleName="input-wrapper" key="input!">
                     <InputControl placeholder="Enter one or more emails"
                                   value={this.state.input}
                                   autoFocus={true}
