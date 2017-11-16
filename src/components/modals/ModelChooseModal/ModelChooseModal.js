@@ -14,7 +14,6 @@ export default class ModelChooseModal extends Component {
   };
   
   isMult = false;
-  onClose = null;
   callback = null;
   models = [];
   focusElm = null;
@@ -25,7 +24,6 @@ export default class ModelChooseModal extends Component {
     super(props);
     
     this.callback = props.params.callback;
-    this.onClose = props.onClose;
     
     this.models = props.models;
   }
@@ -40,7 +38,6 @@ export default class ModelChooseModal extends Component {
   
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onKeyDown);
-    this.active = false;
   }
   
   onKeyDown = () => {
@@ -51,7 +48,7 @@ export default class ModelChooseModal extends Component {
     if (event.keyCode == 13)
       setTimeout(this.onChoose, 1);
     else if (event.keyCode == 27)
-      setTimeout(this.props.onClose, 1);
+      setTimeout(this.close, 1);
   };
   
   onSelect = model => {
@@ -63,12 +60,17 @@ export default class ModelChooseModal extends Component {
       return;
     
     this.callback(this.state.selectedModel);
-    this.onClose();
+    this.close();
+  };
+
+  close = () => {
+    this.active = false;
+    this.props.onClose();
   };
 
   render() {
     return (
-      <div styleName="modal" onClick={this.onClose}>
+      <div styleName="modal" onClick={this.close}>
 
         <div styleName="modal-inner" onClick={e => e.stopPropagation()}>
           <div styleName="modal-header">
@@ -104,7 +106,7 @@ export default class ModelChooseModal extends Component {
               <div styleName="buttons-inner">
                 <ButtonControl color="gray"
                                value="Cancel"
-                               onClick={this.onClose} />
+                               onClick={this.close} />
               </div>
             </div>
           </div>

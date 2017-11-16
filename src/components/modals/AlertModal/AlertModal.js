@@ -22,14 +22,11 @@ export default class AlertModal extends Component {
   confirmString = '';
   focusElm = null;
   focusBtn = null;
-  onClose = null;
   
   
   constructor(props) {
     super(props);
     
-    this.onClose = props.onClose;
-
     if (props.params.confirmString)
       this.confirmString = props.params.confirmString;
   }
@@ -45,7 +42,6 @@ export default class AlertModal extends Component {
   }
 
   componentWillUnmount() {
-    this.active = false;
     document.removeEventListener('keydown', this.onKeyDown);
   }
 
@@ -57,7 +53,7 @@ export default class AlertModal extends Component {
     if (event.keyCode == 13)
       setTimeout(this.onConfirm, 1);
     else if (event.keyCode == 27)
-      setTimeout(this.onClose, 1);
+      setTimeout(this.close, 1);
   };
   
   onChangeString = event => {
@@ -73,13 +69,17 @@ export default class AlertModal extends Component {
     if (this.type == ALERT_TYPE_CONFIRM) {
       if (this.confirmString == this.state.confirmString) {
         this.props.params.onConfirm();
-        this.onClose();
+        this.close();
       }
-    } else  {
-      this.onClose();
+    } else {
+      this.close();
     }
   };
 
+  close = () => {
+    this.active = false;
+    this.props.onClose();
+  };
 
   render() {
     const {title, description, type, btnText} = this.props.params;
@@ -93,7 +93,7 @@ export default class AlertModal extends Component {
     let descriptionHTML = {__html: description || ''};
 
     return (
-      <div styleName="Modal" onClick={this.onClose}>
+      <div styleName="Modal" onClick={this.close}>
 
         <div styleName="modal-inner" onClick={e => e.stopPropagation()}>
           <div styleName="modal-header">
@@ -118,7 +118,7 @@ export default class AlertModal extends Component {
                   <ButtonControl color="green"
                                  value={btnOKText}
                                  DOMRef={btn => this.focusBtn = btn}
-                                 onClick={this.onClose} />
+                                 onClick={this.close} />
                 </div>
             }
             {
@@ -134,7 +134,7 @@ export default class AlertModal extends Component {
                   <div styleName="buttons-inner">
                     <ButtonControl color="gray"
                                    value="No"
-                                   onClick={this.onClose} />
+                                   onClick={this.close} />
                   </div>
                 </div>
             }

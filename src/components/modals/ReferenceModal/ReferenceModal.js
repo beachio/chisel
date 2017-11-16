@@ -15,7 +15,6 @@ export default class ReferenceModal extends Component {
   };
   
   isMult = false;
-  onClose = null;
   callback = null;
   items = [];
   focusElm = null;
@@ -27,7 +26,6 @@ export default class ReferenceModal extends Component {
     
     this.isMult = props.params.isMult;
     this.callback = props.params.callback;
-    this.onClose = props.onClose;
     
     const {currentItem, existingItems} = props.params;
     const allItems = props.contentItems;
@@ -51,7 +49,6 @@ export default class ReferenceModal extends Component {
   
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onKeyDown);
-    this.active = false;
   }
   
   onKeyDown = () => {
@@ -62,7 +59,7 @@ export default class ReferenceModal extends Component {
     if (event.keyCode == 13)
       setTimeout(this.onChoose, 1);
     else if (event.keyCode == 27)
-      setTimeout(this.props.onClose, 1);
+      setTimeout(this.close, 1);
   };
   
   onSearch = (event) => {
@@ -104,12 +101,17 @@ export default class ReferenceModal extends Component {
     this.callback(this.isMult ?
       this.state.selectedItems :
       this.state.selectedItems[0]);
-    this.onClose();
+    this.close();
+  };
+
+  close = () => {
+    this.active = false;
+    this.props.onClose();
   };
 
   render() {
     return (
-      <div styleName="modal" onClick={this.onClose}>
+      <div styleName="modal" onClick={this.close}>
 
         <div styleName="modal-inner" onClick={e => e.stopPropagation()}>
           <div styleName="content">
@@ -155,7 +157,7 @@ export default class ReferenceModal extends Component {
               <div styleName="buttons-inner">
                 <ButtonControl color="gray"
                                value="Cancel"
-                               onClick={this.onClose} />
+                               onClick={this.close} />
               </div>
             </div>
           </div>

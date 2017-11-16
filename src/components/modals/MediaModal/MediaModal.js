@@ -18,7 +18,6 @@ export default class MediaModal extends Component {
   
   isMult = false;
   active = false;
-  onClose = null;
   callback = null;
   items = [];
   focusElm = null;
@@ -29,7 +28,6 @@ export default class MediaModal extends Component {
     
     this.isMult = props.params.isMult;
     this.callback = props.params.callback;
-    this.onClose = props.onClose;
     
     this.items = store.getState().media.items;
   }
@@ -44,7 +42,6 @@ export default class MediaModal extends Component {
   
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onKeyDown);
-    this.active = false;
   }
   
   onKeyDown = () => {
@@ -55,7 +52,7 @@ export default class MediaModal extends Component {
     if (event.keyCode == 13)
       setTimeout(this.onChoose, 1);
     else if (event.keyCode == 27)
-      setTimeout(this.props.onClose, 1);
+      setTimeout(this.close, 1);
   };
   
   onSearch = (event) => {
@@ -93,12 +90,17 @@ export default class MediaModal extends Component {
       return;
   
     this.callback(this.state.selectedItems);
-    this.onClose();
+    this.close();
+  };
+
+  close = () => {
+    this.active = false;
+    this.props.onClose();
   };
 
   render() {
     return (
-      <div styleName="modal" onClick={this.onClose}>
+      <div styleName="modal" onClick={this.close}>
 
         <div styleName="modal-inner" onClick={e => e.stopPropagation()}>
           <div styleName="content">
@@ -142,7 +144,7 @@ export default class MediaModal extends Component {
               <div styleName="buttons-inner">
                 <ButtonControl color="gray"
                                value="Cancel"
-                               onClick={this.onClose} />
+                               onClick={this.close} />
               </div>
             </div>
           </div>

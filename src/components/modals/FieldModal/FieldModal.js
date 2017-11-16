@@ -32,7 +32,6 @@ export default class FieldModal extends Component {
   typeList = Array.from(FIELD_TYPES.keys());
   field = null;
   updating = false;
-  onClose = null;
 
 
   constructor(props) {
@@ -40,7 +39,6 @@ export default class FieldModal extends Component {
     
     this.field = props.params;
     this.updating = !!this.field.origin;
-    this.onClose = props.onClose;
     
     this.state.name       = this.field.name;
     this.state.nameId     = this.field.nameId;
@@ -62,7 +60,6 @@ export default class FieldModal extends Component {
   
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onKeyDown);
-    this.active = false;
   }
   
   onKeyDown = () => {
@@ -73,7 +70,7 @@ export default class FieldModal extends Component {
     if (event.keyCode == 13)
       setTimeout(this.onSave, 1);
     else if (event.keyCode == 27)
-      setTimeout(this.props.onClose, 1);
+      setTimeout(this.close, 1);
   };
 
   onChangeName = event => {
@@ -114,7 +111,7 @@ export default class FieldModal extends Component {
       return;
     
     if (!this.state.name) {
-      this.onClose();
+      this.close();
       return;
     }
 
@@ -138,14 +135,19 @@ export default class FieldModal extends Component {
       updateField(this.field);
     else
       addField(this.field);
-    this.onClose();
+    this.close();
+  };
+
+  close = () => {
+    this.active = false;
+    this.props.onClose();
   };
 
   render() {
     let headName = this.state.name.length ? this.state.name : '?';
 
     return (
-      <div styleName="modal" onClick={this.onClose}>
+      <div styleName="modal" onClick={this.close}>
 
         <div styleName="modal-inner" onClick={e => e.stopPropagation()}>
           <div styleName="modal-header">
@@ -237,7 +239,7 @@ export default class FieldModal extends Component {
                 <div styleName="buttons-inner">
                   <ButtonControl color="gray"
                                  value="Cancel"
-                                 onClick={this.onClose} />
+                                 onClick={this.close} />
                 </div>
               </div>
             </form>
