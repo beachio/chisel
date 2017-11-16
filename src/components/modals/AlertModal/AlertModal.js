@@ -36,8 +36,7 @@ export default class AlertModal extends Component {
   
   componentDidMount() {
     this.active = true;
-    //TODO: плохая функция
-    document.onkeydown = this.onKeyPress;
+    document.addEventListener('keydown', this.onKeyDown);
   
     if (this.focusElm)
       setTimeout(() => this.focusElm.focus(), 2);
@@ -46,11 +45,11 @@ export default class AlertModal extends Component {
   }
 
   componentWillUnmount() {
-    document.onkeydown = null;
     this.active = false;
+    document.removeEventListener('keydown', this.onKeyDown);
   }
 
-  onKeyPress = () => {
+  onKeyDown = () => {
     let event = window.event;
     event.stopPropagation();
     
@@ -81,15 +80,6 @@ export default class AlertModal extends Component {
     }
   };
 
-  rejectClick = false;
-  onClickInner = () => {
-    this.rejectClick = true;
-  };
-  onClickBg = () => {
-    if (!this.rejectClick)
-      this.onClose();
-    this.rejectClick = false;
-  };
 
   render() {
     const {title, description, type, btnText} = this.props.params;
@@ -103,9 +93,9 @@ export default class AlertModal extends Component {
     let descriptionHTML = {__html: description || ''};
 
     return (
-      <div styleName="Modal" onClick={this.onClickBg}>
+      <div styleName="Modal" onClick={this.onClose}>
 
-        <div styleName="modal-inner" onClick={this.onClickInner}>
+        <div styleName="modal-inner" onClick={e => e.stopPropagation()}>
           <div styleName="modal-header">
             <div styleName="title" dangerouslySetInnerHTML={titleHTML}>
             </div>

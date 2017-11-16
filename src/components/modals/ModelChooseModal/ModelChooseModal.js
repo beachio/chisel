@@ -32,18 +32,18 @@ export default class ModelChooseModal extends Component {
   
   componentDidMount() {
     this.active = true;
-    document.onkeydown = this.onKeyPress;
+    document.addEventListener('keydown', this.onKeyDown);
     
     if (this.focusElm)
       setTimeout(() => this.focusElm.focus(), 2);
   }
   
   componentWillUnmount() {
-    document.onkeydown = null;
+    document.removeEventListener('keydown', this.onKeyDown);
     this.active = false;
   }
   
-  onKeyPress = () => {
+  onKeyDown = () => {
     let event = window.event;
     event.stopPropagation();
     
@@ -65,22 +65,12 @@ export default class ModelChooseModal extends Component {
     this.callback(this.state.selectedModel);
     this.onClose();
   };
-  
-  rejectClick = false;
-  onClickInner = () => {
-    this.rejectClick = true;
-  };
-  onClickBg = () => {
-    if (!this.rejectClick)
-      this.onClose();
-    this.rejectClick = false;
-  };
 
   render() {
     return (
-      <div styleName="modal" onClick={this.onClickBg}>
+      <div styleName="modal" onClick={this.onClose}>
 
-        <div styleName="modal-inner" onClick={this.onClickInner}>
+        <div styleName="modal-inner" onClick={e => e.stopPropagation()}>
           <div styleName="modal-header">
             <div styleName="title">Select model for new item</div>
           </div>
