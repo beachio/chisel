@@ -8,7 +8,7 @@ import {FIELD_APPEARANCE__SHORT_TEXT__SLUG, FIELD_TYPE_MEDIA, FIELD_TYPE_REFEREN
 export const STATUS_DRAFT     = `Draft`;
 export const STATUS_PUBLISHED = `Published`;
 export const STATUS_UPDATED   = `Updated`;
-export const STATUS_ARCHIEVED = `Archieved`;
+export const STATUS_ARCHIVED  = `Archived`;
 
 
 export class ContentItemData {

@@ -6,7 +6,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {filterSpecials, checkURL} from 'utils/common';
-import {STATUS_ARCHIEVED, STATUS_PUBLISHED, STATUS_DRAFT, STATUS_UPDATED} from 'models/ContentData';
+import {STATUS_ARCHIVED, STATUS_PUBLISHED, STATUS_DRAFT, STATUS_UPDATED} from 'models/ContentData';
 import * as ftps from 'models/ModelData';
 
 import ContentString from './elements/ContentString';
@@ -82,7 +82,7 @@ export default class ContentEdit extends Component {
   };
 
   onDiscard = () => {
-    if (this.item.status == STATUS_DRAFT || this.item.status == STATUS_ARCHIEVED)
+    if (this.item.status == STATUS_DRAFT || this.item.status == STATUS_ARCHIVED)
       this.item.fields = new Map(this.fieldsArchive);
     
     this.props.discardItem(this.item);
@@ -97,8 +97,8 @@ export default class ContentEdit extends Component {
     this.updateItem();
   };
   
-  onArchieve = () => {
-    this.props.archieveItem(this.item);
+  onArchive = () => {
+    this.props.archiveItem(this.item);
     this.updateItem();
   };
   
@@ -162,7 +162,7 @@ export default class ContentEdit extends Component {
 
   generateElement(field, value, ref) {
     let {isEditable} = this.props;
-    if (this.item.status == STATUS_ARCHIEVED)
+    if (this.item.status == STATUS_ARCHIVED)
       isEditable = false;
 
     switch (field.type) {
@@ -268,7 +268,7 @@ export default class ContentEdit extends Component {
               <div styleName="button-publish">
                 <ButtonControl color="green"
                                value="Publish"
-                               disabled={this.item.status == STATUS_PUBLISHED || this.item.status == STATUS_ARCHIEVED}
+                               disabled={this.item.status == STATUS_PUBLISHED || this.item.status == STATUS_ARCHIVED}
                                onClick={this.onPublish}/>
               </div>
               <div styleName="button-publish">
@@ -278,7 +278,7 @@ export default class ContentEdit extends Component {
                                onClick={this.onDiscard}/>
               </div>
               {
-                this.item.status == STATUS_ARCHIEVED ?
+                this.item.status == STATUS_ARCHIVED ?
                   <div styleName="button-publish">
                     <ButtonControl color="gray"
                                    value="Restore from archieve"
@@ -287,8 +287,8 @@ export default class ContentEdit extends Component {
                 :
                   <div styleName="button-publish">
                     <ButtonControl color="gray"
-                                   value="Archieve"
-                                   onClick={this.onArchieve}/>
+                                   value="Archive"
+                                   onClick={this.onArchive}/>
                   </div>
               }
             </div>

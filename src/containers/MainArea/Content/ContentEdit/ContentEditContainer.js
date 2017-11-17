@@ -6,7 +6,7 @@ import {Helmet} from "react-helmet";
 
 import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import {ROLE_DEVELOPER} from 'models/UserData';
-import {setCurrentItem, addItem, updateItem, publishItem, discardItem, archieveItem, restoreItem} from 'ducks/content';
+import {setCurrentItem, addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem} from 'ducks/content';
 import {addMediaItem, updateMediaItem, removeMediaItem} from 'ducks/media';
 import {showModal, CONTENT_URL, ITEM_URL, USERSPACE_URL, SITE_URL} from 'ducks/nav';
 import {getContentByModelAndId} from 'utils/data';
@@ -47,7 +47,7 @@ export class ContentEditContainer extends Component {
   
   render() {
     const {models, content} = this.props;
-    const {addItem, updateItem, publishItem, discardItem, archieveItem, restoreItem} = this.props.contentActions;
+    const {addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem} = this.props.contentActions;
     const {showModal} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
     
@@ -82,7 +82,7 @@ export class ContentEditContainer extends Component {
                      addItem={addItem}
                      updateItem={updateItem}
                      publishItem={publishItem}
-                     archieveItem={archieveItem}
+                     archiveItem={archiveItem}
                      restoreItem={restoreItem}
                      discardItem={discardItem}
                      addMediaItem={addMediaItem}
@@ -105,7 +105,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    contentActions: bindActionCreators({setCurrentItem, addItem, updateItem, publishItem, discardItem, archieveItem, restoreItem}, dispatch),
+    contentActions: bindActionCreators({setCurrentItem, addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem}, dispatch),
     mediaActions:   bindActionCreators({addMediaItem, updateMediaItem, removeMediaItem}, dispatch),
     navActions:     bindActionCreators({showModal}, dispatch)
   };

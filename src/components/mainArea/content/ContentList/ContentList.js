@@ -3,7 +3,7 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import FlipMove from 'react-flip-move';
 
-import {ContentItemData, STATUS_DRAFT, STATUS_PUBLISHED, STATUS_UPDATED, STATUS_ARCHIEVED} from 'models/ContentData';
+import {ContentItemData, STATUS_DRAFT, STATUS_PUBLISHED, STATUS_UPDATED, STATUS_ARCHIVED} from 'models/ContentData';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
@@ -14,7 +14,7 @@ import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal
 import styles from './ContentList.sss';
 
 
-const allStatuses = [STATUS_DRAFT, STATUS_PUBLISHED, STATUS_UPDATED, STATUS_ARCHIEVED];
+const allStatuses = [STATUS_DRAFT, STATUS_PUBLISHED, STATUS_UPDATED, STATUS_ARCHIVED];
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentList extends Component {
@@ -118,7 +118,7 @@ export default class ContentList extends Component {
     const title = item.title ? item.title : 'content item';
 
     let params;
-    if (item.status == STATUS_DRAFT || item.status == STATUS_ARCHIEVED)
+    if (item.status == STATUS_DRAFT || item.status == STATUS_ARCHIVED)
       params = {
         type: ALERT_TYPE_CONFIRM,
         title: `Deleting <strong>${title}</strong>`,

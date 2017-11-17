@@ -1,7 +1,7 @@
 import {Parse} from 'parse';
 
 import {store} from '../index';
-import {ContentItemData, STATUS_ARCHIEVED, STATUS_UPDATED, STATUS_PUBLISHED, STATUS_DRAFT} from 'models/ContentData';
+import {ContentItemData, STATUS_ARCHIVED, STATUS_UPDATED, STATUS_PUBLISHED, STATUS_DRAFT} from 'models/ContentData';
 import {SITE_DELETE, MODEL_DELETE, FIELD_ADD, FIELD_UPDATE, FIELD_DELETE} from 'ducks/models';
 import {LOGOUT} from './user';
 import {getRandomColor} from 'utils/common';
@@ -14,7 +14,7 @@ export const ITEM_ADD           = 'app/content/ITEM_ADD';
 export const ITEM_UPDATE        = 'app/content/ITEM_UPDATE';
 export const ITEM_PUBLISH       = 'app/content/ITEM_PUBLISH';
 export const ITEM_DISCARD       = 'app/content/ITEM_DISCARD';
-export const ITEM_ARCHIEVE      = 'app/content/ITEM_ARCHIEVE';
+export const ITEM_ARCHIVE       = 'app/content/ITEM_ARCHIVE';
 export const ITEM_RESTORE       = 'app/content/ITEM_RESTORE';
 export const ITEM_DELETE        = 'app/content/ITEM_DELETE';
 export const SET_CURRENT_ITEM   = 'app/content/SET_CURRENT_ITEM';
@@ -82,7 +82,7 @@ export function updateItem(item) {
     item.draft.updateOrigin();
     send(item.draft.origin.save());
     
-    if (item.status == STATUS_ARCHIEVED)
+    if (item.status == STATUS_ARCHIVED)
       item.fields = new Map(item.draft.fields);
   }
   
@@ -151,9 +151,9 @@ export function discardItem(item) {
   };
 }
 
-export function archieveItem(item) {
+export function archiveItem(item) {
   let updateDeploy = item.status == STATUS_DRAFT;
-  item.status = STATUS_ARCHIEVED;
+  item.status = STATUS_ARCHIVED;
   
   if (item.draft)
     item.fields = new Map(item.draft.fields);
@@ -166,7 +166,7 @@ export function archieveItem(item) {
     });
   
   return {
-    type: ITEM_ARCHIEVE,
+    type: ITEM_ARCHIVE,
     item
   };
 }
@@ -258,7 +258,7 @@ export default function contentReducer(state = initialState, action) {
       
     case ITEM_UPDATE:
     case ITEM_DISCARD:
-    case ITEM_ARCHIEVE:
+    case ITEM_ARCHIVE:
     case ITEM_RESTORE:
       return {...state};
 
