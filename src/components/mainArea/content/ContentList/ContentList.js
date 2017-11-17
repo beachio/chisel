@@ -129,7 +129,7 @@ export default class ContentList extends Component {
       params = {
         type: ALERT_TYPE_ALERT,
         title: `Deleting <strong>${title}</strong>`,
-        description: "Please, archieve item before delete it."
+        description: "Please, archive item before delete it."
       };
     showAlert(params);
     this.returnFocus = true;

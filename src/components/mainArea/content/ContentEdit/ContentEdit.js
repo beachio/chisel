@@ -281,7 +281,7 @@ export default class ContentEdit extends Component {
                 this.item.status == STATUS_ARCHIVED ?
                   <div styleName="button-publish">
                     <ButtonControl color="gray"
-                                   value="Restore from archieve"
+                                   value="Restore from archive"
                                    onClick={this.onRestore}/>
                   </div>
                 :
