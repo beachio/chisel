@@ -97,15 +97,15 @@
     padding: 13px 15px
 
   .radio
-    display: none
-
-    &-wrapper
-      display: flex
-      flex-flow: row nowrap
-      align-items: center
+    display: flex
+    flex-flow: row nowrap
+    align-items: center
 
     &-button
       margin-right: 26px
+
+    &-input
+      display: none
 
     &-label
       cursor: pointer
@@ -129,14 +129,14 @@
       background: #fff
       border: 1px solid #979797
 
-    &:checked + &-label:before
+    &-input:checked + .radio-label:before
       height: 12px
       width: 12px
       border: 5px solid #5CA6DC
 
-    & + &-label:before,
-    &:checked + &-label:before
-      transition: background 0.1s ease
+    &-input + .radio-label:before,
+    &-input:checked + .radio-label:before
+      transition: border 0.1s ease
 
   .switch-wrapper
     margin-top: 6px

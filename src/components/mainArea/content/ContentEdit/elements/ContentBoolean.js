@@ -29,9 +29,9 @@ export default class ContentBoolean extends ContentBase {
         let id1 = _.uniqueId('radio1_');
         let id2 = _.uniqueId('radio2_');
         return (
-          <div styleName="radio-wrapper">
+          <div styleName="radio">
             <div styleName="radio-button">
-              <input styleName="radio"
+              <input styleName="radio-input"
                      type="radio"
                      id={id1}
                      name="radio"
@@ -40,7 +40,7 @@ export default class ContentBoolean extends ContentBase {
               <label styleName="radio-label" htmlFor={id1}>Yes</label>
             </div>
             <div styleName="radio-button">
-              <input styleName="radio"
+              <input styleName="radio-input"
                      type="radio"
                      id={id2}
                      name="radio"
