@@ -9,7 +9,7 @@ import Editor from 'react-medium-editor';
 import ContentBase from './ContentBase';
 import InputControl from 'components/elements/InputControl/InputControl';
 import {MODAL_TYPE_WYSIWYG} from 'ducks/nav';
-import {filterSpecials, checkURL} from 'utils/common';
+import {filterSpecialsAndCapital, checkURL} from 'utils/common';
 
 import * as ftps from 'models/ModelData';
 
@@ -42,9 +42,9 @@ export default class ContentString extends ContentBase {
             if (!value)
               break;
             
-            let slug = filterSpecials(value, "-");
+            let slug = filterSpecialsAndCapital(value, "-");
             if (slug !== value)
-              return "Slug must not contain special symbols!";
+              return "Slug must not contain special symbols and capital letters!";
             break;
           
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__URL:

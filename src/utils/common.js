@@ -11,6 +11,11 @@ export function filterSpecials(str, symb = "_") {
   return str.replace(/\W/g, symb);
 }
 
+export function filterSpecialsAndCapital(str, symb) {
+  str = filterSpecials(str, symb);
+  return str.toLowerCase();
+}
+
 export function getRandomColor() {
   let red   = Math.floor(Math.random() * 256);
   let green = Math.floor(Math.random() * 256);

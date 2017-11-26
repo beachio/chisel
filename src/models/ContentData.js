@@ -1,6 +1,6 @@
 import {Parse} from 'parse';
 
-import {removeOddSpaces, filterSpecials} from 'utils/common';
+import {removeOddSpaces, filterSpecialsAndCapital} from 'utils/common';
 import {getMediaByO, getContentByO} from 'utils/data';
 import {FIELD_APPEARANCE__SHORT_TEXT__SLUG, FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCE} from 'models/ModelData';
 
@@ -40,7 +40,7 @@ export class ContentItemData {
   
     for (let [field, value2] of this.fields) {
       if (field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SLUG)
-        this.fields.set(field, filterSpecials(title, '-'));
+        this.fields.set(field, filterSpecialsAndCapital(title, '-'));
     }
   }
   
