@@ -22,9 +22,6 @@ export default class ContentList extends Component {
     items: [],
     itemTitle: "",
 
-    activeModels: new Set(),
-    activeStatuses: new Set(),
-
     currentModel: null
   };
 
@@ -94,21 +91,12 @@ export default class ContentList extends Component {
   };
 
   onModelClick = model => {
-    let models = this.state.activeModels;
-    if (models.has(model))
-      models.delete(model);
-    else
-      models.add(model);
-    this.setState({activeModels: models, currentModel: model});
+    this.props.filterModel(model);
+    this.setState({currentModel: model});
   };
 
   onStatusClick = status => {
-    let statuses = this.state.activeStatuses;
-    if (statuses.has(status))
-      statuses.delete(status);
-    else
-      statuses.add(status);
-    this.setState({activeStatuses: statuses});
+    this.props.filterStatus(status);
   };
   
   onRemoveClick = (event, item) => {
@@ -136,7 +124,7 @@ export default class ContentList extends Component {
   };
 
   render() {
-    const {isEditable, models} = this.props;
+    const {isEditable, models, filteredModels, filteredStatuses} = this.props;
   
     const eyeDisabled = <img styleName="eye" src={require("./eye-gray.png")} />;
     const eyeEnabled = <img styleName="eye eye-active" src={require("./eye.png")} />;
@@ -155,7 +143,7 @@ export default class ContentList extends Component {
 
                   let eye = eyeDisabled;
                   let styleName = "filters-type filters-typeHidden";
-                  if (this.state.activeModels.has(model)) {
+                  if (filteredModels.has(model)) {
                     eye = eyeEnabled;
                     styleName = "filters-type";
                   }
@@ -177,7 +165,7 @@ export default class ContentList extends Component {
                 allStatuses.map(status => {
                   let eye = eyeDisabled;
                   let styleName = "filters-type filters-typeHidden";
-                  if (this.state.activeStatuses.has(status)) {
+                  if (filteredStatuses.has(status)) {
                     eye = eyeEnabled;
                     styleName = "filters-type";
                   }
@@ -208,8 +196,8 @@ export default class ContentList extends Component {
                   </div>
                 }
                 {this.state.items
-                  .filter(item => !this.state.activeModels.size || this.state.activeModels.has(item.model))
-                  .filter(item => !this.state.activeStatuses.size || this.state.activeStatuses.has(item.status))
+                  .filter(item => !filteredModels.size || filteredModels.has(item.model))
+                  .filter(item => !filteredStatuses.size || filteredStatuses.has(item.status))
                   .map(item => {
                     let title = item.draft ? item.draft.title : item.title;
                     
