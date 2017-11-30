@@ -4321,26 +4321,25 @@ input[type=radio]:checked + .lbl::before {
 }
 
 .ContentEdit---field---3L-mX .ContentEdit---radio---1Vlhp {
-    display: none;
-}
-
-.ContentEdit---field---3L-mX .ContentEdit---radio-wrapper---4nsJI {
-      -js-display: flex;
-      -js-display: flex;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-orient: horizontal;
-      -webkit-box-direction: normal;
-          -ms-flex-flow: row nowrap;
-              flex-flow: row nowrap;
-      -webkit-box-align: center;
-          -ms-flex-align: center;
-              align-items: center;
+    -js-display: flex;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row nowrap;
+            flex-flow: row nowrap;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 
 .ContentEdit---field---3L-mX .ContentEdit---radio-button---1NS8z {
       margin-right: 26px;
+}
+
+.ContentEdit---field---3L-mX .ContentEdit---radio-input---3ARHJ {
+      display: none;
 }
 
 .ContentEdit---field---3L-mX .ContentEdit---radio-label---3Oj73 {
@@ -4368,15 +4367,15 @@ input[type=radio]:checked + .lbl::before {
       border: 1px solid #979797;
 }
 
-.ContentEdit---field---3L-mX .ContentEdit---radio---1Vlhp:checked + .ContentEdit---field---3L-mX .ContentEdit---radio-label---3Oj73:before {
+.ContentEdit---field---3L-mX .ContentEdit---radio-input---3ARHJ:checked + .ContentEdit---radio-label---3Oj73:before {
       height: 12px;
       width: 12px;
       border: 5px solid #5CA6DC;
 }
 
-.ContentEdit---field---3L-mX .ContentEdit---radio---1Vlhp + .ContentEdit---field---3L-mX .ContentEdit---radio-label---3Oj73:before, .ContentEdit---field---3L-mX .ContentEdit---radio---1Vlhp:checked + .ContentEdit---field---3L-mX .ContentEdit---radio-label---3Oj73:before {
-      -webkit-transition: background 0.1s ease;
-      transition: background 0.1s ease;
+.ContentEdit---field---3L-mX .ContentEdit---radio-input---3ARHJ + .ContentEdit---radio-label---3Oj73:before, .ContentEdit---field---3L-mX .ContentEdit---radio-input---3ARHJ:checked + .ContentEdit---radio-label---3Oj73:before {
+      -webkit-transition: border 0.1s ease;
+      transition: border 0.1s ease;
 }
 
 .ContentEdit---field---3L-mX .ContentEdit---switch-wrapper---19-qH {
@@ -4427,7 +4426,7 @@ input[type=radio]:checked + .lbl::before {
     color: #DD5555;
 }
 
-.ContentEdit---status---fnW2Z .ContentEdit---Archieved---3EbZW {
+.ContentEdit---status---fnW2Z .ContentEdit---Archived---2wiA7 {
     color: #b9b9b9;
 }
 
@@ -4669,6 +4668,8 @@ input[type=radio]:checked + .lbl::before {
 
 .ContentEdit---wysiwig---2e2t7 {
   border-bottom: 1px dashed #CCCCCC;
+  max-height: 250px;
+  overflow: scroll;
 }
 
 .ContentEdit---wysiwig---2e2t7:focus {
