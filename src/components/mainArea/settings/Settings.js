@@ -7,13 +7,14 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {checkSiteName, checkSiteDomain, DOMAIN_ERROR_EXIST, DOMAIN_ERROR_SYNTAX} from 'utils/data';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
-import {filterSpecials} from 'utils/common';
+import {filterSpecials, checkURL} from 'utils/common';
 
 
 import styles from './Settings.sss';
 
 const ERROR_BLANK_NAME = "The name is required!";
 const ERROR_URL_SYNTAX  = "The domain URL is wrong!";
+const ERROR_WEBHOOK_SYNTAX  = "The webhook URL is wrong!";
 const ERROR_NAME_EXIST = "This name is already exists";
 const ERROR_URL_EXIST  = "This domain URL is already exists";
 
@@ -23,6 +24,7 @@ export default class Settings extends Component {
   state = {
     name: '',
     domain: '',
+    webhook: '',
     dirty: false,
     error: null,
     icon: null
@@ -37,6 +39,7 @@ export default class Settings extends Component {
 
     this.state.name   = this.site.name;
     this.state.domain = this.site.domain;
+    this.state.webhook= this.site.webhook;
     this.state.icon   = this.site.icon;
   }
 
@@ -44,7 +47,8 @@ export default class Settings extends Component {
     this.site = nextProps.site;
     this.setState({
       name: this.site.name,
-      domain: this.site.domain
+      domain: this.site.domain,
+      webhook: this.site.webhook
     });
   }
 
@@ -56,6 +60,11 @@ export default class Settings extends Component {
   onChangeDomain = event => {
     let domain = event.target.value;
     this.setState({domain, dirty: true, error: null});
+  };
+
+  onChangeWebhook = event => {
+    let webhook = event.target.value;
+    this.setState({webhook, dirty: true, error: null});
   };
 
   onChangeIcon = event => {
@@ -96,6 +105,11 @@ export default class Settings extends Component {
       return false;
     }
 
+    if (!checkURL(this.state.webhook)) {
+      this.setState({error: ERROR_WEBHOOK_SYNTAX});
+      return false;
+    }
+
     if (checkSiteName(this.state.name, this.site)) {
       this.setState({error: ERROR_NAME_EXIST});
       return false;
@@ -114,6 +128,7 @@ export default class Settings extends Component {
     this.setState({dirty: false});
     this.site.name = this.state.name;
     this.site.domain = this.state.domain;
+    this.site.webhook = this.state.webhook;
     this.site.icon = this.state.icon;
     this.props.updateSite(this.site);
   };
@@ -183,6 +198,15 @@ export default class Settings extends Component {
                             value={this.state.domain}
                             readOnly={!isEditable}
                             onChange={this.onChangeDomain} />
+            </div>
+          </div>
+          <div styleName="field">
+            <div styleName="field-title">Webhook URL</div>
+            <div styleName="input-wrapper">
+              <InputControl type="big"
+                            value={this.state.webhook}
+                            readOnly={!isEditable}
+                            onChange={this.onChangeWebhook} />
             </div>
           </div>
           <div styleName="field">

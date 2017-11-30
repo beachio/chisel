@@ -125,7 +125,7 @@ export function publishItem(item) {
   
   send(itemD.origin.save())
     .then(() => send(item.origin.save()))
-    .then(() => send(Parse.Cloud.run('onContentModify')));
+    .then(() => send(Parse.Cloud.run('onContentModify', {URL: item.model.site.webhook})));
   
   return {
     type: ITEM_PUBLISH,
@@ -154,7 +154,7 @@ export function discardItem(item) {
 }
 
 export function archiveItem(item) {
-  let updateDeploy = item.status == STATUS_DRAFT;
+  let callWebhook = item.status == STATUS_PUBLISHED;
   item.status = STATUS_ARCHIVED;
   
   if (item.draft)
@@ -163,8 +163,8 @@ export function archiveItem(item) {
   item.updateOrigin();
   send(item.origin.save())
     .then(() => {
-      if (updateDeploy)
-        return send(Parse.Cloud.run('onContentModify'));
+      if (callWebhook)
+        send(Parse.Cloud.run('onContentModify', {URL: item.model.site.webhook}));
     });
   
   return {
@@ -199,7 +199,7 @@ export function deleteItem(item) {
     tableName: item.model.tableName,
     itemId: item.origin.id,
   }))
-    .then(() => send(Parse.Cloud.run('onContentModify')));
+    .then(() => send(Parse.Cloud.run('onContentModify', {URL: item.model.site.webhook})));
   
   return {
     type: ITEM_DELETE,

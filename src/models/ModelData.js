@@ -9,6 +9,7 @@ export class SiteData {
   origin = null;
 
   domain = "";
+  webhook = '';
   icon = null;
 
   //setter
@@ -35,10 +36,11 @@ export class SiteData {
   setOrigin(origin) {
     this.origin = origin;
 
-    if (origin.get('name'))   this.name   = origin.get('name');
-    if (origin.get('nameId')) this.nameId = origin.get('nameId');
-    if (origin.get('domain')) this.domain = origin.get('domain');
-    if (origin.get('icon'))   this.icon =   origin.get('icon');
+    if (origin.get('name'))     this.name     = origin.get('name');
+    if (origin.get('nameId'))   this.nameId   = origin.get('nameId');
+    if (origin.get('domain'))   this.domain   = origin.get('domain');
+    if (origin.get('webhook'))  this.webhook  = origin.get('webhook');
+    if (origin.get('icon'))     this.icon     = origin.get('icon');
 
     return this;
   }
@@ -47,10 +49,11 @@ export class SiteData {
     if (!this.origin)
       this.origin = new SiteData.OriginClass;
 
-    this.origin.set("name",   this.name);
-    this.origin.set("nameId", this.nameId);
-    this.origin.set("domain", this.domain);
-    this.origin.set("icon",   this.icon);
+    this.origin.set("name",     this.name);
+    this.origin.set("nameId",   this.nameId);
+    this.origin.set("domain",   this.domain);
+    this.origin.set("webhook",  this.webhook);
+    this.origin.set("icon",     this.icon);
 
     this.origin.set("owner",  this.owner.origin);
   }
