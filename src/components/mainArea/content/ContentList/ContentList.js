@@ -22,6 +22,8 @@ export default class ContentList extends Component {
     items: [],
     itemTitle: "",
 
+    searchText: '',
+
     currentModel: null
   };
 
@@ -70,6 +72,11 @@ export default class ContentList extends Component {
     } else if (event.keyCode == 27) {
       this.setState({itemTitle: ""});
     }
+  };
+
+  onSearch = event => {
+    let searchText = event.target.value;
+    this.setState({searchText});
   };
 
   onAddItem = event => {
@@ -129,6 +136,19 @@ export default class ContentList extends Component {
     const eyeDisabled = <img styleName="eye" src={require("./eye-gray.png")} />;
     const eyeEnabled = <img styleName="eye eye-active" src={require("./eye.png")} />;
 
+    const visibleItems =
+      this.state.items
+        .filter(item => !filteredModels.size || filteredModels.has(item.model))
+        .filter(item => !filteredStatuses.size || filteredStatuses.has(item.status))
+        .filter(item => {
+          const sText = this.state.searchText;
+          if (!sText.length)
+            return true;
+
+          const title = item.draft ? item.draft.title : item.title;
+          return title && title.toLowerCase().indexOf(sText.toLowerCase()) != -1;
+        });
+
     return (
       <ContainerComponent title="Content">
         <div styleName="content-wrapper">
@@ -183,31 +203,35 @@ export default class ContentList extends Component {
           
           <div styleName="list-wrapper">
             <div styleName="list">
+              <div styleName="inputs-wrapper search">
+                <InputControl icon="search"
+                              autoFocus
+                              value={this.state.searchText}
+                              onChange={this.onSearch} />
+              </div>
               <FlipMove duration={250}
                         enterAnimation="accordionVertical"
                         leaveAnimation="accordionVertical"
                         maintainContainerHeight
                         easing="ease-out">
-                {this.state.items.length > 0 &&
+                {visibleItems.length > 0 &&
                   <div styleName="list-item" key="header!">
                     <div styleName="colorLabel"></div>
                     <div styleName="type"></div>
                     <div styleName="updated">UPDATED</div>
                   </div>
                 }
-                {this.state.items
-                  .filter(item => !filteredModels.size || filteredModels.has(item.model))
-                  .filter(item => !filteredStatuses.size || filteredStatuses.has(item.status))
+                {visibleItems
                   .map(item => {
-                    let title = item.draft ? item.draft.title : item.title;
+                    const title = item.draft ? item.draft.title : item.title;
                     
                     let updatedDate = item.draft ? item.draft.origin.updatedAt : item.origin.updatedAt;
                     if (!updatedDate)
                       updatedDate = new Date();
-                    let updatedStr = getRelativeTime(updatedDate);
-  
-                    let colorStyle = {background: item.color};
-                    let key = item.origin && item.origin.id ? item.origin.id : Math.random();
+                    const updatedStr = getRelativeTime(updatedDate);
+
+                    const colorStyle = {background: item.color};
+                    const key = item.origin && item.origin.id  ?  item.origin.id  :  Math.random();
   
                     return(
                       <div styleName="list-item"
@@ -248,7 +272,6 @@ export default class ContentList extends Component {
                       <InputControl placeholder="Create a new Content Record"
                                     value={this.state.itemTitle}
                                     icon="plus"
-                                    autoFocus
                                     onIconClick={this.onAddItem}
                                     onChange={this.onItemTitleChange}
                                     onKeyDown={this.onKeyDown} />
