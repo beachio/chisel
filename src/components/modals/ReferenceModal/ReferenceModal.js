@@ -58,8 +58,8 @@ export default class ReferenceModal extends Component {
     //Enter or Esc pressed
     if (event.keyCode == 13)
       setTimeout(this.onChoose, 1);
-    else if (event.keyCode == 27)
-      setTimeout(this.close, 1);
+  //  else if (event.keyCode == 27)
+    //  setTimeout(this.close, 1);
   };
   
   onSearch = (event) => {
@@ -93,6 +93,14 @@ export default class ReferenceModal extends Component {
       this.setState({selectedItems: [item]});
     }
   };
+
+  onSearchKeyDown = event => {
+    event.stopPropagation();
+
+    //Esc pressed
+    if (event.keyCode == 27)
+      this.setState({searchText: ``});
+  };
   
   onChoose = () => {
     if (!this.state.selectedItems.length || !this.active)
@@ -120,6 +128,7 @@ export default class ReferenceModal extends Component {
                             label="search entries"
                             value={this.state.searchText}
                             DOMRef={inp => this.focusElm = inp}
+                            onKeyDown={this.onSearchKeyDown}
                             onChange={this.onSearch} />
             </div>
 

@@ -45,14 +45,14 @@ export default class MediaModal extends Component {
   }
   
   onKeyDown = () => {
-    let event = window.event;
+    const event = window.event;
     event.stopPropagation();
     
     //Enter or Esc pressed
     if (event.keyCode == 13)
       setTimeout(this.onChoose, 1);
-    else if (event.keyCode == 27)
-      setTimeout(this.close, 1);
+  //  else if (event.keyCode == 27)
+    //  setTimeout(this.close, 1);
   };
   
   onSearch = (event) => {
@@ -85,6 +85,14 @@ export default class MediaModal extends Component {
     }
   };
 
+  onSearchKeyDown = event => {
+    event.stopPropagation();
+
+    //Esc pressed
+    if (event.keyCode == 27)
+      this.setState({searchText: ``});
+  };
+
   onChoose = () => {
     if (!this.state.selectedItems.length || !this.active)
       return;
@@ -109,6 +117,7 @@ export default class MediaModal extends Component {
                             label="search media files"
                             DOMRef={inp => this.focusElm = inp}
                             value={this.state.searchText}
+                            onKeyDown={this.onSearchKeyDown}
                             onChange={this.onSearch} />
             </div>
 
