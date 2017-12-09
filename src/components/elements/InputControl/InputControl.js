@@ -9,7 +9,8 @@ import styles from './InputControl.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class InputControl extends Component {
   render() {
-    let {label, type, value, placeholder, onChange, readOnly, autoFocus, onKeyDown, onBlur, DOMRef, icon, onIconClick, inputType} = this.props;
+    let {label, type, value, placeholder, onChange, readOnly, autoFocus, onKeyDown, onBlur, DOMRef, icon,
+      onIconClick, inputType} = this.props;
     
     if (value == undefined || value == null)
       value = ``;
