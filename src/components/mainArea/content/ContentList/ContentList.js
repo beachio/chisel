@@ -61,7 +61,7 @@ export default class ContentList extends Component {
     this.setState({itemTitle: title});
   };
 
-  onKeyDown = event => {
+  onNewKeyDown = event => {
     if (this.props.alertShowing)
       return;
     
@@ -75,8 +75,17 @@ export default class ContentList extends Component {
   };
 
   onSearch = event => {
-    let searchText = event.target.value;
+    const searchText = event.target.value;
     this.setState({searchText});
+  };
+
+  onSearchKeyDown = event => {
+    if (this.props.alertShowing)
+      return;
+
+    //Esc pressed
+    if (event.keyCode == 27)
+      this.setState({searchText: ``});
   };
 
   onAddItem = event => {
@@ -207,6 +216,7 @@ export default class ContentList extends Component {
                 <InputControl icon="search"
                               autoFocus
                               value={this.state.searchText}
+                              onKeyDown={this.onSearchKeyDown}
                               onChange={this.onSearch} />
               </div>
               <FlipMove duration={250}
@@ -274,7 +284,7 @@ export default class ContentList extends Component {
                                     icon="plus"
                                     onIconClick={this.onAddItem}
                                     onChange={this.onItemTitleChange}
-                                    onKeyDown={this.onKeyDown} />
+                                    onKeyDown={this.onNewKeyDown} />
                     </div>
                   </div>
                 }
