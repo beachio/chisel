@@ -1258,6 +1258,16 @@ input[type=radio]:checked + .lbl::before {
   cursor: pointer;
 }
 
+.InputControl---search---2_LX2 {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  right: 15px;
+  width: 14px;
+  height: 14px;
+}
+
 .InputControl---input---2pUgF {
   background: #FFFFFF;
   border: 1px solid #CCCCCC;
@@ -3959,7 +3969,7 @@ input[type=radio]:checked + .lbl::before {
       -ms-flex-align: center;
           align-items: center;
 
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
 
   margin-top: 15px;
@@ -3975,6 +3985,10 @@ input[type=radio]:checked + .lbl::before {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 75%;
             flex: 0 0 75%;
+}
+
+.ContentList---search---1WjUX {
+  margin-bottom: 15px;
 }
 
 .ContentList---list-wrapper---255Ir {
