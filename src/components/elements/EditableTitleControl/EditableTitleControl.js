@@ -33,7 +33,7 @@ export default class EditableTitleControl extends Component {
       wText = MIN_TEXT;
     
     this.testTextElm.innerText = wText;
-    let width = this.testTextElm.clientWidth * 1.1;
+    let width = this.testTextElm.clientWidth + 15;
     if (width < this.minTextWidth)
       width = this.minTextWidth;
 
@@ -47,15 +47,15 @@ export default class EditableTitleControl extends Component {
       fontFamily: "'Open Sans', sans-serif",
       opacity: '.01',
       position: 'absolute',
-      top: '0',
-      left: '0',
+      top: 0,
+      letterSpacing: this.props.isSmall ? '0.46px' : '0.83px',
       zIndex:'-1',
     };
     Object.assign(this.testTextElm.style, style);
     document.body.appendChild(this.testTextElm);
   
     this.testTextElm.innerText = MIN_TEXT;
-    this.minTextWidth = this.testTextElm.clientWidth * 1.1;
+    this.minTextWidth = this.testTextElm.clientWidth + 15;
 
     this.setText(this.props.text);
     this.startText = this.props.text;
@@ -67,6 +67,10 @@ export default class EditableTitleControl extends Component {
     this.setText(nextProps.text);
     this.startText = nextProps.text;
     this.editable = !!nextProps.update;
+  }
+
+  componentWillUnmount() {
+    document.body.removeChild(this.testTextElm);
   }
 
   onEditClick = () => {
