@@ -21,10 +21,6 @@ export default class ContentNumber extends ContentBase {
     this.parseFunc = this.field.type == ftps.FIELD_TYPE_INTEGER ? parseInt : parseFloat;
   }
   
-  componentWillReceiveProps(nextProps) {
-    this.setState({isEditable: nextProps.isEditable});
-  }
-  
   getDefaultValue() {
     if (this.field.isList)
       return [];
