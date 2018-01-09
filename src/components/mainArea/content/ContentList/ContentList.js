@@ -177,7 +177,7 @@ export default class ContentList extends Component {
                     styleName = "filters-type";
                   }
 
-                  return(
+                  return (
                     <div styleName={styleName} key={key} onClick={() => this.onModelClick(model)}>
                       {model.name}
                       {eye}
@@ -219,6 +219,11 @@ export default class ContentList extends Component {
                               onKeyDown={this.onSearchKeyDown}
                               onChange={this.onSearch} />
               </div>
+              {visibleItems.length <= 0 &&
+                <div styleName="list-no-items">
+                  There are no items here.
+                </div>
+              }
               <FlipMove duration={250}
                         enterAnimation="accordionVertical"
                         leaveAnimation="accordionVertical"
