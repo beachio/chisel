@@ -176,7 +176,6 @@ export default class ContentEdit extends Component {
                               setFieldValue={this.setFieldValue}
                               showModal={this.props.showModal}
                               updateItemTitle={this.updateItemTitle} />;
-        break;
 
       case ftps.FIELD_TYPE_FLOAT:
       case ftps.FIELD_TYPE_INTEGER:
@@ -186,7 +185,6 @@ export default class ContentEdit extends Component {
                               value={value}
                               isEditable={isEditable}
                               setFieldValue={this.setFieldValue} />;
-        break;
 
       case ftps.FIELD_TYPE_BOOLEAN:
         return <ContentBoolean ref={ref}
@@ -195,7 +193,6 @@ export default class ContentEdit extends Component {
                                value={value}
                                isEditable={isEditable}
                                setFieldValue={this.setFieldValue} />;
-        break;
 
       case ftps.FIELD_TYPE_DATE:
         return <ContentDate ref={ref}
@@ -204,7 +201,6 @@ export default class ContentEdit extends Component {
                             value={value}
                             isEditable={isEditable}
                             setFieldValue={this.setFieldValue} />;
-        break;
   
       case ftps.FIELD_TYPE_MEDIA:
         return <ContentMedia ref={ref}
@@ -218,7 +214,6 @@ export default class ContentEdit extends Component {
                              updateMediaItem={this.props.updateMediaItem}
                              removeMediaItem={this.props.removeMediaItem}
                              showModal={this.props.showModal} />;
-        break;
 
       case ftps.FIELD_TYPE_REFERENCE:
         return <ContentReference ref={ref}
@@ -231,7 +226,6 @@ export default class ContentEdit extends Component {
                                  showModal={this.props.showModal}
                                  addItem={this.addItem}
                                  onReferenceClick={this.onReferenceClick} />;
-        break;
 
     }
   }
