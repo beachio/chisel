@@ -7,24 +7,15 @@ const baseWebpackConfig = require('./webpack.base.config');
 
 
 module.exports = merge(baseWebpackConfig, {
+  mode: 'production',
   plugins: [
     new ExtractTextPlugin({
       filename: '[name].min.css'
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        screw_ie8: true
-      }
-    }),
+    })
     /*new StatsPlugin('webpack.stats.json', {
       source: false,
       modules: false
-    }),*/
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': '"production"'
-      }
-    })
+    })*/
   ],
   module: {
     rules: [
