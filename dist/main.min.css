@@ -636,54 +636,6 @@ template {
       cursor: pointer;
       font-size: 12px;
 }
-.Sidebar---sidebar---2oRaL {
-  margin-top: 60px;
-  overflow-x: hidden;
-  -js-display: flex;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  background: #f1f1f1;
-  height: calc(100vh - 60px);
-  width: 240px;
-  -webkit-transform: translate3d(0, 0, 0);
-          transform: translate3d(0, 0, 0);
-}
-
-  .Sidebar---sidebar---2oRaL .Sidebar---answer-wrapper---ny_jc {
-    position: relative;
-    flex: 0 0 100px;
-}
-
-  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p {
-    height: 32px;
-    width: 32px;
-    border-radius: 100%;
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-            transform: translateX(-50%);
-    background: #FFFFFF;
-    border: 1px solid #CCCCCC;
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.10);
-    transition: box-shadow 0.1s ease;
-    will-change: transition;
-    -js-display: flex;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-
-  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p:hover {
-  box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.10);
-}
-
-  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p .Sidebar---icon---30f0L svg {
-      height: 15px;
-}
 .Header---header---1OKbu {
   position: fixed;
   background: #fff;
@@ -742,6 +694,54 @@ template {
 
   .Header---header---1OKbu .Header---logout---53m2m:hover {
   opacity: 1;
+}
+.Sidebar---sidebar---2oRaL {
+  margin-top: 60px;
+  overflow-x: hidden;
+  -js-display: flex;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  background: #f1f1f1;
+  height: calc(100vh - 60px);
+  width: 240px;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
+
+  .Sidebar---sidebar---2oRaL .Sidebar---answer-wrapper---ny_jc {
+    position: relative;
+    flex: 0 0 100px;
+}
+
+  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p {
+    height: 32px;
+    width: 32px;
+    border-radius: 100%;
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+    background: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.10);
+    transition: box-shadow 0.1s ease;
+    will-change: transition;
+    -js-display: flex;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p:hover {
+  box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.10);
+}
+
+  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p .Sidebar---icon---30f0L svg {
+      height: 15px;
 }
 .MainArea---wrapper---CERgj {
   overflow: hidden;
