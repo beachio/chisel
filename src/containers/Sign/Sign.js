@@ -5,8 +5,8 @@ import CSSModules from 'react-css-modules';
 import {Helmet} from "react-helmet";
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
-import {login, register, restorePassword, resendVerEmail,
-  ERROR_USER_EXISTS, ERROR_WRONG_PASS, ERROR_UNVERIF, ERROR_OTHER, NO_ERROR} from 'ducks/user';
+import {login, register, restorePassword, resendVerEmail, resetStatus,
+  ERROR_USER_EXISTS, ERROR_WRONG_PASS, ERROR_UNVERIF, ERROR_OTHER, OK} from 'ducks/user';
 import {parseURLParams} from 'utils/common';
 
 import styles from './Sign.sss';
@@ -46,24 +46,31 @@ export class Sign extends Component  {
       this.state.mode = urlParams.mode;
     if (urlParams.email)
       this.state.email = urlParams.email;
+
+    props.userActions.resetStatus();
   }
   
   componentWillReceiveProps(nextProps) {
-    const {error, serverStatus} = nextProps;
-    
+    const {user, serverStatus} = nextProps;
+
+    const status = user.status;
     let mode = this.state.mode;
-    if (mode == MODE_REG && error == NO_ERROR)
-      mode = MODE_REG_MAIL;
-    if (mode == MODE_FORGOT && error == NO_ERROR)
-      mode = MODE_FORGOT_MAIL;
-    if (mode == MODE_LOGIN && error == ERROR_UNVERIF)
-      mode = MODE_UNVERIF;
+
     if (serverStatus.problemB)
       mode = MODE_SERVER_DOWN;
-    
+    else if (!status)
+      return;
+    else if (mode == MODE_REG     && status == OK)
+      mode = MODE_REG_MAIL;
+    else if (mode == MODE_FORGOT  && status == OK)
+      mode = MODE_FORGOT_MAIL;
+    else if (mode == MODE_LOGIN   && status == ERROR_UNVERIF)
+      mode = MODE_UNVERIF;
+
+    this.props.userActions.resetStatus();
     this.setState({
-      error,
-      lock: !error,
+      error: status,
+      lock: !status,
       mode
     });
   }
@@ -351,14 +358,14 @@ export class Sign extends Component  {
 
 function mapStateToProps(state) {
   return {
-    error:        state.user.error,
+    user:         state.user,
     serverStatus: state.serverStatus
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators({login, register, restorePassword, resendVerEmail}, dispatch)
+    userActions: bindActionCreators({login, register, restorePassword, resendVerEmail, resetStatus}, dispatch)
   };
 }
 
