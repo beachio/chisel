@@ -64,8 +64,14 @@ export default class EditableTitleControl extends Component {
   }
   
   componentWillReceiveProps(nextProps) {
-    this.setText(nextProps.text);
-    this.startText = nextProps.text;
+    const {text} = nextProps;
+
+    //костыль для React 16.3.0
+    if (this.startText == text)
+      return;
+
+    this.setText(text);
+    this.startText = text;
     this.editable = !!nextProps.update;
   }
 
