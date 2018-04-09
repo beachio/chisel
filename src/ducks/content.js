@@ -139,7 +139,7 @@ export function discardItem(item) {
     item.status = STATUS_PUBLISHED;
   
   item.updateOrigin();
-  send(item.origin.save);
+  send(item.origin.save());
   
   if (item.draft) {
     item.draft.fields = new Map(item.fields);
