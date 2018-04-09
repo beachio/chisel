@@ -2743,6 +2743,15 @@ input[type=radio]:checked + .lbl::before {
     height: 24px;
     width: 24px;
 }
+.JSONView---json-wrapper---v2VwP {
+  width: 100%;
+  padding-left: 30px;
+  text-align: left;
+  font-size: 13px;
+  color: #5a5a5a;
+
+  position: relative
+}
 .EditableTitleControl---wrapper---2Bmz6 {
   /*width: 80% */
   position: relative;
@@ -2795,15 +2804,6 @@ input[type=radio]:checked + .lbl::before {
 
 .EditableTitleControl---wrapper-hover---1a51R:hover .EditableTitleControl---edit---2fA65 {
   opacity: 0.99;
-}
-.JSONView---json-wrapper---v2VwP {
-  width: 100%;
-  padding-left: 30px;
-  text-align: left;
-  font-size: 13px;
-  color: #5a5a5a;
-
-  position: relative
 }
 .UserProfile---content---3Z7XE {
   -js-display: flex;
