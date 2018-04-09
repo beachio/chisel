@@ -10,7 +10,7 @@ program.option('--port [port]', 'the port to run Chisel');
 
 program.parse(process.argv);
 
-let port = program.port || process.env.PORT || 9000;
+const port = program.port || process.env.PORT || 9000;
 
 let configServerURL = program.serverURL || process.env.REACT_APP_CHISEL_SERVER_URL || "http://localhost:1337/parse";
 let configAppId = program.appId || process.env.REACT_APP_CHISEL_APP_ID || "d5701a37cf242d5ee398005d997e4229";
