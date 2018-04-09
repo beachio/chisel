@@ -44,11 +44,11 @@ export default class ModelsList extends Component {
     }
 
     if (nextProps.site != this.site) {
+      this.site = nextProps.site;
       this.animate = false;
       this.setState({modelName: ""});
     }
 
-    this.site = nextProps.site;
     this.setState({models: this.site.models.slice()});
   }
 

@@ -36,9 +36,12 @@ export default class Sharing extends Component {
       this.returnFocus = false;
       setTimeout(() => this.activeInput.focus(), 1);
     }
-    this.setState({collaborations: nextProps.collaborations});
+
     if (nextProps.collaborations != this.state.collaborations)
-      this.setState({input: ""});
+      this.setState({
+        collaborations: nextProps.collaborations,
+        input: ""
+      });
   }
 
   onInputChange = event => {
