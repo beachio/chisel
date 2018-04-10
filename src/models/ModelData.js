@@ -116,7 +116,12 @@ export class ModelData {
   }
 
   setTableName() {
-    let email = filterSpecials(this.site.owner.email);
+    const email =
+      encodeURIComponent(this.site.owner.email)
+        .replace(/[!'()*.~-]/g, c =>
+          '%' + c.charCodeAt(0).toString(16)
+        )
+        .replace(/%/g, `_`);
     this.tableName = `ct__${email}__${this.site.nameId}__${this.nameId}`;
   }
 
