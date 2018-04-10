@@ -14,7 +14,7 @@
     "start_dev": "node build/server.js",
     "build_dev": "rimraf dist && webpack --config build/webpack.dev.config.js",
     "build_prod": "node build/build.js",
-    "localrun": "node build/local.run.js"
+    "local_run": "node build/local.run.js"
   },
   "bin": {
     "chisel-cms": "./bin/chisel-cms"
