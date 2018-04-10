@@ -23,6 +23,13 @@ export default class EditableTitleControl extends Component {
   startText = undefined;
 
 
+  constructor(props) {
+    super(props);
+
+    this.startText = props.text;
+    this.editable = !props.disabled && !!props.update;
+  }
+
   setText(text) {
     text = text ? text : '';
     
@@ -42,7 +49,7 @@ export default class EditableTitleControl extends Component {
 
   componentDidMount() {
     this.testTextElm = document.createElement('div');
-    let style = {
+    const style = {
       fontSize: this.props.isSmall ? '12px' : '20px',
       fontFamily: "'Open Sans', sans-serif",
       opacity: '.01',
@@ -58,9 +65,6 @@ export default class EditableTitleControl extends Component {
     this.minTextWidth = this.testTextElm.clientWidth + 15;
 
     this.setText(this.props.text);
-    this.startText = this.props.text;
-
-    this.editable = !!this.props.update;
   }
   
   componentWillReceiveProps(nextProps) {
@@ -72,7 +76,7 @@ export default class EditableTitleControl extends Component {
 
     this.setText(text);
     this.startText = text;
-    this.editable = !!nextProps.update;
+    this.editable = !nextProps.disabled && !!nextProps.update;
   }
 
   componentWillUnmount() {

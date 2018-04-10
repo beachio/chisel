@@ -5,7 +5,6 @@ import CSSModules from 'react-css-modules';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
-import {filterSpecials, checkURL} from 'utils/common';
 import {STATUS_ARCHIVED, STATUS_PUBLISHED, STATUS_DRAFT, STATUS_UPDATED} from 'models/ContentData';
 import * as ftps from 'models/ModelData';
 
@@ -37,7 +36,6 @@ export default class ContentEdit extends Component {
   
   wait = false;
   waitSave = false;
-  mediaTimeouts = {};
   
   fieldElements = [];
   fieldElementRefs = [];
@@ -300,7 +298,8 @@ export default class ContentEdit extends Component {
       <div>
         <EditableTitleControl text={this.state.title}
                               placeholder={"Item title"}
-                              update={isEditable ? this.updateItemTitle : null} />
+                              update={isEditable ? this.updateItemTitle : null}
+                              disabled={!this.item.model.hasTitle()} />
         <EditableTitleControl text={this.item.model.name}
                               isSmall={true} />
       </div>
