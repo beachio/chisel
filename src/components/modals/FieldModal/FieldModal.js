@@ -192,34 +192,19 @@ export default class FieldModal extends Component {
               </div>
 
               <div styleName="input-wrapper">
-                {
-                  (this.updating || this.state.isTitle) ?
-                    <InputControl label="Type"
-                                  icon="lock"
-                                  value={this.state.type}
-                                  readOnly={true} />
-                  :
-                    <DropdownControl label="Type"
-                                     suggestionsList={this.typeList}
-                                     suggest={this.onChangeType}
-                                     current={this.state.type} />
-                }
-                
+                <DropdownControl label="Type"
+                                 disabled={this.updating || this.state.isTitle}
+                                 suggestionsList={this.typeList}
+                                 suggest={this.onChangeType}
+                                 current={this.state.type} />
               </div>
 
               <div styleName="input-wrapper">
-                {
-                  this.state.isTitle ?
-                    <InputControl label="Appearance"
-                                  icon="lock"
-                                  value={this.state.appearance}
-                                  readOnly={true} />
-                  :
-                    <DropdownControl label="Appearance"
-                                     suggestionsList={this.state.appList}
-                                     suggest={this.onChangeAppearance}
-                                     current={this.state.appearance} />
-                }
+                <DropdownControl label="Appearance"
+                                 disabled={this.state.isTitle}
+                                 suggestionsList={this.state.appList}
+                                 suggest={this.onChangeAppearance}
+                                 current={this.state.appearance} />
               </div>
 
               <div styleName="input-wrapper">

@@ -3,6 +3,8 @@ import CSSModules from 'react-css-modules';
 import classNames from 'classnames';
 import InlineSVG from 'svg-inline-react';
 
+import InputControl from 'components/elements/InputControl/InputControl';
+
 import styles from './DropdownControl.sss';
 
 
@@ -10,32 +12,36 @@ import styles from './DropdownControl.sss';
 export default class DropdownControl extends Component {
   state = {
     suggestionValue: '',
-    suggestionsVisibility: false
+    suggestionsVisibility: false,
+    disabled: false
   };
   suggestionsList = [];
   onSuggest = null;
 
+
   constructor(props) {
     super(props);
     
-    const {suggestionsList, suggest, current} = props;
+    const {suggestionsList, suggest, current, disabled} = props;
     this.onSuggest = suggest;
     this.suggestionsList = suggestionsList;
-  
+
+    this.state.disabled = disabled;
+
     this.state.suggestionValue = current;
     if (suggestionsList.indexOf(current) == -1)
       this.state.suggestionValue = suggestionsList[0];
   }
 
   componentWillReceiveProps(nextProps) {
-    const {suggestionsList, current} = nextProps;
+    const {suggestionsList, current, disabled} = nextProps;
     
     this.suggestionsList = suggestionsList;
   
     if (suggestionsList.indexOf(current) != -1)
-      this.setState({suggestionValue: current});
+      this.setState({suggestionValue: current, disabled});
     else
-      this.setState({suggestionValue: suggestionsList[0]});
+      this.setState({suggestionValue: suggestionsList[0], disabled});
   }
 
   onSuggestionClick = event => {
@@ -63,22 +69,29 @@ export default class DropdownControl extends Component {
   render() {
     const {label, type} = this.props;
 
-    let wrapperClasses = classNames({
+    if (this.state.disabled)
+      return <InputControl label={label}
+                           icon="lock"
+                           value={this.state.suggestionValue}
+                           readOnly={true} />;
+
+
+    const wrapperClasses = classNames({
       'input-wrapper type-wrapper': type === undefined,
       'input-wrapper type-wrapper dropdown-big': type === 'big'
     });
 
-    let inputClasses = classNames({
+    const inputClasses = classNames({
       'input': true,
       'input suggestions-visible': this.state.suggestionsVisibility
     });
 
-    let arrowClasses = classNames({
+    const arrowClasses = classNames({
       'arrow-down': true,
       'arrow-down arrow-rotated': this.state.suggestionsVisibility
     });
 
-    let suggestions = this.suggestionsList.map(suggestionsItem => (
+    const suggestions = this.suggestionsList.map(suggestionsItem => (
       <div onMouseDown={this.onSuggestionClick}
            styleName="suggestion"
            key={suggestionsItem}>
