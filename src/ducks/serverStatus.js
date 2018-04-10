@@ -1,9 +1,10 @@
 import {store} from 'index';
 
 
-export const LOG_REQUEST  = 'app/serverStatus/LOG_REQUEST';
-export const LOG_RESPONSE = 'app/serverStatus/LOG_RESPONSE';
-export const TIMER_TICK   = 'app/serverStatus/TIMER_TICK';
+export const LOG_REQUEST    = 'app/serverStatus/LOG_REQUEST';
+export const LOG_RESPONSE   = 'app/serverStatus/LOG_RESPONSE';
+export const SET_PROBLEM_B  = 'app/serverStatus/SET_PROBLEM_B';
+export const TIMER_TICK     = 'app/serverStatus/TIMER_TICK';
 
 
 let timer = 0;
@@ -23,7 +24,7 @@ export function logRequest (time) {
 }
 
 export function logResponse (time) {
-  let req = store.getState().serverStatus.requests;
+  const req = store.getState().serverStatus.requests;
   if (!req.length || req.length == 1 && req[0] == time) {
     clearInterval(timer);
     timer = 0;
@@ -32,6 +33,15 @@ export function logResponse (time) {
   return {
     type: LOG_RESPONSE,
     time
+  };
+}
+
+export function setProblemB () {
+  clearInterval(timer);
+  timer = 0;
+
+  return {
+    type: SET_PROBLEM_B
   };
 }
 
@@ -50,13 +60,14 @@ const initialState = {
 };
 
 export default function serverStatusReducer(state = initialState, action) {
-  let requests = state.requests.slice();
+  const requests = state.requests.slice();
 
   switch (action.type) {
     case LOG_REQUEST:
       requests.push(action.time);
       return {
         ...state,
+        problemB: false,
         requests
       };
 
@@ -80,6 +91,12 @@ export default function serverStatusReducer(state = initialState, action) {
         ...state,
         problemA: action.time - requests[0] > TIME_A,
         problemB: action.time - requests[0] > TIME_B
+      };
+
+    case SET_PROBLEM_B:
+      return {
+        ...state,
+        problemB: true
       };
 
     default:

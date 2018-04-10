@@ -53,18 +53,25 @@ export class Sign extends Component  {
   componentWillReceiveProps(nextProps) {
     const {user, serverStatus} = nextProps;
 
-    const status = user.status;
-    let mode = this.state.mode;
-
-    if (serverStatus.problemB)
-      mode = MODE_SERVER_DOWN;
-    else if (!status)
+    if (serverStatus.problemB) {
+      this.setState({
+        error: null,
+        lock: false,
+        mode: MODE_SERVER_DOWN
+      });
       return;
-    else if (mode == MODE_REG     && status == OK)
+    }
+
+    const status = user.status;
+    if (!status)
+      return;
+
+    let mode = this.state.mode;
+    if (mode == MODE_REG && status == OK)
       mode = MODE_REG_MAIL;
-    else if (mode == MODE_FORGOT  && status == OK)
+    else if (mode == MODE_FORGOT && status == OK)
       mode = MODE_FORGOT_MAIL;
-    else if (mode == MODE_LOGIN   && status == ERROR_UNVERIF)
+    else if (mode == MODE_LOGIN && status == ERROR_UNVERIF)
       mode = MODE_UNVERIF;
 
     this.props.userActions.resetStatus();

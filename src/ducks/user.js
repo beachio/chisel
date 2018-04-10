@@ -1,5 +1,7 @@
+import {store} from 'index';
 import {Parse} from 'parse';
 
+import {setProblemB} from 'ducks/serverStatus';
 import {UserData} from 'models/UserData';
 import {currentServerURL} from 'utils/initialize';
 import {config} from 'ConnectConstants';
@@ -93,6 +95,7 @@ export function login(email, password) {
       }, error => {
         let status = ERROR_OTHER;
         switch (error.code) {
+          case 100: store.dispatch(setProblemB()); break;
           case 101: status = ERROR_WRONG_PASS; break;
           case 205: status = ERROR_UNVERIF;    break;
           case 209: halt(); return;
