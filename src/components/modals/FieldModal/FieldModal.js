@@ -77,7 +77,7 @@ export default class FieldModal extends Component {
     let name = event.target.value;
     let nameId = this.state.nameId;
     if (!this.updating)
-      nameId = getNameId(name, this.props.fields);
+      nameId = getNameId(name, this.field.model.fields);
 
     this.setState({name, nameId, error: null});
   };
