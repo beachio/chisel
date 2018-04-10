@@ -118,7 +118,7 @@ export class ModelData {
   setTableName() {
     const email =
       encodeURIComponent(this.site.owner.email)
-        .replace(/[!'()*.~-]/g, c =>
+        .replace(/[!'()*.~_-]/g, c =>
           '%' + c.charCodeAt(0).toString(16)
         )
         .replace(/%/g, `_`);
