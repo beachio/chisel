@@ -91,13 +91,15 @@ class App extends React.Component {
       exit: styles['modal-exit'],
       exitActive: styles['modal-exit-active']
     };
-    let modal = getModal();
+
+    const modal = getModal();
     if (modal)
       this.lastModal = modal;
     
     const showModalLoader =
       (user.pending || user.authorized && !nav.initEnded) &&
       !serverStatus.problemB;
+
     let res = (
       <div styleName="wrapper">
         {this.props.children}
