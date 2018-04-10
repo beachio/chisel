@@ -398,13 +398,28 @@ export function deleteModel(model) {
   };
 }
 
+//if current field is title, remove other titles
+function checkNewTitle(field) {
+  if (!canBeTitle(field))
+    field.isTitle = false;
+  if (!field.isTitle)
+    return;
+
+  for (let tempField of field.model.fields) {
+    if (tempField != field && tempField.isTitle) {
+      tempField.isTitle = false;
+      tempField.updateOrigin();
+      send(tempField.origin.save());
+    }
+  }
+}
+
 export function addField(field) {
   field.color = getRandomColor();
   field.nameId = getNameId(field.name, field.model.fields);
   field.order = field.model.fields.length;
-  
-  if (!field.model.hasTitle() && canBeTitle(field))
-    field.isTitle = true;
+
+  checkNewTitle(field);
 
   field.updateOrigin();
   send(field.origin.save())
@@ -419,39 +434,8 @@ export function addField(field) {
   };
 }
 
-function changeTitleField(field, value = true) {
-  field.isTitle = value;
-  field.updateOrigin();
-  send(field.origin.save());
-}
-
 export function updateField(field) {
-  if (field.isTitle) {
-    //if current field is title, remove other titles
-    if (canBeTitle(field)) {
-      for (let tempField of field.model.fields) {
-        if (tempField != field && tempField.isTitle)
-          changeTitleField(tempField, false);
-      }
-    } else {
-      field.isTitle = false;
-    }
-  }
-  
-  if (!field.model.hasTitle()) {
-    let titleSet = false;
-    //first we check other fields to make title
-    for (let tempField of field.model.fields) {
-      if (tempField != field && canBeTitle(tempField)) {
-        changeTitleField(tempField);
-        titleSet = true;
-        break;
-      }
-    }
-    //if we can't, we try to make title current field
-    if (!titleSet && canBeTitle(field))
-      field.isTitle = true;
-  }
+  checkNewTitle(field);
 
   field.updateOrigin();
   send(field.origin.save());
@@ -465,15 +449,6 @@ export function updateField(field) {
 
 export function deleteField(field) {
   send(field.origin.destroy());
-  
-  if (field.isTitle) {
-    for (let tempField of field.model.fields) {
-      if (tempField != field && canBeTitle(tempField)) {
-        changeTitleField(tempField);
-        break;
-      }
-    }
-  }
   send(field.model.origin.save());
   
   return {

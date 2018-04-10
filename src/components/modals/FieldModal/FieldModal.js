@@ -48,6 +48,9 @@ export default class FieldModal extends Component {
     this.state.isList     = this.field.isList;
     this.state.isDisabled = this.field.isDisabled;
     this.state.appList    = FIELD_TYPES.get(this.field.type);
+
+    if (!this.updating && canBeTitle(this.state) && !this.field.model.hasTitle())
+      this.state.isTitle = true;
   }
   
   componentDidMount() {
@@ -87,11 +90,11 @@ export default class FieldModal extends Component {
       type,
       appList: FIELD_TYPES.get(type),
       appearance: FIELD_TYPES.get(type)[0]
-    });
+    }, this.checkTitle);
   };
 
   onChangeAppearance = appearance => {
-    this.setState({appearance});
+    this.setState({appearance}, this.checkTitle);
   };
 
   onChangeIsTitle = isTitle => {
@@ -99,11 +102,11 @@ export default class FieldModal extends Component {
   };
   
   onChangeIsList = isList => {
-    this.setState({isList});
+    this.setState({isList}, this.checkTitle);
   };
 
   onChangeIsDisabled = isDisabled => {
-    this.setState({isDisabled});
+    this.setState({isDisabled}, this.checkTitle);
   };
 
   onSave = () => {
@@ -142,6 +145,14 @@ export default class FieldModal extends Component {
     this.active = false;
     this.props.onClose();
   };
+
+  checkTitle() {
+    const can = canBeTitle(this.state);
+    if (can && !this.field.model.hasTitle())
+      this.setState({isTitle: true});
+    if (!can && this.state.isTitle)
+      this.setState({isTitle: false});
+  }
 
   render() {
     let headName = this.state.name.length ? this.state.name : '?';
@@ -182,7 +193,7 @@ export default class FieldModal extends Component {
 
               <div styleName="input-wrapper">
                 {
-                  this.updating ?
+                  (this.updating || this.state.isTitle) ?
                     <InputControl label="Type"
                                   icon="lock"
                                   value={this.state.type}
@@ -197,10 +208,18 @@ export default class FieldModal extends Component {
               </div>
 
               <div styleName="input-wrapper">
-                <DropdownControl label="Appearance"
-                                 suggestionsList={this.state.appList}
-                                 suggest={this.onChangeAppearance}
-                                 current={this.state.appearance} />
+                {
+                  this.state.isTitle ?
+                    <InputControl label="Appearance"
+                                  icon="lock"
+                                  value={this.state.appearance}
+                                  readOnly={true} />
+                  :
+                    <DropdownControl label="Appearance"
+                                     suggestionsList={this.state.appList}
+                                     suggest={this.onChangeAppearance}
+                                     current={this.state.appearance} />
+                }
               </div>
 
               <div styleName="input-wrapper">
