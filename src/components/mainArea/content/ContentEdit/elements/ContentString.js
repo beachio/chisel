@@ -121,7 +121,8 @@ export default class ContentString extends ContentBase {
   };
   
   getTitle() {
-    if (this.field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG)
+    if (this.field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG ||
+        this.field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__MARKDOWN)
       return (
         <div styleName="field-title">
           {this.field.name}
@@ -195,6 +196,7 @@ export default class ContentString extends ContentBase {
               </div>
             );
         }
+        break;
   
 
       case ftps.FIELD_TYPE_LONG_TEXT:
@@ -219,6 +221,17 @@ export default class ContentString extends ContentBase {
             );
       
           case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
+            return (
+              <Editor styleName="wysiwig"
+                      text={value}
+                      onChange={this.onChangeWysiwyg}
+                      options={{
+                        placeholder: false,
+                        disableEditing: !this.state.isEditable
+                      }} />
+            );
+
+          case ftps.FIELD_APPEARANCE__LONG_TEXT__MARKDOWN:
             return (
               <Editor styleName="wysiwig"
                       text={value}
