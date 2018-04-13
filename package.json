@@ -93,7 +93,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
-    "svg-inline-react": "^3.0.0",
+    "svg-inline-react": "github:Nes-si/svg-inline-react",
     "webpack-hot-middleware": "^2.20.0",
     "whatwg-fetch": "^2.0.3"
   }
