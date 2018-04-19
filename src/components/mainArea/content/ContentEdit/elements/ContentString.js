@@ -8,6 +8,7 @@ import Editor from 'react-medium-editor';
 
 import ContentBase from './ContentBase';
 import InputControl from 'components/elements/InputControl/InputControl';
+import MarkdownEditor from 'components/elements/MarkdownEditor/MarkdownEditor';
 import {MODAL_TYPE_WYSIWYG} from 'ducks/nav';
 import {filterSpecialsAndCapital, checkURL} from 'utils/common';
 
@@ -84,6 +85,10 @@ export default class ContentString extends ContentBase {
   };
   
   onChangeWysiwyg = text => {
+    this.setValue(text);
+  };
+
+  onChangeMarkdown = text => {
     this.setValue(text);
   };
   
@@ -233,13 +238,8 @@ export default class ContentString extends ContentBase {
 
           case ftps.FIELD_APPEARANCE__LONG_TEXT__MARKDOWN:
             return (
-              <Editor styleName="wysiwig"
-                      text={value}
-                      onChange={this.onChangeWysiwyg}
-                      options={{
-                        placeholder: false,
-                        disableEditing: !this.state.isEditable
-                      }} />
+              <MarkdownEditor value={value}
+                              onChange={this.onChangeMarkdown} />
             );
         }
     }

@@ -73,6 +73,7 @@
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.5",
     "commander": "^2.11.0",
+    "draft-js": "^0.10.5",
     "express": "^4.16.2",
     "lodash": "^4.17.4",
     "normalize.css": "^8.0.0",
@@ -84,6 +85,7 @@
     "react-flip-move": "^3.0.1",
     "react-gravatar": "^2.6.3",
     "react-helmet": "^5.2.0",
+    "react-mde": "github:Nes-si/react-mde",
     "react-medium-editor": "github:Nes-si/react-medium-editor",
     "react-redux": "^5.0.6",
     "react-router": "^3.2.0",
@@ -93,6 +95,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
+    "showdown": "^1.8.6",
     "svg-inline-react": "github:Nes-si/svg-inline-react",
     "webpack-hot-middleware": "^2.20.0",
     "whatwg-fetch": "^2.0.3"
