@@ -9,7 +9,7 @@ import Editor from 'react-medium-editor';
 import ContentBase from './ContentBase';
 import InputControl from 'components/elements/InputControl/InputControl';
 import MarkdownEditor from 'components/elements/MarkdownEditor/MarkdownEditor';
-import {MODAL_TYPE_WYSIWYG} from 'ducks/nav';
+import {MODAL_TYPE_WYSIWYG, MODAL_TYPE_MARKDOWN} from 'ducks/nav';
 import {filterSpecialsAndCapital, checkURL} from 'utils/common';
 
 import * as ftps from 'models/ModelData';
@@ -124,14 +124,33 @@ export default class ContentString extends ContentBase {
       }
     );
   };
+
+  onShowMarkdownModal = () => {
+    this.props.showModal(
+      MODAL_TYPE_MARKDOWN,
+      {
+        text: this.state.value,
+        callback: text => this.setValue(text, true)
+      }
+    );
+  };
   
   getTitle() {
-    if (this.field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG ||
-        this.field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__MARKDOWN)
+    if (this.field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG)
       return (
         <div styleName="field-title">
           {this.field.name}
           <div styleName="link" onClick={this.onShowWysiwygModal}>
+            <InlineSVG styleName="link-icon" src={require('assets/images/link.svg')} />
+          </div>
+        </div>
+      );
+
+    if (this.field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__MARKDOWN)
+      return (
+        <div styleName="field-title">
+          {this.field.name}
+          <div styleName="link" onClick={this.onShowMarkdownModal}>
             <InlineSVG styleName="link-icon" src={require('assets/images/link.svg')} />
           </div>
         </div>

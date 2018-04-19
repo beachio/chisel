@@ -8,11 +8,12 @@ import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import FieldModal from 'components/modals/FieldModal/FieldModal';
 import MediaModal from 'components/modals/MediaModal/MediaModal';
 import WysiwygModal from 'components/modals/WysiwygModal/WysiwygModal';
+import MarkdownModal from 'components/modals/MarkdownModal/MarkdownModal';
 import ReferenceModal from 'components/modals/ReferenceModal/ReferenceModal';
 import ModelChooseModal from 'components/modals/ModelChooseModal/ModelChooseModal';
 import AlertModal, {ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
 import {closeAlert, closeModal, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG,
-  MODAL_TYPE_MODEL_CHOOSE} from 'ducks/nav';
+  MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN} from 'ducks/nav';
 import {addField, updateField} from 'ducks/models';
 
 import styles from './app.sss';
@@ -75,6 +76,10 @@ class App extends React.Component {
         case MODAL_TYPE_WYSIWYG:
           return <WysiwygModal params={nav.modalParams}
                                onClose={closeModal}/>;
+
+        case MODAL_TYPE_MARKDOWN:
+          return <MarkdownModal params={nav.modalParams}
+                                onClose={closeModal}/>;
   
         case MODAL_TYPE_MODEL_CHOOSE:
           return <ModelChooseModal params={nav.modalParams}
