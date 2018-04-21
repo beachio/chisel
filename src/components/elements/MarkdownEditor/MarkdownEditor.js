@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import ReactMde from "react-mde";
+import ReactMde, {DraftUtil} from "react-mde";
 import * as Showdown from "showdown";
 import CSSModules from 'react-css-modules';
 import styles from './MarkdownEditor.sss';
@@ -33,6 +33,15 @@ export default class MarkdownEditor extends Component {
       this.layout = props.layout;
 
     this.converter = new Showdown.Converter({tables: true, simplifiedAutoLink: true, simpleLineBreaks: true});
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {mdeState} = this.state;
+    if (nextProps.value == mdeState.markdown)
+      return;
+
+    DraftUtil.buildNewMdeState(mdeState, null, nextProps.value)
+      .then(newState => this.setState({mdeState: newState}));
   }
 
   onChangeMde = mdeState => {
