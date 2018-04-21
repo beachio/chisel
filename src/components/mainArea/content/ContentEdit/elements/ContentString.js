@@ -257,7 +257,8 @@ export default class ContentString extends ContentBase {
 
           case ftps.FIELD_APPEARANCE__LONG_TEXT__MARKDOWN:
             return (
-              <MarkdownEditor value={value}
+              <MarkdownEditor styleName="markdown"
+                              value={value}
                               onChange={this.onChangeMarkdown} />
             );
         }

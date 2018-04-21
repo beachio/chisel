@@ -37,8 +37,7 @@ export default class MarkdownModal extends Component {
           <InlineSVG styleName="cross"
                      src={require("assets/images/cross.svg")} />
         </div>
-        <MarkdownEditor styleName="editor"
-                        layout={LAYOUT_SPLIT}
+        <MarkdownEditor layout={LAYOUT_SPLIT}
                         value={this.text}
                         onChange={this.onChange} />
       </div>
