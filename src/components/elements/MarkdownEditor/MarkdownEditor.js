@@ -41,62 +41,55 @@ export default class MarkdownEditor extends Component {
   };
 
   render () {
+    let html;
+
     switch (this.layout) {
 
       case LAYOUT_TABS:
-        const tabsElm = (
-          <div>
-            <button onClick={() => this.setState({tab: TAB_CODE})}>Code</button>
-            <button onClick={() => this.setState({tab: TAB_PREVIEW})}>Preview</button>
-          </div>
-        );
-
-        let mainElm;
+        let content = null;
         switch (this.state.tab) {
           case TAB_CODE:
-            mainElm = (
-              <ReactMde
-                onChange={this.onChangeMde}
-                editorState={this.state.mdeState}
-                layout="noPreview"
-              />
+            content = (
+              <ReactMde styleName="tabs-code"
+                        onChange={this.onChangeMde}
+                        editorState={this.state.mdeState}
+                        layout="noPreview" />
             );
             break;
 
           case TAB_PREVIEW:
-            const html = this.converter.makeHtml(this.state.mdeState.markdown);
-            mainElm = (
-              <div
-                styleName="tab-preview"
-                dangerouslySetInnerHTML={{__html: html}}
-              />
+            html = this.converter.makeHtml(this.state.mdeState.markdown);
+            content = (
+              <div styleName="tabs-preview">
+                <div dangerouslySetInnerHTML={{__html: html}} />
+              </div>
             );
             break;
         }
 
         return (
           <div>
-            {tabsElm}
-            {mainElm}
+            <div>
+              <button onClick={() => this.setState({tab: TAB_CODE})}>Code</button>
+              <button onClick={() => this.setState({tab: TAB_PREVIEW})}>Preview</button>
+            </div>
+            {content}
           </div>
         );
 
 
       case LAYOUT_SPLIT:
-        const html = this.converter.makeHtml(this.state.mdeState.markdown);
+        html = this.converter.makeHtml(this.state.mdeState.markdown);
 
         return (
           <div styleName="split">
-            <ReactMde
-              styleName="side-code"
-              onChange={this.onChangeMde}
-              editorState={this.state.mdeState}
-              layout="noPreview"
-            />
-            <div
-              styleName="side-preview"
-              dangerouslySetInnerHTML={{__html: html}}
-            />
+            <ReactMde styleName="side-code"
+                      onChange={this.onChangeMde}
+                      editorState={this.state.mdeState}
+                      layout="noPreview" />
+            <div styleName="side-preview">
+              <div dangerouslySetInnerHTML={{__html: html}} />
+            </div>
           </div>
         );
     }
