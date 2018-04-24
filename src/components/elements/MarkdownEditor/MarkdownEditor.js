@@ -32,7 +32,8 @@ export default class MarkdownEditor extends Component {
       tables: true,
       simplifiedAutoLink: true,
       simpleLineBreaks: true,
-      tasklists: true
+      tasklists: true,
+      strikethrough: true
     });
   }
 
