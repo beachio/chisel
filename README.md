@@ -5,7 +5,7 @@ Chisel
 
 ## Pre-requisites
 
-First off, before you can run Chisel,you need a [Parse local server](https://github.com/beachio/chisel-parse-server-starter).
+First off, before you can run Chisel, you need a [Parse local server](https://github.com/beachio/chisel-parse-server-starter).
 
 There's lots of options for setting up Parse Server, from running it on your local device, to deploying to many easy to setup hosting services.
 
