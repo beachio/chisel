@@ -85,7 +85,7 @@
     "express": "^4.16.2",
     "lodash": "^4.17.4",
     "normalize.css": "^8.0.0",
-    "parse": "^1.10.1",
+    "parse": "^2.1.0",
     "react": "^16.3.1",
     "react-css-modules": "github:Nes-si/react-css-modules",
     "react-dom": "^16.3.1",
