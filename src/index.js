@@ -14,7 +14,6 @@ import {syncHistoryWithStore} from 'react-router-redux';
 import App from 'containers/app';
 import configureStore from 'store/configureStore';
 import {initApp} from 'utils/initialize';
-import {scrollUp} from 'utils/common';
 import {setCurrentPage, PAGE_MODELS, PAGE_MODELS_ITEM,  PAGE_PROFILE, PAGE_CONTENT, PAGE_CONTENT_ITEM,
   PAGE_API, PAGE_SETTINGS, PAGE_SHARING} from 'ducks/nav';
 
