@@ -20,8 +20,8 @@ module.exports = {
     "@babel/plugin-proposal-numeric-separator",
     "@babel/plugin-proposal-throw-expressions",
 
-    //"@babel/plugin-transform-runtime",
-    //"@babel/plugin-transform-regenerator",
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-transform-regenerator",
 
     "babel-plugin-lodash",
     "react-hot-loader/babel"
