@@ -199,9 +199,10 @@ export function checkFieldName(name) {
 
 //========== content =========
 
-export function getContentForModel(model) {
-  let items = store.getState().content.items;
-  let res = [];
+export function getContentForModel(model, items) {
+  if (!items)
+    items = store.getState().content.items;
+  const res = [];
   for (let item of items) {
     if (item.model == model)
       res.push(item);
@@ -209,9 +210,10 @@ export function getContentForModel(model) {
   return res;
 }
 
-export function getContentForSite(site) {
-  let items = store.getState().content.items;
-  let res = [];
+export function getContentForSite(site, items) {
+  if (!items)
+    items = store.getState().content.items;
+  const res = [];
   for (let item of items) {
     if (item.model.site == site)
       res.push(item);
@@ -219,8 +221,9 @@ export function getContentForSite(site) {
   return res;
 }
 
-export function getContentByModelAndId(modelNameId, id) {
-  let items = store.getState().content.items;
+export function getContentByModelAndId(modelNameId, id, items) {
+  if (!items)
+    items = store.getState().content.items;
   for (let item of items) {
     if (item.model.nameId == modelNameId && id == item.origin.id)
       return item;
@@ -242,8 +245,9 @@ export function getContentByO(origin, items) {
   return null;
 }
 
-export function checkContentExistense(item) {
-  let items = store.getState().content.items;
+export function checkContentExistense(item, items) {
+  if (!items)
+    items = store.getState().content.items;
   for (let tempItem of items) {
     if (item == tempItem)
       return true;
@@ -253,11 +257,12 @@ export function checkContentExistense(item) {
 
 //============== media ============
 
-export function getMediaByO(origin) {
+export function getMediaByO(origin, items) {
   if (!origin)
     return null;
 
-  let items = store.getState().media.items;
+  if (!items)
+    items = store.getState().media.items;
   for (let item of items) {
     if (item.origin && item.origin.id == origin.id)
       return item;

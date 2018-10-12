@@ -335,7 +335,7 @@ export default function contentReducer(state = initialState, action) {
       items = state.items;
       itemsDraft = state.itemsDraft;
       
-      delItems = getContentForModel(action.model);
+      delItems = getContentForModel(action.model, items);
       for (let item of delItems) {
         items.splice(items.indexOf(item), 1);
         if (item.draft)
@@ -352,7 +352,7 @@ export default function contentReducer(state = initialState, action) {
       items = state.items;
       itemsDraft = state.itemsDraft;
       
-      delItems = getContentForSite(action.site);
+      delItems = getContentForSite(action.site, items);
       for (let item of delItems) {
         items.splice(items.indexOf(item), 1);
         if (item.draft)
