@@ -45,8 +45,9 @@ export default class AlertModal extends Component {
     document.removeEventListener('keydown', this.onKeyDown);
   }
 
-  onKeyDown = () => {
-    let event = window.event;
+  onKeyDown = event => {
+    if (!event)
+      event = window.event;
     event.stopPropagation();
     
     //Enter or Esc pressed

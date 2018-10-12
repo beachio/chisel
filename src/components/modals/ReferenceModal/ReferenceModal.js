@@ -51,8 +51,9 @@ export default class ReferenceModal extends Component {
     document.removeEventListener('keydown', this.onKeyDown);
   }
   
-  onKeyDown = () => {
-    const event = window.event;
+  onKeyDown = event => {
+    if (!event)
+      event = window.event;
     event.stopPropagation();
     
     //Enter or Esc pressed
