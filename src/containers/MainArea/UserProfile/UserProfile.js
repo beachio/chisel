@@ -185,7 +185,7 @@ export class UserProfile extends Component  {
     }
     
     return checkPassword(this.state.passwordOld)
-      .catch((e) => {
+      .catch(e => {
         this.setState({errorPassword: `Wrong old password!`});
         return Promise.reject();
       });

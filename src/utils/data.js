@@ -49,7 +49,7 @@ export function getUser(username) {
         if (user_o)
           return new UserData().setOrigin(user_o);
         else
-          return Promise.reject();
+          throw 'User not found!';
       });
 }
 
