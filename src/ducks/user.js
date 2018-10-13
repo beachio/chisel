@@ -5,7 +5,7 @@ import {setProblemB} from 'ducks/serverStatus';
 import {UserData} from 'models/UserData';
 import {currentServerURL} from 'utils/initialize';
 import {config} from 'ConnectConstants';
-import {halt, send} from 'utils/server';
+import {send} from 'utils/server';
 
 
 export const LOGIN_REQUEST      = 'app/user/LOGIN_REQUEST';
@@ -54,7 +54,6 @@ export function register(email, password) {
         let status = ERROR_OTHER;
         switch (error.code) {
           case 202: status = ERROR_USER_EXISTS; break;
-          case 209: halt(); return;
         }
 
         dispatch({
@@ -92,7 +91,6 @@ export function login(email, password) {
           case 100: store.dispatch(setProblemB()); break;
           case 101: status = ERROR_WRONG_PASS; break;
           case 205: status = ERROR_UNVERIF;    break;
-          case 209: halt(); return;
         }
   
         dispatch({

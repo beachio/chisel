@@ -22,6 +22,9 @@ export function send (req) {
     .catch(error => {
       console.log(error);
 
+      if (error.code == 209)
+        halt();
+
       if (error.code != 100)
         store.dispatch(logResponse(time));
 
