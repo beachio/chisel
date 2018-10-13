@@ -52,6 +52,13 @@ to run Chisel
 ``` bash
 chisel-cms --appId <APP_ID> --serverURL <https://HEROKU_APP_NAME.herokuapp.com/parse>
 ```
+
+if an authentication error
+
+``` bash
+chisel-cms --appId <APP_ID> --JSkey <clientKey> --serverURL <https://pg-app.scalabl.cloud/1/>
+```
+
 Visit your preferred browser on http://localhost:9000
 
 ## Publishing Chisel
