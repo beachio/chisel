@@ -5,7 +5,7 @@ import {setProblemB} from 'ducks/serverStatus';
 import {UserData} from 'models/UserData';
 import {currentServerURL} from 'utils/initialize';
 import {config} from 'ConnectConstants';
-import {send} from 'utils/server';
+import {halt, send} from 'utils/server';
 
 
 export const LOGIN_REQUEST      = 'app/user/LOGIN_REQUEST';
@@ -26,12 +26,6 @@ export const ERROR_UNVERIF      = 'app/user/ERROR_UNVERIF';
 export const ERROR_OTHER        = 'app/user/ERROR_OTHER';
 export const OK                 = 'app/user/OK';
 
-
-function halt () {
-  // halt! cleaning local storage and reload page
-  localStorage.clear();
-  window.location = "/";
-}
 
 export function register(email, password) {
   return dispatch => {
