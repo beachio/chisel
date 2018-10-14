@@ -73,6 +73,7 @@ export default class DropdownControl extends Component {
       return <InputControl label={label}
                            icon="lock"
                            value={this.state.suggestionValue}
+                           dropdown={true}
                            readOnly={true} />;
 
 
