@@ -7,8 +7,7 @@
 .list
   display: flex
   flex-flow: column nowrap
-  margin: 0 auto
-  margin-top: 22px
+  margin: 22px auto 0
 
   &Item
     display: flex
@@ -83,6 +82,10 @@
     height: 24px
     width: 24px
 
-  .cross
-    height: 24px
-    width: 24px
+    .cross
+      height: 24px
+      width: 24px
+      opacity: .6
+
+      &:hover
+        opacity: 1
