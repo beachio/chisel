@@ -7,7 +7,7 @@ const baseWebpackConfig = require('./webpack.base.config');
 
 module.exports = merge(baseWebpackConfig, {
   mode: 'development',
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   entry: ['webpack-hot-middleware/client?reload=true'],
   plugins: [
     new LodashModuleReplacementPlugin({
