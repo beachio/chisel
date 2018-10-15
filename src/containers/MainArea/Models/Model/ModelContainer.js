@@ -6,7 +6,7 @@ import {Helmet} from "react-helmet";
 
 import Model from 'components/mainArea/models/Model/Model';
 import {setCurrentModel, updateModel, updateField, deleteField} from 'ducks/models';
-import {showAlert, showModal, USERSPACE_URL, SITE_URL, MODELS_URL, MODEL_URL} from 'ducks/nav';
+import {showAlert, showModal, URL_USERSPACE, URL_SITE, URL_MODELS, URL_MODEL} from 'ducks/nav';
 import {getModelByNameId} from 'utils/data';
 import {ROLE_ADMIN, ROLE_OWNER} from 'models/UserData';
 import {NoRights} from "components/mainArea/common/NoRights";
@@ -23,10 +23,10 @@ export class ModelContainer extends Component  {
     super(props);
 
     let modelId = props.params.model;
-    if (modelId.indexOf(MODEL_URL) != 0)
+    if (modelId.indexOf(URL_MODEL) != 0)
       return;
   
-    modelId = modelId.slice(MODEL_URL.length);
+    modelId = modelId.slice(URL_MODEL.length);
   
     const {setCurrentModel} = props.modelsActions;
     const {models} = props;
@@ -74,7 +74,7 @@ export class ModelContainer extends Component  {
       title = `Model: ${model.name} - Site: ${site.name} - Chisel`;
 
       const closeModel = () => browserHistory.push(
-        `/${USERSPACE_URL}/${SITE_URL}${site.nameId}/${MODELS_URL}`);
+        `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}`);
 
       const role = models.role;
       if (role == ROLE_ADMIN || role == ROLE_OWNER)

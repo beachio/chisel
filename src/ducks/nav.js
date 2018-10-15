@@ -26,23 +26,23 @@ export const MODAL_TYPE_MARKDOWN      = 'app/nav/modals/MODAL_TYPE_MARKDOWN';
 export const MODAL_TYPE_MODEL_CHOOSE  = 'app/nav/modals/MODAL_TYPE_MODEL_CHOOSE';
 
 
-export const EMAIL_VERIFY_URL = 'email-verify';
-export const PASSWORD_SET_URL = 'password-set';
-export const PASSWORD_SUCCESS_URL = 'password-set-success';
-export const INVALID_LINK_URL = 'invalid-link';
-export const SIGN_URL = 'sign';
-export const USERSPACE_URL = 'userspace';
-export const SITE_URL = 'site~';
-export const MODELS_URL = 'models';
-export const MODEL_URL = 'model~';
-export const CONTENT_URL = 'content';
-export const ITEM_URL = 'item~';
-export const API_URL = 'api';
-export const SETTINGS_URL = 'settings';
-export const SHARING_URL = 'sharing';
-export const PROFILE_URL = 'profile';
+export const URL_EMAIL_VERIFY     = 'email-verify';
+export const URL_PASSWORD_SET     = 'password-set';
+export const URL_PASSWORD_SUCCESS = 'password-set-success';
+export const URL_INVALID_LINK     = 'invalid-link';
+export const URL_SIGN             = 'sign';
+export const URL_USERSPACE        = 'userspace';
+export const URL_SITE             = 'site~';
+export const URL_MODELS           = 'models';
+export const URL_MODEL            = 'model~';
+export const URL_CONTENT          = 'content';
+export const URL_ITEM             = 'item~';
+export const URL_API              = 'api';
+export const URL_SETTINGS         = 'settings';
+export const URL_SHARING          = 'sharing';
+export const URL_PROFILE          = 'profile';
 
-export const EMAIL_URLS = [EMAIL_VERIFY_URL, PASSWORD_SET_URL, PASSWORD_SUCCESS_URL, INVALID_LINK_URL];
+export const URLS_EMAIL = [URL_EMAIL_VERIFY, URL_PASSWORD_SET, URL_PASSWORD_SUCCESS, URL_INVALID_LINK];
 
 
 export function initEnd() {

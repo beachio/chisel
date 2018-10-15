@@ -4,7 +4,7 @@ import InlineSVG from 'svg-inline-react';
 import Gravatar from 'react-gravatar';
 import {Link} from 'react-router';
 
-import {USERSPACE_URL, PROFILE_URL} from 'ducks/nav';
+import {URL_USERSPACE, URL_PROFILE} from 'ducks/nav';
 
 import styles from './User.sss';
 
@@ -14,7 +14,7 @@ export default class User extends Component {
   render() {
     const {userData} = this.props;
 
-    let link = `/${USERSPACE_URL}/${PROFILE_URL}/`;
+    let link = `/${URL_USERSPACE}/${URL_PROFILE}/`;
     
     let name = userData.email;
     if (userData.firstName || userData.lastName)

@@ -7,7 +7,7 @@ import {Helmet} from "react-helmet";
 import Settings from 'components/mainArea/settings/Settings';
 import {ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';
 import {updateSite, deleteSite} from 'ducks/models';
-import {showAlert, USERSPACE_URL} from 'ducks/nav';
+import {showAlert, URL_USERSPACE} from 'ducks/nav';
 
 
 export class SettingsContainer extends Component  {
@@ -24,7 +24,7 @@ export class SettingsContainer extends Component  {
     
     let onDeleteSite = site => {
       deleteSite(site);
-      browserHistory.push(`/${USERSPACE_URL}`);
+      browserHistory.push(`/${URL_USERSPACE}`);
     };
     
     return (

@@ -4,7 +4,7 @@ import {LOCATION_CHANGE} from 'react-router-redux';
 import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';
 import {setCurrentSite} from 'ducks/models';
 import {getSiteByNameId} from 'utils/data';
-import {INIT_END, SIGN_URL, SITE_URL, USERSPACE_URL, EMAIL_URLS, PROFILE_URL} from 'ducks/nav';
+import {INIT_END, URL_SIGN, URL_SITE, URL_USERSPACE, URLS_EMAIL, URL_PROFILE} from 'ducks/nav';
 
 
 let URL = '/';
@@ -24,7 +24,7 @@ let getNameId = (path, type) => {
 };
 
 let isEmailURL = URL => {
-  for (let eURL of EMAIL_URLS) {
+  for (let eURL of URLS_EMAIL) {
     if (URL.indexOf(eURL) != -1)
       return true;
   }
@@ -33,8 +33,8 @@ let isEmailURL = URL => {
 
 export const routing = store => next => action => {
   if (action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) {
-    if (!action.authorized && !isEmailURL(URL) && URL.indexOf(SIGN_URL) == -1)
-      browserHistory.push(`/${SIGN_URL}`);
+    if (!action.authorized && !isEmailURL(URL) && URL.indexOf(URL_SIGN) == -1)
+      browserHistory.push(`/${URL_SIGN}`);
   }
   
   next(action);
@@ -43,24 +43,24 @@ export const routing = store => next => action => {
     let path = URL;
     URL = '/';
     
-    if (path.indexOf(USERSPACE_URL) == -1)
+    if (path.indexOf(URL_USERSPACE) == -1)
       return;
   
     let cSite = store.getState().models.currentSite;
     let setDefaultSite = () => {
       if (cSite) {
-        browserHistory.replace(`/${USERSPACE_URL}/${SITE_URL}${cSite.nameId}`);
+        browserHistory.replace(`/${URL_USERSPACE}/${URL_SITE}${cSite.nameId}`);
       } else {
         let sites = store.getState().models.sites;
         if (sites.length)
-          browserHistory.replace(`/${USERSPACE_URL}/${SITE_URL}${sites[0].nameId}`);
-        else if (path != `/${USERSPACE_URL}`)
-          browserHistory.replace(`/${USERSPACE_URL}`);
+          browserHistory.replace(`/${URL_USERSPACE}/${URL_SITE}${sites[0].nameId}`);
+        else if (path != `/${URL_USERSPACE}`)
+          browserHistory.replace(`/${URL_USERSPACE}`);
       }
     };
     
     //set current site
-    let nameId = getNameId(path, SITE_URL);
+    let nameId = getNameId(path, URL_SITE);
     if (nameId) {
       if (!cSite || nameId != cSite.nameId) {
         let site = getSiteByNameId(nameId);
@@ -70,7 +70,7 @@ export const routing = store => next => action => {
           setDefaultSite();
       }
       
-    } else if (path.indexOf(PROFILE_URL) == -1) {
+    } else if (path.indexOf(URL_PROFILE) == -1) {
       setDefaultSite();
     }
   };
@@ -78,7 +78,7 @@ export const routing = store => next => action => {
   if (action.type == LOCATION_CHANGE) {
     URL = action.payload.pathname;
     
-    if (URL.indexOf(USERSPACE_URL) != -1 && !nonAuthURL)
+    if (URL.indexOf(URL_USERSPACE) != -1 && !nonAuthURL)
       nonAuthURL = URL;
   
     if (store.getState().nav.initEnded)
@@ -90,13 +90,13 @@ export const routing = store => next => action => {
       URL = nonAuthURL;
       nonAuthURL = null;
       browserHistory.replace(URL);
-    } else if (URL.indexOf(USERSPACE_URL) == -1 && !isEmailURL(URL)) {
-      browserHistory.replace(`/${USERSPACE_URL}`);
+    } else if (URL.indexOf(URL_USERSPACE) == -1 && !isEmailURL(URL)) {
+      browserHistory.replace(`/${URL_USERSPACE}`);
     }
     
     setFromURL();
   }
   
   if (action.type == LOGOUT)
-    browserHistory.push(`/${SIGN_URL}`);
+    browserHistory.push(`/${URL_SIGN}`);
 };

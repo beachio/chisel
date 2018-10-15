@@ -5,7 +5,7 @@ import {Helmet} from "react-helmet";
 import {browserHistory} from 'react-router';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
-import {USERSPACE_URL, SIGN_URL} from 'ducks/nav';
+import {URL_USERSPACE, URL_SIGN} from 'ducks/nav';
 
 import styles from './EmailVerify.sss';
 
@@ -16,9 +16,9 @@ export class EmailVerify extends Component  {
     event.preventDefault();
     
     if (this.props.authorized)
-      browserHistory.replace(`/${USERSPACE_URL}`);
+      browserHistory.replace(`/${URL_USERSPACE}`);
     else
-      browserHistory.replace(`/${SIGN_URL}`);
+      browserHistory.replace(`/${URL_SIGN}`);
     
     return false;
   };

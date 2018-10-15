@@ -7,7 +7,7 @@ import {browserHistory} from 'react-router';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {currentServerURL} from 'utils/initialize';
-import {USERSPACE_URL, SIGN_URL} from 'ducks/nav';
+import {URL_USERSPACE, URL_SIGN} from 'ducks/nav';
 import {login} from 'ducks/user';
 import {parseURLParams, URLEncode} from 'utils/common';
 
@@ -89,9 +89,9 @@ export class PasswordSet extends Component  {
     event.preventDefault();
   
     if (this.props.authorized)
-      browserHistory.replace(`/${USERSPACE_URL}`);
+      browserHistory.replace(`/${URL_USERSPACE}`);
     else
-      browserHistory.replace(`/${SIGN_URL}`);
+      browserHistory.replace(`/${URL_SIGN}`);
   };
   
   render() {

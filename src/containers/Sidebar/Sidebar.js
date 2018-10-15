@@ -7,7 +7,7 @@ import {browserHistory} from 'react-router';
 
 import User from 'components/sidebar/User/User';
 import Sites from 'components/sidebar/Sites/Sites';
-import {showAlert, USERSPACE_URL, SITE_URL} from 'ducks/nav';
+import {showAlert, URL_USERSPACE, URL_SITE} from 'ducks/nav';
 import {addSite, updateSite} from 'ducks/models';
 
 import styles from './Sidebar.sss';
@@ -22,7 +22,7 @@ export class Sidebar extends Component {
     
     let gotoSite = site => {
       let nameId = site.nameId;
-      browserHistory.push(`/${USERSPACE_URL}/${SITE_URL}${nameId}`);
+      browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${nameId}`);
     };
 
     return (

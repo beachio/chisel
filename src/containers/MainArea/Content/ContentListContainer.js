@@ -8,7 +8,7 @@ import InlineSVG from 'svg-inline-react';
 import ContentList from 'components/mainArea/content/ContentList/ContentList';
 import {ROLE_OWNER, ROLE_ADMIN, ROLE_DEVELOPER} from 'models/UserData';
 import {addItem, deleteItem, filterModel, filterStatus} from 'ducks/content';
-import {showAlert, CONTENT_URL, ITEM_URL, USERSPACE_URL, SITE_URL} from 'ducks/nav';
+import {showAlert, URL_CONTENT, URL_ITEM, URL_USERSPACE, URL_SITE} from 'ducks/nav';
 
 
 export class ContentListContainer extends Component {
@@ -70,7 +70,7 @@ export class ContentListContainer extends Component {
           let modelId = item.model.nameId;
           let itemId = item.origin.id;
           browserHistory.push(
-            `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${CONTENT_URL}/${ITEM_URL}${modelId}~${itemId}`);
+            `/${URL_USERSPACE}/${URL_SITE}${curSite.nameId}/${URL_CONTENT}/${URL_ITEM}${modelId}~${itemId}`);
         };
 
         cmpContent = <ContentList items={items}

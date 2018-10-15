@@ -6,7 +6,7 @@ import {Helmet} from "react-helmet";
 
 import ModelsList from 'components/mainArea/models/ModelsList/ModelsList';
 import {addModel, deleteModel} from 'ducks/models';
-import {showAlert, USERSPACE_URL, SITE_URL, MODELS_URL, MODEL_URL} from 'ducks/nav';
+import {showAlert, URL_USERSPACE, URL_SITE, URL_MODELS, URL_MODEL} from 'ducks/nav';
 import {ROLE_ADMIN, ROLE_OWNER} from 'models/UserData';
 import {NoRights} from "components/mainArea/common/NoRights";
 
@@ -45,7 +45,7 @@ export class ModelsListContainer extends Component {
       title = `Models - Site: ${curSite.name} - Chisel`;
 
       const gotoModel = model => browserHistory.push(
-        `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${MODELS_URL}/${MODEL_URL}${model.nameId}`);
+        `/${URL_USERSPACE}/${URL_SITE}${curSite.nameId}/${URL_MODELS}/${URL_MODEL}${model.nameId}`);
 
       const role = models.role;
       if (role == ROLE_ADMIN || role == ROLE_OWNER)
