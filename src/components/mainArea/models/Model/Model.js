@@ -87,6 +87,7 @@ export default class Model extends Component {
     this.state.fields = props.model.fields;
   }
 
+  //TODO вопрос: в какой ситуации понадобится обновлять модель? Не могу понять.
   componentWillReceiveProps(nextProps) {
     if (!nextProps.alertShowing && !nextProps.modalShowing) {
       if (this.titleActive) {

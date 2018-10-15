@@ -41,8 +41,19 @@ export default class ContentEdit extends Component {
   fieldElementRefs = [];
   
 
-  componentWillMount() {
-    this.updateItem(this.props.item);
+  constructor(props) {
+    super(props);
+
+    this.item = props.item;
+
+    const draft = this.item.draft ? this.item.draft : this.item;
+    this.state = {
+      title:  draft.title,
+      color:  draft.color,
+      fields: draft.fields,
+      dirty:  false
+    };
+
     this.fieldsArchive = new Map(this.item.fields);
   }
 

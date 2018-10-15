@@ -13,28 +13,36 @@ import {NoRights} from "components/mainArea/common/NoRights";
 
 
 export class ModelContainer extends Component  {
+  // TODO: костыль!
+  model = null;
   mainArea;
   lastScroll = 0;
 
   //on mount: get model ID from URL, then send action "setCurrentModel"
-  componentWillMount() {
-    let modelId = this.props.params.model;
+  constructor(props) {
+    super(props);
+
+    let modelId = props.params.model;
     if (modelId.indexOf(MODEL_URL) != 0)
       return;
   
     modelId = modelId.slice(MODEL_URL.length);
   
-    const {setCurrentModel} = this.props.modelsActions;
-    const {models} = this.props;
-    
-    let model = models.currentModel;
-    if (!model || modelId != model.nameId) {
-      const newModel = getModelByNameId(modelId);
-      if (newModel)
-        setCurrentModel(newModel);
+    const {setCurrentModel} = props.modelsActions;
+    const {models} = props;
+
+    const oldModel = models.currentModel;
+    if (!oldModel || modelId != oldModel.nameId) {
+      const model = getModelByNameId(modelId);
+      if (model) {
+        this.model = model;
+        setCurrentModel(model);
+      }
     }
   }
 
+  // Scroll memory
+  // TODO вопрос: нафига оно тут?
   componentDidMount() {
     this.mainArea.scrollTop = 0;
     this.mainArea.addEventListener('scroll', this.onScroll);
@@ -60,13 +68,13 @@ export class ModelContainer extends Component  {
     let title = `Chisel`;
     let content = <NoRights />;
 
-    const curSite = models.currentSite;
-    const model = models.currentModel;
-    if (curSite && model) {
-      title = `Model: ${model.name} - Site: ${curSite.name} - Chisel`;
+    const site = models.currentSite;
+    const model = this.model;
+    if (site && model) {
+      title = `Model: ${model.name} - Site: ${site.name} - Chisel`;
 
       const closeModel = () => browserHistory.push(
-        `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${MODELS_URL}`);
+        `/${USERSPACE_URL}/${SITE_URL}${site.nameId}/${MODELS_URL}`);
 
       const role = models.role;
       if (role == ROLE_ADMIN || role == ROLE_OWNER)

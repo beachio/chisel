@@ -13,8 +13,12 @@ import {getContentByModelAndId} from 'utils/data';
 
 
 export class ContentEditContainer extends Component {
-  componentWillMount() {
-    this.setItem(this.props.params.item);
+  //TODO: костыль
+  item = null;
+
+  constructor(props) {
+    super(props);
+    this.setItem(props.params.item);
   }
   
   componentWillReceiveProps(nextProps) {
@@ -40,8 +44,10 @@ export class ContentEditContainer extends Component {
     const oldItem = content.currentItem;
     if (!oldItem || modelNameId != oldItem.model.nameId || itemId != oldItem.origin.id) {
       const item = getContentByModelAndId(modelNameId, itemId);
-      if (item)
+      if (item) {
+        this.item = item;
         setCurrentItem(item);
+      }
     }
   }
   
@@ -51,12 +57,12 @@ export class ContentEditContainer extends Component {
     const {showModal} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
     
-    const curSite = models.currentSite;
-    const item = content.currentItem;
-    if (!curSite || !item)
+    const site = models.currentSite;
+    const item = this.item;
+    if (!site || !item)
       return null;
     
-    const basePath = `/${USERSPACE_URL}/${SITE_URL}${curSite.nameId}/${CONTENT_URL}`;
+    const basePath = `/${USERSPACE_URL}/${SITE_URL}${site.nameId}/${CONTENT_URL}`;
     
     const closeItem = () => browserHistory.push(basePath);
   
@@ -69,7 +75,7 @@ export class ContentEditContainer extends Component {
     const lastItem = content.items[content.items.length - 1];
   
     const itemTitle = item.title ? item.title : 'Untitled';
-    const title = `Item: ${itemTitle} - Site: ${curSite.name} - Chisel`;
+    const title = `Item: ${itemTitle} - Site: ${site.name} - Chisel`;
     
     return (
       <div className="mainArea">
