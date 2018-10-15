@@ -30,9 +30,11 @@ export class PasswordSet extends Component  {
   
   urlParams = {};
   
-  componentWillMount() {
+  constructor(props) {
+    super(props);
+
     this.urlParams = parseURLParams();
-    this.setState({error: this.urlParams.error});
+    this.state.error = this.urlParams.error;
   }
   
   isAvail() {
