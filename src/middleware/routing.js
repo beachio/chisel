@@ -90,7 +90,7 @@ export const routing = store => next => action => {
       URL = nonAuthURL;
       nonAuthURL = null;
       browserHistory.replace(URL);
-    } else if (URL.indexOf(URL_USERSPACE) == -1 && !isEmailURL(URL)) {
+    } else if (URL.indexOf(URL_USERSPACE) == -1) {
       browserHistory.replace(`/${URL_USERSPACE}`);
     }
     

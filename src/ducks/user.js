@@ -43,7 +43,7 @@ export function register(email, password) {
     send(user.signUp())
 
       .then(() => {
-        localStorage.setItem('authorization', JSON.stringify({email, password}));
+        //localStorage.setItem('authorization', JSON.stringify({email, password}));
         dispatch({
           type: REGISTER_RESPONSE,
           status: OK

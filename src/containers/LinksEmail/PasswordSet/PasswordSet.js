@@ -3,11 +3,9 @@ import CSSModules from 'react-css-modules';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Helmet} from "react-helmet";
-import {browserHistory} from 'react-router';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {currentServerURL} from 'utils/initialize';
-import {URL_USERSPACE, URL_SIGN} from 'ducks/nav';
 import {login} from 'ducks/user';
 import {parseURLParams, URLEncode} from 'utils/common';
 
@@ -29,6 +27,8 @@ export class PasswordSet extends Component  {
   };
   
   urlParams = {};
+  lock = false;
+  
   
   constructor(props) {
     super(props);
@@ -71,15 +71,11 @@ export class PasswordSet extends Component  {
       },
       body: URLEncode(params)
     })
-      .then(r => {
-        const {login} = this.props.userActions;
-        login(this.urlParams.username, this.state.password);
-        
+      .then(response => {
         this.setState({mode: MODE_DONE});
       })
       .catch(error => {
-        console.log(error);
-        //this.setState({error});
+        this.setState({error});
       });
     
     return false;
@@ -87,11 +83,13 @@ export class PasswordSet extends Component  {
   
   onLogin = event => {
     event.preventDefault();
+    
+    if (this.lock)
+      return;
+    this.lock = true;
   
-    if (this.props.authorized)
-      browserHistory.replace(`/${URL_USERSPACE}`);
-    else
-      browserHistory.replace(`/${URL_SIGN}`);
+    const {login} = this.props.userActions;
+    login(this.urlParams.username, this.state.password);
   };
   
   render() {
