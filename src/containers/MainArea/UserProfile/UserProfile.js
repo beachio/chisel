@@ -60,6 +60,9 @@ export class UserProfile extends Component  {
     this.state.firstName = user.userData.firstName;
     this.state.lastName = user.userData.lastName;
     this.state.email = user.email;
+    this.state.firstName = this.userData.firstName;
+    this.state.lastName = this.userData.lastName;
+    this.state.email = this.userData.email;
     this.state.serverURL = currentServerURL;
   }
   
