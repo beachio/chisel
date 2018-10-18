@@ -101,60 +101,6 @@ export function login(email, password) {
   };
 }
 
-export function loginOrRegister(email, password) {
-  return dispatch => {
-    dispatch({
-      type: LOGIN_REQUEST,
-      email,
-      password
-    });
-
-    Parse.User.logIn(email, password)
-      .then(() => {
-        localStorage.setItem('authorization', JSON.stringify({email, password}));
-        let userData = new UserData().setOrigin();
-        dispatch({
-          type: LOGIN_RESPONSE,
-          status: OK,
-          authorized: true,
-          userData
-        });
-        
-      }, () => {
-        let user = new Parse.User();
-        user.set("username", email);
-        user.set("email", email);
-        user.set("password", password);
-        user
-          .signUp()
-          .then(() => {
-            Parse.User.logIn(email, password)
-              .then(() => {
-                localStorage.setItem('authorization', JSON.stringify({email, password}));
-                let userData = new UserData().setOrigin();
-                dispatch({
-                  type: LOGIN_RESPONSE,
-                  authorized: true,
-                  status: OK,
-                  userData
-                });
-              }, () => {
-                dispatch({
-                  type: LOGIN_RESPONSE,
-                  status: ERROR_OTHER
-                });
-              });
-            
-          }, () => {
-            dispatch({
-              type: LOGIN_RESPONSE,
-              status: ERROR_WRONG_PASS
-            });
-          });
-      });
-  };
-}
-
 export function getLocalStorage() {
   const authStr = localStorage.getItem('authorization');
   if (!authStr)

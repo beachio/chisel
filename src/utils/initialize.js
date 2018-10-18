@@ -31,12 +31,6 @@ function requestConfig() {
 
 function subInitParse() {
   currentServerURL = config.serverURL;
-
-  /*let serverLS = localStorage.getItem('parseServerURL');
-  if (serverLS)
-    currentServerURL = serverLS;
-  else
-    localStorage.setItem('parseServerURL', currentServerURL);*/
   
   Parse.initialize(config.appId, config.JSkey);
   Parse.serverURL = currentServerURL;
@@ -50,10 +44,7 @@ export function initApp() {
     })
     .catch(e => {
       console.log(e);
-      /*setTimeout(() => {
-        localStorage.clear();
-        window.location = "/";
-      }, 1000);*/
+      //halt();
     });
 }
 
