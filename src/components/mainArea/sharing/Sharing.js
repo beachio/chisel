@@ -166,7 +166,7 @@ export default class Sharing extends Component {
                 </div>
                 <div styleName="type">
                   <div styleName="name">{owner.firstName} {owner.lastName}</div>
-                  <div styleName="email">{owner.username}</div>
+                  <div styleName="email">{owner.email}</div>
                 </div>
                 <div styleName="role">
                   OWNER
@@ -197,7 +197,7 @@ export default class Sharing extends Component {
                       blockName = (
                         <div styleName="type">
                           <div styleName="name">{user.firstName} {user.lastName} </div>
-                          <div styleName="email">{user.username}</div>
+                          <div styleName="email">{user.email}</div>
                         </div>
                       );
                     } else {

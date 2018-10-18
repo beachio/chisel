@@ -192,7 +192,6 @@ export function updateEmail(email) {
   
   return dispatch => {
     const userData = Parse.User.current();
-    userData.set(`username`, email);
     userData.set(`email`, email);
     send(userData.save())
       .then(() => {

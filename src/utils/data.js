@@ -36,13 +36,13 @@ export function getAlertForNameError(error) {
 
 //============= user =============
 
-export function getUser(username) {
-  if (!username)
+export function getUser(email) {
+  if (!email)
     return Promise.reject();
   
   return send(
     new Parse.Query(Parse.User)
-      .equalTo("username", username)
+      .equalTo("email", email)
       .first()
     )
       .then(user_o => {
@@ -119,7 +119,7 @@ export function checkCollaboration(user) {
   if (!user)
     return COLLAB_ERROR_EXIST;
   
-  if (user.username == Parse.User.current().get('username'))
+  if (user.email == Parse.User.current().get('email'))
     return COLLAB_ERROR_SELF;
   
   let collabs = store.getState().models.currentSite.collaborations;
