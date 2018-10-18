@@ -43,7 +43,6 @@ export function register(email, password) {
     send(user.signUp())
 
       .then(() => {
-        //localStorage.setItem('authorization', JSON.stringify({email, password}));
         dispatch({
           type: REGISTER_RESPONSE,
           status: OK
@@ -75,8 +74,6 @@ export function login(email, password) {
     send(Parse.User.logIn(email, password))
 
       .then(() => {
-        localStorage.setItem('authorization', JSON.stringify({email, password}));
-
         const userData = new UserData().setOrigin();
         dispatch({
           type: LOGIN_RESPONSE,
@@ -102,16 +99,20 @@ export function login(email, password) {
 }
 
 export function getLocalStorage() {
-  const authStr = localStorage.getItem('authorization');
-  if (!authStr)
+  const currentUser = Parse.User.current();
+  if (!currentUser)
     return {type: LOGIN_RESPONSE};
-
-  const auth = JSON.parse(authStr);
-  return login(auth.email, auth.password);
+  
+  const userData = new UserData().setOrigin();
+  return {
+    type: LOGIN_RESPONSE,
+    status: OK,
+    authorized: true,
+    userData
+  };
 }
 
 export function logout() {
-  localStorage.setItem('authorization', '');
   send(Parse.User.logOut());
   
   return {type: LOGOUT};
@@ -121,11 +122,6 @@ export function update(data) {
   data.updateOrigin();
   send(data.origin.save());
 
-  const {email} = data;
-  const authStr = localStorage.getItem('authorization');
-  const password = JSON.parse(authStr).password;
-  localStorage.setItem('authorization', JSON.stringify({email, password}));
-  
   return {
     type: UPDATE,
     data
@@ -141,10 +137,6 @@ export function updateEmail(email) {
     userData.set(`email`, email);
     send(userData.save())
       .then(() => {
-        const authStr = localStorage.getItem('authorization');
-        const password = JSON.parse(authStr).password;
-        localStorage.setItem('authorization', JSON.stringify({email, password}));
-        
         dispatch({
           type: UPDATE_EMAIL,
           status: OK,
@@ -171,9 +163,6 @@ export function updatePassword(password) {
   const userData = Parse.User.current();
   userData.set(`password`, password);
   send(userData.save());
-  
-  const email = userData.get('email');
-  localStorage.setItem('authorization', JSON.stringify({email, password}));
   
   return {type: UPDATE_PASSWORD};
 }
