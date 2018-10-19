@@ -97,8 +97,6 @@ export default class Sharing extends Component {
         }
       })
       .catch(error => {
-        console.error(error);
-  
         this.props.showAlert({
           type: ALERT_TYPE_CONFIRM,
           title: `Not registered user`,
