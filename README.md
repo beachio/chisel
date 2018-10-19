@@ -24,23 +24,27 @@ git clone <repo>
 cd chisel
 ```
 
-Then setup and run.
+Then setup dependencies:
 
 ``` bash
 # install dependencies
 npm install
+```
 
-# serve with hot reload at localhost:9000
+Then run:
+
+```
+# serve development build with hot reload at localhost:9000
 npm run start_dev
 
-# executes production build, used by NPM method
+# executes production build with minification, used by NPM method
 npm local_run
 
-# build for production with minification
+# serve build for production
 npm run build
 ```
 
-To connect to remote server, you can set it URL in user's profile.
+See below how to setup connection parameters.
 
 ## Install from NPM
 
@@ -53,9 +57,31 @@ npm install -g chisel-cms
 to run Chisel
 
 ``` bash
-chisel-cms --appId <APP_ID> --serverURL <https://HEROKU_APP_NAME.herokuapp.com/parse> --appName <OPTIONAL>
+chisel-cms --appId <APP_ID> --serverURL <https://YOUR_SERVER.com/parse>
 ```
 Visit your preferred browser on http://localhost:9000
+
+## Parameters
+There are several parameters of Chisel:
+- Port — server port for local run or development run.
+- Parse Server URL
+- Application ID — ID of application at the Parse Server
+- JS key, REST key — keys for queries to the Parse Server. As a rule, JS key and REST key are not using now.
+
+Ways of setup them (descending priority):
+- Parameters of command line (for local run)
+- Parameters in `process.env`
+- Defaults (defined in ConnectConstants.js)
+
+Parameter names:
+| Parameter | Command line | chisel-config.json  | process.env  | Default |
+| :---:   | :-: | :-: | :-: | :-: |
+| Port | --port | – | PORT | 9000 |
+| Parse Server URL | --serverURL | configServerURL | REACT_APP_SERVER_URL | http://localhost:1337/parse |
+| Application ID | --appId | configAppId | REACT_APP_APP_ID | SampleAppId |
+| JS key | -JSkey | configJSkey | JS_KEY | – |
+| REST key | --RESTkey | configRESTkey | REST_KEY | – |
+
 
 ## Publishing Chisel
 
