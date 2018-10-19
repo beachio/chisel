@@ -70,27 +70,26 @@ export class ModelContainer extends Component  {
 
     const site = models.currentSite;
     const model = this.model;
-    if (site && model) {
+    
+    if (site && model && (models.role == ROLE_ADMIN || models.role == ROLE_OWNER)) {
       title = `Model: ${model.name} - Site: ${site.name} - Chisel`;
 
       const closeModel = () => browserHistory.push(
         `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}`);
 
-      const role = models.role;
-      if (role == ROLE_ADMIN || role == ROLE_OWNER)
-        content = (
-          <Model model={model}
-                 onClose={closeModel}
-                 keepScroll={this.keepScroll}
-                 updateModel={updateModel}
-                 updateField={updateField}
-                 deleteField={deleteField}
-                 showAlert={showAlert}
-                 showModal={showModal}
-                 modalShowing={nav.modalShowing}
-                 alertShowing={nav.alertShowing}
-                 isEditable={true}/>
-        );
+      content = (
+        <Model model={model}
+               onClose={closeModel}
+               keepScroll={this.keepScroll}
+               updateModel={updateModel}
+               updateField={updateField}
+               deleteField={deleteField}
+               showAlert={showAlert}
+               showModal={showModal}
+               modalShowing={nav.modalShowing}
+               alertShowing={nav.alertShowing}
+               isEditable={true}/>
+      );
     }
     
     return (

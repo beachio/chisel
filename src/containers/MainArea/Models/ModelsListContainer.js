@@ -41,22 +41,20 @@ export class ModelsListContainer extends Component {
     let content = <NoRights />;
 
     const site = models.currentSite;
-    if (site) {
+    if (site && (models.role == ROLE_ADMIN || models.role == ROLE_OWNER)) {
       title = `Models - Site: ${site.name} - Chisel`;
       const gotoModel = model => browserHistory.push(
         `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}/${URL_MODEL}${model.nameId}`);
-      const role = models.role;
-      if (role == ROLE_ADMIN || role == ROLE_OWNER)
-        content = (
-          <ModelsList site={site}
-                      gotoModel={gotoModel}
-                      addModel={addModel}
-                      keepScroll={this.keepScroll}
-                      deleteModel={deleteModel}
-                      showAlert={showAlert}
-                      alertShowing={nav.alertShowing}
-                      isEditable={true}/>
-        );
+      content = (
+        <ModelsList site={site}
+                    gotoModel={gotoModel}
+                    addModel={addModel}
+                    keepScroll={this.keepScroll}
+                    deleteModel={deleteModel}
+                    showAlert={showAlert}
+                    alertShowing={nav.alertShowing}
+                    isEditable={true}/>
+      );
     }
     
     return (
