@@ -18,17 +18,17 @@ export class MainArea extends Component {
       <div className="start-working">
         <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
         Add new site to start working
-        <div className="hint">Find "Add new site" button at sidebar</div>
+        <div className="hint">Find "Add new site" button in the sidebar</div>
       </div>
     </div>
   );
 
   render() {
     const {models, nav} = this.props;
-  
+
     let title = "Userspace - Chisel";
     let content = null;
-    
+
     if (nav.initEnded) {
       let curSite = models.currentSite;
 
@@ -40,7 +40,7 @@ export class MainArea extends Component {
       else
         content = this.cmpNoSites;
     }
-    
+
     return (
       <div styleName="wrapper">
         <Helmet>

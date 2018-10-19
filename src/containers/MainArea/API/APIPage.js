@@ -13,7 +13,8 @@ export class APIPage extends Component  {
       <div className="start-working">
         <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
         <div className="docs">
-          Check <a className="docs-link" href="http://parseplatform.github.io/docs/" target="_blank">Parse</a> docs!
+          Parse Server has extensive <a className="docs-link" href="http://parseplatform.github.io/docs/" target="_blank">Documentation</a>. Take a look!
+          <div className="hint">Our Interactive API Docs will be coming soon...</div>
         </div>
       </div>
     );
@@ -23,7 +24,7 @@ export class APIPage extends Component  {
 export class APIPageContainer extends Component  {
   render () {
     const {models} = this.props;
-  
+
     let title = `Chisel`;
     let content = <NoRights />;
 
@@ -35,7 +36,7 @@ export class APIPageContainer extends Component  {
       if (role != ROLE_EDITOR)
         content = <APIPage />;
     }
-    
+
     return (
       <div className="mainArea">
         <Helmet>
