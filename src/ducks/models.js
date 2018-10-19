@@ -4,7 +4,7 @@ import {store} from '../index';
 import {UserData, CollaborationData, ROLE_OWNER} from 'models/UserData';
 import {SiteData, ModelData, ModelFieldData, canBeTitle} from 'models/ModelData';
 import {getRandomColor} from 'utils/common';
-import {getNameId} from 'utils/data';
+import {getNameId, getRole} from 'utils/data';
 import {LOGOUT} from './user';
 import {send} from 'utils/server';
 
@@ -195,19 +195,7 @@ export function setCurrentSite(currentSite) {
       currentSite: null
     };
   
-  let userData = store.getState().user.userData;
-
-  let getRole = () => {
-    if (userData.origin.id == currentSite.owner.origin.id)
-      return ROLE_OWNER;
-    for (let collab of currentSite.collaborations) {
-      if (collab.user.origin.id == userData.origin.id)
-        return collab.role;
-    }
-    return null;
-  };
-  let role = getRole();
-
+  const role = getRole(currentSite);
   return {
     type: SET_CURRENT_SITE,
     currentSite,
