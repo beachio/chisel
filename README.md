@@ -29,10 +29,13 @@ Then setup and run.
 ``` bash
 # install dependencies
 npm install
- 
-# serve with hot reload at localhost:3000
-npm start
- 
+
+# serve with hot reload at localhost:9000
+npm run start_dev
+
+# executes production build, used by NPM method
+npm local_run
+
 # build for production with minification
 npm run build
 ```
@@ -43,14 +46,14 @@ To connect to remote server, you can set it URL in user's profile.
 
 Parse Server is available via [NPM](https://www.npmjs.com/package/chisel-cms)
 
-``` bash 
+``` bash
 npm install -g chisel-cms
 ```
 
 to run Chisel
 
 ``` bash
-chisel-cms --appId <APP_ID> --serverURL <https://HEROKU_APP_NAME.herokuapp.com/parse>
+chisel-cms --appId <APP_ID> --serverURL <https://HEROKU_APP_NAME.herokuapp.com/parse> --appName <OPTIONAL>
 ```
 Visit your preferred browser on http://localhost:9000
 
@@ -58,7 +61,7 @@ Visit your preferred browser on http://localhost:9000
 
 Chisel can be compiled and served via a Static Site hosting platform, such as our own Forge service.
 
-If you are running Chisel from a cloned repository, you can 
+If you are running Chisel from a cloned repository, you can
 
 ``` bash
 npm run build
