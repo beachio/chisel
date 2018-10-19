@@ -41,8 +41,8 @@ export class ContentEditContainer extends Component {
     const {setCurrentItem} = this.props.contentActions;
     const {content} = this.props;
   
-    const oldItem = content.currentItem;
-    if (!oldItem || modelNameId != oldItem.model.nameId || itemId != oldItem.origin.id) {
+    this.item = content.currentItem;
+    if (!this.item || modelNameId != this.item.model.nameId || itemId != this.item.origin.id) {
       const item = getContentByModelAndId(modelNameId, itemId);
       if (item) {
         this.item = item;

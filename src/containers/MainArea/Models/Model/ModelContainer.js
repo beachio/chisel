@@ -31,8 +31,8 @@ export class ModelContainer extends Component  {
     const {setCurrentModel} = props.modelsActions;
     const {models} = props;
 
-    const oldModel = models.currentModel;
-    if (!oldModel || modelId != oldModel.nameId) {
+    this.model = models.currentModel;
+    if (!this.model || modelId != this.model.nameId) {
       const model = getModelByNameId(modelId);
       if (model) {
         this.model = model;
