@@ -15,6 +15,7 @@ export class UserData {
     this.origin = origin;
     
     if (origin.get('email'))      this.email      = origin.get('email');
+    if (!this.email)              this.email      = origin.get('username');
     if (origin.get('firstName'))  this.firstName  = origin.get('firstName');
     if (origin.get('lastName'))   this.lastName   = origin.get('lastName');
     if (origin.get('avatar'))     this.avatar     = origin.get('avatar');
