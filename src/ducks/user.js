@@ -100,7 +100,7 @@ export function login(email, password) {
 
 export function getLocalStorage() {
   const currentUser = Parse.User.current();
-  if (!currentUser)
+  if (!currentUser || !currentUser.get('sessionToken'))
     return {type: LOGIN_RESPONSE};
   
   const userData = new UserData().setOrigin();
