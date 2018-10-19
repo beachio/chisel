@@ -24,23 +24,23 @@ const MODE_SERVER_DOWN  = 'server_down';
 export class Sign extends Component  {
   state = {
     mode: MODE_LOGIN,
-    
+
     email: '',
     password: '',
     passwordConfirm: '',
-  
+
     error: null,
     lock: false
   };
-  
+
   elmEmail;
   elmPassword;
   elmPasswordConfirm;
-  
-  
+
+
   constructor(props) {
     super(props);
-    
+
     let urlParams = parseURLParams();
     if (urlParams.mode)
       this.state.mode = urlParams.mode;
@@ -49,7 +49,7 @@ export class Sign extends Component  {
 
     props.userActions.resetStatus();
   }
-  
+
   componentWillReceiveProps(nextProps) {
     const {user, serverStatus} = nextProps;
 
@@ -95,7 +95,7 @@ export class Sign extends Component  {
       error: null
     });
   };
-  
+
   onPasswordConfirmChange = event => {
     this.setState({
       passwordConfirm: event.target.value,
@@ -105,62 +105,62 @@ export class Sign extends Component  {
 
   onLogin = event => {
     event.preventDefault();
-  
+
     if (!this.getLoginAvail())
       return false;
-    
+
     const {login} = this.props.userActions;
     login(this.state.email, this.state.password);
     this.setState({lock: true});
-    
+
     return false;
   };
-  
+
   onReg = event => {
     event.preventDefault();
-    
+
     if (!this.getRegAvail())
       return false;
-  
+
     const {register} = this.props.userActions;
     register(this.state.email, this.state.password);
     this.setState({lock: true});
-  
+
     return false;
   };
-  
+
   onRestore = event => {
     event.preventDefault();
-    
+
     if (!this.getForgotAvail())
       return false;
-    
+
     const {restorePassword} = this.props.userActions;
     restorePassword(this.state.email);
     this.setState({lock: true});
-    
+
     return false;
   };
-  
+
   onResend = () => {
     const {resendVerEmail} = this.props.userActions;
     resendVerEmail(this.state.email);
     this.setState({mode: MODE_REG_MAIL});
   };
-  
+
   getLoginAvail() {
     return !this.state.lock &&
       this.state.email &&
       this.state.password;
   }
-  
+
   getRegAvail() {
     return !this.state.lock &&
       this.state.email &&
       this.state.password &&
       this.state.password == this.state.passwordConfirm;
   }
-  
+
   getForgotAvail() {
     return !this.state.lock &&
       this.state.email;
@@ -174,7 +174,7 @@ export class Sign extends Component  {
       passwordConfirm: ''
     });
   }
-  
+
   render() {
     this.elmEmail = <input styleName="input"
                            type="text"
@@ -182,43 +182,43 @@ export class Sign extends Component  {
                            value={this.state.email}
                            placeholder="Enter email"
                            onChange={this.onEmailChange} />;
-  
+
     this.elmPassword = <input styleName="input"
                               type="password"
                               value={this.state.password}
                               placeholder="Enter password"
                               onChange={this.onPasswordChange} />;
-  
+
     this.elmPasswordConfirm = <input styleName="input"
                                      type="password"
                                      value={this.state.passwordConfirm}
                                      placeholder="Confirm password"
                                      onChange={this.onPasswordConfirmChange} />;
-    
+
     let content;
-    
+
     switch (this.state.mode) {
-      
+
       case MODE_LOGIN:
         content = (
           <form styleName="form" onSubmit={this.onLogin}>
             {this.elmEmail}
             {this.elmPassword}
-            
+
             <div styleName="button">
               <ButtonControl color="green"
                              type="submit"
                              disabled={!this.getLoginAvail()}
                              value="Log in" />
             </div>
-    
+
             <div styleName="errors">
               {
                 this.state.error == ERROR_WRONG_PASS &&
                   <div styleName="error">Wrong email or password!</div>
               }
             </div>
-  
+
             <div styleName="forgot" onClick={() => this.setMode(MODE_FORGOT)}>
               Forgot password?
             </div>
@@ -228,68 +228,68 @@ export class Sign extends Component  {
           </form>
         );
         break;
-  
+
       case MODE_REG:
         content = (
           <form styleName="form" onSubmit={this.onReg}>
             {this.elmEmail}
             {this.elmPassword}
             {this.elmPasswordConfirm}
-            
+
             <div styleName="button">
               <ButtonControl color="green"
                              type="submit"
                              disabled={!this.getRegAvail()}
                              value="Register" />
             </div>
-        
+
             <div styleName="errors">
               {
                 this.state.error ==  ERROR_USER_EXISTS &&
                   <div styleName="error">This email is already in use!</div>
               }
             </div>
-  
+
             <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
               Log in
             </div>
           </form>
         );
         break;
-  
+
       case MODE_REG_MAIL:
         content = (
           <div styleName="form">
             <div styleName="description">
               We send to your email a link to confirm your registration. Please, open it.
             </div>
-  
+
             <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
               Return to log in
             </div>
           </div>
         );
         break;
-  
+
       case MODE_UNVERIF:
         content = (
           <div styleName="form">
             <div styleName="description">
               <p>It looks like your email is not verified yet.</p>
-              <p>We've sended to your email a link to confirm your registration. Please, open it.</p>
+              <p>Please check your inbox for an email from us.</p>
             </div>
-  
+
             <div styleName="forgot" onClick={this.onResend}>
               Resend verification email
             </div>
-            
+
             <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
               Return to log in
             </div>
           </div>
         );
         break;
-        
+
       case MODE_FORGOT:
         content = (
           <form styleName="form" onSubmit={this.onRestore}>
@@ -303,27 +303,27 @@ export class Sign extends Component  {
                              disabled={!this.getForgotAvail()}
                              value="Restore password" />
             </div>
-      
+
             <div styleName="errors">
               {this.state.error == ERROR_OTHER &&
                 <div styleName="error">Wrong email!</div>
               }
             </div>
-  
+
             <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
               Return to log in
             </div>
           </form>
         );
         break;
-        
+
       case MODE_FORGOT_MAIL:
         content = (
           <div styleName="form">
             <div styleName="description">
               The mail have sended. Please, check your inbox.
             </div>
-  
+
             <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
               Return to log in
             </div>
@@ -345,7 +345,7 @@ export class Sign extends Component  {
         );
         break;
     }
-    
+
     return (
       <div className='container'>
         <Helmet>
