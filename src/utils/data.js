@@ -273,10 +273,11 @@ export function getMediaByO(origin, items) {
 //============ other ============
 
 export function getRole(site) {
-  if (site.owner.origin.id == Parse.User.current().id)
+  const userID = Parse.User.current().id;
+  if (site.owner.origin.id == userID)
     return ROLE_OWNER;
   for (let collab of site.collaborations) {
-    if (collab.user.origin.id == Parse.User.current().id)
+    if (collab.user.origin.id == userID)
       return collab.role;
   }
   return null;

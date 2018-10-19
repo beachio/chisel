@@ -40,17 +40,15 @@ export class ModelsListContainer extends Component {
     let title = `Chisel`;
     let content = <NoRights />;
 
-    const curSite = models.currentSite;
-    if (curSite) {
-      title = `Models - Site: ${curSite.name} - Chisel`;
-
+    const site = models.currentSite;
+    if (site) {
+      title = `Models - Site: ${site.name} - Chisel`;
       const gotoModel = model => browserHistory.push(
-        `/${URL_USERSPACE}/${URL_SITE}${curSite.nameId}/${URL_MODELS}/${URL_MODEL}${model.nameId}`);
-
+        `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}/${URL_MODEL}${model.nameId}`);
       const role = models.role;
       if (role == ROLE_ADMIN || role == ROLE_OWNER)
         content = (
-          <ModelsList site={curSite}
+          <ModelsList site={site}
                       gotoModel={gotoModel}
                       addModel={addModel}
                       keepScroll={this.keepScroll}

@@ -44,16 +44,16 @@ export class ContentListContainer extends Component {
       </div>
     );
   
-    let curSite = models.currentSite;
-    if (!curSite)
+    let site = models.currentSite;
+    if (!site)
       return null;
     
-    let title = `Content - Site: ${curSite.name} - Chisel`;
+    let title = `Content - Site: ${site.name} - Chisel`;
     
-    if (curSite.models.length) {
+    if (site.models.length) {
       let items = [];
       for (let item of content.items) {
-        if (item.model.site == curSite)
+        if (item.model.site == site)
           items.push(item);
       }
 
@@ -70,11 +70,11 @@ export class ContentListContainer extends Component {
           let modelId = item.model.nameId;
           let itemId = item.origin.id;
           browserHistory.push(
-            `/${URL_USERSPACE}/${URL_SITE}${curSite.nameId}/${URL_CONTENT}/${URL_ITEM}${modelId}~${itemId}`);
+            `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_CONTENT}/${URL_ITEM}${modelId}~${itemId}`);
         };
 
         cmpContent = <ContentList items={items}
-                                  models={curSite.models}
+                                  models={site.models}
                                   gotoItem={gotoItem}
                                   addItem={addItem}
                                   deleteItem={deleteItem}

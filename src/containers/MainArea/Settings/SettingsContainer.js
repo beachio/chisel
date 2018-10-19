@@ -16,13 +16,13 @@ export class SettingsContainer extends Component  {
     const {updateSite, deleteSite} = this.props.modelsActions;
     const {showAlert} = this.props.navActions;
     
-    let curSite = models.currentSite;
-    if (!curSite)
+    const site = models.currentSite;
+    if (!site)
       return null;
     
-    let title = `Settings - Site: ${curSite.name} - Chisel`;
+    const title = `Settings - Site: ${site.name} - Chisel`;
     
-    let onDeleteSite = site => {
+    const onDeleteSite = site => {
       deleteSite(site);
       browserHistory.push(`/${URL_USERSPACE}`);
     };
@@ -32,7 +32,7 @@ export class SettingsContainer extends Component  {
         <Helmet>
           <title>{title}</title>
         </Helmet>
-        <Settings site={curSite}
+        <Settings site={site}
                   updateSite={updateSite}
                   deleteSite={onDeleteSite}
                   showAlert={showAlert}

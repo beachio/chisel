@@ -17,19 +17,19 @@ export class SharingContainer extends Component  {
       this.props.modelsActions;
     const {showAlert} = this.props.navActions;
     
-    let curSite = models.currentSite;
-    if (!curSite)
+    let site = models.currentSite;
+    if (!site)
       return null;
     
-    let title = `Sharing - Site: ${curSite.name} - Chisel`;
+    let title = `Sharing - Site: ${site.name} - Chisel`;
     
     return (
       <div className="mainArea">
         <Helmet>
           <title>{title}</title>
         </Helmet>,
-        <Sharing collaborations={curSite.collaborations}
-                 owner={curSite.owner}
+        <Sharing collaborations={site.collaborations}
+                 owner={site.owner}
                  user={user.userData}
                  addCollaboration={addCollaboration}
                  addInviteCollaboration={addInviteCollaboration}
