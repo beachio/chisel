@@ -9,22 +9,22 @@ export let currentServerURL;
 
 
 function requestConfig() {
-  config.serverURL = process.env.REACT_APP_SERVER_URL ||  config.serverURL;
-  config.appId = process.env.REACT_APP_APP_ID || config.appId;
-  config.JSkey = process.env.JS_KEY || config.JSkey;
-  config.RESTkey = process.env.REST_KEY || config.RESTkey;
+  config.serverURL  = process.env.REACT_APP_SERVER_URL  || config.serverURL;
+  config.appId      = process.env.REACT_APP_APP_ID      || config.appId;
+  config.JSkey      = process.env.JS_KEY                || config.JSkey;
+  config.RESTkey    = process.env.REST_KEY              || config.RESTkey;
 
   return fetch('/chisel-config.json')
     .then(response => {
       if (response.ok)
         return response.json();
-      throw new Error(response.statusText);
+      throw response.statusText;
     })
     .then(res => {
-      config.serverURL  = res.configServerURL;
-      config.appId      = res.configAppId;
-      config.JSkey      = res.configJSkey;
-      config.RESTkey    = res.configRESTkey;
+      config.serverURL  = res.configServerURL || config.serverURL;
+      config.appId      = res.configAppId     || config.appId;
+      config.JSkey      = res.configJSkey     || config.JSkey;
+      config.RESTkey    = res.configRESTkey   || config.RESTkey;
     })
     .catch(() => {});
 }

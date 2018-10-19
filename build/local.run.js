@@ -11,11 +11,11 @@ program.option('--port [port]', 'the port to run Chisel');
 
 program.parse(process.argv);
 
-const port            = program.port      || process.env.PORT                         || 9000;
-const configServerURL = program.serverURL || process.env.REACT_APP_CHISEL_SERVER_URL  || "http://localhost:1337/parse";
-const configAppId     = program.appId     || process.env.REACT_APP_CHISEL_APP_ID      || "SampleAppId";
-const configJSkey     = program.JSkey     || process.env.CHISEL_JS_KEY;
-const configRESTkey   = program.RESTkey   || process.env.CHISEL_REST_KEY;
+const port            = program.port || process.env.PORT || 9000;
+const configServerURL = program.serverURL;
+const configAppId     = program.appId;
+const configJSkey     = program.JSkey;
+const configRESTkey   = program.RESTkey;
 
 
 const server = new express();
