@@ -98,17 +98,23 @@ export function login(email, password) {
 }
 
 export function getLocalStorage() {
-  const currentUser = Parse.User.current();
-  if (!currentUser || !currentUser.get('sessionToken'))
-    return {type: LOGIN_RESPONSE};
+  return dispatch => {
+    const currentUser = Parse.User.current();
+    if (!currentUser || !currentUser.get('sessionToken'))
+      dispatch ({type: LOGIN_RESPONSE});
   
-  const userData = new UserData().setOrigin();
-  return {
-    type: LOGIN_RESPONSE,
-    status: OK,
-    authorized: true,
-    userData
-  };
+    send(currentUser.fetch())
+      .then(() => {
+        const userData = new UserData().setOrigin();
+        dispatch({
+          type: LOGIN_RESPONSE,
+          status: OK,
+          authorized: true,
+          userData
+        });
+      })
+      .catch(() => dispatch ({type: LOGIN_RESPONSE}));
+  }
 }
 
 export function logout() {
