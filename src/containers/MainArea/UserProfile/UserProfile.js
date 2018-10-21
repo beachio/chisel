@@ -7,7 +7,7 @@ import CSSModules from 'react-css-modules';
 import InputControl from 'components/elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
-import {update, updateEmail, updatePassword, ERROR_USER_EXISTS, ERROR_OTHER} from 'ducks/user';
+import {update, updateEmail, updatePassword, resendVerEmail, ERROR_USER_EXISTS, ERROR_OTHER} from 'ducks/user';
 import {currentServerURL, changeServerURL} from 'utils/initialize';
 import {checkURL, checkEmail} from 'utils/common';
 import {checkPassword} from 'utils/data';
@@ -250,6 +250,11 @@ export class UserProfile extends Component  {
     this.setState({serverURL, dirtyServer: true, errorServer: null});
   };
   
+  resendVerification = e => {
+    const {resendVerEmail} = this.props.userActions;
+    resendVerEmail();
+  };
+  
   render() {
     return (
       <div className="mainArea">
@@ -309,7 +314,12 @@ export class UserProfile extends Component  {
               </div>
                 {this.state.successEmailState &&
                   <div styleName="field-success">
-                    Your email was changed. We've sent to your new email a link to confirm it. You can use your old email <b>{this.state.email}</b> before confirmation.
+                    <div>
+                      Your email was changed. We've sent to your new email a link to confirm it. You can use your old email <b>{this.state.email}</b> before confirmation.
+                    </div>
+                    <div styleName="field-success-resend" onClick={this.resendVerification}>
+                      Resend confirmation email
+                    </div>
                   </div>
                 }
               <div styleName="field-error">
@@ -400,7 +410,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators({update, updateEmail, updatePassword}, dispatch)
+    userActions: bindActionCreators({update, updateEmail, updatePassword, resendVerEmail}, dispatch)
   };
 }
 
