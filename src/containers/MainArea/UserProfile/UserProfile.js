@@ -30,9 +30,10 @@ export class UserProfile extends Component  {
     successData: ``,
     
     email: '',
+    emailNew: '',
     dirtyEmail: false,
     errorEmail: null,
-    successEmail: ``,
+    successEmailState: false,
     
     passwordOld: ``,
     password: '',
@@ -57,12 +58,17 @@ export class UserProfile extends Component  {
     
     this.userData = user.userData;
     
-    this.state.firstName = user.userData.firstName;
-    this.state.lastName = user.userData.lastName;
-    this.state.email = user.email;
     this.state.firstName = this.userData.firstName;
     this.state.lastName = this.userData.lastName;
     this.state.email = this.userData.email;
+    
+    if (this.userData.emailNew) {
+      this.state.emailNew = this.userData.emailNew;
+      this.state.successEmailState = true;
+    } else {
+      this.state.emailNew = this.userData.email;
+    }
+    
     this.state.serverURL = currentServerURL;
   }
   
@@ -84,12 +90,11 @@ export class UserProfile extends Component  {
         
         if (errorEmail) {
           this.setState({
-            email: this.userData.email,
+            emailNew: this.userData.emailNew ? this.userData.emailNew : this.userData.email,
             errorEmail
           });
         } else {
-          this.setState({successEmail: `Email was successfully changed!`});
-          setTimeout(() => this.setState({successEmail: ``}), 2500);
+          this.setState({successEmailState: true});
         }
         
         break;
@@ -130,7 +135,7 @@ export class UserProfile extends Component  {
       this.lastChange = CHG_EMAIL;
       
       const {updateEmail} = this.props.userActions;
-      updateEmail(this.state.email);
+      updateEmail(this.state.emailNew);
     }
   };
   
@@ -173,7 +178,7 @@ export class UserProfile extends Component  {
   }
   
   validateEmail() {
-    if (!checkEmail(this.state.email)) {
+    if (!checkEmail(this.state.emailNew)) {
       this.setState({errorEmail: `Invalid email!`});
       return false;
     }
@@ -214,8 +219,12 @@ export class UserProfile extends Component  {
   };
   
   onChangeEmail = event => {
-    let email = event.target.value;
-    this.setState({email, dirtyEmail: email != this.userData.email, errorEmail: null});
+    let emailNew = event.target.value;
+    this.setState({
+      emailNew,
+      dirtyEmail: emailNew != this.userData.emailNew,
+      errorEmail: null
+    });
   };
   
   onChangePasswordOld = event => {
@@ -288,7 +297,7 @@ export class UserProfile extends Component  {
                 <div styleName="field-title">Email</div>
                 <div styleName="input-wrapper">
                   <InputControl type="big"
-                                value={this.state.email}
+                                value={this.state.emailNew}
                                 onChange={this.onChangeEmail} />
                 </div>
               </div>
@@ -298,9 +307,11 @@ export class UserProfile extends Component  {
                                disabled={!this.state.dirtyEmail || this.state.errorEmail}
                                value="Change email"/>
               </div>
-              <div styleName="field-success">
-                {this.state.successEmail}
-              </div>
+                {this.state.successEmailState &&
+                  <div styleName="field-success">
+                    Your email was changed. We've sent to your new email a link to confirm it. You can use your old email <b>{this.state.email}</b> before confirmation.
+                  </div>
+                }
               <div styleName="field-error">
                 {this.state.errorEmail}
               </div>

@@ -134,8 +134,7 @@ export function updateEmail(email) {
   
   return dispatch => {
     const userData = Parse.User.current();
-    userData.set(`email`, email);
-    send(userData.save())
+    send(userData.requestEmailChange(email))
       .then(() => {
         dispatch({
           type: UPDATE_EMAIL,
@@ -296,7 +295,7 @@ export default function userReducer(state = initialState, action) {
     case UPDATE_EMAIL:
       let userData = state.userData;
       if (action.email)
-        userData.email = action.email;
+        userData.emailNew = action.email;
       return {
         ...state,
         userData,
