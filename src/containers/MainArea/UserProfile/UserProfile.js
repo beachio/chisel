@@ -8,7 +8,7 @@ import InputControl from 'components/elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {update, updateEmail, updatePassword, resendVerEmail, ERROR_USER_EXISTS, ERROR_OTHER} from 'ducks/user';
-import {currentServerURL, changeServerURL} from 'utils/initialize';
+import {config, changeServerURL} from 'utils/initialize';
 import {checkURL, checkEmail} from 'utils/common';
 import {checkPassword} from 'utils/data';
 
@@ -69,7 +69,7 @@ export class UserProfile extends Component  {
       this.state.emailNew = this.userData.email;
     }
     
-    this.state.serverURL = currentServerURL;
+    this.state.serverURL = config.serverURL;
   }
   
   componentWillReceiveProps(nextProps) {

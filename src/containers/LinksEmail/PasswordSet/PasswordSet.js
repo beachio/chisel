@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import {Helmet} from "react-helmet";
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
-import {currentServerURL} from 'utils/initialize';
+import {config} from 'utils/initialize';
 import {login} from 'ducks/user';
 import {parseURLParams, URLEncode} from 'utils/common';
 
@@ -63,7 +63,7 @@ export class PasswordSet extends Component  {
       'new_password': this.state.password
     };
     
-    fetch(currentServerURL + '/apps/' + this.urlParams['id'] + '/request_password_reset', {
+    fetch(config.serverURL + '/apps/' + this.urlParams['id'] + '/request_password_reset', {
       method: 'POST',
       mode: 'no-cors',
       headers: {

@@ -2,17 +2,17 @@ import {Parse} from 'parse';
 
 import {store} from 'index';
 import {getLocalStorage} from 'ducks/user';
-import {config} from 'ConnectConstants';
+import {config as _config} from 'ConnectConstants';
 
 
-export let currentServerURL;
+export const config = {};
 
 
 function requestConfig() {
-  config.serverURL  = process.env.REACT_APP_SERVER_URL  || config.serverURL;
-  config.appId      = process.env.REACT_APP_APP_ID      || config.appId;
-  config.JSkey      = process.env.JS_KEY                || config.JSkey;
-  config.RESTkey    = process.env.REST_KEY              || config.RESTkey;
+  config.serverURL  = process.env.REACT_APP_SERVER_URL  || _config.serverURL;
+  config.appId      = process.env.REACT_APP_APP_ID      || _config.appId;
+  config.JSkey      = process.env.JS_KEY                || _config.JSkey;
+  config.RESTkey    = process.env.REST_KEY              || _config.RESTkey;
 
   return fetch('/chisel-config.json')
     .then(response => {
@@ -30,10 +30,8 @@ function requestConfig() {
 }
 
 function subInitParse() {
-  currentServerURL = config.serverURL;
-  
   Parse.initialize(config.appId, config.JSkey);
-  Parse.serverURL = currentServerURL;
+  Parse.serverURL = config.serverURL;
 }
 
 export function initApp() {
@@ -52,7 +50,7 @@ export function changeServerURL(URL) {
   if (!URL)
     return;
   
-  currentServerURL = URL;
+  config.serverURL = URL;
   localStorage.setItem('parseServerURL', URL);
   Parse.serverURL = URL;
 }

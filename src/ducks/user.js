@@ -3,8 +3,7 @@ import {Parse} from 'parse';
 
 import {setProblemB} from 'ducks/serverStatus';
 import {UserData} from 'models/UserData';
-import {currentServerURL} from 'utils/initialize';
-import {config} from 'ConnectConstants';
+import {config} from 'utils/initialize';
 import {send} from 'utils/server';
 
 
@@ -198,7 +197,7 @@ export function resendVerEmail(email) {
   }
   
   return dispatch => {
-    send(fetch(currentServerURL + '/verificationEmailRequest', {
+    send(fetch(config.serverURL + '/verificationEmailRequest', {
       method: 'POST',
       headers: {
         'X-Parse-Application-Id': config.appId,
