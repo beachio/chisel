@@ -189,8 +189,13 @@ export function restorePassword(email) {
 }
 
 export function resendVerEmail(email) {
-  if (!email)
-    return null;
+  if (!email) {
+    let userData = store.getState().user.userData;
+    if (userData && userData.emailNew)
+      email = userData.emailNew;
+    else
+      return null;
+  }
   
   return dispatch => {
     send(fetch(currentServerURL + '/verificationEmailRequest', {
