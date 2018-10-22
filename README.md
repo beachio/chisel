@@ -75,7 +75,7 @@ Ways of setup them (descending priority):
 
 Parameter names:
 | Parameter | Command line | chisel-config.json  | process.env  | Default |
-| :---:   | :-: | :-: | :-: | :-: |
+| --- | --- | --- | --- | --- |
 | Port | --port | – | PORT | 9000 |
 | Parse Server URL | --serverURL | configServerURL | REACT_APP_SERVER_URL | http://localhost:1337/parse |
 | Application ID | --appId | configAppId | REACT_APP_APP_ID | SampleAppId |
