@@ -102,8 +102,10 @@ export function login(email, password) {
 export function getLocalStorage() {
   return dispatch => {
     const currentUser = Parse.User.current();
-    if (!currentUser || !currentUser.get('sessionToken'))
-      dispatch ({type: LOGIN_RESPONSE});
+    if (!currentUser || !currentUser.get('sessionToken')) {
+      dispatch({type: LOGIN_RESPONSE});
+      return;
+    }
   
     send(currentUser.fetch())
       .then(() => {
