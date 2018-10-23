@@ -249,6 +249,7 @@ export class ModelFieldData {
   type = FIELD_TYPE_SHORT_TEXT;
   appearance = FIELD_APPEARANCE__SHORT_TEXT__SINGLE;
   color = "rgba(0, 0, 0, 1)";
+  isRequired = false;
   isTitle = false;
   isList = false;
   isDisabled = false;
@@ -280,6 +281,7 @@ export class ModelFieldData {
     if (origin.get('type'))       this.type       = origin.get('type');
     if (origin.get('appearance')) this.appearance = origin.get('appearance');
     if (origin.get('color'))      this.color      = origin.get('color');
+    if (origin.get('isRequired')) this.isRequired = true;
     if (origin.get('isTitle'))    this.isTitle    = true;
     if (origin.get('isList'))     this.isList     = true;
     if (origin.get('isDisabled')) this.isDisabled = true;
@@ -298,6 +300,7 @@ export class ModelFieldData {
     this.origin.set("type",       this.type);
     this.origin.set("appearance", this.appearance);
     this.origin.set("color",      this.color);
+    this.origin.set("isRequired", this.isRequired);
     this.origin.set("isTitle",    this.isTitle);
     this.origin.set("isList",     this.isList);
     this.origin.set("isDisabled", this.isDisabled);
@@ -313,6 +316,7 @@ export class ModelFieldData {
       type:       this.type,
       appearance: this.appearance,
       color:      this.color,
+      isRequired: this.isRequired,
       isTitle:    this.isTitle,
       isList:     this.isList,
       isDisabled: this.isDisabled,

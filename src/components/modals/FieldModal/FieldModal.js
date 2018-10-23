@@ -19,6 +19,7 @@ export default class FieldModal extends Component {
     nameId: '',
     type: '',
     appearance: '',
+    isRequired: false,
     isTitle: false,
     isList: false,
     isDisabled: false,
@@ -44,6 +45,7 @@ export default class FieldModal extends Component {
     this.state.nameId     = this.field.nameId;
     this.state.type       = this.field.type;
     this.state.appearance = this.field.appearance;
+    this.state.isRequired = this.field.isRequired;
     this.state.isTitle    = this.field.isTitle;
     this.state.isList     = this.field.isList;
     this.state.isDisabled = this.field.isDisabled;
@@ -98,6 +100,10 @@ export default class FieldModal extends Component {
     this.setState({appearance}, this.checkTitle);
   };
 
+  onChangeIsRequired = isRequired => {
+    this.setState({isRequired});
+  };
+  
   onChangeIsTitle = isTitle => {
     this.setState({isTitle});
   };
@@ -130,6 +136,7 @@ export default class FieldModal extends Component {
     this.field.name       = this.state.name;
     this.field.type       = this.state.type;
     this.field.appearance = this.state.appearance;
+    this.field.isRequired = this.state.isRequired;
     this.field.isTitle    = this.state.isTitle;
     this.field.isList     = this.state.isList;
     this.field.isDisabled = this.state.isDisabled;
@@ -206,6 +213,14 @@ export default class FieldModal extends Component {
                                  suggestionsList={this.state.appList}
                                  suggest={this.onChangeAppearance}
                                  current={this.state.appearance} />
+              </div>
+  
+              <div styleName="input-wrapper">
+                <div styleName="label">Required</div>
+                <div styleName="switch">
+                  <SwitchControl checked={this.state.isRequired}
+                                 onChange={this.onChangeIsRequired} />
+                </div>
               </div>
 
               <div styleName="input-wrapper">
