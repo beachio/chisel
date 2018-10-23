@@ -28,6 +28,10 @@ export default class ContentNumber extends ContentBase {
   }
   
   getError () {
+    const baseError = super.getError();
+    if (baseError)
+      return baseError;
+    
     let value = this.state.value;
     
     switch (this.field.type) {

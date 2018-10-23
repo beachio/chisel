@@ -50,6 +50,8 @@ export default class ContentBase extends Component {
   }
   
   getError() {
+    if (this.field.isRequired && !this.state.value)
+      return 'This field is required!';
     return null;
   }
   

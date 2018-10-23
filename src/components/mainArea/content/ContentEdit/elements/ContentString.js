@@ -29,16 +29,15 @@ export default class ContentString extends ContentBase {
   }
   
   getError () {
+    const baseError = super.getError();
+    if (baseError)
+      return baseError;
+    
     let value = this.state.value;
     
     switch (this.field.type) {
       case ftps.FIELD_TYPE_SHORT_TEXT:
         switch (this.field.appearance) {
-          case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
-            if (!value && this.field.isTitle)
-              return "Title must be present!";
-            break;
-          
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
             if (!value)
               break;

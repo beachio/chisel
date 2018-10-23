@@ -6,7 +6,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import InputControl from 'components/elements/InputControl/InputControl';
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST, NAME_ERROR_NAME_RESERVED} from 'utils/data';
-import {FIELD_TYPES, canBeList, canBeTitle} from 'models/ModelData';
+import {FIELD_TYPES, canBeList, canBeTitle, canBeRequired} from 'models/ModelData';
 
 import styles from './FieldModal.sss';
 
@@ -93,11 +93,11 @@ export default class FieldModal extends Component {
       type,
       appList: FIELD_TYPES.get(type),
       appearance: FIELD_TYPES.get(type)[0]
-    }, this.checkTitle);
+    }, this.checkSwitches);
   };
 
   onChangeAppearance = appearance => {
-    this.setState({appearance}, this.checkTitle);
+    this.setState({appearance}, this.checkSwitches);
   };
 
   onChangeIsRequired = isRequired => {
@@ -105,15 +105,15 @@ export default class FieldModal extends Component {
   };
   
   onChangeIsTitle = isTitle => {
-    this.setState({isTitle});
+    this.setState({isTitle, isRequired: isTitle});
   };
   
   onChangeIsList = isList => {
-    this.setState({isList}, this.checkTitle);
+    this.setState({isList}, this.checkSwitches);
   };
 
   onChangeIsDisabled = isDisabled => {
-    this.setState({isDisabled}, this.checkTitle);
+    this.setState({isDisabled}, this.checkSwitches);
   };
 
   onSave = () => {
@@ -154,12 +154,18 @@ export default class FieldModal extends Component {
     this.props.onClose();
   };
 
-  checkTitle() {
-    const can = canBeTitle(this.state);
+  checkSwitches() {
+    let can = canBeTitle(this.state);
     if (can && !this.field.model.hasTitle())
       this.setState({isTitle: true});
     if (!can && this.state.isTitle)
       this.setState({isTitle: false});
+  
+    if (!canBeList(this.state))
+      this.setState({isList: false});
+    
+    if (!canBeRequired(this.state))
+      this.setState({isRequired: false});
   }
 
   render() {
@@ -219,7 +225,8 @@ export default class FieldModal extends Component {
                 <div styleName="label">Required</div>
                 <div styleName="switch">
                   <SwitchControl checked={this.state.isRequired}
-                                 onChange={this.onChangeIsRequired} />
+                                 onChange={this.onChangeIsRequired}
+                                 disabled={!canBeRequired(this.state) || this.state.isTitle} />
                 </div>
               </div>
 
