@@ -74,6 +74,7 @@ Ways of setup them (descending priority):
 - Defaults (defined in ConnectConstants.js)
 
 Parameter names:
+
 | Parameter | Command line | chisel-config.json  | process.env  | Default |
 | --- | --- | --- | --- | --- |
 | Port | --port | – | PORT | 9000 |
