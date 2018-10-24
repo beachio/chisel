@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 
-import styles from '../FieldModal.sss';
 import CheckboxControl from "components/elements/CheckboxControl/CheckboxControl";
 import InputControl from "components/elements/InputControl/InputControl";
 import InputNumberControl from 'components/elements/InputNumberControl/InputNumberControl';
 
+import styles from '../FieldModal.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -96,17 +96,20 @@ export default class ValidationInteger extends Component {
                              checked={this.state.range.minActive}
                              onChange={this.onRangeMinActive}
                              disabled={!this.state.range.active} />
-            <InputNumberControl onChange={this.onRangeMin}
-                                value={this.state.range.min}
-                                readOnly={!this.state.range.active || !this.state.range.minActive} />
-            —
+            <div styleName="range-field">
+              <InputNumberControl onChange={this.onRangeMin}
+                                  value={this.state.range.min}
+                                  readOnly={!this.state.range.active || !this.state.range.minActive} />
+            </div>
             <CheckboxControl title="Max"
                              checked={this.state.range.maxActive}
                              onChange={this.onRangeMaxActive}
                              disabled={!this.state.range.active} />
-            <InputNumberControl onChange={this.onRangeMax}
-                                value={this.state.range.max}
-                                readOnly={!this.state.range.active || !this.state.range.maxActive} />
+            <div styleName="range-field">
+              <InputNumberControl onChange={this.onRangeMax}
+                                  value={this.state.range.max}
+                                  readOnly={!this.state.range.active || !this.state.range.maxActive} />
+            </div>
           </div>
           <InputControl label="Custom error message"
                         onChange={this.onRangeErrorMsg}
