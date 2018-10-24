@@ -6,7 +6,7 @@ import CheckboxControl from 'components/elements/CheckboxControl/CheckboxControl
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import InputControl from 'components/elements/InputControl/InputControl';
-import ValidationInteger from 'components/modals/FieldModal/Validations/ValidationInteger';
+import ValidationNumber from 'components/modals/FieldModal/Validations/ValidationNumber';
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST, NAME_ERROR_NAME_RESERVED} from 'utils/data';
 
 import {FIELD_TYPES, canBeList, canBeTitle, canBeRequired} from 'models/ModelData';
@@ -277,8 +277,8 @@ export default class FieldModal extends Component {
           case ftps.FIELD_TYPE_INTEGER:
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
-                validations = <ValidationInteger validations={this.validations}
-                                                 update={this.onUpdateValidations}/>;
+                validations = <ValidationNumber validations={this.validations}
+                                                update={this.onUpdateValidations}/>;
                 break;
   
               case ftps.FIELD_APPEARANCE__INTEGER__RATING:
@@ -289,8 +289,8 @@ export default class FieldModal extends Component {
           case ftps.FIELD_TYPE_FLOAT:
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
-                validations = <ValidationInteger validations={this.validations}
-                                                 update={this.onUpdateValidations}/>;
+                validations = <ValidationNumber validations={this.validations}
+                                                update={this.onUpdateValidations}/>;
                 break;
             }
             break;

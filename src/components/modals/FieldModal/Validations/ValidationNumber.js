@@ -9,7 +9,7 @@ import styles from '../FieldModal.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export default class ValidationInteger extends Component {
+export default class ValidationNumber extends Component {
   state = {
     range: {
       active: false,
