@@ -3,7 +3,7 @@ import CSSModules from 'react-css-modules';
 import ReactStars from 'react-stars';
 
 import ContentBase from './ContentBase';
-import InputControl from 'components/elements/InputControl/InputControl';
+import InputNumberControl from 'components/elements/InputNumberControl/InputNumberControl';
 
 import * as ftps from 'models/ModelData';
 
@@ -12,19 +12,10 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentNumber extends ContentBase {
-  parseFunc = null;
-  
-  
-  constructor(props) {
-    super(props);
-    
-    this.parseFunc = this.field.type == ftps.FIELD_TYPE_INTEGER ? parseInt : parseFloat;
-  }
-  
   getDefaultValue() {
     if (this.field.isList)
       return [];
-    return null;
+    return 0;
   }
   
   getError () {
@@ -68,38 +59,17 @@ export default class ContentNumber extends ContentBase {
     return null;
   }
   
-  onChange = (event, i) => {
-    let value = event.target.value;
-    
+  onChange = (value, i) => {
     if (this.field.isList) {
       let items = this.state.value;
-      let itemsNum = items.slice();
-      
-      if (value) {
+      if (i < items.length) {
+        items = items.slice();
         items[i] = value;
-        let num = this.parseFunc(value);
-        if (!isNaN(num))
-          itemsNum[i] = num;
-        else
-          itemsNum.splice(i, 1);
-      } else {
-        items.splice(i, 1);
-        itemsNum.splice(i, 1);
+        this.setValue(items);
       }
       
-      this.setState({value: items});
-  
-      this.setValue(itemsNum);
-      
     } else {
-      this.setState({value});
-      
-      let num = this.parseFunc(value);
-      if (!isNaN(num))
-        this.setValue(this.parseFunc(num));
-      else
-        this.setValue(this.parseFunc(0));
-      
+      this.setValue(value);
     }
   };
   
@@ -109,28 +79,32 @@ export default class ContentNumber extends ContentBase {
     if (!this.field.isList)
       return;
     
-    let code = event.keyCode;
+    const code = event.keyCode;
     
     //Enter or down pressed
     if (code == 13 || code == 40) {
-      if (inputs[i + 1]) {
-        let items = this.state.value;
-        let num = this.parseFunc(items[i]);
-        if (!isNaN(num))
-          inputs[i + 1].focus();
-        else
-          this.onBlur();
-      }
+      if (inputs[i + 1])
+        inputs[i + 1].focus();
       
-      //up pressed
+    //up pressed
     } else if (code == 38) {
       if (i)
         inputs[--i].focus();
     }
   };
   
-  onBlur = () => {
-    this.setState({value: this.props.value});
+  onPlus = i => {
+    let items = this.state.value;
+    let itemsLeft = items.slice(0, i + 1);
+    let itemsRight = items.slice(i + 1);
+    items = itemsLeft.concat(0, itemsRight);
+    this.setValue(items);
+  };
+  
+  onMinus = i => {
+    let items = this.state.value.slice();
+    items.splice(i, 1);
+    this.setValue(items);
   };
   
   onChangeRating = value => {
@@ -154,26 +128,39 @@ export default class ContentNumber extends ContentBase {
             if (this.field.isList) {
               if (!value)
                 value = [];
-          
+  
               inner = [];
               let inputs = [];
-              for (let i = 0; i < value.length + 1; i++) {
-                inner.push(<InputControl type="big"
-                                         key={i}
-                                         value={value[i]}
-                                         readOnly={!this.state.isEditable}
-                                         onChange={e => this.onChange(e, i)}
-                                         DOMRef={inp => inputs[i] = inp}
-                                         onBlur={this.onBlur}
-                                         onKeyDown={e => this.onKeyDown(e, i, inputs)} />);
+              for (let i = 0; i < value.length; i++) {
+                inner.push(
+                  <div styleName="list-item"
+                       key={i}>
+                    <InputNumberControl styleName="list-item-input"
+                                        type="big"
+                                        isInt={this.field.type == ftps.FIELD_TYPE_INTEGER}
+                                        value={value[i]}
+                                        readOnly={!this.state.isEditable}
+                                        onChange={v => this.onChange(v, i)}
+                                        DOMRef={inp => inputs[i] = inp}
+                                        onKeyDown={e => this.onKeyDown(e, i, inputs)} />
+                    <div styleName="list-item-plus"
+                         onClick={() => this.onPlus(i)}>
+                      +
+                    </div>
+                    <div styleName="list-item-minus"
+                         onClick={() => this.onMinus(i)}>
+                      –
+                    </div>
+                  </div>
+                );
               }
           
             } else {
-              inner = <InputControl type="big"
-                                    value={value}
-                                    readOnly={!this.state.isEditable}
-                                    onChange={this.onChange}
-                                    onBlur={this.onBlur} />;
+              inner = <InputNumberControl type="big"
+                                          isInt={this.field.type == ftps.FIELD_TYPE_INTEGER}
+                                          value={value}
+                                          readOnly={!this.state.isEditable}
+                                          onChange={this.onChange} />;
             }
         
             return (
@@ -186,8 +173,7 @@ export default class ContentNumber extends ContentBase {
             value *= .5;
             return (
               <div styleName="input-wrapper">
-                <ReactStars styleName="react-stars"
-                            value={value}
+                <ReactStars value={value}
                             onChange={this.onChangeRating}
                             size={32}
                             edit={this.state.isEditable}
