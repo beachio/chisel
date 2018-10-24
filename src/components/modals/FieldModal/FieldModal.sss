@@ -128,16 +128,31 @@
     color: #DD5555
 
   .validation
+    margin-top: 40px
+
+    .active
+      margin-bottom: 15px
 
     .range
-      margin-top: 5px
       display: flex
       justify-content: flex-start
-      align-items: center
 
       &-field
         width: 20%
         margin-right: 10%
+
+    .pattern
+      display: flex
+      justify-content: space-between
+      align-items: flex-end
+
+      &-pattern
+        opacity: 1
+        flex-grow: 1
+
+      &-flags
+        width: 55px
+        margin-left: 30px
 
     .error
       margin-top: 6px

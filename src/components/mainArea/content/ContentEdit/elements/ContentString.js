@@ -38,6 +38,61 @@ export default class ContentString extends ContentBase {
     switch (this.field.type) {
       case ftps.FIELD_TYPE_SHORT_TEXT:
         switch (this.field.appearance) {
+          case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
+            if (!this.field.validations)
+              break;
+            
+            const checkRange = value => {
+              const range = this.field.validations.range;
+              if (range.minActive && value.length < range.min ||
+                  range.maxActive && value.length > range.max) {
+                let error = range.errorMsg;
+                if (!error)
+                  error = "The length is out of permissible range!";
+                return error;
+              }
+            };
+            const checkPattern = value => {
+              const pattern = this.field.validations.pattern;
+              const regexp = new RegExp(pattern.pattern, pattern.flags);
+              if (!value.match(regexp)) {
+                let error = pattern.errorMsg;
+                if (!error)
+                  error = "The string is not match the pattern!";
+                return error;
+              }
+            };
+            
+            const checkValidations = value => {
+              let error;
+              if (this.field.validations.range && this.field.validations.range.active) {
+                error = checkRange(value);
+                if (error)
+                  return error;
+              }
+              if (this.field.validations.pattern && this.field.validations.pattern.active) {
+                error = checkPattern(value);
+                if (error)
+                  return error;
+              }
+            };
+            
+            if (this.field.isList) {
+              for (let itemValue of value) {
+                let error = checkValidations(itemValue);
+                if (error)
+                  return error;
+              }
+            } else {
+              if (!value)
+                value = 0;
+              let error = checkValidations(value);
+              if (error)
+                return error;
+            }
+            
+            break;
+          
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
             if (!value)
               break;

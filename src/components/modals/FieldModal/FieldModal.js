@@ -7,6 +7,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import InputControl from 'components/elements/InputControl/InputControl';
 import ValidationNumber from 'components/modals/FieldModal/Validations/ValidationNumber';
+import ValidationString from 'components/modals/FieldModal/Validations/ValidationString';
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST, NAME_ERROR_NAME_RESERVED} from 'utils/data';
 
 import {FIELD_TYPES, canBeList, canBeTitle, canBeRequired} from 'models/ModelData';
@@ -293,6 +294,11 @@ export default class FieldModal extends Component {
                                                 update={this.onUpdateValidations}/>;
                 break;
             }
+            break;
+            
+          case ftps.FIELD_TYPE_SHORT_TEXT:
+            validations = <ValidationString validations={this.validations}
+                                            update={this.onUpdateValidations}/>;
             break;
         }
         
