@@ -29,7 +29,7 @@ export default class ValidationInteger extends Component {
   
   onRangeActive = value => {
     this.setState({range: {
-        ...this.state.validations.range,
+        ...this.state.range,
         active: value
     }}, this.update);
   };
