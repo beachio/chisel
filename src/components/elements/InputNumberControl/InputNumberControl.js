@@ -28,7 +28,8 @@ export default class ContentBase extends Component {
     const value = this.parseValue();
     this.setState({value});
     onChange(value);
-    onBlur();
+    if (onBlur)
+      onBlur();
   };
   
   parseValue() {
