@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import InputControl from "components/elements/InputControl/InputControl";
 
 
-export default class ContentBase extends Component {
+export default class InputNumberControl extends Component {
   state = {value: '0'};
   valueLast;
   parseFunc;
