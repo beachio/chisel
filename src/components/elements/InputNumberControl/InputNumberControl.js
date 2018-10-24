@@ -65,20 +65,16 @@ export default class InputNumberControl extends Component {
   render() {
     let {type, label, placeholder, readOnly, autoFocus, onKeyDown, DOMRef, icon} = this.props;
     
-    return (
-      <div>
-        <InputControl value={this.state.value}
-                      onChange={this.onChange}
-                      onBlur={this.onBlur}
-                      type={type}
-                      label={label}
-                      icon={icon}
-                      onKeyDown={onKeyDown}
-                      placeholder={placeholder}
-                      autoFocus={autoFocus}
-                      readOnly={readOnly}
-                      DOMRef={DOMRef} />
-      </div>
-    );
+    return <InputControl value={this.state.value}
+                         onChange={this.onChange}
+                         onBlur={this.onBlur}
+                         type={type}
+                         label={label}
+                         icon={icon}
+                         onKeyDown={onKeyDown}
+                         placeholder={placeholder}
+                         autoFocus={autoFocus}
+                         readOnly={readOnly}
+                         DOMRef={DOMRef} />;
   }
 }
