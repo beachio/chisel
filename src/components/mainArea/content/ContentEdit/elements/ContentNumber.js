@@ -25,10 +25,44 @@ export default class ContentNumber extends ContentBase {
     
     let value = this.state.value;
     
+    const checkRangeValidation = () => {
+      if (!this.field.validations)
+        return null;
+      if (!this.field.validations.range || !this.field.validations.range.active)
+        return null;
+      
+      const range = this.field.validations.range;
+      
+      const checkRange = value => {
+        if (range.minActive && value < range.min ||
+            range.maxActive && value > range.max) {
+          let error = range.errorMsg;
+          if (!error)
+            error = "The value is out of permissible range!";
+          return error;
+        }
+      };
+      
+      if (this.field.isList) {
+        for (let itemValue of value) {
+          let error = checkRange(itemValue);
+          if (error)
+            return error;
+        }
+      } else {
+        if (!value)
+          value = 0;
+        return checkRange(value);
+      }
+    };
+    
     switch (this.field.type) {
       case ftps.FIELD_TYPE_FLOAT:
         switch (this.field.appearance) {
           case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
+            let error = checkRangeValidation();
+            if (error)
+              return error;
             break;
         }
         break;
@@ -36,17 +70,9 @@ export default class ContentNumber extends ContentBase {
       case ftps.FIELD_TYPE_INTEGER:
         switch (this.field.appearance) {
           case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
-            if (this.field.isList) {
-              for (let item of value) {
-                if (Math.floor(item) != parseFloat(item))
-                  return "You must type an integer value!";
-              }
-            } else {
-              if (!value)
-                value = 0;
-              if (Math.floor(value) != parseFloat(value))
-                return "You must type an integer value!";
-            }
+            let error = checkRangeValidation();
+            if (error)
+              return error;
             
             break;
       
