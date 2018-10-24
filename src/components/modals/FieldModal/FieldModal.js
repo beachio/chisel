@@ -8,8 +8,9 @@ import DropdownControl from 'components/elements/DropdownControl/DropdownControl
 import InputControl from 'components/elements/InputControl/InputControl';
 import ValidationInteger from 'components/modals/FieldModal/Validations/ValidationInteger';
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST, NAME_ERROR_NAME_RESERVED} from 'utils/data';
-import {FIELD_TYPES, FIELD_TYPE_SHORT_TEXT, FIELD_TYPE_LONG_TEXT, FIELD_TYPE_INTEGER, FIELD_TYPE_FLOAT, FIELD_TYPE_REFERENCE,
-  canBeList, canBeTitle, canBeRequired} from 'models/ModelData';
+
+import {FIELD_TYPES, canBeList, canBeTitle, canBeRequired} from 'models/ModelData';
+import * as ftps from 'models/ModelData';
 
 import styles from './FieldModal.sss';
 
@@ -273,9 +274,25 @@ export default class FieldModal extends Component {
   
         let validations = null;
         switch (this.state.type) {
-          case FIELD_TYPE_INTEGER:
-            validations = <ValidationInteger validations={this.validations}
-                                             update={this.onUpdateValidations} />;
+          case ftps.FIELD_TYPE_INTEGER:
+            switch (this.state.appearance) {
+              case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
+                validations = <ValidationInteger validations={this.validations}
+                                                 update={this.onUpdateValidations}/>;
+                break;
+  
+              case ftps.FIELD_APPEARANCE__INTEGER__RATING:
+                break;
+            }
+            break;
+  
+          case ftps.FIELD_TYPE_FLOAT:
+            switch (this.state.appearance) {
+              case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
+                validations = <ValidationInteger validations={this.validations}
+                                                 update={this.onUpdateValidations}/>;
+                break;
+            }
             break;
         }
         
