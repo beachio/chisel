@@ -93,7 +93,7 @@ export default class ContentNumber extends ContentBase {
     }
   };
   
-  onPlus = i => {
+  onPlus = (i = 0) => {
     let items = this.state.value;
     let itemsLeft = items.slice(0, i + 1);
     let itemsRight = items.slice(i + 1);
@@ -129,31 +129,41 @@ export default class ContentNumber extends ContentBase {
               if (!value)
                 value = [];
   
-              inner = [];
-              let inputs = [];
-              for (let i = 0; i < value.length; i++) {
-                inner.push(
-                  <div styleName="list-item"
-                       key={i}>
-                    <InputNumberControl styleName="list-item-input"
-                                        type="big"
-                                        isInt={this.field.type == ftps.FIELD_TYPE_INTEGER}
-                                        value={value[i]}
-                                        readOnly={!this.state.isEditable}
-                                        onChange={v => this.onChange(v, i)}
-                                        DOMRef={inp => inputs[i] = inp}
-                                        onKeyDown={e => this.onKeyDown(e, i, inputs)} />
-                    <div styleName="list-item-plus"
-                         onClick={() => this.onPlus(i)}>
-                      +
+              if (value.length) {
+                inner = [];
+                let inputs = [];
+                for (let i = 0; i < value.length; i++) {
+                  inner.push(
+                    <div styleName="list-item"
+                         key={i}>
+                      <InputNumberControl styleName="list-item-input"
+                                          type="big"
+                                          isInt={this.field.type == ftps.FIELD_TYPE_INTEGER}
+                                          value={value[i]}
+                                          readOnly={!this.state.isEditable}
+                                          onChange={v => this.onChange(v, i)}
+                                          DOMRef={inp => inputs[i] = inp}
+                                          onKeyDown={e => this.onKeyDown(e, i, inputs)}/>
+                      <div styleName="list-item-plus"
+                           onClick={() => this.onPlus(i)}>
+                        +
+                      </div>
+                      <div styleName="list-item-minus"
+                           onClick={() => this.onMinus(i)}>
+                        –
+                      </div>
                     </div>
-                    <div styleName="list-item-minus"
-                         onClick={() => this.onMinus(i)}>
-                      –
-                    </div>
+                  );
+                }
+              } else {
+                inner = (
+                  <div styleName="list-plus"
+                       onClick={() => this.onPlus()}>
+                    List is empty. Add element?
                   </div>
                 );
               }
+              
           
             } else {
               inner = <InputNumberControl type="big"
