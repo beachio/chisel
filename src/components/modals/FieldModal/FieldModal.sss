@@ -29,27 +29,46 @@
   &-header
     border-bottom: 1px solid #E5E5E5
 
-    padding: 4px 0
+    padding: 17px 10%
     width: 100%
 
     display: flex
-    flex-flow: column nowrap
-    justify-content: center
-    align-items: center
+    flex-flow: row nowrap
+    justify-content: space-between
+
+    .titles
+      .title
+        padding-bottom: 7px
+        font-size: 20px
+        color: #666666
+        letter-spacing: 0.83px
+
+      .subtitle
+        font-size: 12px
+        color: #666666
+        letter-spacing: 0.46px
+
+    .tabs
+      display: flex
+      flex-flow: row nowrap
+      justify-content: space-between
+      align-items: center
+
+      .tab
+        padding-left: 25px
+        font-size: 12px
+        color: #666666
+        letter-spacing: 0.46px
+        cursor: pointer
+
+      .active
+        font-weight: 600
+        color: #666666
+
 
   .content
     width: 100%
     padding: 32px 10%
-
-  .title
-    font-size: 20px
-    color: #666666
-    letter-spacing: 0.83px
-
-  .subtitle
-    font-size: 12px
-    color: #666666
-    letter-spacing: 0.46px
 
   .label
     font-size: 13px
@@ -106,4 +125,16 @@
     margin-right: 10px
 
   .error-same-name
-    color: red
+    color: #DD5555
+
+  .validation
+
+    .range
+      display: flex
+      justify-content: flex-start
+      align-items: center
+
+    .error
+      margin-top: 6px
+      color: #DD5555
+      font-size: 13px

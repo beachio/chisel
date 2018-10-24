@@ -2,14 +2,20 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
+import CheckboxControl from 'components/elements/CheckboxControl/CheckboxControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import InputControl from 'components/elements/InputControl/InputControl';
+import ValidationInteger from 'components/modals/FieldModal/Validations/ValidationInteger';
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST, NAME_ERROR_NAME_RESERVED} from 'utils/data';
-import {FIELD_TYPES, canBeList, canBeTitle, canBeRequired} from 'models/ModelData';
+import {FIELD_TYPES, FIELD_TYPE_SHORT_TEXT, FIELD_TYPE_LONG_TEXT, FIELD_TYPE_INTEGER, FIELD_TYPE_FLOAT, FIELD_TYPE_REFERENCE,
+  canBeList, canBeTitle, canBeRequired} from 'models/ModelData';
 
 import styles from './FieldModal.sss';
 
+
+const TAB_SETTINGS = 'TAB_SETTINGS';
+const TAB_VALIDATIONS = 'TAB_VALIDATIONS';
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -26,13 +32,16 @@ export default class FieldModal extends Component {
 
     error: null,
 
-    appList: []
+    appList: [],
+    
+    tab: TAB_SETTINGS
   };
   
   active = false;
   typeList = Array.from(FIELD_TYPES.keys());
   field = null;
   updating = false;
+  validations = null;
 
 
   constructor(props) {
@@ -49,6 +58,8 @@ export default class FieldModal extends Component {
     this.state.isTitle    = this.field.isTitle;
     this.state.isList     = this.field.isList;
     this.state.isDisabled = this.field.isDisabled;
+    
+    this.validations = this.field.validations;
     this.state.appList    = FIELD_TYPES.get(this.field.type);
 
     if (!this.updating && canBeTitle(this.state) && !this.field.model.hasTitle())
@@ -140,6 +151,8 @@ export default class FieldModal extends Component {
     this.field.isTitle    = this.state.isTitle;
     this.field.isList     = this.state.isList;
     this.field.isDisabled = this.state.isDisabled;
+  
+    this.field.validations = this.validations;
 
     const {addField, updateField} = this.props;
     if (this.updating)
@@ -167,96 +180,139 @@ export default class FieldModal extends Component {
     if (!canBeRequired(this.state))
       this.setState({isRequired: false});
   }
+  
+  onUpdateValidations = validations => {
+    this.validations = validations;
+  };
 
   render() {
     let headName = this.state.name.length ? this.state.name : '?';
+    
+    let tabSettStyle = 'tab';
+    let tabValidStyle = 'tab';
+    let content = null;
+    switch (this.state.tab) {
+      case TAB_SETTINGS:
+        tabSettStyle += ' active';
+        
+        content = (
+          <div>
+            <div styleName="input-wrapper">
+              <InputControl label="Name"
+                            placeholder="Main Title"
+                            DOMRef={inp => this.focusElm = inp}
+                            onChange={this.onChangeName}
+                            value={this.state.name} />
+            </div>
+    
+            {
+              this.state.error == NAME_ERROR_NAME_EXIST &&
+              <div styleName="error-same-name">This name is already in use.</div>
+            }
+            {
+              this.state.error == NAME_ERROR_NAME_RESERVED &&
+              <div styleName="error-same-name">This name is reserved.</div>
+            }
+    
+            <div styleName="input-wrapper">
+              <InputControl label="Field ID"
+                            icon="lock"
+                            value={this.state.nameId}
+                            readOnly={true} />
+            </div>
+    
+            <div styleName="input-wrapper">
+              <DropdownControl label="Type"
+                               disabled={this.updating || this.state.isTitle}
+                               suggestionsList={this.typeList}
+                               suggest={this.onChangeType}
+                               current={this.state.type} />
+            </div>
+    
+            <div styleName="input-wrapper">
+              <DropdownControl label="Appearance"
+                               disabled={this.state.isTitle}
+                               suggestionsList={this.state.appList}
+                               suggest={this.onChangeAppearance}
+                               current={this.state.appearance} />
+            </div>
+    
+            <div styleName="input-wrapper">
+              <div styleName="label">List (keeping multiple values instead of one)</div>
+              <div styleName="switch">
+                <SwitchControl checked={this.state.isList}
+                               onChange={this.onChangeIsList}
+                               disabled={!canBeList(this.state) || this.updating} />
+              </div>
+            </div>
+    
+            <div styleName="input-wrapper">
+              <div styleName="label">Entry Title</div>
+              <div styleName="switch">
+                <SwitchControl checked={this.state.isTitle}
+                               onChange={this.onChangeIsTitle}
+                               disabled={!canBeTitle(this.state)} />
+              </div>
+            </div>
+    
+            <div styleName="input-wrapper">
+              <div styleName="label">Disabled</div>
+              <div styleName="switch">
+                <SwitchControl checked={this.state.isDisabled}
+                               onChange={this.onChangeIsDisabled}
+                               disabled={this.state.isTitle} />
+              </div>
+            </div>
+          </div>
+        );
+        
+        break;
+        
+      case TAB_VALIDATIONS:
+        tabValidStyle += ' active';
+  
+        let validations = null;
+        switch (this.state.type) {
+          case FIELD_TYPE_INTEGER:
+            validations = <ValidationInteger validations={this.validations}
+                                             update={this.onUpdateValidations} />;
+            break;
+        }
+        
+        content = (
+          <div>
+            <div styleName="input-wrapper">
+              <div styleName="switch">
+                <CheckboxControl title="Required"
+                                 checked={this.state.isRequired}
+                                 onChange={this.onChangeIsRequired}
+                                 disabled={!canBeRequired(this.state) || this.state.isTitle} />
+              </div>
+            </div>
+            {validations}
+          </div>
+        );
+        
+        break;
+    }
 
     return (
       <div styleName="modal" onClick={this.close}>
 
         <div styleName="modal-inner" onClick={e => e.stopPropagation()}>
           <div styleName="modal-header">
-            <div styleName="title">{headName}</div>
-            <div styleName="subtitle">{this.state.type} — {this.state.appearance}</div>
+            <div styleName="titles">
+              <div styleName="title">{headName}</div>
+              <div styleName="subtitle">{this.state.type} — {this.state.appearance}</div>
+            </div>
+            <div styleName="tabs">
+              <div styleName={tabSettStyle}   onClick={() => this.setState({tab: TAB_SETTINGS})}    >Settings</div>
+              <div styleName={tabValidStyle}  onClick={() => this.setState({tab: TAB_VALIDATIONS})} >Validations</div>
+            </div>
           </div>
           <div styleName="content">
             <form>
-              <div styleName="input-wrapper">
-                <InputControl label="Name"
-                              placeholder="Main Title"
-                              DOMRef={inp => this.focusElm = inp}
-                              onChange={this.onChangeName}
-                              value={this.state.name} />
-              </div>
-
-              {
-                this.state.error == NAME_ERROR_NAME_EXIST &&
-                  <div styleName="error-same-name">This name is already in use.</div>
-              }
-              {
-                this.state.error == NAME_ERROR_NAME_RESERVED &&
-                  <div styleName="error-same-name">This name is reserved.</div>
-              }
-
-              <div styleName="input-wrapper">
-                <InputControl label="Field ID"
-                              icon="lock"
-                              value={this.state.nameId}
-                              readOnly={true} />
-              </div>
-
-              <div styleName="input-wrapper">
-                <DropdownControl label="Type"
-                                 disabled={this.updating || this.state.isTitle}
-                                 suggestionsList={this.typeList}
-                                 suggest={this.onChangeType}
-                                 current={this.state.type} />
-              </div>
-
-              <div styleName="input-wrapper">
-                <DropdownControl label="Appearance"
-                                 disabled={this.state.isTitle}
-                                 suggestionsList={this.state.appList}
-                                 suggest={this.onChangeAppearance}
-                                 current={this.state.appearance} />
-              </div>
-  
-              <div styleName="input-wrapper">
-                <div styleName="label">Required</div>
-                <div styleName="switch">
-                  <SwitchControl checked={this.state.isRequired}
-                                 onChange={this.onChangeIsRequired}
-                                 disabled={!canBeRequired(this.state) || this.state.isTitle} />
-                </div>
-              </div>
-
-              <div styleName="input-wrapper">
-                <div styleName="label">List (keeping multiple values instead of one)</div>
-                <div styleName="switch">
-                  <SwitchControl checked={this.state.isList}
-                                 onChange={this.onChangeIsList}
-                                 disabled={!canBeList(this.state) || this.updating} />
-                </div>
-              </div>
-              
-              <div styleName="input-wrapper">
-                <div styleName="label">Entry Title</div>
-                <div styleName="switch">
-                  <SwitchControl checked={this.state.isTitle}
-                                 onChange={this.onChangeIsTitle}
-                                 disabled={!canBeTitle(this.state)} />
-                </div>
-              </div>
-
-              <div styleName="input-wrapper">
-                <div styleName="label">Disabled</div>
-                <div styleName="switch">
-                  <SwitchControl checked={this.state.isDisabled}
-                                 onChange={this.onChangeIsDisabled}
-                                 disabled={this.state.isTitle} />
-                </div>
-              </div>
-
+              {content}
               <div styleName="input-wrapper buttons-wrapper">
                 <div styleName="buttons-inner">
                   <ButtonControl color="green"

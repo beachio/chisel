@@ -258,6 +258,7 @@ export class ModelFieldData {
   isList = false;
   isDisabled = false;
   order = -1;
+  validations = null;
 
   //setter
   _name = "";
@@ -290,6 +291,8 @@ export class ModelFieldData {
     if (origin.get('isList'))     this.isList     = true;
     if (origin.get('isDisabled')) this.isDisabled = true;
 
+    if (origin.get('validations')) this.validations = origin.get('validations');
+    
     if (origin.get('order') || origin.get('order') === 0)  this.order = origin.get('order');
 
     return this;
@@ -309,22 +312,25 @@ export class ModelFieldData {
     this.origin.set("isList",     this.isList);
     this.origin.set("isDisabled", this.isDisabled);
     this.origin.set("order",      this.order);
+  
+    this.origin.set("validations", this.validations);
     
     this.origin.set("model",      this.model.origin);
   }
 
   toJSON() {
     return {
-      name:       this.name,
-      nameId:     this.nameId,
-      type:       this.type,
-      appearance: this.appearance,
-      color:      this.color,
-      isRequired: this.isRequired,
-      isTitle:    this.isTitle,
-      isList:     this.isList,
-      isDisabled: this.isDisabled,
-      order:      this.order
+      name:         this.name,
+      nameId:       this.nameId,
+      type:         this.type,
+      appearance:   this.appearance,
+      color:        this.color,
+      isRequired:   this.isRequired,
+      isTitle:      this.isTitle,
+      isList:       this.isList,
+      isDisabled:   this.isDisabled,
+      order:        this.order,
+      validations:  this.validations
     };
   }
 }
