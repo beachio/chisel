@@ -4,6 +4,7 @@ import CSSModules from 'react-css-modules';
 import styles from '../FieldModal.sss';
 import CheckboxControl from "components/elements/CheckboxControl/CheckboxControl";
 import InputControl from "components/elements/InputControl/InputControl";
+import InputNumberControl from 'components/elements/InputNumberControl/InputNumberControl';
 
 
 
@@ -33,29 +34,17 @@ export default class ValidationInteger extends Component {
     }}, this.update);
   };
   
-  onRangeMin = event => {
-    const {value} = event.target;
-  
-    let min = parseInt(value);
-    if (isNaN(min))
-      min = 0;
-    
+  onRangeMin = value => {
     this.setState({range: {
         ...this.state.range,
-        min: min
+        min: value
     }}, this.update);
   };
   
-  onRangeMax = event => {
-    const {value} = event.target;
-  
-    let max = parseInt(value);
-    if (isNaN(max))
-      max = 0;
-    
+  onRangeMax = value => {
     this.setState({range: {
         ...this.state.range,
-        max: max
+        max: value
     }}, this.update);
   };
   
@@ -107,17 +96,17 @@ export default class ValidationInteger extends Component {
                              checked={this.state.range.minActive}
                              onChange={this.onRangeMinActive}
                              disabled={!this.state.range.active} />
-            <InputControl onChange={this.onRangeMin}
-                          value={this.state.range.min}
-                          readOnly={!this.state.range.active || !this.state.range.minActive} />
+            <InputNumberControl onChange={this.onRangeMin}
+                                value={this.state.range.min}
+                                readOnly={!this.state.range.active || !this.state.range.minActive} />
             —
             <CheckboxControl title="Max"
                              checked={this.state.range.maxActive}
                              onChange={this.onRangeMaxActive}
                              disabled={!this.state.range.active} />
-            <InputControl onChange={this.onRangeMax}
-                          value={this.state.range.max}
-                          readOnly={!this.state.range.active || !this.state.range.maxActive} />
+            <InputNumberControl onChange={this.onRangeMax}
+                                value={this.state.range.max}
+                                readOnly={!this.state.range.active || !this.state.range.maxActive} />
           </div>
           <InputControl label="Custom error message"
                         onChange={this.onRangeErrorMsg}
