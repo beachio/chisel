@@ -66,15 +66,11 @@ export default class ContentString extends ContentBase {
     
     if (this.field.isList) {
       let items = this.state.value;
-      if (!items)
-        items = [];
-      
-      if (value)
+      if (i < items.length) {
+        items = items.slice();
         items[i] = value;
-      else
-        items.splice(i, 1);
-      
-      this.setValue(items);
+        this.setValue(items);
+      }
       
     } else {
       this.setValue(value);
@@ -101,11 +97,8 @@ export default class ContentString extends ContentBase {
     
     //Enter or down pressed
     if (code == 13 || code == 40) {
-      if (inputs[i + 1]) {
-        let items = this.state.value;
-        if (items[i])
-          inputs[i + 1].focus();
-      }
+      if (inputs[i + 1])
+        inputs[i + 1].focus();
       
     //up pressed
     } else if (code == 38) {
@@ -162,6 +155,20 @@ export default class ContentString extends ContentBase {
     );
   }
   
+  onPlus = (i = 0) => {
+    let items = this.state.value;
+    let itemsLeft = items.slice(0, i + 1);
+    let itemsRight = items.slice(i + 1);
+    items = itemsLeft.concat('', itemsRight);
+    this.setValue(items);
+  };
+  
+  onMinus = i => {
+    let items = this.state.value.slice();
+    items.splice(i, 1);
+    this.setValue(items);
+  };
+  
   getInput() {
     let value = this.state.value;
     
@@ -171,23 +178,47 @@ export default class ContentString extends ContentBase {
 
         switch (this.field.appearance) {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
-            let innerStr;
+            let inner;
         
             if (this.field.isList) {
-              innerStr = [];
-              let inputs = [];
-              for (let i = 0; i < value.length + 1; i++) {
-                innerStr.push(<InputControl type="big"
-                                            key={i}
-                                            value={value[i]}
-                                            readOnly={!this.state.isEditable}
-                                            DOMRef={inp => inputs[i] = inp}
-                                            onChange={e => this.onChange(e, i)}
-                                            onKeyDown={e => this.onKeyDown(e, i, inputs)} />);
+              if (!value)
+                value = [];
+  
+              if (value.length) {
+                inner = [];
+                let inputs = [];
+                for (let i = 0; i < value.length; i++) {
+                  inner.push(
+                    <div styleName="list-item"
+                         key={i}>
+                      <InputControl type="big"
+                                    value={value[i]}
+                                    readOnly={!this.state.isEditable}
+                                    DOMRef={inp => inputs[i] = inp}
+                                    onChange={e => this.onChange(e, i)}
+                                    onKeyDown={e => this.onKeyDown(e, i, inputs)}/>
+                      <div styleName="list-item-plus"
+                           onClick={() => this.onPlus(i)}>
+                        +
+                      </div>
+                      <div styleName="list-item-minus"
+                           onClick={() => this.onMinus(i)}>
+                        –
+                      </div>
+                    </div>
+                  );
+                }
+              } else {
+                inner = (
+                  <div styleName="list-plus"
+                       onClick={() => this.onPlus()}>
+                    List is empty. Add element?
+                  </div>
+                );
               }
           
             } else {
-              innerStr = <InputControl type="big"
+              inner = <InputControl type="big"
                                        value={value}
                                        readOnly={!this.state.isEditable}
                                        onChange={this.onChange} />;
@@ -195,7 +226,7 @@ export default class ContentString extends ContentBase {
         
             return (
               <div styleName="input-wrapper">
-                {innerStr}
+                {inner}
               </div>
             );
       
