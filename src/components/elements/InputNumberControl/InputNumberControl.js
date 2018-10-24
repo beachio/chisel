@@ -5,41 +5,61 @@ import InputControl from "components/elements/InputControl/InputControl";
 
 export default class ContentBase extends Component {
   state = {value: '0'};
+  valueLast;
+  parseFunc;
+  
   
   constructor(props) {
     super(props);
+  
+    this.parseFunc = props.isInt ? parseInt : parseFloat;
     
     this.state.value = props.value ? props.value : '0';
+    this.valueLast = this.parseFunc(props.value);
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    let {value} = nextProps;
+    value = value ? value : '0';
+    this.setState({value});
+    this.valueLast = this.parseFunc(value);
   }
   
   componentWillUnmount() {
-    const {onChange} = this.props;
-    onChange(this.parseValue());
+    this.sendChange(this.parseValue());
   }
   
   onChange = event => {
-    let value = event.target.value;
+    let {value} = event.target;
     value = value.replace(/[^\d\.,]/g, '');
+    value = value.replace(/,/g, '.');
     this.setState({value});
   };
   
   onBlur = () => {
-    const {onBlur, onChange} = this.props;
     const value = this.parseValue();
     this.setState({value});
-    onChange(value);
+    this.sendChange(value);
+  
+    const {onBlur} = this.props;
     if (onBlur)
       onBlur();
   };
   
   parseValue() {
-    const {isInt} = this.props;
-    const parseFunc = isInt ? parseInt : parseFloat;
-  
-    let num = parseFunc(this.state.value);
+    let num = this.parseFunc(this.state.value);
     if (isNaN(num))
       return 0;
     return num;
+  }
+  
+  sendChange(value) {
+    if (this.valueLast === value)
+      return;
+    this.valueLast = value;
+  
+    const {onChange} = this.props;
+    onChange(value);
   }
   
   render() {
@@ -55,6 +75,6 @@ export default class ContentBase extends Component {
                          placeholder={placeholder}
                          autoFocus={autoFocus}
                          readOnly={readOnly}
-                         ref={DOMRef} />;
+                         DOMRef={DOMRef} />;
   }
 }
