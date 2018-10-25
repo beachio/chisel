@@ -54,7 +54,7 @@ export default class ContentString extends ContentBase {
             };
             const checkPattern = value => {
               const pattern = this.field.validations.pattern;
-              const regexp = new RegExp(pattern.pattern, pattern.flags);
+              const regexp = new RegExp('^' + pattern.pattern + '$', pattern.flags);
               if (!value.match(regexp)) {
                 let error = pattern.errorMsg;
                 if (!error)
