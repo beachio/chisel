@@ -8,6 +8,7 @@ import DropdownControl from 'components/elements/DropdownControl/DropdownControl
 import InputControl from 'components/elements/InputControl/InputControl';
 import ValidationNumber from 'components/modals/FieldModal/Validations/ValidationNumber';
 import ValidationString from 'components/modals/FieldModal/Validations/ValidationString';
+import ValidationReference from 'components/modals/FieldModal/Validations/ValidationReference';
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST, NAME_ERROR_NAME_RESERVED} from 'utils/data';
 
 import {FIELD_TYPES, canBeList, canBeTitle, canBeRequired} from 'models/ModelData';
@@ -44,10 +45,13 @@ export default class FieldModal extends Component {
   field = null;
   updating = false;
   validations = null;
+  models = null;
 
 
   constructor(props) {
     super(props);
+    
+    this.models = props.models;
     
     this.field = props.params;
     this.updating = !!this.field.origin;
@@ -275,11 +279,31 @@ export default class FieldModal extends Component {
   
         let validations = null;
         switch (this.state.type) {
+          case ftps.FIELD_TYPE_SHORT_TEXT:
+            switch (this.state.appearance) {
+              case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
+              case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
+                validations = <ValidationString validations={this.validations}
+                                                update={this.onUpdateValidations} />;
+                break;
+            }
+            break;
+  
+          case ftps.FIELD_TYPE_LONG_TEXT:
+            switch (this.state.appearance) {
+              case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
+              case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
+                validations = <ValidationString validations={this.validations}
+                                                update={this.onUpdateValidations} />;
+                break;
+            }
+            break;
+  
           case ftps.FIELD_TYPE_INTEGER:
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
                 validations = <ValidationNumber validations={this.validations}
-                                                update={this.onUpdateValidations}/>;
+                                                update={this.onUpdateValidations }/>;
                 break;
   
               case ftps.FIELD_APPEARANCE__INTEGER__RATING:
@@ -291,29 +315,15 @@ export default class FieldModal extends Component {
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
                 validations = <ValidationNumber validations={this.validations}
-                                                update={this.onUpdateValidations}/>;
+                                                update={this.onUpdateValidations} />;
                 break;
             }
             break;
-            
-          case ftps.FIELD_TYPE_SHORT_TEXT:
-            switch (this.state.appearance) {
-              case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
-              case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
-                validations = <ValidationString validations={this.validations}
-                                                update={this.onUpdateValidations}/>;
-                break;
-            }
-            break;
-  
-          case ftps.FIELD_TYPE_LONG_TEXT:
-            switch (this.state.appearance) {
-              case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
-              case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
-                validations = <ValidationString validations={this.validations}
-                                                update={this.onUpdateValidations}/>;
-                break;
-            }
+          
+          case ftps.FIELD_TYPE_REFERENCE:
+            validations = <ValidationReference validations={this.validations}
+                                               models={this.models}
+                                               update={this.onUpdateValidations} />;
             break;
         }
         

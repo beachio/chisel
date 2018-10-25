@@ -61,6 +61,7 @@ class App extends React.Component {
           return <FieldModal params={nav.modalParams}
                              onClose={closeModal}
                              addField={addField}
+                             models={models.currentSite.models}
                              updateField={updateField}/>;
       
         case MODAL_TYPE_MEDIA:

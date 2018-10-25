@@ -26,6 +26,35 @@ export default class ContentReference extends ContentBase {
     super.componentWillReceiveProps(nextProps);
   }
   
+  getError () {
+    const baseError = super.getError();
+    if (baseError)
+      return baseError;
+  
+    let value = this.state.value;
+    if (!value || !value.length)
+      return;
+    
+    for (let item of value) {
+      const exist = checkContentExistense(item);
+      if (!exist)
+        return 'The referred content item is not exists!';
+      
+      if (!this.field.validations || !this.field.validations.models || !this.field.validations.models.active)
+        continue;
+      const modelsList = this.field.validations.models.modelsList;
+      if (!modelsList || !modelsList.length)
+        continue;
+      
+      const modelId = item.model.nameId;
+      if (modelsList.indexOf(modelId) == -1) {
+        if (this.field.validations.models.errorMsg)
+          return this.field.validations.models.errorMsg;
+        return 'The referred content item has an illegal model!';
+      }
+    }
+  }
+  
   onReferenceNew = () => {
     if (!this.state.isEditable)
       return;
