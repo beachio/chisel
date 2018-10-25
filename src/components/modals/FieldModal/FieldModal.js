@@ -297,8 +297,23 @@ export default class FieldModal extends Component {
             break;
             
           case ftps.FIELD_TYPE_SHORT_TEXT:
-            validations = <ValidationString validations={this.validations}
-                                            update={this.onUpdateValidations}/>;
+            switch (this.state.appearance) {
+              case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
+              case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
+                validations = <ValidationString validations={this.validations}
+                                                update={this.onUpdateValidations}/>;
+                break;
+            }
+            break;
+  
+          case ftps.FIELD_TYPE_LONG_TEXT:
+            switch (this.state.appearance) {
+              case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
+              case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
+                validations = <ValidationString validations={this.validations}
+                                                update={this.onUpdateValidations}/>;
+                break;
+            }
             break;
         }
         
