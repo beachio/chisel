@@ -27,16 +27,18 @@ export default class ReferenceModal extends Component {
     this.isMult = props.params.isMult;
     this.callback = props.params.callback;
     
-    const {currentItem, existingItems} = props.params;
-    const allItems = props.contentItems;
-    const curSite = props.currentSite;
+    const {currentItem, existingItems, validModels} = props.params;
+    const {contentItems, currentSite} = props;
     
-    for (let item of allItems) {
-      if ((!item.model.site || item.model.site == curSite) &&
-          existingItems.indexOf(item) == -1 &&
-          item != currentItem)
-        this.items.push(item);
-    }
+    this.items = contentItems
+      .filter(item =>
+        (!item.model.site || item.model.site == currentSite) &&
+        existingItems.indexOf(item) == -1 &&
+        item != currentItem);
+    
+    if (validModels)
+      this.items = this.items.filter(item =>
+        validModels.indexOf(item.model.nameId) != -1);
   }
   
   componentDidMount() {

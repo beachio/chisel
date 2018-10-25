@@ -25,7 +25,12 @@ export default class ModelChooseModal extends Component {
     
     this.callback = props.params.callback;
     
-    this.models = props.models;
+    const {validModels} = props.params;
+    if (validModels)
+      this.models = props.models.filter(
+        model => validModels.indexOf(model.nameId) != -1);
+    else
+      this.models = props.models;
   }
   
   componentDidMount() {
@@ -79,21 +84,20 @@ export default class ModelChooseModal extends Component {
           </div>
           <div styleName="content">
             <div styleName="model">
-              {
-                this.models
-                  .map(model => {
-                    let style = "model-item";
-                    if (this.state.selectedModel == model)
-                      style += " model-chosen";
-                    
-                    return (
-                      <div styleName={style}
-                           key={model.origin.id}
-                           onClick={() => this.onSelect(model)}>
-                        {model.name}
-                      </div>
-                    );
-                  })
+              {this.models
+                .map(model => {
+                  let style = "model-item";
+                  if (this.state.selectedModel == model)
+                    style += " model-chosen";
+                  
+                  return (
+                    <div styleName={style}
+                         key={model.origin.id}
+                         onClick={() => this.onSelect(model)}>
+                      {model.name}
+                    </div>
+                  );
+                })
               }
             </div>
             

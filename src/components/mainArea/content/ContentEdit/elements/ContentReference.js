@@ -14,11 +14,19 @@ import styles from '../ContentEdit.sss';
 export default class ContentReference extends ContentBase {
   item = null;
   addingItem = null;
+  validModels = null;
+  
   
   constructor(props) {
     super(props);
     
     this.item = this.props.item;
+  
+    if (this.field.validations && this.field.validations.models && this.field.validations.models.active) {
+      const modelsList = this.field.validations.models.modelsList;
+      if (modelsList && modelsList.length)
+        this.validModels = modelsList;
+    }
   }
   
   componentWillReceiveProps(nextProps) {
@@ -40,14 +48,8 @@ export default class ContentReference extends ContentBase {
       if (!exist)
         return 'The referred content item is not exists!';
       
-      if (!this.field.validations || !this.field.validations.models || !this.field.validations.models.active)
-        continue;
-      const modelsList = this.field.validations.models.modelsList;
-      if (!modelsList || !modelsList.length)
-        continue;
-      
       const modelId = item.model.nameId;
-      if (modelsList.indexOf(modelId) == -1) {
+      if (this.validModels && this.validModels.indexOf(modelId) == -1) {
         if (this.field.validations.models.errorMsg)
           return this.field.validations.models.errorMsg;
         return 'The referred content item has an illegal model!';
@@ -59,18 +61,21 @@ export default class ContentReference extends ContentBase {
     if (!this.state.isEditable)
       return;
     
+    const callback = model => {
+      this.addingItem = new ContentItemData();
+      this.addingItem.model = model;
+      this.props.addItem(this.addingItem);
+  
+      let refers = this.state.value;
+      if (!refers)
+        refers = [];
+  
+      this.setValue(refers.concat(this.addingItem), true);
+    };
+    
     this.props.showModal(MODAL_TYPE_MODEL_CHOOSE, {
-      callback: model => {
-        this.addingItem = new ContentItemData();
-        this.addingItem.model = model;
-        this.props.addItem(this.addingItem);
-        
-        let refers = this.state.value;
-        if (!refers)
-          refers = [];
-        
-        this.setValue(refers.concat(this.addingItem), true);
-      }
+      callback,
+      validModels: this.validModels
     });
   };
   
@@ -85,6 +90,7 @@ export default class ContentReference extends ContentBase {
         currentItem: this.item,
         isMult: this.field.isList,
         existingItems: refers,
+        validModels: this.validModels,
         callback: items => this.setValue(refers.concat(items), true)
       }
     );
