@@ -65,19 +65,6 @@ export default class ValidationReference extends Component {
   };
   
   render() {
-    let modelCheckboxes = [];
-    for (let model of this.modelsAll) {
-      modelCheckboxes.push(
-        <div styleName="model-checkbox"
-             key={model.nameId}>
-          <CheckboxControl title={model.name}
-                           checked={this.modelsSet.has(model.nameId)}
-                           onChange={value => this.onModelChange(model.nameId, value)}
-                           disabled={!this.state.models.active} />
-        </div>
-      );
-    }
-    
     return (
       <div>
         <div styleName="validation">
@@ -87,7 +74,15 @@ export default class ValidationReference extends Component {
                              onChange={this.onTypesActive} />
           </div>
           <div styleName="models">
-            {modelCheckboxes}
+            {this.modelsAll.map(model =>
+              <div styleName="model-checkbox"
+                   key={model.nameId}>
+                <CheckboxControl title={model.name}
+                                 checked={this.modelsSet.has(model.nameId)}
+                                 onChange={value => this.onModelChange(model.nameId, value)}
+                                 disabled={!this.state.models.active} />
+              </div>
+            )}
           </div>
           <InputControl label="Custom error message"
                         onChange={this.onTypesErrorMsg}
