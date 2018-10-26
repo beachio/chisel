@@ -5,7 +5,7 @@ import InputControl from "components/elements/InputControl/InputControl";
 
 export default class InputNumberControl extends Component {
   state = {value: '0'};
-  valueLast;
+  valueParsed = 0;
   parseFunc;
   
   
@@ -15,18 +15,26 @@ export default class InputNumberControl extends Component {
     this.parseFunc = props.isInt ? parseInt : parseFloat;
     
     this.state.value = props.value ? props.value : '0';
-    this.valueLast = this.parseFunc(props.value);
+    this.valueParsed = this.parseValue(props.value);
   }
   
   componentWillReceiveProps(nextProps) {
     let {value} = nextProps;
     value = value ? value : '0';
+    
+    const valueParsed = this.parseValue(value);
+    if (valueParsed == this.valueParsed)
+      return;
+    this.valueParsed = valueParsed;
+    
     this.setState({value});
-    this.valueLast = this.parseFunc(value);
   }
   
-  componentWillUnmount() {
-    this.sendChange(this.parseValue());
+  parseValue(value) {
+    let num = this.parseFunc(value);
+    if (isNaN(num))
+      return 0;
+    return num;
   }
   
   onChange = event => {
@@ -34,33 +42,18 @@ export default class InputNumberControl extends Component {
     value = value.replace(/[^\d\.,]/g, '');
     value = value.replace(/,/g, '.');
     this.setState({value});
+    
+    const valueParsed = this.parseValue(value);
+    if (valueParsed == this.valueParsed)
+      return;
+    this.valueParsed = valueParsed;
+  
+    this.props.onChange(valueParsed);
   };
   
   onBlur = () => {
-    const value = this.parseValue();
-    this.setState({value});
-    this.sendChange(value);
-  
-    const {onBlur} = this.props;
-    if (onBlur)
-      onBlur();
+    this.setState({value: this.valueParsed});
   };
-  
-  parseValue() {
-    let num = this.parseFunc(this.state.value);
-    if (isNaN(num))
-      return 0;
-    return num;
-  }
-  
-  sendChange(value) {
-    if (this.valueLast === value)
-      return;
-    this.valueLast = value;
-  
-    const {onChange} = this.props;
-    onChange(value);
-  }
   
   render() {
     let {type, label, placeholder, readOnly, autoFocus, onKeyDown, DOMRef, icon} = this.props;
