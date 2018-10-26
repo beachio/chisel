@@ -7,6 +7,7 @@ import ContainerComponent from 'components/elements/ContainerComponent/Container
 import InputControl from 'components/elements/InputControl/InputControl';
 import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
 import JSONView from 'components/elements/JSONView/JSONView';
+import {removeOddSpaces} from 'utils/common';
 import {getNameId, checkModelName, checkFieldName, getAlertForNameError, getContentForModel, NAME_ERROR_OTHER} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
 import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
@@ -133,7 +134,8 @@ export default class Model extends Component {
   
     this.returnFocus = true;
     
-    let error = checkFieldName(this.state.fieldName);
+    const name = removeOddSpaces(this.state.fieldName);
+    let error = checkFieldName(name);
     if (error) {
       const {showAlert} = this.props;
       showAlert(getAlertForNameError(error));
@@ -142,8 +144,8 @@ export default class Model extends Component {
   
     let field = new ModelFieldData();
     field.model = this.model;
-    field.name = this.state.fieldName;
-    field.nameId = getNameId(field.name, this.model.fields);
+    field.name = name;
+    field.nameId = getNameId(name, this.model.fields);
     this.props.showModal(MODAL_TYPE_FIELD, field);
 
     this.setState({fieldName: ""});

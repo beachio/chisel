@@ -3,7 +3,6 @@ import {Parse} from 'parse';
 import {store} from 'index';
 import {UserData} from 'models/UserData';
 import {removeOddSpaces, filterSpecials, checkURL} from 'utils/common';
-import {FIELD_NAMES_RESERVED} from 'models/ContentData';
 import {ROLE_OWNER} from 'models/UserData';
 import {send} from 'utils/server';
 
@@ -12,7 +11,6 @@ import {send} from 'utils/server';
 
 export const NAME_CORRECT             = 0;
 export const NAME_ERROR_NAME_EXIST    = 1;
-export const NAME_ERROR_NAME_RESERVED = 2;
 export const NAME_ERROR_OTHER         = 3;
 
 export function getAlertForNameError(error) {
@@ -20,11 +18,6 @@ export function getAlertForNameError(error) {
     case NAME_ERROR_NAME_EXIST: return {
       title: "Warning",
       description: "This name is already using. Please, select another one."
-    };
-    
-    case NAME_ERROR_NAME_RESERVED: return {
-      title: "Warning",
-      description: "This name is reserved. Please, select another one."
     };
     
     default: return {
@@ -178,15 +171,6 @@ export function checkFieldName(name) {
   if (!name || !store.getState().models.currentModel)
     return NAME_ERROR_OTHER;
   
-  name = removeOddSpaces(name);
-  let nameId = filterSpecials(name);
-  
-  //name reserved
-  for (let resName of FIELD_NAMES_RESERVED) {
-    if (resName == name || resName == nameId)
-      return NAME_ERROR_NAME_RESERVED;
-  }
-  
   //name already exists
   let fields = store.getState().models.currentModel.fields;
   for (let field of fields) {
@@ -289,7 +273,7 @@ export function checkPassword(password) {
   );
 }
 
-export function getNameId(name, objects, curObj) {
+export function getNameId(name, objects, reserved = []) {
   if (!name)
     return null;
   
@@ -297,10 +281,15 @@ export function getNameId(name, objects, curObj) {
   
   let getNameIdInc = (inc = 0) => {
     let newNameId = inc ? `${nameId}_${inc}` : nameId;
+    
+    if (reserved.indexOf(newNameId) != -1)
+      return getNameIdInc(++inc);
+    
     for (let obj of objects) {
-      if (obj != curObj && obj.nameId == newNameId)
+      if (obj.nameId == newNameId)
         return getNameIdInc(++inc);
     }
+    
     return newNameId;
   };
   

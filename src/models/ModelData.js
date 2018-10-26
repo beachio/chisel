@@ -334,3 +334,5 @@ export class ModelFieldData {
     };
   }
 }
+
+export const FIELD_NAMES_RESERVED = ['objectId', `ACL`, 'createdAt', 'updatedAt', 't__color', `t__status`, 't__owner', 't__model'];

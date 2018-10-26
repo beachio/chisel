@@ -9,7 +9,8 @@ import InputControl from 'components/elements/InputControl/InputControl';
 import ValidationNumber from 'components/modals/FieldModal/Validations/ValidationNumber';
 import ValidationString from 'components/modals/FieldModal/Validations/ValidationString';
 import ValidationReference from 'components/modals/FieldModal/Validations/ValidationReference';
-import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST, NAME_ERROR_NAME_RESERVED} from 'utils/data';
+import {removeOddSpaces} from "utils/common";
+import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST} from 'utils/data';
 
 import {FIELD_TYPES, canBeList, canBeTitle, canBeRequired} from 'models/ModelData';
 import * as ftps from 'models/ModelData';
@@ -143,14 +144,15 @@ export default class FieldModal extends Component {
     }
 
     if (this.field.name != this.state.name) {
-      let error = checkFieldName(this.state.name);
+      const name = removeOddSpaces(this.state.name);
+      let error = checkFieldName(name);
       if (error) {
         this.setState({error});
         return;
       }
+      this.field.name = name;
     }
-
-    this.field.name       = this.state.name;
+    
     this.field.type       = this.state.type;
     this.field.appearance = this.state.appearance;
     this.field.isRequired = this.state.isRequired;
@@ -214,10 +216,6 @@ export default class FieldModal extends Component {
             {
               this.state.error == NAME_ERROR_NAME_EXIST &&
               <div styleName="error-same-name">This name is already in use.</div>
-            }
-            {
-              this.state.error == NAME_ERROR_NAME_RESERVED &&
-              <div styleName="error-same-name">This name is reserved.</div>
             }
     
             <div styleName="input-wrapper">

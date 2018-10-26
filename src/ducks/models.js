@@ -1,8 +1,8 @@
 import {Parse} from 'parse';
 
 import {store} from '../index';
-import {UserData, CollaborationData, ROLE_OWNER} from 'models/UserData';
-import {SiteData, ModelData, ModelFieldData, canBeTitle} from 'models/ModelData';
+import {UserData, CollaborationData} from 'models/UserData';
+import {SiteData, ModelData, ModelFieldData, canBeTitle, FIELD_NAMES_RESERVED} from 'models/ModelData';
 import {getRandomColor} from 'utils/common';
 import {getNameId, getRole} from 'utils/data';
 import {LOGOUT} from './user';
@@ -404,7 +404,7 @@ function checkNewTitle(field) {
 
 export function addField(field) {
   field.color = getRandomColor();
-  field.nameId = getNameId(field.name, field.model.fields);
+  field.nameId = getNameId(field.name, field.model.fields, FIELD_NAMES_RESERVED);
   field.order = field.model.fields.length;
 
   checkNewTitle(field);

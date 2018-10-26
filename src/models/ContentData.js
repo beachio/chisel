@@ -146,6 +146,3 @@ export class ContentItemData {
       this.origin.set("t__owner",  this.owner.origin);
   }
 }
-
-
-export const FIELD_NAMES_RESERVED = ['t__color', `t__status`, 't__owner', 't__model'];
