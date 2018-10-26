@@ -111,11 +111,11 @@ export default class FieldModal extends Component {
       type,
       appList: FIELD_TYPES.get(type),
       appearance: FIELD_TYPES.get(type)[0]
-    }, this.checkSwitches);
+    }, this.onTypeChange);
   };
 
   onChangeAppearance = appearance => {
-    this.setState({appearance}, this.checkSwitches);
+    this.setState({appearance}, this.onTypeChange);
   };
 
   onChangeIsTitle = isTitle => {
@@ -174,6 +174,11 @@ export default class FieldModal extends Component {
     this.active = false;
     this.props.onClose();
   };
+  
+  onTypeChange() {
+    this.validations = null;
+    this.checkSwitches();
+  }
 
   checkSwitches() {
     let can = canBeTitle(this.state);
