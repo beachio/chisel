@@ -22,7 +22,7 @@ export default class SwitchControl extends Component {
   };
   
   render() {
-    const {title, checked, disabled} = this.props;
+    const {label, checked, disabled} = this.props;
     let style = `SwitchControl`;
     if (disabled)
       style += ` disabled`;
@@ -36,7 +36,7 @@ export default class SwitchControl extends Component {
                checked={checked}
                onChange={this.onChange}
         />
-        <label styleName="label" htmlFor={this.id}>{title}</label>
+        <label styleName="label" htmlFor={this.id}>{label}</label>
       </div>
     );
   }
