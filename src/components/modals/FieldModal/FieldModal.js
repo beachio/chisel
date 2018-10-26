@@ -244,30 +244,24 @@ export default class FieldModal extends Component {
             </div>
     
             <div styleName="input-wrapper">
-              <div styleName="label">List (keeping multiple values instead of one)</div>
-              <div styleName="switch">
-                <SwitchControl checked={this.state.isList}
-                               onChange={this.onChangeIsList}
-                               disabled={!canBeList(this.state) || this.updating} />
-              </div>
+              <SwitchControl label="List (keeping multiple values instead of one)"
+                             checked={this.state.isList}
+                             onChange={this.onChangeIsList}
+                             disabled={!canBeList(this.state) || this.updating} />
             </div>
     
             <div styleName="input-wrapper">
-              <div styleName="label">Entry Title</div>
-              <div styleName="switch">
-                <SwitchControl checked={this.state.isTitle}
-                               onChange={this.onChangeIsTitle}
-                               disabled={!canBeTitle(this.state)} />
-              </div>
+              <SwitchControl label="Entry Title"
+                             checked={this.state.isTitle}
+                             onChange={this.onChangeIsTitle}
+                             disabled={!canBeTitle(this.state)} />
             </div>
     
             <div styleName="input-wrapper">
-              <div styleName="label">Disabled</div>
-              <div styleName="switch">
-                <SwitchControl checked={this.state.isDisabled}
-                               onChange={this.onChangeIsDisabled}
-                               disabled={this.state.isTitle} />
-              </div>
+              <SwitchControl label="Disabled"
+                             checked={this.state.isDisabled}
+                             onChange={this.onChangeIsDisabled}
+                             disabled={this.state.isTitle} />
             </div>
           </div>
         );
