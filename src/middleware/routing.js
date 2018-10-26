@@ -8,7 +8,7 @@ import {INIT_END, URL_SIGN, URL_SITE, URL_USERSPACE, URLS_EMAIL, URL_PROFILE} fr
 
 
 let URL = '/';
-let nonAuthURL = null;
+let returnURL = null;
 
 
 let getNameId = (path, type) => {
@@ -32,10 +32,9 @@ let isEmailURL = URL => {
 };
 
 export const routing = store => next => action => {
-  if (action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) {
-    if (!action.authorized && !isEmailURL(URL) && URL.indexOf(URL_SIGN) == -1)
-      browserHistory.push(`/${URL_SIGN}`);
-  }
+  if ((action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) &&
+      !action.authorized && !isEmailURL(URL) && URL.indexOf(URL_SIGN) == -1)
+    browserHistory.push(`/${URL_SIGN}`);
   
   next(action);
   
@@ -78,17 +77,17 @@ export const routing = store => next => action => {
   if (action.type == LOCATION_CHANGE) {
     URL = action.payload.pathname;
     
-    if (URL.indexOf(URL_USERSPACE) != -1 && !nonAuthURL)
-      nonAuthURL = URL;
+    if (URL.indexOf(URL_USERSPACE) != -1 && !returnURL)
+      returnURL = URL;
   
     if (store.getState().nav.initEnded)
       setFromURL();
   }
   
   if (action.type == INIT_END) {
-    if (nonAuthURL) {
-      URL = nonAuthURL;
-      nonAuthURL = null;
+    if (returnURL) {
+      URL = returnURL;
+      returnURL = null;
       browserHistory.replace(URL);
     } else if (URL.indexOf(URL_USERSPACE) == -1) {
       browserHistory.replace(`/${URL_USERSPACE}`);
