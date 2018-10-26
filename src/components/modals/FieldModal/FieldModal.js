@@ -12,7 +12,7 @@ import ValidationReference from 'components/modals/FieldModal/Validations/Valida
 import {removeOddSpaces} from "utils/common";
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST} from 'utils/data';
 
-import {FIELD_TYPES, canBeList, canBeTitle, canBeRequired} from 'models/ModelData';
+import {FIELD_TYPES, canBeList, canBeTitle} from 'models/ModelData';
 import * as ftps from 'models/ModelData';
 
 import styles from './FieldModal.sss';
@@ -118,10 +118,6 @@ export default class FieldModal extends Component {
     this.setState({appearance}, this.checkSwitches);
   };
 
-  onChangeIsRequired = isRequired => {
-    this.setState({isRequired});
-  };
-  
   onChangeIsTitle = isTitle => {
     this.setState({isTitle, isRequired: isTitle});
   };
@@ -132,6 +128,10 @@ export default class FieldModal extends Component {
 
   onChangeIsDisabled = isDisabled => {
     this.setState({isDisabled}, this.checkSwitches);
+  };
+  
+  onChangeIsRequired = isRequired => {
+    this.setState({isRequired});
   };
 
   onSave = () => {
@@ -184,9 +184,6 @@ export default class FieldModal extends Component {
   
     if (!canBeList(this.state))
       this.setState({isList: false});
-    
-    if (!canBeRequired(this.state))
-      this.setState({isRequired: false});
   }
   
   onUpdateValidations = validations => {
@@ -326,7 +323,7 @@ export default class FieldModal extends Component {
                 <CheckboxControl title="Required"
                                  checked={this.state.isRequired}
                                  onChange={this.onChangeIsRequired}
-                                 disabled={!canBeRequired(this.state) || this.state.isTitle} />
+                                 disabled={this.state.isTitle} />
               </div>
             </div>
             {validations}

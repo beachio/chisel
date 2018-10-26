@@ -240,10 +240,6 @@ export function canBeList(field) {
     !field.isTitle;
 }
 
-export function canBeRequired(field) {
-  return field.type != FIELD_TYPE_BOOLEAN;
-}
-
 
 export class ModelFieldData {
   static get OriginClass() {return Parse.Object.extend("ModelField");}
