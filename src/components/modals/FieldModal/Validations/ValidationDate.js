@@ -6,6 +6,7 @@ import Flatpickr from 'react-flatpickr';
 
 import CheckboxControl from "components/elements/CheckboxControl/CheckboxControl";
 import InputControl from "components/elements/InputControl/InputControl";
+import {FIELD_APPEARANCE__DATE__DATE, FIELD_APPEARANCE__DATE__DATE_ONLY, FIELD_APPEARANCE__DATE__TIME_ONLY} from "models/ModelData";
 
 import styles from '../FieldModal.sss';
 
@@ -15,16 +16,22 @@ export default class ValidationDate extends Component {
   state = {
     rangeDate: {
       active: false,
-      min: 0,
-      max: 0,
+      min: new Date(),
+      max: new Date(),
       minActive: true,
       maxActive: true,
       errorMsg: ''
     }
   };
+  showDate;
+  showTime;
+  
   
   constructor(props) {
     super(props);
+    
+    this.showDate = props.appearance == FIELD_APPEARANCE__DATE__DATE || props.appearance == FIELD_APPEARANCE__DATE__DATE_ONLY;
+    this.showTime = props.appearance == FIELD_APPEARANCE__DATE__DATE || props.appearance == FIELD_APPEARANCE__DATE__TIME_ONLY;
     
     Object.assign(this.state, props.validations);
   }
@@ -143,19 +150,23 @@ export default class ValidationDate extends Component {
                                onChange={this.onRangeMinActive}
                                disabled={!this.state.rangeDate.active} />
             </div>
-            <div styleName={"date" + styleMin}>
-              <Flatpickr value={this.state.rangeDate.min}
-                         data-alt-input="true"
-                         onChange={this.onChangeMinDate} />
-            </div>
-            <div styleName={"time" + styleMin}>
-              <Flatpickr value={this.state.rangeDate.min}
-                         data-no-calendar={true}
-                         data-enable-time={true}
-                         data-alt-format="h:i K"
-                         data-alt-input="true"
-                         onChange={this.onChangeMinTime} />
-            </div>
+            {this.showDate &&
+              <div styleName={"date" + styleMin}>
+                <Flatpickr value={this.state.rangeDate.min}
+                           data-alt-input="true"
+                           onChange={this.onChangeMinDate}/>
+              </div>
+            }
+            {this.showTime &&
+              <div styleName={"time" + styleMin}>
+                <Flatpickr value={this.state.rangeDate.min}
+                           data-no-calendar={true}
+                           data-enable-time={true}
+                           data-alt-format="h:i K"
+                           data-alt-input="true"
+                           onChange={this.onChangeMinTime}/>
+              </div>
+            }
           </div>
           <div styleName="data-time-wrapper">
             <div styleName="checkbox">
@@ -164,19 +175,23 @@ export default class ValidationDate extends Component {
                                onChange={this.onRangeMaxActive}
                                disabled={!this.state.rangeDate.active} />
             </div>
-            <div styleName={"date" + styleMax}>
-              <Flatpickr value={this.state.rangeDate.max}
-                         data-alt-input="true"
-                         onChange={this.onChangeMaxDate} />
-            </div>
-            <div styleName={"time" + styleMax}>
-              <Flatpickr value={this.state.rangeDate.max}
-                         data-no-calendar={true}
-                         data-enable-time={true}
-                         data-alt-format="h:i K"
-                         data-alt-input="true"
-                         onChange={this.onChangeMaxTime} />
-            </div>
+            {this.showDate &&
+              <div styleName={"date" + styleMax}>
+                <Flatpickr value={this.state.rangeDate.max}
+                           data-alt-input="true"
+                           onChange={this.onChangeMaxDate}/>
+              </div>
+            }
+            {this.showTime &&
+              <div styleName={"time" + styleMax}>
+                <Flatpickr value={this.state.rangeDate.max}
+                           data-no-calendar={true}
+                           data-enable-time={true}
+                           data-alt-format="h:i K"
+                           data-alt-input="true"
+                           onChange={this.onChangeMaxTime}/>
+              </div>
+            }
           </div>
           <InputControl label="Custom error message"
                         onChange={this.onRangeErrorMsg}

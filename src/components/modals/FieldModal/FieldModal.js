@@ -318,7 +318,10 @@ export default class FieldModal extends Component {
           case ftps.FIELD_TYPE_DATE:
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__DATE__DATE:
-                validations = <ValidationDate validations={this.validations}
+              case ftps.FIELD_APPEARANCE__DATE__DATE_ONLY:
+              case ftps.FIELD_APPEARANCE__DATE__TIME_ONLY:
+                validations = <ValidationDate appearance={this.state.appearance}
+                                              validations={this.validations}
                                               update={this.onUpdateValidations} />;
                 break;
             }
