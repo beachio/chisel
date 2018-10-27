@@ -78,11 +78,15 @@ export default class ContentDate extends ContentBase {
   
   getInput() {
     let value = this.state.value;
+    
+    let styleWrapper = 'input-wrapper data-time-wrapper';
+    if (!this.state.isEditable)
+      styleWrapper += ' data-time-disabled';
   
     switch (this.field.appearance) {
       case FIELD_APPEARANCE__DATE__DATE:
         return(
-          <div styleName="input-wrapper data-time-wrapper">
+          <div styleName={styleWrapper}>
             <div styleName="date">
               <Flatpickr value={value}
                          options={{
@@ -109,7 +113,7 @@ export default class ContentDate extends ContentBase {
         
       case FIELD_APPEARANCE__DATE__DATE_ONLY:
         return(
-          <div styleName="input-wrapper data-time-wrapper">
+          <div styleName={styleWrapper}>
             <div styleName="date">
               <Flatpickr value={value}
                          options={{
@@ -125,7 +129,7 @@ export default class ContentDate extends ContentBase {
   
       case FIELD_APPEARANCE__DATE__TIME_ONLY:
         return(
-          <div styleName="input-wrapper data-time-wrapper">
+          <div styleName={styleWrapper}>
             <div styleName="time">
               <Flatpickr value={value}
                          options={{
