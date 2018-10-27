@@ -178,6 +178,8 @@ export const FIELD_APPEARANCE__BOOLEAN__RADIO       = "Radio buttons";
 export const FIELD_APPEARANCE__BOOLEAN__SWITCH      = "Switch";
 
 export const FIELD_APPEARANCE__DATE__DATE           = "Date & time";
+export const FIELD_APPEARANCE__DATE__DATE_ONLY      = "Date";
+export const FIELD_APPEARANCE__DATE__TIME_ONLY      = "Time";
 
 export const FIELD_APPEARANCE__MEDIA__MEDIA         = "Media";
 
@@ -212,7 +214,9 @@ export const FIELD_TYPES = new Map([
     FIELD_APPEARANCE__BOOLEAN__SWITCH
   ]],
   [FIELD_TYPE_DATE, [
-    FIELD_APPEARANCE__DATE__DATE
+    FIELD_APPEARANCE__DATE__DATE,
+    FIELD_APPEARANCE__DATE__DATE_ONLY,
+    FIELD_APPEARANCE__DATE__TIME_ONLY
   ]],
   [FIELD_TYPE_MEDIA, [
     FIELD_APPEARANCE__MEDIA__MEDIA

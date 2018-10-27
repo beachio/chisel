@@ -6,7 +6,7 @@ import Flatpickr from 'react-flatpickr';
 
 import ContentBase from './ContentBase';
 
-import * as ftps from 'models/ModelData';
+import {FIELD_APPEARANCE__DATE__DATE, FIELD_APPEARANCE__DATE__DATE_ONLY, FIELD_APPEARANCE__DATE__TIME_ONLY} from 'models/ModelData';
 
 import styles from '../ContentEdit.sss';
 
@@ -41,7 +41,7 @@ export default class ContentDate extends ContentBase {
     let value = this.state.value;
     
     switch (this.field.appearance) {
-      case ftps.FIELD_APPEARANCE__DATE__DATE:
+      case FIELD_APPEARANCE__DATE__DATE:
         return(
           <div styleName="input-wrapper data-time-wrapper">
             <div styleName="date">
@@ -50,6 +50,33 @@ export default class ContentDate extends ContentBase {
                          data-alt-input="true"
                          onChange={this.onChangeDate} />
             </div>
+            <div styleName="time">
+              <Flatpickr value={value}
+                         data-click-opens={this.state.isEditable}
+                         data-no-calendar={true}
+                         data-enable-time={true}
+                         data-alt-format="h:i K"
+                         data-alt-input="true"
+                         onChange={this.onChangeTime} />
+            </div>
+          </div>
+        );
+        
+      case FIELD_APPEARANCE__DATE__DATE_ONLY:
+        return(
+          <div styleName="input-wrapper data-time-wrapper">
+            <div styleName="date">
+              <Flatpickr value={value}
+                         data-click-opens={this.state.isEditable}
+                         data-alt-input="true"
+                         onChange={this.onChangeDate} />
+            </div>
+          </div>
+        );
+  
+      case FIELD_APPEARANCE__DATE__TIME_ONLY:
+        return(
+          <div styleName="input-wrapper data-time-wrapper">
             <div styleName="time">
               <Flatpickr value={value}
                          data-click-opens={this.state.isEditable}
