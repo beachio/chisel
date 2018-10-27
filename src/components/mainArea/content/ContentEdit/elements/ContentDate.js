@@ -13,8 +13,41 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentDate extends ContentBase {
+  validations = null;
+  
+  constructor(props) {
+    super(props);
+    
+    if (this.field.validations && this.field.validations.rangeDate && this.field.validations.rangeDate.active)
+      this.validations = this.field.validations.rangeDate;
+  }
+  
   getDefaultValue() {
+    if (this.validations) {
+      if (this.validations.minActive)
+        return this.validations.min;
+      else if (this.validations.maxActive)
+        return this.validations.max;
+    }
     return new Date();
+  }
+  
+  getError () {
+    const baseError = super.getError();
+    if (baseError)
+      return baseError;
+    
+    let value = this.state.value;
+    if (!value)
+      return;
+    
+    if (this.validations &&
+       (this.validations.minActive && value < this.validations.min ||
+        this.validations.maxActive && value > this.validations.max)) {
+      if (this.validations.errorMsg)
+        return this.validations.errorMsg;
+      return 'The date is out of range!';
+    }
   }
   
   onChangeDate = _date => {
@@ -39,24 +72,32 @@ export default class ContentDate extends ContentBase {
   
   getInput() {
     let value = this.state.value;
-    
+    let minDate = (this.validations && this.validations.minActive) ? this.validations.min : null;
+    let maxDate = (this.validations && this.validations.maxActive) ? this.validations.max : null;
+  
     switch (this.field.appearance) {
       case FIELD_APPEARANCE__DATE__DATE:
         return(
           <div styleName="input-wrapper data-time-wrapper">
             <div styleName="date">
               <Flatpickr value={value}
-                         data-click-opens={this.state.isEditable}
-                         data-alt-input="true"
+                         options={{
+                           clickOpens: this.state.isEditable,
+                           altInput: true,
+                           minDate,
+                           maxDate
+                         }}
                          onChange={this.onChangeDate} />
             </div>
             <div styleName="time">
               <Flatpickr value={value}
-                         data-click-opens={this.state.isEditable}
-                         data-no-calendar={true}
-                         data-enable-time={true}
-                         data-alt-format="h:i K"
-                         data-alt-input="true"
+                         options={{
+                           clickOpens: this.state.isEditable,
+                           altInput: true,
+                           noCalendar: true,
+                           enableTime: true,
+                           altFormat: "h:i K"
+                         }}
                          onChange={this.onChangeTime} />
             </div>
           </div>
@@ -67,8 +108,12 @@ export default class ContentDate extends ContentBase {
           <div styleName="input-wrapper data-time-wrapper">
             <div styleName="date">
               <Flatpickr value={value}
-                         data-click-opens={this.state.isEditable}
-                         data-alt-input="true"
+                         options={{
+                           clickOpens: this.state.isEditable,
+                           altInput: true,
+                           minDate,
+                           maxDate
+                         }}
                          onChange={this.onChangeDate} />
             </div>
           </div>
@@ -79,11 +124,13 @@ export default class ContentDate extends ContentBase {
           <div styleName="input-wrapper data-time-wrapper">
             <div styleName="time">
               <Flatpickr value={value}
-                         data-click-opens={this.state.isEditable}
-                         data-no-calendar={true}
-                         data-enable-time={true}
-                         data-alt-format="h:i K"
-                         data-alt-input="true"
+                         options={{
+                           clickOpens: this.state.isEditable,
+                           altInput: true,
+                           noCalendar: true,
+                           enableTime: true,
+                           altFormat: "h:i K"
+                         }}
                          onChange={this.onChangeTime} />
             </div>
           </div>
