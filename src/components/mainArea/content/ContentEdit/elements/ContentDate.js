@@ -37,9 +37,9 @@ export default class ContentDate extends ContentBase {
   getDefaultValue() {
     if (this.validations) {
       if (this.validations.minActive)
-        return this.validations.min;
+        return new Date(this.validations.min);
       else if (this.validations.maxActive)
-        return this.validations.max;
+        return new Date(this.validations.max);
     }
     return new Date();
   }
@@ -54,11 +54,11 @@ export default class ContentDate extends ContentBase {
       return;
     
     if (this.validations &&
-       (this.validations.minActive && value < this.validations.min ||
-        this.validations.maxActive && value > this.validations.max)) {
+       (this.validations.minActive && value < new Date(this.validations.min) ||
+        this.validations.maxActive && value > new Date(this.validations.max))) {
       if (this.validations.errorMsg)
         return this.validations.errorMsg;
-      return 'The date is out of range!';
+      return 'The date/time is out of range!';
     }
   }
   

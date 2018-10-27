@@ -16,8 +16,8 @@ export default class ValidationDate extends Component {
   state = {
     rangeDate: {
       active: false,
-      min: new Date(),
-      max: new Date(),
+      min: new Date().toISOString(),
+      max: new Date().toISOString(),
       minActive: true,
       maxActive: true,
       errorMsg: ''
@@ -47,7 +47,7 @@ export default class ValidationDate extends Component {
   onChangeMinDate = _date => {
     const date = _date[0];
   
-    const oldDate = this.state.rangeDate.min ? this.state.rangeDate.min : new Date();
+    const oldDate = this.state.rangeDate.min ? new Date(this.state.rangeDate.min) : new Date();
     
     if (this.showTime)
       date.setHours(oldDate.getHours(), oldDate.getMinutes());
@@ -56,25 +56,25 @@ export default class ValidationDate extends Component {
     
     this.setState({rangeDate: {
         ...this.state.rangeDate,
-        min: date
+        min: date.toISOString()
       }}, this.update);
   };
   
   onChangeMinTime = _time => {
     const time = _time[0];
-    const date = this.state.rangeDate.min ? this.state.rangeDate.min : new Date();
+    const date = this.state.rangeDate.min ? new Date(this.state.rangeDate.min) : new Date();
     date.setHours(time.getHours(), time.getMinutes());
     
     this.setState({rangeDate: {
         ...this.state.rangeDate,
-        min: date
+        min: date.toISOString()
       }}, this.update);
   };
   
   onChangeMaxDate = _date => {
     const date = _date[0];
   
-    const oldDate = this.state.rangeDate.max ? this.state.rangeDate.max : new Date();
+    const oldDate = this.state.rangeDate.max ? new Date(this.state.rangeDate.max) : new Date();
     
     if (this.showTime)
       date.setHours(oldDate.getHours(), oldDate.getMinutes());
@@ -83,18 +83,18 @@ export default class ValidationDate extends Component {
     
     this.setState({rangeDate: {
         ...this.state.rangeDate,
-        max: date
+        max: date.toISOString()
       }}, this.update);
   };
   
   onChangeMaxTime = _time => {
     const time = _time[0];
-    const date = this.state.rangeDate.max ? this.state.rangeDate.max : new Date();
+    const date = this.state.rangeDate.max ? new Date(this.state.rangeDate.max) : new Date();
     date.setHours(time.getHours(), time.getMinutes());
     
     this.setState({rangeDate: {
         ...this.state.rangeDate,
-        max: date
+        max: date.toISOString()
       }}, this.update);
   };
   
@@ -136,6 +136,9 @@ export default class ValidationDate extends Component {
   render() {
     const styleMin = this.state.rangeDate.active && this.state.rangeDate.minActive ? '' : ' disabled';
     const styleMax = this.state.rangeDate.active && this.state.rangeDate.maxActive ? '' : ' disabled';
+  
+    const dateMin = new Date(this.state.rangeDate.min);
+    const dateMax = new Date(this.state.rangeDate.max);
     
     return (
       <div>
@@ -154,14 +157,14 @@ export default class ValidationDate extends Component {
             </div>
             {this.showDate &&
               <div styleName={"date" + styleMin}>
-                <Flatpickr value={this.state.rangeDate.min}
+                <Flatpickr value={dateMin}
                            data-alt-input="true"
                            onChange={this.onChangeMinDate}/>
               </div>
             }
             {this.showTime &&
               <div styleName={"time" + styleMin}>
-                <Flatpickr value={this.state.rangeDate.min}
+                <Flatpickr value={dateMin}
                            data-no-calendar={true}
                            data-enable-time={true}
                            data-alt-format="h:i K"
@@ -179,14 +182,14 @@ export default class ValidationDate extends Component {
             </div>
             {this.showDate &&
               <div styleName={"date" + styleMax}>
-                <Flatpickr value={this.state.rangeDate.max}
+                <Flatpickr value={dateMax}
                            data-alt-input="true"
                            onChange={this.onChangeMaxDate}/>
               </div>
             }
             {this.showTime &&
               <div styleName={"time" + styleMax}>
-                <Flatpickr value={this.state.rangeDate.max}
+                <Flatpickr value={dateMax}
                            data-no-calendar={true}
                            data-enable-time={true}
                            data-alt-format="h:i K"
@@ -199,8 +202,7 @@ export default class ValidationDate extends Component {
                         onChange={this.onRangeErrorMsg}
                         value={this.state.rangeDate.errorMsg}
                         readOnly={!this.state.rangeDate.active} />
-          {
-            (this.state.rangeDate.min > this.state.rangeDate.max) &&
+          {(dateMin > dateMax) &&
             <div styleName="error">
               Error: the min value should be smaller than max value! Please, fix it.
             </div>
