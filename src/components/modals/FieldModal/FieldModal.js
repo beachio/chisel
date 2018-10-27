@@ -8,6 +8,7 @@ import DropdownControl from 'components/elements/DropdownControl/DropdownControl
 import InputControl from 'components/elements/InputControl/InputControl';
 import ValidationNumber from 'components/modals/FieldModal/Validations/ValidationNumber';
 import ValidationString from 'components/modals/FieldModal/Validations/ValidationString';
+import ValidationDate from 'components/modals/FieldModal/Validations/ValidationDate';
 import ValidationReference from 'components/modals/FieldModal/Validations/ValidationReference';
 import {removeOddSpaces} from "utils/common";
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST} from 'utils/data';
@@ -310,6 +311,15 @@ export default class FieldModal extends Component {
               case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
                 validations = <ValidationNumber validations={this.validations}
                                                 update={this.onUpdateValidations} />;
+                break;
+            }
+            break;
+  
+          case ftps.FIELD_TYPE_DATE:
+            switch (this.state.appearance) {
+              case ftps.FIELD_APPEARANCE__DATE__DATE:
+                validations = <ValidationDate validations={this.validations}
+                                              update={this.onUpdateValidations} />;
                 break;
             }
             break;
