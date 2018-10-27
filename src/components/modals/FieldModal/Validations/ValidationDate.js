@@ -125,6 +125,9 @@ export default class ValidationDate extends Component {
   };
   
   render() {
+    const styleMin = this.state.rangeDate.active && this.state.rangeDate.minActive ? '' : ' disabled';
+    const styleMax = this.state.rangeDate.active && this.state.rangeDate.maxActive ? '' : ' disabled';
+    
     return (
       <div>
         <div styleName="validation">
@@ -133,50 +136,46 @@ export default class ValidationDate extends Component {
                              checked={this.state.rangeDate.active}
                              onChange={this.onRangeActive} />
           </div>
-          <div styleName="range">
-            <CheckboxControl title="Min"
-                             checked={this.state.rangeDate.minActive}
-                             onChange={this.onRangeMinActive}
-                             disabled={!this.state.rangeDate.active} />
-            <div styleName="input-wrapper data-time-wrapper">
-              <div styleName="date">
-                <Flatpickr value={this.state.rangeDate.min}
-                           data-click-opens={this.state.isEditable}
-                           data-alt-input="true"
-                           onChange={this.onChangeMinDate} />
-              </div>
-              <div styleName="time">
-                <Flatpickr value={this.state.rangeDate.min}
-                           data-click-opens={this.state.isEditable}
-                           data-no-calendar={true}
-                           data-enable-time={true}
-                           data-alt-format="h:i K"
-                           data-alt-input="true"
-                           onChange={this.onChangeMinTime} />
-              </div>
+          <div styleName="data-time-wrapper">
+            <div styleName="checkbox">
+              <CheckboxControl title="Min"
+                               checked={this.state.rangeDate.minActive}
+                               onChange={this.onRangeMinActive}
+                               disabled={!this.state.rangeDate.active} />
+            </div>
+            <div styleName={"date" + styleMin}>
+              <Flatpickr value={this.state.rangeDate.min}
+                         data-alt-input="true"
+                         onChange={this.onChangeMinDate} />
+            </div>
+            <div styleName={"time" + styleMin}>
+              <Flatpickr value={this.state.rangeDate.min}
+                         data-no-calendar={true}
+                         data-enable-time={true}
+                         data-alt-format="h:i K"
+                         data-alt-input="true"
+                         onChange={this.onChangeMinTime} />
             </div>
           </div>
-          <div styleName="range">
-            <CheckboxControl title="Max"
-                             checked={this.state.rangeDate.maxActive}
-                             onChange={this.onRangeMaxActive}
-                             disabled={!this.state.rangeDate.active} />
-            <div styleName="input-wrapper data-time-wrapper">
-              <div styleName="date">
-                <Flatpickr value={this.state.rangeDate.max}
-                           data-click-opens={this.state.isEditable}
-                           data-alt-input="true"
-                           onChange={this.onChangeMaxDate} />
-              </div>
-              <div styleName="time">
-                <Flatpickr value={this.state.rangeDate.max}
-                           data-click-opens={this.state.isEditable}
-                           data-no-calendar={true}
-                           data-enable-time={true}
-                           data-alt-format="h:i K"
-                           data-alt-input="true"
-                           onChange={this.onChangeMaxTime} />
-              </div>
+          <div styleName="data-time-wrapper">
+            <div styleName="checkbox">
+              <CheckboxControl title="Max"
+                               checked={this.state.rangeDate.maxActive}
+                               onChange={this.onRangeMaxActive}
+                               disabled={!this.state.rangeDate.active} />
+            </div>
+            <div styleName={"date" + styleMax}>
+              <Flatpickr value={this.state.rangeDate.max}
+                         data-alt-input="true"
+                         onChange={this.onChangeMaxDate} />
+            </div>
+            <div styleName={"time" + styleMax}>
+              <Flatpickr value={this.state.rangeDate.max}
+                         data-no-calendar={true}
+                         data-enable-time={true}
+                         data-alt-format="h:i K"
+                         data-alt-input="true"
+                         onChange={this.onChangeMaxTime} />
             </div>
           </div>
           <InputControl label="Custom error message"

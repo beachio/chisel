@@ -165,24 +165,34 @@
     .data-time-wrapper
       display: flex
       flex-flow: row nowrap !important
+      align-items: center
+      margin-top: 15px
+      margin-bottom: 15px
+
+      .checkbox
+        width: 15%
 
       .date
         margin-right: 30px
 
       .date input,
       .time input
-        height: auto
-        width: auto
+        background: #F9F9F9
         font-family: 'Open Sans', sans-serif
         font-size: 18px
         color: #666666
         letter-spacing: 0.69px
-        line-height: 30px
-        padding: 10px 0 5px 0
         border: none
         border-radius: 0
         border-bottom: 1px solid #5CA6DC
         cursor: pointer
+
+      .disabled
+        pointer-events: none
+
+        input
+          color: #999999
+          border-bottom: 1px solid #bbbbbb
 
     .error
       margin-top: 6px
