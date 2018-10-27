@@ -46,11 +46,14 @@ export default class ValidationDate extends Component {
   
   onChangeMinDate = _date => {
     const date = _date[0];
-    let oldDate = this.state.rangeDate.min;
-    if (!oldDate)
-      oldDate = new Date();
-    date.setHours(oldDate.getHours());
-    date.setMinutes(oldDate.getMinutes());
+  
+    const oldDate = this.state.rangeDate.min ? this.state.rangeDate.min : new Date();
+    
+    if (this.showTime)
+      date.setHours(oldDate.getHours(), oldDate.getMinutes());
+    else
+      date.setHours(0, 0, 0, 0);
+    
     this.setState({rangeDate: {
         ...this.state.rangeDate,
         min: date
@@ -58,12 +61,10 @@ export default class ValidationDate extends Component {
   };
   
   onChangeMinTime = _time => {
-    let time = _time[0];
-    let date = this.state.rangeDate.min;
-    if (!date)
-      date = new Date();
-    date.setHours(time.getHours());
-    date.setMinutes(time.getMinutes());
+    const time = _time[0];
+    const date = this.state.rangeDate.min ? this.state.rangeDate.min : new Date();
+    date.setHours(time.getHours(), time.getMinutes());
+    
     this.setState({rangeDate: {
         ...this.state.rangeDate,
         min: date
@@ -72,11 +73,14 @@ export default class ValidationDate extends Component {
   
   onChangeMaxDate = _date => {
     const date = _date[0];
-    let oldDate = this.state.rangeDate.max;
-    if (!oldDate)
-      oldDate = new Date();
-    date.setHours(oldDate.getHours());
-    date.setMinutes(oldDate.getMinutes());
+  
+    const oldDate = this.state.rangeDate.max ? this.state.rangeDate.max : new Date();
+    
+    if (this.showTime)
+      date.setHours(oldDate.getHours(), oldDate.getMinutes());
+    else
+      date.setHours(23, 59, 59, 999);
+    
     this.setState({rangeDate: {
         ...this.state.rangeDate,
         max: date
@@ -84,12 +88,10 @@ export default class ValidationDate extends Component {
   };
   
   onChangeMaxTime = _time => {
-    let time = _time[0];
-    let date = this.state.rangeDate.max;
-    if (!date)
-      date = new Date();
-    date.setHours(time.getHours());
-    date.setMinutes(time.getMinutes());
+    const time = _time[0];
+    const date = this.state.rangeDate.max ? this.state.rangeDate.max : new Date();
+    date.setHours(time.getHours(), time.getMinutes());
+    
     this.setState({rangeDate: {
         ...this.state.rangeDate,
         max: date

@@ -14,12 +14,24 @@ import styles from '../ContentEdit.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentDate extends ContentBase {
   validations = null;
+  minDate;
+  maxDate;
   
   constructor(props) {
     super(props);
     
-    if (this.field.validations && this.field.validations.rangeDate && this.field.validations.rangeDate.active)
+    if (this.field.validations && this.field.validations.rangeDate && this.field.validations.rangeDate.active) {
       this.validations = this.field.validations.rangeDate;
+  
+      if (this.validations.minActive) {
+        this.minDate = new Date(this.validations.min);
+        this.minDate.setHours(0, 0, 0, 0);
+      }
+      if (this.validations.maxActive) {
+        this.maxDate = new Date(this.validations.max);
+        this.maxDate.setHours(23, 59, 59, 999);
+      }
+    }
   }
   
   getDefaultValue() {
@@ -51,29 +63,21 @@ export default class ContentDate extends ContentBase {
   }
   
   onChangeDate = _date => {
-    let date = _date[0];
-    let oldDate = this.state.value;
-    if (!oldDate)
-      oldDate = new Date();
-    date.setHours(oldDate.getHours());
-    date.setMinutes(oldDate.getMinutes());
+    const date = _date[0];
+    const oldDate = this.state.value ? this.state.value : new Date();
+    date.setHours(oldDate.getHours(), oldDate.getMinutes());
     this.setValue(date);
   };
   
   onChangeTime = _time => {
-    let time = _time[0];
-    let date = this.state.value;
-    if (!date)
-      date = new Date();
-    date.setHours(time.getHours());
-    date.setMinutes(time.getMinutes());
+    const time = _time[0];
+    const date = this.state.value ? this.state.value : new Date();
+    date.setHours(time.getHours(), time.getMinutes());
     this.setValue(date);
   };
   
   getInput() {
     let value = this.state.value;
-    let minDate = (this.validations && this.validations.minActive) ? this.validations.min : null;
-    let maxDate = (this.validations && this.validations.maxActive) ? this.validations.max : null;
   
     switch (this.field.appearance) {
       case FIELD_APPEARANCE__DATE__DATE:
@@ -84,8 +88,8 @@ export default class ContentDate extends ContentBase {
                          options={{
                            clickOpens: this.state.isEditable,
                            altInput: true,
-                           minDate,
-                           maxDate
+                           minDate: this.minDate,
+                           maxDate: this.maxDate
                          }}
                          onChange={this.onChangeDate} />
             </div>
@@ -111,8 +115,8 @@ export default class ContentDate extends ContentBase {
                          options={{
                            clickOpens: this.state.isEditable,
                            altInput: true,
-                           minDate,
-                           maxDate
+                           minDate: this.minDate,
+                           maxDate: this.maxDate
                          }}
                          onChange={this.onChangeDate} />
             </div>
