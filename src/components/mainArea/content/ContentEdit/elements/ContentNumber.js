@@ -12,10 +12,11 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentNumber extends ContentBase {
-  getDefaultValue() {
-    if (this.field.isList)
-      return [];
-    return 0;
+  constructor (props) {
+    super(props);
+    
+    if (!this.state.value && this.field.isList)
+      this.state.value = [];
   }
   
   getError () {
@@ -87,12 +88,9 @@ export default class ContentNumber extends ContentBase {
   
   onChange = (value, i) => {
     if (this.field.isList) {
-      let items = this.state.value;
-      if (i < items.length) {
-        items = items.slice();
-        items[i] = value;
-        this.setValue(items);
-      }
+      const items = this.state.value.slice();
+      items[i] = value;
+      this.setValue(items);
       
     } else {
       this.setValue(value);
@@ -152,10 +150,7 @@ export default class ContentNumber extends ContentBase {
             let inner;
         
             if (this.field.isList) {
-              if (!value)
-                value = [];
-  
-              if (value.length) {
+              if (value && value.length) {
                 inner = [];
                 let inputs = [];
                 for (let i = 0; i < value.length; i++) {

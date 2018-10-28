@@ -14,16 +14,15 @@ export default class InputNumberControl extends Component {
   
     this.parseFunc = props.isInt ? parseInt : parseFloat;
     
-    this.state.value = props.value ? props.value : '0';
+    this.state.value = props.value;
     this.valueParsed = this.parseValue(props.value);
   }
   
   componentWillReceiveProps(nextProps) {
-    let {value} = nextProps;
-    value = value ? value : '0';
+    const {value} = nextProps;
     
     const valueParsed = this.parseValue(value);
-    if (valueParsed == this.valueParsed)
+    if (valueParsed === this.valueParsed)
       return;
     this.valueParsed = valueParsed;
     
@@ -31,9 +30,9 @@ export default class InputNumberControl extends Component {
   }
   
   parseValue(value) {
-    let num = this.parseFunc(value);
+    const num = this.parseFunc(value);
     if (isNaN(num))
-      return 0;
+      return undefined;
     return num;
   }
   
@@ -44,7 +43,7 @@ export default class InputNumberControl extends Component {
     this.setState({value});
     
     const valueParsed = this.parseValue(value);
-    if (valueParsed == this.valueParsed)
+    if (valueParsed === this.valueParsed)
       return;
     this.valueParsed = valueParsed;
   

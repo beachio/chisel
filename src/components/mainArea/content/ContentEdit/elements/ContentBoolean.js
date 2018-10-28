@@ -12,10 +12,6 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentBoolean extends ContentBase {
-  getDefaultValue() {
-    return false;
-  }
-  
   onChange = value => {
     if (this.state.isEditable)
       this.setValue(value);
