@@ -202,31 +202,34 @@ export default class ContentString extends ContentBase {
   };
   
   getTitle() {
-    if (this.field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG)
-      return (
-        <div styleName="field-title">
-          {this.field.name}
-          <div styleName="link" onClick={this.onShowWysiwygModal}>
-            <InlineSVG styleName="link-icon" src={require('assets/images/link.svg')} />
+    switch (this.field.appearance) {
+      case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
+        return (
+          <div styleName="field-title">
+            {this.field.name}
+            <div styleName="link" onClick={this.onShowWysiwygModal}>
+              <InlineSVG styleName="link-icon" src={require('assets/images/link.svg')}/>
+            </div>
           </div>
-        </div>
-      );
-
-    if (this.field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__MARKDOWN)
-      return (
-        <div styleName="field-title">
-          {this.field.name}
-          <div styleName="link" onClick={this.onShowMarkdownModal}>
-            <InlineSVG styleName="link-icon" src={require('assets/images/link.svg')} />
+        );
+        
+      case ftps.FIELD_APPEARANCE__LONG_TEXT__MARKDOWN:
+        return (
+          <div styleName="field-title">
+            {this.field.name}
+            <div styleName="link" onClick={this.onShowMarkdownModal}>
+              <InlineSVG styleName="link-icon" src={require('assets/images/link.svg')}/>
+            </div>
           </div>
-        </div>
-      );
-  
-    return (
-      <div styleName="field-title">
-        {this.field.name}
-      </div>
-    );
+        );
+        
+      default:
+        return (
+          <div styleName="field-title">
+            {this.field.name}
+          </div>
+        );
+    }
   }
   
   onPlus = (i = 0) => {
