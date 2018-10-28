@@ -62,7 +62,7 @@ export default class ValidationDate extends Component {
   
   onChangeMinTime = _time => {
     const time = _time[0];
-    const date = this.state.rangeDate.min ? new Date(this.state.rangeDate.min) : new Date();
+    const date = this.state.rangeDate.min ? new Date(this.state.rangeDate.min) : new Date(0);
     date.setHours(time.getHours(), time.getMinutes());
     
     this.setState({rangeDate: {
@@ -89,7 +89,7 @@ export default class ValidationDate extends Component {
   
   onChangeMaxTime = _time => {
     const time = _time[0];
-    const date = this.state.rangeDate.max ? new Date(this.state.rangeDate.max) : new Date();
+    const date = this.state.rangeDate.max ? new Date(this.state.rangeDate.max) : new Date(0);
     date.setHours(time.getHours(), time.getMinutes());
     
     this.setState({rangeDate: {

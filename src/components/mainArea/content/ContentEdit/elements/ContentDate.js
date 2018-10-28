@@ -14,34 +14,44 @@ import styles from '../ContentEdit.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentDate extends ContentBase {
   validations = null;
+  minDateFull;
+  maxDateFull;
   minDate;
   maxDate;
+  minTime = new Date(0);
+  maxTime = new Date(0);
+  
   
   constructor(props) {
     super(props);
+  
+    this.minTime.setHours(0, 0, 0, 0);
+    this.maxTime.setHours(23, 59, 59, 999);
     
     if (this.field.validations && this.field.validations.rangeDate && this.field.validations.rangeDate.active) {
       this.validations = this.field.validations.rangeDate;
   
       if (this.validations.minActive) {
-        this.minDate = new Date(this.validations.min);
-        this.minDate.setHours(0, 0, 0, 0);
+        this.minDateFull = new Date(this.validations.min);
+        
+        if (this.field.appearance == FIELD_APPEARANCE__DATE__TIME_ONLY) {
+          this.minTime.setHours(this.minDateFull.getHours(), this.minDateFull.getMinutes());
+        } else {
+          this.minDate = new Date(this.minDateFull);
+          this.minDate.setHours(0, 0, 0, 0);
+        }
       }
       if (this.validations.maxActive) {
-        this.maxDate = new Date(this.validations.max);
-        this.maxDate.setHours(23, 59, 59, 999);
+        this.maxDateFull = new Date(this.validations.max);
+  
+        if (this.field.appearance == FIELD_APPEARANCE__DATE__TIME_ONLY) {
+          this.maxTime.setHours(this.maxDateFull.getHours(), this.maxDateFull.getMinutes());
+        } else {
+          this.maxDate = new Date(this.maxDateFull);
+          this.maxDate.setHours(23, 59, 59, 999);
+        }
       }
     }
-  }
-  
-  getDefaultValue() {
-    if (this.validations) {
-      if (this.validations.minActive)
-        return new Date(this.validations.min);
-      else if (this.validations.maxActive)
-        return new Date(this.validations.max);
-    }
-    return new Date();
   }
   
   getError () {
@@ -53,12 +63,24 @@ export default class ContentDate extends ContentBase {
     if (!value)
       return;
     
-    if (this.validations &&
-       (this.validations.minActive && value < new Date(this.validations.min) ||
-        this.validations.maxActive && value > new Date(this.validations.max))) {
-      if (this.validations.errorMsg)
-        return this.validations.errorMsg;
-      return 'The date/time is out of range!';
+    if (!this.validations)
+      return;
+    
+    switch (this.field.appearance) {
+      case FIELD_APPEARANCE__DATE__TIME_ONLY:
+        if (value < this.minTime || value > this.maxTime) {
+          if (this.validations.errorMsg)
+            return this.validations.errorMsg;
+          return 'The time is out of range!';
+        }
+        break;
+      default:
+        if (this.validations.minActive && value < this.minDateFull ||
+            this.validations.maxActive && value > this.maxDateFull) {
+          if (this.validations.errorMsg)
+            return this.validations.errorMsg;
+          return 'The date/time is out of range!';
+        }
     }
   }
   
@@ -71,9 +93,15 @@ export default class ContentDate extends ContentBase {
   
   onChangeTime = _time => {
     const time = _time[0];
-    const date = this.state.value ? this.state.value : new Date();
+    const date = this.state.value ? this.state.value : new Date(0);
     date.setHours(time.getHours(), time.getMinutes());
     this.setValue(date);
+  };
+  
+  onClickTime = () => {
+    const time = new Date(0);
+    time.setHours(0);
+    this.onChangeTime([time]);
   };
   
   getInput() {
@@ -104,7 +132,9 @@ export default class ContentDate extends ContentBase {
                            altInput: true,
                            noCalendar: true,
                            enableTime: true,
-                           altFormat: "h:i K"
+                           altFormat: "h:i K",
+                           minDate: this.minDateFull,
+                           maxDate: this.maxDateFull
                          }}
                          onChange={this.onChangeTime} />
             </div>
@@ -128,16 +158,19 @@ export default class ContentDate extends ContentBase {
         );
   
       case FIELD_APPEARANCE__DATE__TIME_ONLY:
+        console.log(this.minTime, this.maxTime);
         return(
           <div styleName={styleWrapper}>
-            <div styleName="time">
+            <div styleName="time" onClick={this.onClickTime}>
               <Flatpickr value={value}
                          options={{
                            clickOpens: this.state.isEditable,
                            altInput: true,
                            noCalendar: true,
                            enableTime: true,
-                           altFormat: "h:i K"
+                           altFormat: "h:i K",
+                           minDate: this.minTime,
+                           maxDate: this.maxTime
                          }}
                          onChange={this.onChangeTime} />
             </div>
