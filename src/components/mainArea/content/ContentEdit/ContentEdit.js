@@ -138,12 +138,13 @@ export default class ContentEdit extends Component {
   };
 
   validate() {
+    let res = true;
     for (let elm of this.fieldElementRefs) {
       if (!elm.validate())
-        return false;
+        res = false;
     }
 
-    return true;
+    return res;
   };
   
   updateItemTitle = title => {
