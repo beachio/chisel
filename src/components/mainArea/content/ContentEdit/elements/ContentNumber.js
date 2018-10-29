@@ -204,13 +204,17 @@ export default class ContentNumber extends ContentBase {
             if (value)
               value *= .5;
             return (
-              <div styleName="input-wrapper">
+              <div styleName="rating">
                 <ReactStars value={value}
                             onChange={this.onChangeRating}
                             size={32}
                             edit={this.state.isEditable}
                             color1={'#F5F5F5'}
                             color2={'#5CA6DC'} />
+                <div styleName="rating-clear"
+                     onClick={() => this.setValue(undefined)}>
+                  Reset
+                </div>
               </div>
             );
         }
