@@ -228,7 +228,7 @@ export default class ContentString extends ContentBase {
   }
   
   onPlus = (i = 0) => {
-    let items = this.state.value;
+    let items = this.state.value ? this.state.value : [];
     let itemsLeft = items.slice(0, i + 1);
     let itemsRight = items.slice(i + 1);
     items = itemsLeft.concat('', itemsRight);
