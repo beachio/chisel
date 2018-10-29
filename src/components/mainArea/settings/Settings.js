@@ -105,7 +105,7 @@ export default class Settings extends Component {
       return false;
     }
 
-    if (!checkURL(this.state.webhook)) {
+    if (this.state.webhook && !checkURL(this.state.webhook)) {
       this.setState({error: ERROR_WEBHOOK_SYNTAX});
       return false;
     }
