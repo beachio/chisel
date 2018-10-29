@@ -1,2 +1,2 @@
 NotFound
-  redirect /
+  Rewrite /index.html
