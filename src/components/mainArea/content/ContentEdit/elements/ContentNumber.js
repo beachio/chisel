@@ -201,7 +201,8 @@ export default class ContentNumber extends ContentBase {
             );
       
           case ftps.FIELD_APPEARANCE__INTEGER__RATING:
-            value *= .5;
+            if (value)
+              value *= .5;
             return (
               <div styleName="input-wrapper">
                 <ReactStars value={value}
