@@ -11,8 +11,6 @@ export const config = {};
 function requestConfig() {
   config.serverURL  = process.env.REACT_APP_SERVER_URL  || _config.serverURL;
   config.appId      = process.env.REACT_APP_APP_ID      || _config.appId;
-  config.JSkey      = process.env.JS_KEY                || _config.JSkey;
-  config.RESTkey    = process.env.REST_KEY              || _config.RESTkey;
 
   return fetch('/chisel-config.json')
     .then(response => {
@@ -23,14 +21,12 @@ function requestConfig() {
     .then(res => {
       config.serverURL  = res.configServerURL || config.serverURL;
       config.appId      = res.configAppId     || config.appId;
-      config.JSkey      = res.configJSkey     || config.JSkey;
-      config.RESTkey    = res.configRESTkey   || config.RESTkey;
     })
     .catch(() => {});
 }
 
 function subInitParse() {
-  Parse.initialize(config.appId, config.JSkey);
+  Parse.initialize(config.appId);
   Parse.serverURL = config.serverURL;
 }
 

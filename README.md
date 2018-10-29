@@ -66,7 +66,6 @@ There are several parameters of Chisel:
 - Port — server port for local run or development run.
 - Parse Server URL
 - Application ID — ID of application at the Parse Server
-- JS key, REST key — keys for queries to the Parse Server. As a rule, JS key and REST key are not using now.
 
 Ways of setup them (descending priority):
 - Parameters of command line (for local run)
@@ -80,8 +79,6 @@ Parameter names:
 | Port | --port | – | PORT | 9000 |
 | Parse Server URL | --serverURL | configServerURL | REACT_APP_SERVER_URL | http://localhost:1337/parse |
 | Application ID | --appId | configAppId | REACT_APP_APP_ID | SampleAppId |
-| JS key | -JSkey | configJSkey | JS_KEY | – |
-| REST key | --RESTkey | configRESTkey | REST_KEY | – |
 
 
 ## Publishing Chisel

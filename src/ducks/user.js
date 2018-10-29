@@ -209,10 +209,7 @@ export function resendVerEmail(email) {
   return dispatch => {
     send(fetch(config.serverURL + '/verificationEmailRequest', {
       method: 'POST',
-      headers: {
-        'X-Parse-Application-Id': config.appId,
-        'X-Parse-REST-API-Key': config.RESTkey
-      },
+      headers: {'X-Parse-Application-Id': config.appId},
       body: JSON.stringify({email})
     }))
       .then(result =>
