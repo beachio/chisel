@@ -158,7 +158,6 @@ export default class ContentDate extends ContentBase {
         );
   
       case FIELD_APPEARANCE__DATE__TIME_ONLY:
-        console.log(this.minTime, this.maxTime);
         return(
           <div styleName={styleWrapper}>
             <div styleName="time" onClick={this.onClickTime}>
