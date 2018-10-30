@@ -31,6 +31,10 @@ export default class ContentBoolean extends ContentBase {
                           disabled={!this.state.isEditable}
                           label='No'
                           onChange={this.setValue} />
+            <div styleName="clear"
+                 onClick={() => this.setValue(undefined)}>
+              Reset
+            </div>
           </div>
         );
     
