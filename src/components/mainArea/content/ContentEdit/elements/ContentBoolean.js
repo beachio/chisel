@@ -42,6 +42,7 @@ export default class ContentBoolean extends ContentBase {
         return (
           <div styleName="switch-wrapper">
             <SwitchControl checked={value}
+                           disabled={!this.state.isEditable}
                            onChange={this.setValue} />
           </div>
         );
