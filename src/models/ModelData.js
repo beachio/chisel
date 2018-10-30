@@ -57,6 +57,15 @@ export class SiteData {
 
     this.origin.set("owner",  this.owner.origin);
   }
+  
+  toJSON() {
+    return {
+      name:     this.name,
+      nameId:   this.nameId,
+      domain:   this.domain,
+      webhook:  this.webhook
+    };
+  }
 }
 
 
