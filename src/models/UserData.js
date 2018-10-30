@@ -33,6 +33,14 @@ export class UserData {
     this.origin.set("avatar",    this.avatar);
     this.origin.set("sex",       this.sex);
   }
+  
+  get emailFiltered () {
+    return encodeURIComponent(this.email)
+      .replace(/[!'()*.~_-]/g, c =>
+        '%' + c.charCodeAt(0).toString(16)
+      )
+      .replace(/%/g, `_`);
+  }
 }
 
 export const ROLE_OWNER     = "OWNER";

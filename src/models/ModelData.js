@@ -125,13 +125,7 @@ export class ModelData {
   }
 
   setTableName() {
-    const email =
-      encodeURIComponent(this.site.owner.email)
-        .replace(/[!'()*.~_-]/g, c =>
-          '%' + c.charCodeAt(0).toString(16)
-        )
-        .replace(/%/g, `_`);
-    this.tableName = `ct__${email}__${this.site.nameId}__${this.nameId}`;
+    this.tableName = `ct___${this.site.owner.emailFiltered}___${this.site.nameId}___${this.nameId}`;
   }
 
   toJSON() {
