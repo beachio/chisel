@@ -7,12 +7,21 @@ import styles from './SwitchControl.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class SwitchControl extends Component {
+  state = {
+    checked: false
+  };
+  
   id = '0';
   
   constructor(props) {
     super(props);
     
+    this.state.checked = props.checked;
     this.id = _.uniqueId('switch_');
+  }
+  
+  componentWillReceiveProps (nextProps) {
+    this.setState({checked: nextProps.checked});
   }
   
   onChange = e => {
@@ -22,8 +31,10 @@ export default class SwitchControl extends Component {
   };
   
   render() {
-    const {label, checked, disabled} = this.props;
+    const {label, disabled} = this.props;
     let style = `SwitchControl`;
+    if (this.state.checked === undefined)
+      style += ` undefined`;
     if (disabled)
       style += ` disabled`;
     
@@ -33,7 +44,7 @@ export default class SwitchControl extends Component {
                styleName="checkbox"
                id={this.id}
                disabled={disabled}
-               checked={checked}
+               checked={!!this.state.checked}
                onChange={this.onChange}
         />
         <label styleName="label" htmlFor={this.id}>{label}</label>
