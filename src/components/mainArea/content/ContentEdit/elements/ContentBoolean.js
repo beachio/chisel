@@ -41,7 +41,8 @@ export default class ContentBoolean extends ContentBase {
       case ftps.FIELD_APPEARANCE__BOOLEAN__SWITCH:
         return (
           <div styleName="switch-wrapper">
-            <SwitchControl checked={value} onChange={this.onChange}/>
+            <SwitchControl checked={value}
+                           onChange={this.setValue} />
           </div>
         );
     }
