@@ -204,16 +204,17 @@ export function setCurrentSite(currentSite) {
 }
 
 export function addSite(site) {
-  site.owner = store.getState().user.userData;
-  site.nameId = getNameId(site.name, store.getState().models.sites);
-  site.updateOrigin();
-  
-  site.origin.setACL(new Parse.ACL(Parse.User.current()));
-  send(site.origin.save());
-
-  return {
-    type: SITE_ADD,
-    site
+  return dispatch => {
+    site.owner = store.getState().user.userData;
+    
+    send(Parse.Cloud.run('createSite', {site: site.toJSON()}))
+      .then(site_o => {
+        site.setOrigin(site_o);
+        dispatch({
+          type: SITE_ADD,
+          site
+        });
+      });
   };
 }
 
