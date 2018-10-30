@@ -3,7 +3,7 @@ import {Parse} from 'parse';
 import {store} from '../index';
 import {UserData, CollaborationData} from 'models/UserData';
 import {SiteData, ModelData, ModelFieldData, canBeTitle, FIELD_NAMES_RESERVED} from 'models/ModelData';
-import {getRandomColor} from 'utils/common';
+import {filterSpecials, getRandomColor} from 'utils/common';
 import {getNameId, getRole} from 'utils/data';
 import {LOGOUT} from './user';
 import {send} from 'utils/server';
@@ -205,10 +205,13 @@ export function setCurrentSite(currentSite) {
 
 export function addSite(site) {
   site.owner = store.getState().user.userData;
-  site.nameId = getNameId(site.name, store.getState().models.sites);
-  site.updateOrigin();
   
-  site.origin.setACL(new Parse.ACL(Parse.User.current()));
+  let nameId = filterSpecials(site.name);
+  nameId = `${site.owner.emailFiltered}___${nameId}`;
+  site.nameId = getNameId(nameId, store.getState().models.sites);
+  
+  site.updateOrigin();
+  site.origin.setACL(new Parse.ACL(site.owner.origin));
   send(site.origin.save());
 
   return {
