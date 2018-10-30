@@ -12,11 +12,6 @@ import styles from '../ContentEdit.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentBoolean extends ContentBase {
-  onChange = value => {
-    if (this.state.isEditable)
-      this.setValue(value);
-  };
-  
   getInput() {
     let value = this.state.value;
     
@@ -29,13 +24,13 @@ export default class ContentBoolean extends ContentBase {
                           value={value}
                           disabled={!this.state.isEditable}
                           label='Yes'
-                          onChange={this.onChange} />
+                          onChange={this.setValue} />
             <RadioControl name={this.field.nameId}
                           data={false}
                           value={value}
                           disabled={!this.state.isEditable}
                           label='No'
-                          onChange={this.onChange} />
+                          onChange={this.setValue} />
           </div>
         );
     

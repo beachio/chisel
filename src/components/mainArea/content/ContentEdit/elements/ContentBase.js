@@ -33,13 +33,13 @@ export default class ContentBase extends Component {
     });
   }
   
-  setValue(value, save) {
+  setValue = (value, save) => {
     this.setState({
       value,
       error: null
     });
     this.setFieldValue(this.field, value, save);
-  }
+  };
   
   getError() {
     if (this.field.isRequired && !this.state.value)
