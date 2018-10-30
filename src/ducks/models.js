@@ -227,8 +227,6 @@ export function updateSite(site) {
 }
 
 export function deleteSite(site) {
-  //site.origin.destroy();
-  
   send(Parse.Cloud.run('deleteSite', {siteId: site.origin.id}));
   
   return {
@@ -319,16 +317,7 @@ export function deleteCollaboration(collab) {
 }
 
 export function deleteSelfCollaboration(collab) {
-  send(
-    Parse.Cloud.run('onCollaborationModify', {
-      collabId: collab.origin.id,
-      deleting: true
-    })
-  )
-    .then(() =>
-      send(collab.origin.destroy())
-    );
-  
+  deleteCollaboration(collab);
   return {
     type: COLLABORATION_SELF_DELETE,
     collab
@@ -376,8 +365,6 @@ export function setCurrentModel(currentModel) {
 }
 
 export function deleteModel(model) {
-  //model.origin.destroy();
-  
   send(Parse.Cloud.run('deleteModel', {modelId: model.origin.id}));
   
   return {
