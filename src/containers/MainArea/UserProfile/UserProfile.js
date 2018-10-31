@@ -393,6 +393,12 @@ export class UserProfile extends Component  {
                 {this.state.errorServer}
               </div>
             </form>
+            
+            <div styleName="section">
+              <div styleName="field-title">
+                User session token: {this.userData.origin.id}
+              </div>
+            </div>
 
           </div>
         </ContainerComponent>
