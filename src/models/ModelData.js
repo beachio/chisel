@@ -256,6 +256,8 @@ export class ModelFieldData {
   type = FIELD_TYPE_SHORT_TEXT;
   appearance = FIELD_APPEARANCE__SHORT_TEXT__SINGLE;
   color = "rgba(0, 0, 0, 1)";
+  boolTextYes = '';
+  boolTextNo = '';
   isRequired = false;
   isTitle = false;
   isList = false;
@@ -284,17 +286,19 @@ export class ModelFieldData {
   setOrigin(origin) {
     this.origin = origin;
 
-    if (origin.get('name'))       this.name       = origin.get('name');
-    if (origin.get('nameId'))     this.nameId     = origin.get('nameId');
-    if (origin.get('type'))       this.type       = origin.get('type');
-    if (origin.get('appearance')) this.appearance = origin.get('appearance');
-    if (origin.get('color'))      this.color      = origin.get('color');
-    if (origin.get('isRequired')) this.isRequired = true;
-    if (origin.get('isTitle'))    this.isTitle    = true;
-    if (origin.get('isList'))     this.isList     = true;
-    if (origin.get('isDisabled')) this.isDisabled = true;
+    if (origin.get('name'))         this.name         = origin.get('name');
+    if (origin.get('nameId'))       this.nameId       = origin.get('nameId');
+    if (origin.get('type'))         this.type         = origin.get('type');
+    if (origin.get('appearance'))   this.appearance   = origin.get('appearance');
+    if (origin.get('color'))        this.color        = origin.get('color');
+    if (origin.get('boolTextYes'))  this.boolTextYes  = origin.get('boolTextYes');
+    if (origin.get('boolTextNo'))   this.boolTextNo   = origin.get('boolTextNo');
+    if (origin.get('isRequired'))   this.isRequired   = true;
+    if (origin.get('isTitle'))      this.isTitle      = true;
+    if (origin.get('isList'))       this.isList       = true;
+    if (origin.get('isDisabled'))   this.isDisabled   = true;
 
-    if (origin.get('validations')) this.validations = origin.get('validations');
+    if (origin.get('validations'))  this.validations  = origin.get('validations');
     
     if (origin.get('order') || origin.get('order') === 0)  this.order = origin.get('order');
 
@@ -310,13 +314,15 @@ export class ModelFieldData {
     this.origin.set("type",       this.type);
     this.origin.set("appearance", this.appearance);
     this.origin.set("color",      this.color);
+    this.origin.set("boolTextYes",this.boolTextYes);
+    this.origin.set("boolTextNo", this.boolTextNo);
     this.origin.set("isRequired", this.isRequired);
     this.origin.set("isTitle",    this.isTitle);
     this.origin.set("isList",     this.isList);
     this.origin.set("isDisabled", this.isDisabled);
     this.origin.set("order",      this.order);
   
-    this.origin.set("validations", this.validations);
+    this.origin.set("validations",this.validations);
     
     this.origin.set("model",      this.model.origin);
   }
@@ -328,6 +334,8 @@ export class ModelFieldData {
       type:         this.type,
       appearance:   this.appearance,
       color:        this.color,
+      boolTextYes:  this.boolTextYes,
+      boolTextNo:   this.boolTextNo,
       isRequired:   this.isRequired,
       isTitle:      this.isTitle,
       isList:       this.isList,

@@ -30,6 +30,8 @@ export default class FieldModal extends Component {
     nameId: '',
     type: '',
     appearance: '',
+    boolTextYes: '',
+    boolTextNo: '',
     isRequired: false,
     isTitle: false,
     isList: false,
@@ -62,6 +64,8 @@ export default class FieldModal extends Component {
     this.state.nameId     = this.field.nameId;
     this.state.type       = this.field.type;
     this.state.appearance = this.field.appearance;
+    this.state.boolTextYes= this.field.boolTextYes;
+    this.state.boolTextNo = this.field.boolTextNo;
     this.state.isRequired = this.field.isRequired;
     this.state.isTitle    = this.field.isTitle;
     this.state.isList     = this.field.isList;
@@ -114,6 +118,16 @@ export default class FieldModal extends Component {
       appearance: FIELD_TYPES.get(type)[0]
     }, this.onTypeChange);
   };
+  
+  onChangeBoolTextYes = event => {
+    const boolTextYes = event.target.value;
+    this.setState({boolTextYes, error: null});
+  };
+  
+  onChangeBoolTextNo = event => {
+    const boolTextNo = event.target.value;
+    this.setState({boolTextNo, error: null});
+  };
 
   onChangeAppearance = appearance => {
     this.setState({appearance}, this.onTypeChange);
@@ -156,6 +170,8 @@ export default class FieldModal extends Component {
     
     this.field.type       = this.state.type;
     this.field.appearance = this.state.appearance;
+    this.field.boolTextYes= this.state.boolTextYes;
+    this.field.boolTextNo = this.state.boolTextNo;
     this.field.isRequired = this.state.isRequired;
     this.field.isTitle    = this.state.isTitle;
     this.field.isList     = this.state.isList;
@@ -243,6 +259,21 @@ export default class FieldModal extends Component {
                                suggest={this.onChangeAppearance}
                                current={this.state.appearance} />
             </div>
+  
+            {this.state.appearance == ftps.FIELD_APPEARANCE__BOOLEAN__RADIO &&
+              <div styleName="input-wrapper boolean-text">
+                <div styleName="input">
+                  <InputControl placeholder="Text for yes"
+                                onChange={this.onChangeBoolTextYes}
+                                value={this.state.boolTextYes} />
+                </div>
+                <div styleName="input">
+                  <InputControl placeholder="Text for no"
+                                onChange={this.onChangeBoolTextNo}
+                                value={this.state.boolTextNo} />
+                </div>
+              </div>
+            }
     
             <div styleName="input-wrapper">
               <SwitchControl label="List (keeping multiple values instead of one)"

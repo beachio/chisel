@@ -17,19 +17,22 @@ export default class ContentBoolean extends ContentBase {
     
     switch (this.field.appearance) {
       case ftps.FIELD_APPEARANCE__BOOLEAN__RADIO:
+        const textYes = this.field.boolTextYes  ?  this.field.boolTextYes : 'Yes';
+        const textNo  = this.field.boolTextNo   ?  this.field.boolTextNo  : 'No';
+  
         return (
           <div styleName="radio">
             <RadioControl name={this.field.nameId}
                           data={true}
                           value={value}
                           disabled={!this.state.isEditable}
-                          label='Yes'
+                          label={textYes}
                           onChange={this.setValue} />
             <RadioControl name={this.field.nameId}
                           data={false}
                           value={value}
                           disabled={!this.state.isEditable}
-                          label='No'
+                          label={textNo}
                           onChange={this.setValue} />
             <div styleName="clear"
                  onClick={() => this.setValue(undefined)}>
