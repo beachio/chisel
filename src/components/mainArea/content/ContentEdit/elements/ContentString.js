@@ -31,6 +31,8 @@ export default class ContentString extends ContentBase {
     if (baseError)
       return baseError;
   
+    if (this.field.isRequired && !this.state.value)
+      return 'This field is required!';
   
     const checkRange = value => {
       const range = this.field.validations.range;
