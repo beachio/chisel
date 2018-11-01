@@ -42,7 +42,7 @@ export default class MarkdownEditor extends Component {
     if (nextProps.value == mdeState.markdown)
       return;
 
-    DraftUtil.buildNewMdeState(mdeState, null, nextProps.value)
+    DraftUtil.buildNewMdeState(mdeState, this.genPreview, nextProps.value)
       .then(newState => this.setState({mdeState: newState}));
   }
 
