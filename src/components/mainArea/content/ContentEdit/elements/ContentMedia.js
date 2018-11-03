@@ -146,7 +146,7 @@ export default class ContentMedia extends ContentBase {
       btnStyle += ` media-button-disabled`;
     let addMediaBlock = (
       <div styleName="media-buttons">
-        <div type="file" styleName={btnStyle + ` media-upload`}>
+        <div styleName={btnStyle + ` media-upload`}>
           Upload New
           <input styleName="media-hidden"
                  type="file"
