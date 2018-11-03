@@ -268,7 +268,7 @@ export default class Sharing extends Component {
         {
           false && isEditable &&
             <div styleName="import">
-              <div className="g-title" styleName="title">
+              <div styleName="title">
                 Import Contacts
               </div>
 
