@@ -27,7 +27,8 @@ export default class ContentEdit extends Component {
     title: "",
     color: "rgba(0, 0, 0, 1)",
     fields: new Map(),
-    dirty: false
+    dirty: false,
+    errors: false
   };
   
   item = null;
@@ -51,7 +52,8 @@ export default class ContentEdit extends Component {
       title:  draft.title,
       color:  draft.color,
       fields: draft.fields,
-      dirty:  false
+      dirty:  false,
+      errors: false
     };
 
     this.fieldsArchive = new Map(this.item.fields);
@@ -76,7 +78,8 @@ export default class ContentEdit extends Component {
       title:  draft.title,
       color:  draft.color,
       fields: draft.fields,
-      dirty:  false
+      dirty:  false,
+      errors: false
     });
     
     this.waitSave = false;
@@ -99,6 +102,7 @@ export default class ContentEdit extends Component {
   };
 
   onPublish = () => {
+    this.setState({dirty: false});
     if (!this.validate())
       return;
   
@@ -138,13 +142,14 @@ export default class ContentEdit extends Component {
   };
 
   validate() {
-    let res = true;
+    let errors = false;
     for (let elm of this.fieldElementRefs) {
       if (!elm.validate())
-        res = false;
+        errors = true;
     }
 
-    return res;
+    this.setState({errors});
+    return !errors;
   };
   
   updateItemTitle = title => {
@@ -272,7 +277,7 @@ export default class ContentEdit extends Component {
               <div styleName="button-publish">
                 <ButtonControl color="green"
                                value="Publish"
-                               disabled={this.item.status == STATUS_PUBLISHED || this.item.status == STATUS_ARCHIVED}
+                               disabled={this.item.status == STATUS_PUBLISHED || this.item.status == STATUS_ARCHIVED || (this.state.errors && !this.state.dirty)}
                                onClick={this.onPublish}/>
               </div>
               <div styleName="button-publish">
