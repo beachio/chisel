@@ -1,5 +1,5 @@
 import {store} from 'index';
-import {logRequest, logResponse} from "ducks/serverStatus";
+import {logRequest, logResponse, setProblemB} from "ducks/serverStatus";
 
 
 export function halt () {
@@ -20,12 +20,12 @@ export function send (req) {
     })
 
     .catch(error => {
-      console.log(error);
-
       if (error.code == 209)
         halt();
 
-      if (error.code != 100)
+      if (error.code == 100)
+        store.dispatch(setProblemB());
+      else
         store.dispatch(logResponse(time));
 
       throw error;

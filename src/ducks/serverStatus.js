@@ -10,7 +10,7 @@ export const TIMER_TICK     = 'app/serverStatus/TIMER_TICK';
 let timer = 0;
 
 const TIME_A = 7 * 1000;
-const TIME_B = 20 * 1000;
+const TIME_B = 30 * 1000;
 
 
 export function logRequest (time) {
@@ -60,7 +60,7 @@ const initialState = {
 };
 
 export default function serverStatusReducer(state = initialState, action) {
-  const requests = state.requests.slice();
+  let requests = state.requests.slice();
 
   switch (action.type) {
     case LOG_REQUEST:
@@ -87,15 +87,21 @@ export default function serverStatusReducer(state = initialState, action) {
         };
 
     case TIMER_TICK:
+      const problemA = action.time - requests[0] > TIME_A;
+      const problemB = action.time - requests[0] > TIME_B;
+      if (problemB)
+        requests = [];
       return {
         ...state,
-        problemA: action.time - requests[0] > TIME_A,
-        problemB: action.time - requests[0] > TIME_B
+        problemA,
+        problemB,
+        requests
       };
 
     case SET_PROBLEM_B:
       return {
         ...state,
+        requests: [],
         problemB: true
       };
 

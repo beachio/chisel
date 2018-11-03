@@ -1,7 +1,6 @@
 import {store} from 'index';
 import {Parse} from 'parse';
 
-import {setProblemB} from 'ducks/serverStatus';
 import {UserData} from 'models/UserData';
 import {config} from 'utils/initialize';
 import {send} from 'utils/server';
@@ -46,8 +45,8 @@ export function register(email, password) {
           type: REGISTER_RESPONSE,
           status: OK
         });
-
       })
+      
       .catch(error => {
         let status = ERROR_OTHER;
         switch (error.code) {
@@ -82,11 +81,11 @@ export function login(email, password) {
           authorized: true,
           userData
         });
-
-      }, error => {
+      })
+      
+      .catch(error => {
         let status = ERROR_OTHER;
         switch (error.code) {
-          case 100: store.dispatch(setProblemB()); break;
           case 101: status = ERROR_WRONG_PASS; break;
           case 205: status = ERROR_UNVERIF;    break;
         }

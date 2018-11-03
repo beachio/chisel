@@ -71,6 +71,7 @@ function requestCollaborationsPost(sites_o, sites) {
                 let user = new UserData().setOrigin(user_o);
                 collab.user = user;
               })
+              .catch(() => {})
           );
 
         let site_o = collab_o.get("site");
