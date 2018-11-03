@@ -270,37 +270,34 @@ export default class ContentEdit extends Component {
         </div>
 
         {this.fieldElements}
-
-        {
-          isEditable &&
-            <div styleName="buttons-wrapper">
-              <div styleName="button-publish">
-                <ButtonControl color="green"
-                               value="Publish"
-                               disabled={this.item.status == STATUS_PUBLISHED || this.item.status == STATUS_ARCHIVED || (this.state.errors && !this.state.dirty)}
-                               onClick={this.onPublish}/>
-              </div>
+        {isEditable &&
+          <div styleName="buttons-wrapper">
+            <div styleName="button-publish">
+              <ButtonControl color="green"
+                             value="Publish"
+                             disabled={this.item.status == STATUS_PUBLISHED || this.item.status == STATUS_ARCHIVED || (this.state.errors && !this.state.dirty)}
+                             onClick={this.onPublish}/>
+            </div>
+            <div styleName="button-publish">
+              <ButtonControl color="gray"
+                             value="Discard changes"
+                             disabled={this.item.status != STATUS_UPDATED && !this.state.dirty}
+                             onClick={this.onDiscard}/>
+            </div>
+            {this.item.status == STATUS_ARCHIVED ?
               <div styleName="button-publish">
                 <ButtonControl color="gray"
-                               value="Discard changes"
-                               disabled={this.item.status != STATUS_UPDATED && !this.state.dirty}
-                               onClick={this.onDiscard}/>
+                               value="Restore from archive"
+                               onClick={this.onRestore}/>
               </div>
-              {
-                this.item.status == STATUS_ARCHIVED ?
-                  <div styleName="button-publish">
-                    <ButtonControl color="gray"
-                                   value="Restore from archive"
-                                   onClick={this.onRestore}/>
-                  </div>
-                :
-                  <div styleName="button-publish">
-                    <ButtonControl color="gray"
-                                   value="Archive"
-                                   onClick={this.onArchive}/>
-                  </div>
-              }
-            </div>
+            :
+              <div styleName="button-publish">
+                <ButtonControl color="gray"
+                               value="Archive"
+                               onClick={this.onArchive}/>
+              </div>
+            }
+          </div>
         }
       </div>
     );
