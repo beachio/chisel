@@ -328,11 +328,17 @@ export default class ContentString extends ContentBase {
   
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN:
             return (
-              <div styleName="input-wrapper">
-                <DropdownControl disabled={!this.state.isEditable}
-                                 suggestionsList={this.field.validValues}
-                                 suggest={this.onChangeDropdown}
-                                 current={value} />
+              <div styleName="dropdown-wrapper">
+                <div styleName="dropdown">
+                  <DropdownControl disabled={!this.state.isEditable}
+                                   suggestionsList={this.field.validValues}
+                                   suggest={this.onChangeDropdown}
+                                   current={value} />
+                </div>
+                <div styleName="clear"
+                     onClick={() => this.setValue(undefined)}>
+                  Reset
+                </div>
               </div>
             );
         }
