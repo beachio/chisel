@@ -47,8 +47,10 @@ export default class MarkdownEditor extends Component {
   }
 
   onChangeMde = mdeState => {
+    const markdownOld = this.state.mdeState.markdown;
     this.setState({mdeState});
-    this.onChange(mdeState.markdown);
+    if (mdeState.markdown != markdownOld)
+      this.onChange(mdeState.markdown);
   };
 
   genPreview = markdown =>
