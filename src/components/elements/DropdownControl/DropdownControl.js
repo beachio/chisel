@@ -27,10 +27,9 @@ export default class DropdownControl extends Component {
     this.suggestionsList = suggestionsList;
 
     this.state.disabled = disabled;
-
-    this.state.suggestionValue = current;
-    if (suggestionsList.indexOf(current) == -1)
-      this.state.suggestionValue = suggestionsList[0];
+  
+    if (suggestionsList.indexOf(current) != -1)
+      this.state.suggestionValue = current;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -41,7 +40,7 @@ export default class DropdownControl extends Component {
     if (suggestionsList.indexOf(current) != -1)
       this.setState({suggestionValue: current, disabled});
     else
-      this.setState({suggestionValue: suggestionsList[0], disabled});
+      this.setState({suggestionValue: '', disabled});
   }
 
   onSuggestionClick = event => {
