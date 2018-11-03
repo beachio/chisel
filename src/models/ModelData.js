@@ -196,7 +196,7 @@ export const FIELD_TYPES = new Map([
     FIELD_APPEARANCE__SHORT_TEXT__SINGLE,
     FIELD_APPEARANCE__SHORT_TEXT__SLUG,
     FIELD_APPEARANCE__SHORT_TEXT__URL,
-    //FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN,
+    FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN,
     //FIELD_APPEARANCE__SHORT_TEXT__RADIO,
   ]],
   [FIELD_TYPE_LONG_TEXT, [
@@ -239,11 +239,18 @@ export function canBeTitle(field) {
 }
 
 export function canBeList(field) {
-  return (field.type == FIELD_TYPE_SHORT_TEXT && field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE ||
-    field.type == FIELD_TYPE_INTEGER && field.appearance == FIELD_APPEARANCE__INTEGER__DECIMAL ||
-    field.type == FIELD_TYPE_FLOAT && field.appearance == FIELD_APPEARANCE__FLOAT__DECIMAL ||
-    field.type == FIELD_TYPE_MEDIA && field.appearance == FIELD_APPEARANCE__MEDIA__MEDIA ||
-    field.type == FIELD_TYPE_REFERENCE && field.appearance == FIELD_APPEARANCE__REFERENCE_REFERENCE) &&
+  return (
+    field.type == FIELD_TYPE_SHORT_TEXT && (
+      field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE ||
+      field.appearance == FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN) ||
+    field.type == FIELD_TYPE_INTEGER &&
+      field.appearance == FIELD_APPEARANCE__INTEGER__DECIMAL ||
+    field.type == FIELD_TYPE_FLOAT &&
+      field.appearance == FIELD_APPEARANCE__FLOAT__DECIMAL ||
+    field.type == FIELD_TYPE_MEDIA &&
+      field.appearance == FIELD_APPEARANCE__MEDIA__MEDIA ||
+    field.type == FIELD_TYPE_REFERENCE &&
+      field.appearance == FIELD_APPEARANCE__REFERENCE_REFERENCE) &&
     !field.isTitle;
 }
 
@@ -258,6 +265,7 @@ export class ModelFieldData {
   color = "rgba(0, 0, 0, 1)";
   boolTextYes = '';
   boolTextNo = '';
+  validValues = [];
   isRequired = false;
   isTitle = false;
   isList = false;
@@ -293,6 +301,7 @@ export class ModelFieldData {
     if (origin.get('color'))        this.color        = origin.get('color');
     if (origin.get('boolTextYes'))  this.boolTextYes  = origin.get('boolTextYes');
     if (origin.get('boolTextNo'))   this.boolTextNo   = origin.get('boolTextNo');
+    if (origin.get('validValues'))  this.validValues  = origin.get('validValues');
     if (origin.get('isRequired'))   this.isRequired   = true;
     if (origin.get('isTitle'))      this.isTitle      = true;
     if (origin.get('isList'))       this.isList       = true;
@@ -316,6 +325,7 @@ export class ModelFieldData {
     this.origin.set("color",      this.color);
     this.origin.set("boolTextYes",this.boolTextYes);
     this.origin.set("boolTextNo", this.boolTextNo);
+    this.origin.set("validValues",this.validValues);
     this.origin.set("isRequired", this.isRequired);
     this.origin.set("isTitle",    this.isTitle);
     this.origin.set("isList",     this.isList);
@@ -336,6 +346,7 @@ export class ModelFieldData {
       color:        this.color,
       boolTextYes:  this.boolTextYes,
       boolTextNo:   this.boolTextNo,
+      validValues:  this.validValues,
       isRequired:   this.isRequired,
       isTitle:      this.isTitle,
       isList:       this.isList,

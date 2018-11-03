@@ -33,6 +33,7 @@ export default class FieldModal extends Component {
     appearance: '',
     boolTextYes: '',
     boolTextNo: '',
+    validValues: [],
     isRequired: false,
     isTitle: false,
     isList: false,
@@ -61,19 +62,21 @@ export default class FieldModal extends Component {
     this.field = props.params;
     this.updating = !!this.field.origin;
     
-    this.state.name       = this.field.name;
-    this.state.nameId     = this.field.nameId;
-    this.state.type       = this.field.type;
-    this.state.appearance = this.field.appearance;
-    this.state.boolTextYes= this.field.boolTextYes;
-    this.state.boolTextNo = this.field.boolTextNo;
-    this.state.isRequired = this.field.isRequired;
-    this.state.isTitle    = this.field.isTitle;
-    this.state.isList     = this.field.isList;
-    this.state.isDisabled = this.field.isDisabled;
+    this.state.name         = this.field.name;
+    this.state.nameId       = this.field.nameId;
+    this.state.type         = this.field.type;
+    this.state.appearance   = this.field.appearance;
+    this.state.boolTextYes  = this.field.boolTextYes;
+    this.state.boolTextNo   = this.field.boolTextNo;
+    this.state.validValues  = this.field.validValues;
+    this.state.isRequired   = this.field.isRequired;
+    this.state.isTitle      = this.field.isTitle;
+    this.state.isList       = this.field.isList;
+    this.state.isDisabled   = this.field.isDisabled;
     
-    this.validations = this.field.validations;
-    this.state.appList    = FIELD_TYPES.get(this.field.type);
+    this.validations        = this.field.validations;
+    
+    this.state.appList = FIELD_TYPES.get(this.field.type);
 
     if (!this.updating && canBeTitle(this.state) && !this.field.model.hasTitle())
       this.state.isTitle = true;
@@ -169,16 +172,17 @@ export default class FieldModal extends Component {
       this.field.name = name;
     }
     
-    this.field.type       = this.state.type;
-    this.field.appearance = this.state.appearance;
-    this.field.boolTextYes= this.state.boolTextYes;
-    this.field.boolTextNo = this.state.boolTextNo;
-    this.field.isRequired = this.state.isRequired;
-    this.field.isTitle    = this.state.isTitle;
-    this.field.isList     = this.state.isList;
-    this.field.isDisabled = this.state.isDisabled;
+    this.field.type         = this.state.type;
+    this.field.appearance   = this.state.appearance;
+    this.field.boolTextYes  = this.state.boolTextYes;
+    this.field.boolTextNo   = this.state.boolTextNo;
+    this.field.validValues  = this.state.validValues;
+    this.field.isRequired   = this.state.isRequired;
+    this.field.isTitle      = this.state.isTitle;
+    this.field.isList       = this.state.isList;
+    this.field.isDisabled   = this.state.isDisabled;
   
-    this.field.validations = this.validations;
+    this.field.validations  = this.validations;
 
     const {addField, updateField} = this.props;
     if (this.updating)
@@ -212,7 +216,48 @@ export default class FieldModal extends Component {
   onUpdateValidations = validations => {
     this.validations = validations;
   };
-
+  
+  
+  
+  onAppearanceKeyDown = (event, i, inputs) => {
+    event.stopPropagation();
+    
+    let code = event.keyCode;
+    
+    //Enter or down pressed
+    if (code == 13 || code == 40) {
+      if (inputs[i + 1])
+        inputs[i + 1].focus();
+      
+      //up pressed
+    } else if (code == 38) {
+      if (i)
+        inputs[--i].focus();
+    }
+  };
+  
+  onAppearancePlus = (i = 0) => {
+    let validValues = this.state.validValues ? this.state.validValues : [];
+    let valuesLeft = validValues.slice(0, i + 1);
+    let valuesRight = validValues.slice(i + 1);
+    validValues = valuesLeft.concat('', valuesRight);
+    this.setState({validValues});
+  };
+  
+  onAppearanceMinus = i => {
+    let validValues = this.state.validValues.slice();
+    validValues.splice(i, 1);
+    this.setState({validValues});
+  };
+  
+  onValidValuesChange = (event, i) => {
+    const value = event.target.value;
+    const validValues = this.state.validValues.slice();
+    validValues[i] = value;
+    this.setState({validValues});
+  };
+  
+  
   render() {
     let headName = this.state.name.length ? this.state.name : '?';
     
@@ -282,17 +327,11 @@ export default class FieldModal extends Component {
       case TAB_APPEARANCE:
         tabAppStyle += ' active';
   
-        content = (
-          <div>
-            <div styleName="input-wrapper">
-              <DropdownControl label="Appearance"
-                               disabled={this.state.isTitle}
-                               suggestionsList={this.state.appList}
-                               suggest={this.onChangeAppearance}
-                               current={this.state.appearance} />
-            </div>
-  
-            {this.state.appearance == ftps.FIELD_APPEARANCE__BOOLEAN__RADIO &&
+        let inner = null;
+        
+        switch (this.state.appearance) {
+          case ftps.FIELD_APPEARANCE__BOOLEAN__RADIO:
+            inner = (
               <div styleName="input-wrapper boolean-text">
                 <div styleName="input">
                   <InputControl placeholder="Text for yes"
@@ -305,7 +344,60 @@ export default class FieldModal extends Component {
                                 value={this.state.boolTextNo} />
                 </div>
               </div>
+            );
+            break;
+            
+          case ftps.FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN:
+            if (this.state.validValues && this.state.validValues.length) {
+              const elements = [];
+              const inputs = [];
+              for (let i = 0; i < this.state.validValues.length; i++) {
+                elements.push(
+                  <div styleName="values-item"
+                       key={i}>
+                    <InputControl type="big"
+                                  value={this.state.validValues[i]}
+                                  DOMRef={inp => inputs[i] = inp}
+                                  onChange={e => this.onValidValuesChange(e, i)}
+                                  onKeyDown={e => this.onAppearanceKeyDown(e, i, inputs)}/>
+                    <div styleName="values-item-plus"
+                         onClick={() => this.onAppearancePlus(i)}>
+                      +
+                    </div>
+                    <div styleName="values-item-minus"
+                         onClick={() => this.onAppearanceMinus(i)}>
+                      –
+                    </div>
+                  </div>
+                );
+              }
+              inner = (
+                <div>
+                  <div styleName="label">Valid values:</div>
+                  {elements}
+                </div>
+              );
+            } else {
+              inner = (
+                <div styleName="values-plus"
+                     onClick={() => this.onAppearancePlus()}>
+                  List is empty. Add element?
+                </div>
+              );
             }
+            break;
+        }
+  
+        content = (
+          <div>
+            <div styleName="input-wrapper">
+              <DropdownControl label="Appearance"
+                               disabled={this.state.isTitle}
+                               suggestionsList={this.state.appList}
+                               suggest={this.onChangeAppearance}
+                               current={this.state.appearance} />
+            </div>
+            {inner}
           </div>
         );
         

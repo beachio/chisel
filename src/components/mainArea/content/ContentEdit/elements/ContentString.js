@@ -8,6 +8,7 @@ import Editor from 'react-medium-editor';
 
 import ContentBase from './ContentBase';
 import InputControl from 'components/elements/InputControl/InputControl';
+import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import MarkdownEditor from 'components/elements/MarkdownEditor/MarkdownEditor';
 import {MODAL_TYPE_WYSIWYG, MODAL_TYPE_MARKDOWN} from 'ducks/nav';
 import {filterSpecialsAndCapital, checkURL} from 'utils/common';
@@ -150,6 +151,10 @@ export default class ContentString extends ContentBase {
     }
   };
   
+  onChangeDropdown = value => {
+    this.setValue(value);
+  }
+  
   onChangeWysiwyg = text => {
     this.setValue(text);
   };
@@ -290,9 +295,9 @@ export default class ContentString extends ContentBase {
           
             } else {
               inner = <InputControl type="big"
-                                       value={value}
-                                       readOnly={!this.state.isEditable}
-                                       onChange={this.onChange} />;
+                                    value={value}
+                                    readOnly={!this.state.isEditable}
+                                    onChange={this.onChange} />;
             }
         
             return (
@@ -318,6 +323,16 @@ export default class ContentString extends ContentBase {
                               value={value}
                               readOnly={!this.state.isEditable}
                               onChange={this.onChange} />
+              </div>
+            );
+  
+          case ftps.FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN:
+            return (
+              <div styleName="input-wrapper">
+                <DropdownControl disabled={!this.state.isEditable}
+                                 suggestionsList={this.field.validValues}
+                                 suggest={this.onChangeDropdown}
+                                 current={value} />
               </div>
             );
         }
