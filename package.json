@@ -1,6 +1,6 @@
 {
   "name": "chisel-cms",
-  "version": "0.7.3",
+  "version": "0.7.6",
   "description": "Parse CMS",
   "main": "dist/main.js",
   "files": [
