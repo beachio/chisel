@@ -20,6 +20,7 @@ import styles from './FieldModal.sss';
 
 
 const TAB_SETTINGS = 'TAB_SETTINGS';
+const TAB_APPEARANCE = 'TAB_APPEARANCE';
 const TAB_VALIDATIONS = 'TAB_VALIDATIONS';
 
 
@@ -116,7 +117,7 @@ export default class FieldModal extends Component {
       type,
       appList: FIELD_TYPES.get(type),
       appearance: FIELD_TYPES.get(type)[0]
-    }, this.onTypeChange);
+    }, this.checkControls);
   };
   
   onChangeBoolTextYes = event => {
@@ -130,7 +131,7 @@ export default class FieldModal extends Component {
   };
 
   onChangeAppearance = appearance => {
-    this.setState({appearance}, this.onTypeChange);
+    this.setState({appearance}, this.checkControls);
   };
 
   onChangeIsTitle = isTitle => {
@@ -192,7 +193,7 @@ export default class FieldModal extends Component {
     this.props.onClose();
   };
   
-  onTypeChange() {
+  checkControls() {
     this.validations = null;
     this.checkSwitches();
   }
@@ -216,6 +217,7 @@ export default class FieldModal extends Component {
     let headName = this.state.name.length ? this.state.name : '?';
     
     let tabSettStyle = 'tab';
+    let tabAppStyle = 'tab';
     let tabValidStyle = 'tab';
     let content = null;
     switch (this.state.tab) {
@@ -253,6 +255,36 @@ export default class FieldModal extends Component {
             </div>
     
             <div styleName="input-wrapper">
+              <SwitchControl label="List (keeping multiple values instead of one)"
+                             checked={this.state.isList}
+                             onChange={this.onChangeIsList}
+                             disabled={!canBeList(this.state) || this.updating} />
+            </div>
+    
+            <div styleName="input-wrapper">
+              <SwitchControl label="Entry Title"
+                             checked={this.state.isTitle}
+                             onChange={this.onChangeIsTitle}
+                             disabled={!canBeTitle(this.state)} />
+            </div>
+    
+            <div styleName="input-wrapper">
+              <SwitchControl label="Disabled"
+                             checked={this.state.isDisabled}
+                             onChange={this.onChangeIsDisabled}
+                             disabled={this.state.isTitle} />
+            </div>
+          </div>
+        );
+        
+        break;
+  
+      case TAB_APPEARANCE:
+        tabAppStyle += ' active';
+  
+        content = (
+          <div>
+            <div styleName="input-wrapper">
               <DropdownControl label="Appearance"
                                disabled={this.state.isTitle}
                                suggestionsList={this.state.appList}
@@ -274,27 +306,6 @@ export default class FieldModal extends Component {
                 </div>
               </div>
             }
-    
-            <div styleName="input-wrapper">
-              <SwitchControl label="List (keeping multiple values instead of one)"
-                             checked={this.state.isList}
-                             onChange={this.onChangeIsList}
-                             disabled={!canBeList(this.state) || this.updating} />
-            </div>
-    
-            <div styleName="input-wrapper">
-              <SwitchControl label="Entry Title"
-                             checked={this.state.isTitle}
-                             onChange={this.onChangeIsTitle}
-                             disabled={!canBeTitle(this.state)} />
-            </div>
-    
-            <div styleName="input-wrapper">
-              <SwitchControl label="Disabled"
-                             checked={this.state.isDisabled}
-                             onChange={this.onChangeIsDisabled}
-                             disabled={this.state.isTitle} />
-            </div>
           </div>
         );
         
@@ -393,6 +404,7 @@ export default class FieldModal extends Component {
             </div>
             <div styleName="tabs">
               <div styleName={tabSettStyle}   onClick={() => this.setState({tab: TAB_SETTINGS})}    >Settings</div>
+              <div styleName={tabAppStyle}    onClick={() => this.setState({tab: TAB_APPEARANCE})}  >Appearance</div>
               <div styleName={tabValidStyle}  onClick={() => this.setState({tab: TAB_VALIDATIONS})} >Validations</div>
             </div>
           </div>
