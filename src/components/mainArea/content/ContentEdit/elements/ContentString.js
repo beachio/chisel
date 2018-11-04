@@ -160,26 +160,6 @@ export default class ContentString extends ContentBase {
     this.setValue(text);
   };
   
-  onKeyDown = (event, i, inputs) => {
-    event.stopPropagation();
-  
-    if (!this.field.isList)
-      return;
-    
-    let code = event.keyCode;
-    
-    //Enter or down pressed
-    if (code == 13 || code == 40) {
-      if (inputs[i + 1])
-        inputs[i + 1].focus();
-      
-    //up pressed
-    } else if (code == 38) {
-      if (i)
-        inputs[--i].focus();
-    }
-  };
-  
   onShowWysiwygModal = () => {
     this.props.showModal(
       MODAL_TYPE_WYSIWYG,
