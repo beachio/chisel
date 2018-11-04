@@ -1,13 +1,11 @@
 .content
   text-align: center
-  position: relative
 
 .list
   display: flex
   flex-flow: column nowrap
   width: 100%
   margin: 0 auto
-  position: relative
 
   &-item
     display: flex
@@ -19,6 +17,8 @@
 
     margin: 3px 10%
     padding: 5px
+
+    z-index: 5
 
     &:hover
       .hidden-controls
@@ -35,7 +35,6 @@
       transform: translateY(-50%)
 
     .type
-      position: relative
       flex: 0 0 70%
 
     .name,
@@ -76,13 +75,11 @@
   background: #fff
   margin-top: 9px
   width: 100%
-
   position: relative
 
   .input
     padding-left: 10%
     padding-right: 10%
-    position: relative
 
   .input-wrapper-back
     position: absolute
@@ -93,7 +90,6 @@
     box-shadow: 0px 2px 4px 0px rgba(230,230,230,1)
     border-width: 0px 1px 1px 1px
     border-radius: 5px
-    z-index: -1
 
 .hidden
   &-controls
