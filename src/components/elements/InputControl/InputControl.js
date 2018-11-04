@@ -12,6 +12,11 @@ export default class InputControl extends Component {
     let {label, type, value, placeholder, onChange, readOnly, autoFocus, onKeyDown, onBlur, DOMRef, icon,
       onIconClick, inputType, dropdown} = this.props;
     
+    if (readOnly || !onChange) {
+      readOnly = true;
+      onChange = null;
+    }
+    
     if (value == undefined || value == null)
       value = ``;
   
