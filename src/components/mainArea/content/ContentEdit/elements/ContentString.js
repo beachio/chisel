@@ -39,10 +39,10 @@ export default class ContentString extends ContentBase {
     const checkRange = value => {
       const range = this.field.validations.range;
       if (range.minActive && value.length < range.min ||
-        range.maxActive && value.length > range.max) {
+          range.maxActive && value.length > range.max) {
         let error = range.errorMsg;
         if (!error)
-          error = "The length is out of permissible range!";
+          error = `The length of the string(s) is out of the permissible range: ${range.min} – ${range.max}!`;
         return error;
       }
     };
@@ -52,7 +52,7 @@ export default class ContentString extends ContentBase {
       if (!value.match(regexp)) {
         let error = pattern.errorMsg;
         if (!error)
-          error = "The string is not match the pattern!";
+          error = `The string(s) is not match the pattern: ${pattern.pattern}!`;
         return error;
       }
     };
@@ -117,7 +117,7 @@ export default class ContentString extends ContentBase {
               break;
             
             if (!checkURL(value))
-              return "You must type a valid URL!";
+              return "The URL is invalid!";
             break;
         }
         break;

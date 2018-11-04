@@ -40,7 +40,7 @@ export default class ContentNumber extends ContentBase {
             range.maxActive && value > range.max) {
           let error = range.errorMsg;
           if (!error)
-            error = "The value is out of permissible range!";
+            error = `The value(s) is out of the permissible range: ${range.min} – ${range.max}!`;
           return error;
         }
       };
