@@ -8,6 +8,7 @@ import Editor from 'react-medium-editor';
 
 import ContentBase from './ContentBase';
 import InputControl from 'components/elements/InputControl/InputControl';
+import DynamicListComponent from 'components/elements/DynamicListComponent/DynamicListComponent';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import MarkdownEditor from 'components/elements/MarkdownEditor/MarkdownEditor';
 import {MODAL_TYPE_WYSIWYG, MODAL_TYPE_MARKDOWN} from 'ducks/nav';
@@ -136,24 +137,20 @@ export default class ContentString extends ContentBase {
     return null;
   }
   
-  onChange = (event, i) => {
+  onChange = event => {
     let value = event.target.value;
-    
-    if (this.field.isList) {
-      const items = this.state.value.slice();
-      items[i] = value;
-      this.setValue(items);
-      
-    } else {
-      this.setValue(value);
-      if (this.field.isTitle)
-        this.props.updateItemTitle(value);
-    }
+    this.setValue(value);
+    if (this.field.isTitle)
+      this.props.updateItemTitle(value);
+  };
+  
+  onChangeList = values => {
+    this.setValue(values);
   };
   
   onChangeDropdown = value => {
     this.setValue(value);
-  }
+  };
   
   onChangeWysiwyg = text => {
     this.setValue(text);
@@ -234,20 +231,6 @@ export default class ContentString extends ContentBase {
     }
   }
   
-  onPlus = (i = 0) => {
-    let items = this.state.value ? this.state.value : [];
-    let itemsLeft = items.slice(0, i + 1);
-    let itemsRight = items.slice(i + 1);
-    items = itemsLeft.concat('', itemsRight);
-    this.setValue(items);
-  };
-  
-  onMinus = i => {
-    let items = this.state.value.slice();
-    items.splice(i, 1);
-    this.setValue(items);
-  };
-  
   getInput() {
     let value = this.state.value;
     
@@ -260,39 +243,9 @@ export default class ContentString extends ContentBase {
             let inner;
         
             if (this.field.isList) {
-              if (value && value.length) {
-                inner = [];
-                let inputs = [];
-                for (let i = 0; i < value.length; i++) {
-                  inner.push(
-                    <div styleName="list-item"
-                         key={i}>
-                      <InputControl type="big"
-                                    value={value[i]}
-                                    readOnly={!this.state.isEditable}
-                                    DOMRef={inp => inputs[i] = inp}
-                                    onChange={e => this.onChange(e, i)}
-                                    onKeyDown={e => this.onKeyDown(e, i, inputs)}/>
-                      <div styleName="list-item-plus"
-                           onClick={() => this.onPlus(i)}>
-                        +
-                      </div>
-                      <div styleName="list-item-minus"
-                           onClick={() => this.onMinus(i)}>
-                        –
-                      </div>
-                    </div>
-                  );
-                }
-              } else {
-                inner = (
-                  <div styleName="list-plus"
-                       onClick={() => this.onPlus()}>
-                    List is empty. Add element?
-                  </div>
-                );
-              }
-          
+              inner = <DynamicListComponent values={value}
+                                            onChange={this.onChangeList}
+                                            readOnly={!this.state.isEditable} />;
             } else {
               inner = <InputControl type="big"
                                     value={value}
