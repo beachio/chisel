@@ -24,8 +24,9 @@ export default class DynamicListComponent extends Component {
   }
   
   onKeyDown = (event, i) => {
-    event.stopImmediatePropagation();
-    
+    event.stopPropagation();
+    event.preventDefault();
+  
     const code = event.keyCode;
     
     //Enter or down pressed
@@ -35,7 +36,7 @@ export default class DynamicListComponent extends Component {
       else
         this.onPlus(i);
       
-      //up pressed
+    //Up pressed
     } else if (code == 38) {
       if (i)
         this.inputs[--i].focus();
@@ -72,6 +73,14 @@ export default class DynamicListComponent extends Component {
     this.setState({values});
     this.props.onChange(values);
   };
+  
+  isFocused() {
+    for (let input of this.inputs) {
+      if (input === document.activeElement)
+        return true;
+    }
+    return false;
+  }
   
   render() {
     const {disableEmpty, readOnly} = this.props;
