@@ -25,7 +25,6 @@ export default class DynamicListComponent extends Component {
   
   onKeyDown = (event, i) => {
     event.stopPropagation();
-    event.preventDefault();
   
     const code = event.keyCode;
     
@@ -55,6 +54,7 @@ export default class DynamicListComponent extends Component {
       {values},
       () => this.inputs[i + 1].focus()
     );
+    this.props.onChange(values);
   };
   
   onMinus = i => {
@@ -64,6 +64,7 @@ export default class DynamicListComponent extends Component {
     let values = this.state.values.slice();
     values.splice(i, 1);
     this.setState({values});
+    this.props.onChange(values);
   };
   
   onChange = (event, i) => {
@@ -104,15 +105,17 @@ export default class DynamicListComponent extends Component {
                           DOMRef={inp => this.inputs[i] = inp}
                           onChange={e => this.onChange(e, i)}
                           onKeyDown={e => this.onKeyDown(e, i)}/>
-            <div styleName="item-plus"
-                 onClick={() => this.onPlus(i)}>
-              +
-            </div>
-            {(i > 0 || !disableEmpty) &&
-            <div styleName="item-minus"
-                 onClick={() => this.onMinus(i)}>
-              –
-            </div>
+            {!readOnly &&
+              <div styleName="item-plus"
+                   onClick={() => this.onPlus(i)}>
+                +
+              </div>
+            }
+            {(!readOnly && (i > 0 || !disableEmpty)) &&
+              <div styleName="item-minus"
+                   onClick={() => this.onMinus(i)}>
+                –
+              </div>
             }
           </div>
         );
