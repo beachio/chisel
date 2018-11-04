@@ -6,6 +6,7 @@ import CheckboxControl from 'components/elements/CheckboxControl/CheckboxControl
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import InputControl from 'components/elements/InputControl/InputControl';
+import DynamicListComponent from 'components/elements/DynamicListComponent/DynamicListComponent';
 import ValidationNumber from 'components/modals/FieldModal/Validations/ValidationNumber';
 import ValidationString from 'components/modals/FieldModal/Validations/ValidationString';
 import ValidationDate from 'components/modals/FieldModal/Validations/ValidationDate';
@@ -52,6 +53,8 @@ export default class FieldModal extends Component {
   updating = false;
   validations = null;
   models = null;
+  validValuesList = null;
+  
 
 
   constructor(props) {
@@ -95,13 +98,17 @@ export default class FieldModal extends Component {
   }
   
   onKeyDown = event => {
+    if (this.validValuesList && this.validValuesList.isFocused())
+      return;
+    
     if (!event)
       event = window.event;
     event.stopPropagation();
     
-    //Enter or Esc pressed
+    //Enter pressed
     if (event.keyCode == 13)
       setTimeout(this.onSave, 1);
+    //Esc pressed
     else if (event.keyCode == 27)
       setTimeout(this.close, 1);
   };
@@ -227,42 +234,7 @@ export default class FieldModal extends Component {
   };
   
   
-  
-  onAppearanceKeyDown = (event, i, inputs) => {
-    event.stopPropagation();
-    
-    let code = event.keyCode;
-    
-    //Enter or down pressed
-    if (code == 13 || code == 40) {
-      if (inputs[i + 1])
-        inputs[i + 1].focus();
-      
-      //up pressed
-    } else if (code == 38) {
-      if (i)
-        inputs[--i].focus();
-    }
-  };
-  
-  onAppearancePlus = (i = 0) => {
-    let validValues = this.state.validValues ? this.state.validValues : [];
-    let valuesLeft = validValues.slice(0, i + 1);
-    let valuesRight = validValues.slice(i + 1);
-    validValues = valuesLeft.concat('', valuesRight);
-    this.setState({validValues});
-  };
-  
-  onAppearanceMinus = i => {
-    let validValues = this.state.validValues.slice();
-    validValues.splice(i, 1);
-    this.setState({validValues});
-  };
-  
-  onValidValuesChange = (event, i) => {
-    const value = event.target.value;
-    const validValues = this.state.validValues.slice();
-    validValues[i] = value;
+  onValidValuesChange = validValues => {
     this.setState({validValues});
   };
   
@@ -356,43 +328,15 @@ export default class FieldModal extends Component {
             break;
             
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN:
-            if (this.state.validValues && this.state.validValues.length) {
-              const elements = [];
-              const inputs = [];
-              for (let i = 0; i < this.state.validValues.length; i++) {
-                elements.push(
-                  <div styleName="values-item"
-                       key={i}>
-                    <InputControl type="big"
-                                  value={this.state.validValues[i]}
-                                  DOMRef={inp => inputs[i] = inp}
-                                  onChange={e => this.onValidValuesChange(e, i)}
-                                  onKeyDown={e => this.onAppearanceKeyDown(e, i, inputs)}/>
-                    <div styleName="values-item-plus"
-                         onClick={() => this.onAppearancePlus(i)}>
-                      +
-                    </div>
-                    <div styleName="values-item-minus"
-                         onClick={() => this.onAppearanceMinus(i)}>
-                      –
-                    </div>
-                  </div>
-                );
-              }
-              inner = (
-                <div>
-                  <div styleName="label">Valid values:</div>
-                  {elements}
-                </div>
-              );
-            } else {
-              inner = (
-                <div styleName="values-plus"
-                     onClick={() => this.onAppearancePlus()}>
-                  List is empty. Add element?
-                </div>
-              );
-            }
+            inner = (
+              <div>
+                <div styleName="label">Valid values:</div>
+                <DynamicListComponent values={this.state.validValues}
+                                      ref={comp => this.validValuesList = comp}
+                                      onChange={this.onValidValuesChange}
+                                      disableEmpty />
+              </div>
+            );
             break;
         }
   
