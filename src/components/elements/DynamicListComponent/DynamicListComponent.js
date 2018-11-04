@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 
 import InputControl from 'components/elements/InputControl/InputControl';
+import InputNumberControl from 'components/elements/InputNumberControl/InputNumberControl';
 
 import styles from './DynamicListComponent.sss';
 
@@ -16,11 +17,15 @@ export default class DynamicListComponent extends Component {
   constructor(props) {
     super(props);
     
-    this.state.values = props.values;
+    if (props.values)
+      this.state.values = props.values;
   }
   
   componentWillReceiveProps(nextProps) {
-    this.setState({values: nextProps.values});
+    let {values} = nextProps;
+    if (!values)
+      values = [];
+    this.setState({values});
   }
   
   onKeyDown = (event, i) => {
@@ -67,9 +72,8 @@ export default class DynamicListComponent extends Component {
     this.props.onChange(values);
   };
   
-  onChange = (event, i) => {
-    const value = event.target.value;
-    const values = this.state.values ? this.state.values.slice() : [];
+  onChange = (value, i) => {
+    const values = this.state.values.slice();
     values[i] = value;
     this.setState({values});
     this.props.onChange(values);
@@ -84,10 +88,10 @@ export default class DynamicListComponent extends Component {
   }
   
   render() {
-    const {disableEmpty, readOnly} = this.props;
+    const {disableEmpty, readOnly, numeric, numericInt} = this.props;
     
     let values = disableEmpty ? [''] : [];
-    if (this.state.values && this.state.values.length)
+    if (this.state.values.length)
       values = this.state.values;
   
     this.inputs = [];
@@ -96,15 +100,27 @@ export default class DynamicListComponent extends Component {
       const elements = [];
       
       for (let i = 0; i < values.length; i++) {
+        let input;
+        if (numeric)
+          input = <InputNumberControl type="big"
+                                      isInt={numericInt}
+                                      value={values[i]}
+                                      readOnly={readOnly}
+                                      onChange={v => this.onChange(v, i)}
+                                      DOMRef={inp => this.inputs[i] = inp}
+                                      onKeyDown={e => this.onKeyDown(e, i)}/>;
+        else
+          input = <InputControl type="big"
+                                value={values[i]}
+                                readOnly={readOnly}
+                                DOMRef={inp => this.inputs[i] = inp}
+                                onChange={e => this.onChange(e.target.value, i)}
+                                onKeyDown={e => this.onKeyDown(e, i)}/>;
+        
         elements.push(
           <div styleName="item"
                key={i}>
-            <InputControl type="big"
-                          value={values[i]}
-                          readOnly={readOnly}
-                          DOMRef={inp => this.inputs[i] = inp}
-                          onChange={e => this.onChange(e, i)}
-                          onKeyDown={e => this.onKeyDown(e, i)}/>
+            {input}
             {!readOnly &&
               <div styleName="item-plus"
                    onClick={() => this.onPlus(i)}>
