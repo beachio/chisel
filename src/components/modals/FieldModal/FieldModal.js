@@ -39,7 +39,7 @@ export default class FieldModal extends Component {
     isList: false,
     isDisabled: false,
 
-    error: null,
+    errorName: false,
 
     appList: [],
     
@@ -112,7 +112,7 @@ export default class FieldModal extends Component {
     if (!this.updating)
       nameId = getNameId(name, this.field.model.fields);
 
-    this.setState({name, nameId, error: null});
+    this.setState({name, nameId, errorName: null});
   };
 
   onChangeType = type => {
@@ -125,12 +125,12 @@ export default class FieldModal extends Component {
   
   onChangeBoolTextYes = event => {
     const boolTextYes = event.target.value;
-    this.setState({boolTextYes, error: null});
+    this.setState({boolTextYes});
   };
   
   onChangeBoolTextNo = event => {
     const boolTextNo = event.target.value;
-    this.setState({boolTextNo, error: null});
+    this.setState({boolTextNo});
   };
 
   onChangeAppearance = appearance => {
@@ -164,9 +164,12 @@ export default class FieldModal extends Component {
 
     if (this.field.name != this.state.name) {
       const name = removeOddSpaces(this.state.name);
-      let error = checkFieldName(name);
-      if (error) {
-        this.setState({error});
+      const error = checkFieldName(name);
+      if (error == NAME_ERROR_NAME_EXIST) {
+        this.setState({
+          tab: TAB_SETTINGS,
+          errorName: true
+        });
         return;
       }
       this.field.name = name;
@@ -279,8 +282,7 @@ export default class FieldModal extends Component {
                             value={this.state.name} />
             </div>
     
-            {
-              this.state.error == NAME_ERROR_NAME_EXIST &&
+            {this.state.errorName &&
               <div styleName="error-same-name">This name is already in use.</div>
             }
     
