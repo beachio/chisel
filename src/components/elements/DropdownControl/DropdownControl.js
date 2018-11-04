@@ -28,7 +28,7 @@ export default class DropdownControl extends Component {
 
     this.state.disabled = disabled;
   
-    if (suggestionsList.indexOf(current) != -1)
+    if (suggestionsList.indexOf(current) != -1 || current === undefined)
       this.state.suggestionValue = current;
   }
 
@@ -37,7 +37,7 @@ export default class DropdownControl extends Component {
     
     this.suggestionsList = suggestionsList;
   
-    if (suggestionsList.indexOf(current) != -1)
+    if (suggestionsList.indexOf(current) != -1 || current === undefined)
       this.setState({suggestionValue: current, disabled});
     else
       this.setState({suggestionValue: '', disabled});
@@ -52,10 +52,9 @@ export default class DropdownControl extends Component {
     this.onSuggest(item);
   };
 
-  onSuggestionInputClick = event => {
+  onSuggestionInputClick = () => {
     this.setState({
-      suggestionsVisibility: !this.state.suggestionsVisibility,
-      suggestionValue: event.target.value
+      suggestionsVisibility: !this.state.suggestionsVisibility
     });
   };
 
@@ -75,45 +74,56 @@ export default class DropdownControl extends Component {
                            dropdown={true}
                            readOnly={true} />;
 
-
+    let value = this.state.suggestionValue;
+    if (value == '')
+      value = '(empty)';
+    else if (!value)
+      value = '(undefined)';
+      
     const wrapperClasses = classNames({
-      'input-wrapper type-wrapper': type === undefined,
-      'input-wrapper type-wrapper dropdown-big': type === 'big'
+      'input-wrapper type-wrapper': true,
+      'dropdown-big': type === 'big'
     });
 
     const inputClasses = classNames({
       'input': true,
-      'input suggestions-visible': this.state.suggestionsVisibility
+      'suggestions-visible': this.state.suggestionsVisibility,
+      'empty': !this.state.suggestionValue
     });
 
     const arrowClasses = classNames({
       'arrow-down': true,
-      'arrow-down arrow-rotated': this.state.suggestionsVisibility
+      'arrow-rotated': this.state.suggestionsVisibility
     });
 
-    const suggestions = this.suggestionsList.map(suggestionsItem => (
-      <div onMouseDown={this.onSuggestionClick}
-           styleName="suggestion"
-           key={suggestionsItem}>
-        {suggestionsItem}
-      </div>
-    ));
+    const suggestions = this.suggestionsList.map(suggestionsItem => {
+      const key = this.suggestionsList.indexOf(suggestionsItem);
+      const styleName = classNames({
+        'suggestion': true,
+        'empty': !suggestionsItem
+      });
+      return (
+        <div onMouseDown={this.onSuggestionClick}
+             styleName={styleName}
+             key={key}>
+          {suggestionsItem ? suggestionsItem : '(empty)'}
+        </div>
+      );
+    });
 
     let icon = <InlineSVG styleName={arrowClasses} src={require("assets/images/arrow-down.svg")} />;
     if (type === 'big')
       icon = <InlineSVG styleName="arrows" src={require("assets/images/arrows.svg")} />;
 
-    let labelEl;
-    if (label)
-      labelEl = (<div styleName="label">{label}</div>);
-
     return (
       <div styleName={wrapperClasses} onBlur={this.onSuggestionBlur}>
-        {labelEl}
+        {label &&
+          <div styleName="label">{label}</div>
+        }
         <div styleName="input-wrapper">
           {icon}
           <input styleName={inputClasses}
-                 value={this.state.suggestionValue}
+                 value={value}
                  onClick={this.onSuggestionInputClick}
                  readOnly />
           <div styleName="suggestions">
