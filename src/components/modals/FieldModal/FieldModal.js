@@ -179,11 +179,17 @@ export default class FieldModal extends Component {
     this.field.appearance   = this.state.appearance;
     this.field.boolTextYes  = this.state.boolTextYes;
     this.field.boolTextNo   = this.state.boolTextNo;
-    this.field.validValues  = this.state.validValues;
     this.field.isRequired   = this.state.isRequired;
     this.field.isTitle      = this.state.isTitle;
     this.field.isList       = this.state.isList;
     this.field.isDisabled   = this.state.isDisabled;
+  
+    let values = this.state.validValues;
+    if (values && values.length) {
+      const valuesSet = new Set(values);
+      values = Array.from(valuesSet);
+    }
+    this.field.validValues  = values;
   
     this.field.validations  = this.validations;
 
