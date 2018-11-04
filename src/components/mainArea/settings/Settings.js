@@ -162,15 +162,17 @@ export default class Settings extends Component {
       );
 
     return (
-      <div styleName="field icon">
+      <div styleName="field">
         <div styleName="field-title">Site icon</div>
         {icon}
-        <div type="file" styleName={btnStyle + ` icon-upload`}>
-          Upload
-          <input styleName="icon-hidden"
-                 type="file"
-                 disabled={!isEditable}
-                 onChange={this.onChangeIcon} />
+        <div styleName="button-wrapper">
+          <div styleName={btnStyle + ` icon-upload`}>
+            Upload
+            <input styleName="icon-hidden"
+                   type="file"
+                   disabled={!isEditable}
+                   onChange={this.onChangeIcon} />
+          </div>
         </div>
       </div>
     );
@@ -220,23 +222,25 @@ export default class Settings extends Component {
 
           {this.getIcon()}
 
-          {
-            isEditable &&
-              <div styleName="buttons-wrapper">
-                <ButtonControl color="green"
-                               type="submit"
-                               disabled={!this.state.dirty || this.state.error}
-                               value="Save changes"/>
-              </div>
-          }
-          {
-            isEditable &&
-              <div styleName="buttons-wrapper">
-                <ButtonControl color="red"
-                               value="Delete site"
-                               onClick={this.onDelete} />
-              </div>
-          }
+          <div styleName="buttons">
+            {
+              isEditable &&
+                <div styleName="field button-wrapper">
+                  <ButtonControl color="green"
+                                 type="submit"
+                                 disabled={!this.state.dirty || this.state.error}
+                                 value="Save changes"/>
+                </div>
+            }
+            {
+              isEditable &&
+                <div styleName="field button-wrapper">
+                  <ButtonControl color="red"
+                                 value="Delete site"
+                                 onClick={this.onDelete} />
+                </div>
+            }
+          </div>
           {
             this.state.error &&
               <div styleName="field-error">
