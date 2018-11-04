@@ -4,6 +4,7 @@ import ReactStars from 'react-stars';
 
 import ContentBase from './ContentBase';
 import InputNumberControl from 'components/elements/InputNumberControl/InputNumberControl';
+import DynamicListComponent from "components/elements/DynamicListComponent/DynamicListComponent";
 
 import * as ftps from 'models/ModelData';
 
@@ -86,49 +87,8 @@ export default class ContentNumber extends ContentBase {
     return null;
   }
   
-  onChange = (value, i) => {
-    if (this.field.isList) {
-      const items = this.state.value.slice();
-      items[i] = value;
-      this.setValue(items);
-      
-    } else {
-      this.setValue(value);
-    }
-  };
-  
-  onKeyDown = (event, i, inputs) => {
-    event.stopPropagation();
-  
-    if (!this.field.isList)
-      return;
-    
-    const code = event.keyCode;
-    
-    //Enter or down pressed
-    if (code == 13 || code == 40) {
-      if (inputs[i + 1])
-        inputs[i + 1].focus();
-      
-    //up pressed
-    } else if (code == 38) {
-      if (i)
-        inputs[--i].focus();
-    }
-  };
-  
-  onPlus = (i = 0) => {
-    let items = this.state.value ? this.state.value : [];
-    let itemsLeft = items.slice(0, i + 1);
-    let itemsRight = items.slice(i + 1);
-    items = itemsLeft.concat(0, itemsRight);
-    this.setValue(items);
-  };
-  
-  onMinus = i => {
-    let items = this.state.value.slice();
-    items.splice(i, 1);
-    this.setValue(items);
+  onChange = value => {
+    this.setValue(value);
   };
   
   onChangeRating = value => {
@@ -150,42 +110,11 @@ export default class ContentNumber extends ContentBase {
             let inner;
         
             if (this.field.isList) {
-              if (value && value.length) {
-                inner = [];
-                let inputs = [];
-                for (let i = 0; i < value.length; i++) {
-                  inner.push(
-                    <div styleName="list-item"
-                         key={i}>
-                      <InputNumberControl styleName="list-item-input"
-                                          type="big"
-                                          isInt={this.field.type == ftps.FIELD_TYPE_INTEGER}
-                                          value={value[i]}
-                                          readOnly={!this.state.isEditable}
-                                          onChange={v => this.onChange(v, i)}
-                                          DOMRef={inp => inputs[i] = inp}
-                                          onKeyDown={e => this.onKeyDown(e, i, inputs)}/>
-                      <div styleName="list-item-plus"
-                           onClick={() => this.onPlus(i)}>
-                        +
-                      </div>
-                      <div styleName="list-item-minus"
-                           onClick={() => this.onMinus(i)}>
-                        –
-                      </div>
-                    </div>
-                  );
-                }
-              } else {
-                inner = (
-                  <div styleName="list-plus"
-                       onClick={() => this.onPlus()}>
-                    List is empty. Add element?
-                  </div>
-                );
-              }
-              
-          
+              inner = <DynamicListComponent values={value}
+                                            onChange={this.onChange}
+                                            readOnly={!this.state.isEditable}
+                                            numeric
+                                            numericInt={this.field.type == ftps.FIELD_TYPE_INTEGER} />;
             } else {
               inner = <InputNumberControl type="big"
                                           isInt={this.field.type == ftps.FIELD_TYPE_INTEGER}
