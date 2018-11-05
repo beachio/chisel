@@ -54,6 +54,7 @@ export default class FieldModal extends Component {
   validations = null;
   models = null;
   validValuesList = null;
+  focusElm = null;
   
 
 
