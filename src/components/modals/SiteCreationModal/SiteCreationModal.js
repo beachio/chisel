@@ -3,12 +3,11 @@ import CSSModules from 'react-css-modules';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import InputControl from 'components/elements/InputControl/InputControl';
-import RadioControl from "components/elements/RadioControl/RadioControl";
+import {SiteData} from 'models/ModelData';
 import {checkSiteName, NAME_ERROR_NAME_EXIST} from "utils/data";
 import {removeOddSpaces} from "utils/common";
 
 import styles from './SiteCreationModal.sss';
-import InlineSVG from "svg-inline-react";
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -83,7 +82,7 @@ export default class SiteCreationModal extends Component {
     super(props);
     
     this.templates = props.templates;
-    this.site = props.params;
+    this.site = new SiteData();
   }
   
   componentDidMount() {
@@ -111,7 +110,7 @@ export default class SiteCreationModal extends Component {
   };
   
   onChangeName = event => {
-    let name = event.target.value;
+    const name = event.target.value;
     this.setState({name, errorName: null});
   };
   
@@ -119,7 +118,7 @@ export default class SiteCreationModal extends Component {
     this.setState({template});
   };
   
-  onChoose = () => {
+  onCreate = () => {
     if (!this.state.name || !this.active)
       return;
   
@@ -131,7 +130,7 @@ export default class SiteCreationModal extends Component {
     }
     this.site.name = name;
   
-    this.props.addSite(this.site);
+    this.props.addSite(this.site, this.state.template);
     this.close();
   };
   
@@ -179,9 +178,9 @@ export default class SiteCreationModal extends Component {
             <div styleName="input-wrapper buttons-wrapper">
               <div styleName="buttons-inner">
                 <ButtonControl color="green"
-                               value="Choose"
+                               value="Create"
                                //disabled={!this.state.template}
-                               onClick={this.onChoose} />
+                               onClick={this.onCreate} />
               </div>
               <div styleName="buttons-inner">
                 <ButtonControl color="gray"

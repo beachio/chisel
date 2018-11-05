@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
-import {SiteData} from 'models/ModelData';
 import {MODAL_TYPE_SITE} from "ducks/nav";
 
 import styles from './Sites.sss';
@@ -27,8 +26,7 @@ export default class Sites extends Component {
   };
 
   onClickAdd = () => {
-    const site = new SiteData();
-    this.props.showModal(MODAL_TYPE_SITE, site);
+    this.props.showModal(MODAL_TYPE_SITE);
   };
 
   render() {
