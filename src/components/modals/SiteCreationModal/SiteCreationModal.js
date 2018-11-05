@@ -52,15 +52,9 @@ export class TemplateControl extends Component {
       <div styleName="TemplateControl"
            onClick={this.onClick}>
         <div styleName={style}>
-          {!!this.template.icon ?
-            <img styleName="icon-img"
-                 src={this.template.icon.url()}>
-            </img>
-          :
-            <div styleName="icon">
-              <InlineSVG src={require("assets/images/hammer.svg")}/>
-            </div>
-          }
+          <img styleName="icon-img"
+               src={this.template.icon ? this.template.icon.url() : require("assets/images/template-empty.png")}>
+          </img>
           <div styleName="text">
             <div styleName="title">{this.template.name}</div>
             <div styleName="description">{this.template.description}</div>
