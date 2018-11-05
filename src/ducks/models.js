@@ -255,8 +255,47 @@ export function addSite(site, template = null) {
   
   site.updateOrigin();
   site.origin.setACL(new Parse.ACL(site.owner.origin));
-  send(site.origin.save());
-
+  
+  if (template) {
+    for (let model of template.models) {
+      const newModel_o = model.origin.clone();
+      const newModel = new ModelData().setOrigin(newModel_o);
+      newModel.site = site;
+      newModel.setTableName();
+      site.models.push(newModel);
+      
+      for (let field of model.fields) {
+        const newField_o = field.origin.clone();
+        const newField = new ModelFieldData().setOrigin(newField_o);
+        newField.model = newModel;
+        newModel.fields.push(newField);
+      }
+    }
+  
+    send(site.origin.save())
+      .then(() => {
+        const promises = [];
+        for (let model of site.models) {
+          model.updateOrigin();
+          promises.push(send(model.origin.save()));
+        }
+        return Promise.all(promises);
+      })
+      .then(() => {
+        const promises = [];
+        for (let model of site.models) {
+          for (let field of model.fields) {
+            field.updateOrigin();
+            promises.push(send(field.origin.save()));
+          }
+        }
+        return Promise.all(promises);
+      });
+  
+  } else {
+    send(site.origin.save());
+  }
+  
   return {
     type: SITE_ADD,
     site
