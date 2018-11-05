@@ -5,6 +5,7 @@ import CSSModules from 'react-css-modules';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
+import SiteCreationModal from 'components/modals/SiteCreationModal/SiteCreationModal';
 import FieldModal from 'components/modals/FieldModal/FieldModal';
 import MediaModal from 'components/modals/MediaModal/MediaModal';
 import WysiwygModal from 'components/modals/WysiwygModal/WysiwygModal';
@@ -12,9 +13,9 @@ import MarkdownModal from 'components/modals/MarkdownModal/MarkdownModal';
 import ReferenceModal from 'components/modals/ReferenceModal/ReferenceModal';
 import ModelChooseModal from 'components/modals/ModelChooseModal/ModelChooseModal';
 import AlertModal, {ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
-import {closeAlert, closeModal, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG,
+import {closeAlert, closeModal, MODAL_TYPE_SITE, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG,
   MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN} from 'ducks/nav';
-import {addField, updateField} from 'ducks/models';
+import {addSite, addField, updateField} from 'ducks/models';
 
 import styles from './app.sss';
 
@@ -26,7 +27,7 @@ class App extends React.Component {
   render() {
     const {nav, user, content, models, serverStatus} = this.props;
     const {closeAlert, closeModal} = this.props.navActions;
-    const {addField, updateField} = this.props.modelActions;
+    const {addSite, addField, updateField} = this.props.modelActions;
   
     const getAlarm = () => {
       if (serverStatus.problemA && !serverStatus.problemB)
@@ -57,6 +58,11 @@ class App extends React.Component {
       }
     
       switch (nav.modalType) {
+        case MODAL_TYPE_SITE:
+          return <SiteCreationModal params={nav.modalParams}
+                                    addSite={addSite}
+                                    onClose={closeModal} />;
+                             
         case MODAL_TYPE_FIELD:
           return <FieldModal params={nav.modalParams}
                              onClose={closeModal}
@@ -143,7 +149,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelActions: bindActionCreators({addField, updateField}, dispatch),
+    modelActions: bindActionCreators({addSite, addField, updateField}, dispatch),
     navActions: bindActionCreators({closeAlert, closeModal}, dispatch)
   };
 }

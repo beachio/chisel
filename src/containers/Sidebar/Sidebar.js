@@ -7,8 +7,7 @@ import {browserHistory} from 'react-router';
 
 import User from 'components/sidebar/User/User';
 import Sites from 'components/sidebar/Sites/Sites';
-import {showAlert, URL_USERSPACE, URL_SITE} from 'ducks/nav';
-import {addSite, updateSite} from 'ducks/models';
+import {showModal, URL_USERSPACE, URL_SITE} from 'ducks/nav';
 
 import styles from './Sidebar.sss';
 
@@ -16,12 +15,11 @@ import styles from './Sidebar.sss';
 @CSSModules(styles, {allowMultiple: true})
 export class Sidebar extends Component {
   render() {
-    const {models, nav, user} = this.props;
-    const {addSite, updateSite} = this.props.modelsActions;
-    const {showAlert} = this.props.navActions;
-    
-    let gotoSite = site => {
-      let nameId = site.nameId;
+    const {models, user} = this.props;
+    const {showModal} = this.props.navActions;
+  
+    const gotoSite = site => {
+      const nameId = site.nameId;
       browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${nameId}`);
     };
 
@@ -32,10 +30,7 @@ export class Sidebar extends Component {
           <Sites sites={models.sites}
                  currentSite={models.currentSite}
                  gotoSite={gotoSite}
-                 addSite={addSite}
-                 updateSite={updateSite}
-                 showAlert={showAlert}
-                 alertShowing={nav.alertShowing} />
+                 showModal={showModal}/>
         </div>
         <div styleName="answer-wrapper">
           <a styleName="answer-question" href="http://guild.beach.io" target="_blank">
@@ -50,15 +45,13 @@ export class Sidebar extends Component {
 function mapStateToProps(state) {
   return {
     models: state.models,
-    nav:    state.nav,
     user:   state.user
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelsActions:  bindActionCreators({addSite, updateSite}, dispatch),
-    navActions:     bindActionCreators({showAlert}, dispatch)
+    navActions:     bindActionCreators({showModal}, dispatch)
   };
 }
 
