@@ -516,7 +516,8 @@ export default function modelsReducer(state = initialState, action) {
       sites.push(action.site);
       return {
         ...state,
-        sites
+        sites,
+        currentSite: action.site
       };
       
     case SITE_DELETE:
