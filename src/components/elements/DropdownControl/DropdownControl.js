@@ -24,11 +24,12 @@ export default class DropdownControl extends Component {
     
     const {suggestionsList, suggest, current, disabled} = props;
     this.onSuggest = suggest;
-    this.suggestionsList = suggestionsList;
+    if (suggestionsList)
+      this.suggestionsList = suggestionsList;
 
     this.state.disabled = disabled;
   
-    if (suggestionsList.indexOf(current) != -1 || current === undefined)
+    if (this.suggestionsList.indexOf(current) != -1 || current === undefined)
       this.state.suggestionValue = current;
   }
 
