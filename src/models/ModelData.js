@@ -3,6 +3,29 @@ import {Parse} from 'parse';
 import {removeOddSpaces, filterSpecials} from 'utils/common';
 
 
+export class TemplateData {
+  static get OriginClass() {return Parse.Object.extend("Template");}
+  
+  origin = null;
+  
+  name = '';
+  description = '';
+  icon = null;
+  
+  //children
+  models = [];
+  
+  setOrigin(origin) {
+    this.origin = origin;
+    
+    if (origin.get('name'))         this.name         = origin.get('name');
+    if (origin.get('description'))  this.description  = origin.get('description');
+    if (origin.get('icon'))         this.icon         = origin.get('icon');
+    
+    return this;
+  }
+}
+
 export class SiteData {
   static get OriginClass() {return Parse.Object.extend("Site");}
 
@@ -84,6 +107,7 @@ export class ModelData {
 
   //links
   site = null;
+  template = null;
 
   //children
   fields = [];

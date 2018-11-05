@@ -25,7 +25,7 @@ class App extends React.Component {
   lastModal = <span></span>;
 
   render() {
-    const {nav, user, content, models, serverStatus, templates} = this.props;
+    const {nav, user, content, models, serverStatus} = this.props;
     const {closeAlert, closeModal} = this.props.navActions;
     const {addSite, addField, updateField} = this.props.modelActions;
   
@@ -60,7 +60,7 @@ class App extends React.Component {
       switch (nav.modalType) {
         case MODAL_TYPE_SITE:
           return <SiteCreationModal params={nav.modalParams}
-                                    templates={templates.templates}
+                                    templates={models.templates}
                                     addSite={addSite}
                                     onClose={closeModal} />;
                              
@@ -144,7 +144,6 @@ function mapStateToProps(state) {
     models:       state.models,
     nav:          state.nav,
     serverStatus: state.serverStatus,
-    templates:    state.templates,
     user:         state.user
   };
 }

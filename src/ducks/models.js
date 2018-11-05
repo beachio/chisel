@@ -2,7 +2,7 @@ import {Parse} from 'parse';
 
 import {store} from '../index';
 import {UserData, CollaborationData} from 'models/UserData';
-import {SiteData, ModelData, ModelFieldData, canBeTitle, FIELD_NAMES_RESERVED} from 'models/ModelData';
+import {canBeTitle, FIELD_NAMES_RESERVED, ModelData, ModelFieldData, SiteData, TemplateData} from 'models/ModelData';
 import {filterSpecials, getRandomColor} from 'utils/common';
 import {getNameId, getRole} from 'utils/data';
 import {LOGOUT} from './user';
@@ -29,8 +29,20 @@ export const SET_CURRENT_SITE           = 'app/models/SET_CURRENT_SITE';
 export const SET_CURRENT_MODEL          = 'app/models/SET_CURRENT_MODEL';
 
 
-function requestCollaborationsPre() {
-  let sites = [];
+function requestTemplates(templates_o, templates) {
+  return send(
+    new Parse.Query(TemplateData.OriginClass)
+      .find()
+  )
+    .then(_templates_o => {
+      Array.prototype.push.apply(templates_o, _templates_o);
+      
+      for (let template_o of templates_o)
+        templates.push(new TemplateData().setOrigin(template_o));
+    });
+}
+
+function requestCollaborationsPre(sites) {
   return send(
     new Parse.Query(CollaborationData.OriginClass)
       .equalTo("user", Parse.User.current())
@@ -41,8 +53,7 @@ function requestCollaborationsPre() {
         sites.push(collab.get('site'));
 
       return send(Parse.Object.fetchAllIfNeeded(sites));
-    })
-    .then(() => sites);
+    });
 }
 
 function requestUserSites() {
@@ -60,21 +71,20 @@ function requestCollaborationsPost(sites_o, sites) {
       .find()
   )
     .then(collabs_o => {
-      let promises = [];
+      const promises = [];
       for (let collab_o of collabs_o) {
-        let collab = new CollaborationData().setOrigin(collab_o);
-        let user_o = collab_o.get('user');
+        const collab = new CollaborationData().setOrigin(collab_o);
+        const user_o = collab_o.get('user');
         if (user_o)
           promises.push(
             send(user_o.fetch())
-              .then(user_o => {
-                let user = new UserData().setOrigin(user_o);
-                collab.user = user;
-              })
+              .then(user_o =>
+                collab.user = new UserData().setOrigin(user_o)
+              )
               .catch(() => {})
           );
 
-        let site_o = collab_o.get("site");
+        const site_o = collab_o.get("site");
         for (let site of sites) {
           if (site.origin.id == site_o.id) {
             collab.site = site;
@@ -88,7 +98,7 @@ function requestCollaborationsPost(sites_o, sites) {
     });
 }
 
-function requestModels(sites_o, sites, models_o, models) {
+function requestModels(templates_o, templates, sites_o, sites, models_o, models) {
   return send(
     new Parse.Query(ModelData.OriginClass)
       .containedIn("site", sites_o)
@@ -96,14 +106,38 @@ function requestModels(sites_o, sites, models_o, models) {
   )
     .then(_models_o => {
       Array.prototype.push.apply(models_o, _models_o);
-
-      for (let model_o of models_o) {
-        let model = new ModelData().setOrigin(model_o);
-        let site_o = model_o.get("site");
+  
+      for (let model_o of _models_o) {
+        const model = new ModelData().setOrigin(model_o);
+        const site_o = model_o.get("site");
         for (let site of sites) {
           if (site.origin.id == site_o.id) {
             model.site = site;
             site.models.push(model);
+            models.push(model);
+            break;
+          }
+        }
+      }
+  
+      return send(
+        new Parse.Query(ModelData.OriginClass)
+          .equalTo("site", undefined)
+          .containedIn("template", templates_o)
+          .find()
+      );
+    })
+    
+    .then(_models_o => {
+      Array.prototype.push.apply(models_o, _models_o);
+      
+      for (let model_o of _models_o) {
+        const model = new ModelData().setOrigin(model_o);
+        const template_o = model_o.get("template");
+        for (let template of templates) {
+          if (template.origin.id == template_o.id) {
+            model.template = template;
+            template.models.push(model);
             models.push(model);
             break;
           }
@@ -135,17 +169,21 @@ function requestFields(models_o, models) {
 
 export function init() {
   return dispatch => {
+    let templates_o = [];
+    let templates = [];
+    
     let sites_o = [];
     let sites = [];
     
     let models_o = [];
     let models = [];
   
-    requestCollaborationsPre()
-      .then(sitesCollab_o => {
-        sites_o = sitesCollab_o;
-        return requestUserSites();
-      })
+    requestTemplates(templates_o, templates)
+      
+      .then(requestCollaborationsPre(sites_o))
+      
+      .then(requestUserSites)
+      
       .then(sitesUser_o => {
         sites_o = sites_o.concat(sitesUser_o);
         let promises = [];
@@ -163,26 +201,30 @@ export function init() {
           
           sites.push(site);
         }
-
-        return Promise.all(promises)
-          .then(() => Promise.all([
-            requestCollaborationsPost(sites_o, sites),
-            requestModels(sites_o, sites, models_o, models)
-              .then(() => requestFields(models_o, models))
-              .then(() => {
-                for (let model of models) {
-                  model.fields.sort((a, b) => {
-                    if (a.order > b.order)
-                      return 1;
-                    return -1;
-                  });
-                }
-              })
-          ]));
+  
+        return Promise.all(promises);
       })
+      
+      .then(() => Promise.all([
+        requestCollaborationsPost(sites_o, sites),
+        
+        requestModels(templates_o, templates, sites_o, sites, models_o, models)
+          .then(() => requestFields(models_o, models))
+          .then(() => {
+            for (let model of models) {
+              model.fields.sort((a, b) => {
+                if (a.order > b.order)
+                  return 1;
+                return -1;
+              });
+            }
+          })
+      ]))
+  
       .then(() =>
         dispatch({
           type: INIT_END,
+          templates,
           sites
         })
       );
@@ -437,6 +479,7 @@ export function deleteField(field) {
 }
 
 const initialState = {
+  templates: [],
   sites: [],
   currentSite: null,
   currentModel: null,
@@ -451,6 +494,7 @@ export default function modelsReducer(state = initialState, action) {
     case INIT_END:
       return {
         ...state,
+        templates: action.templates,
         sites: action.sites
       };
       
