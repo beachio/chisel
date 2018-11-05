@@ -145,7 +145,8 @@ export class ModelData {
     this.origin.set("tableName",    this.tableName);
     this.origin.set("color",        this.color);
 
-    this.origin.set("site",         this.site.origin);
+    this.origin.set("site",         this.site     ? this.site.origin      : undefined);
+    this.origin.set("template",     this.template ? this.template.origin  : undefined);
   }
 
   setTableName() {
@@ -358,7 +359,7 @@ export class ModelFieldData {
   
     this.origin.set("validations",this.validations);
     
-    this.origin.set("model",      this.model.origin);
+    this.origin.set("model",      this.model ? this.model.origin : undefined);
   }
 
   toJSON() {
