@@ -4,7 +4,7 @@ import {LOCATION_CHANGE} from 'react-router-redux';
 import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';
 import {setCurrentSite} from 'ducks/models';
 import {getSiteByNameId} from 'utils/data';
-import {INIT_END, URL_SIGN, URL_SITE, URL_USERSPACE, URLS_EMAIL, URL_PROFILE} from 'ducks/nav';
+import {INIT_END, URL_SIGN, URL_SITE, URL_USERSPACE, URL_EMAIL_VERIFY, URL_INVALID_LINK, URL_PROFILE} from 'ducks/nav';
 
 
 let URL = '/';
@@ -89,7 +89,10 @@ export const routing = store => next => action => {
       URL = returnURL;
       returnURL = null;
       browserHistory.replace(URL);
-    } else if (URL.indexOf(URL_USERSPACE) == -1 && !isEmailURL(URL)) {
+    } else if (
+        URL.indexOf(URL_USERSPACE) == -1 &&
+        URL.indexOf(URL_EMAIL_VERIFY) == -1 &&
+        URL.indexOf(URL_INVALID_LINK) == -1) {
       browserHistory.replace(`/${URL_USERSPACE}`);
     }
     
