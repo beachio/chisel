@@ -3,11 +3,73 @@ import CSSModules from 'react-css-modules';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import InputControl from 'components/elements/InputControl/InputControl';
+import RadioControl from "components/elements/RadioControl/RadioControl";
 import {checkSiteName, NAME_ERROR_NAME_EXIST} from "utils/data";
 import {removeOddSpaces} from "utils/common";
 
 import styles from './SiteCreationModal.sss';
+import InlineSVG from "svg-inline-react";
 
+
+@CSSModules(styles, {allowMultiple: true})
+export class TemplateControl extends Component {
+  state = {
+    checked: false
+  };
+  template = null;
+  templateEmpty = false;
+  
+  constructor(props) {
+    super(props);
+    
+    this.template = props.template;
+    this.checked = props.checked;
+    
+    if (!this.template) {
+      this.templateEmpty = true;
+      this.template = {
+        name: 'Empty',
+        description: 'The site will has not any models',
+        icon: null
+      }
+    }
+  }
+  
+  componentWillReceiveProps({checked}) {
+    this.setState({checked});
+  }
+  
+  onClick = () => {
+    this.props.onChange(this.templateEmpty ? null : this.template);
+  };
+  
+  render() {
+    let style = 'template-content';
+    if (this.state.checked)
+      style += ' checked';
+    
+    return (
+      <div styleName="TemplateControl"
+           onClick={this.onClick}>
+        <div styleName={style}>
+          {!!this.template.icon ?
+            <img styleName="icon-img"
+                 src={this.template.icon.url()}>
+            </img>
+          :
+            <div styleName="icon">
+              <InlineSVG src={require("assets/images/hammer.svg")}/>
+            </div>
+          }
+          <div styleName="text">
+            <div styleName="title">{this.template.name}</div>
+            <div styleName="description">{this.template.description}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
 
 @CSSModules(styles, {allowMultiple: true})
 export default class SiteCreationModal extends Component {
@@ -16,6 +78,8 @@ export default class SiteCreationModal extends Component {
     template: null,
     errorName: false
   };
+  
+  templates = [];
   site = null;
   active = false;
   focusElm = null;
@@ -24,6 +88,7 @@ export default class SiteCreationModal extends Component {
   constructor(props) {
     super(props);
     
+    this.templates = props.templates;
     this.site = props.params;
   }
   
@@ -54,6 +119,10 @@ export default class SiteCreationModal extends Component {
   onChangeName = event => {
     let name = event.target.value;
     this.setState({name, errorName: null});
+  };
+  
+  onChangeTemplate = template => {
+    this.setState({template});
   };
   
   onChoose = () => {
@@ -95,6 +164,22 @@ export default class SiteCreationModal extends Component {
             
             {this.state.errorName &&
               <div styleName="error-same-name">This name is already in use.</div>
+            }
+  
+            {this.templates.length &&
+              <div>
+                <div styleName="label">Choose template:</div>
+                <div>
+                  <TemplateControl checked={!this.state.template}
+                                   onChange={this.onChangeTemplate}/>
+                  {this.templates.map(template =>
+                    <TemplateControl template={template}
+                                     key={template.origin.id}
+                                     checked={this.state.template == template}
+                                     onChange={this.onChangeTemplate}/>)
+                  }
+                </div>
+              </div>
             }
             
             <div styleName="input-wrapper buttons-wrapper">
