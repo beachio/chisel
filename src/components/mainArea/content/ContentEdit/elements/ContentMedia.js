@@ -7,7 +7,7 @@ import ContentBase from './ContentBase';
 import {MediaItemData} from 'models/MediaItemData';
 import {FILE_SIZE_MAX} from 'ConnectConstants';
 import {MODAL_TYPE_MEDIA} from 'ducks/nav';
-import {trimFileExt, filterSpecials} from 'utils/common';
+import {trimFileExt, filterSpecials, convertDataUnits, BYTES, M_BYTES} from 'utils/common';
 import MediaView from 'components/elements/MediaView/MediaView';
 
 import styles from '../ContentEdit.sss';
@@ -26,6 +26,76 @@ export default class ContentMedia extends ContentBase {
     super(props);
     
     this.site = props.site;
+  }
+  
+  checkSize = size => {
+    let max = FILE_SIZE_MAX;
+    let fileSizeValid;
+    
+    if (this.field.validations && this.field.validations.fileSize && this.field.validations.fileSize.active) {
+      fileSizeValid = this.field.validations.fileSize;
+  
+      let min = 0;
+      if (fileSizeValid.minActive)
+        min = convertDataUnits(fileSizeValid.min, fileSizeValid.minUnit, BYTES);
+      if (fileSizeValid.maxActive)
+        max = convertDataUnits(fileSizeValid.max, fileSizeValid.maxUnit, BYTES);
+  
+      if (size < min) {
+        let error = fileSizeValid.errorMsg;
+        if (!error) {
+          const unit = fileSizeValid.minUnit.toLowerCase();
+          size = convertDataUnits(size, BYTES, fileSizeValid.minUnit);
+          error = `The file size (${size} ${unit}) is smaller than the permissible value: ${fileSizeValid.min} ${unit}!`;
+        }
+        return error;
+      }
+    }
+    
+    if (size > max) {
+      let error;
+      if (fileSizeValid && fileSizeValid.maxActive) {
+        error = fileSizeValid.errorMsg;
+        if (!error) {
+          const unit = fileSizeValid.maxUnit.toLowerCase();
+          size = convertDataUnits(size, BYTES, fileSizeValid.maxUnit);
+          error = `The file size (${size} ${unit}) is greater than the permissible value: ${fileSizeValid.max} ${unit}!`;
+        }
+      } else {
+        max = convertDataUnits(FILE_SIZE_MAX, BYTES, M_BYTES);
+        const unit = M_BYTES.toLowerCase();
+        size = convertDataUnits(size, BYTES, M_BYTES);
+        error = `The file size (${size} ${unit}) is greater than the permissible value: ${max} ${unit}!`;
+      }
+      return error;
+    }
+  };
+  
+  getError () {
+    const baseError = super.getError();
+    if (baseError)
+      return baseError;
+  
+    const value = this.state.value;
+  
+    const checkSizeValidation = () => {
+      if (this.field.isList) {
+        for (let itemValue of value) {
+          const error = this.checkSize(itemValue.size);
+          if (error)
+            return error;
+        }
+      } else {
+        if (value)
+          return this.checkSize(value.size);
+      }
+    };
+  
+    const error = checkSizeValidation();
+    if (error)
+      return error;
+    
+    return null;
   }
   
   onMediaChoose = () => {
@@ -57,12 +127,13 @@ export default class ContentMedia extends ContentBase {
   };
   
   onMediaNew = event => {
-    let file = event.target.files[0];
+    const file = event.target.files[0];
     if (!file)
       return;
-    if (file.size > FILE_SIZE_MAX) {
-      let error = `Your file's size exceeds a limit of 10 MB.`;
-      this.setState({error});
+    
+    const checkSizeError = this.checkSize(file.size);
+    if (checkSizeError) {
+      this.setState({error: checkSizeError});
       return;
     }
     
