@@ -12,6 +12,35 @@ import styles from './MediaView.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class MediaView extends Component {
+  getIconName (type) {
+    switch (checkFileType(type)) {
+      case TYPE_TEXT:     return 'txt';
+      case TYPE_HTML:     return 'html';
+      case TYPE_XML:      return 'xml';
+      case TYPE_MARKDOWN: return 'md';
+      case TYPE_JSON:     return 'json';
+      case TYPE_PDF:      return 'pdf';
+      case TYPE_F_TEXT:   return 'doc';
+      case TYPE_TABLE:    return 'xls';
+      case TYPE_PRESENT:  return 'ppt';
+      case TYPE_ARCHIVE:  return 'archive';
+      case TYPE_EXE:      return 'exe';
+    }
+    return 'other';
+  }
+  
+  getIcon (item) {
+    const iconName = this.getIconName(item.type);
+    return (
+      <a styleName="link"
+         href={item.file.url()}
+         target="_blank">
+        <InlineSVG styleName="icon"
+                   src={require(`assets/images/media-types/${iconName}.svg`)} />
+      </a>
+    );
+  }
+  
   render() {
     const {item} = this.props;
     
@@ -21,82 +50,11 @@ export default class MediaView extends Component {
     switch (checkFileType(item.type)) {
       case TYPE_IMAGE:
         return (
-          <a href={item.file.url()} target="_blank">
+          <a href={item.file.url()}
+             target="_blank">
             <div styleName="image"
                  style={{backgroundImage: `url(${item.file.url()})`}}>
             </div>
-          </a>
-        );
-    
-      case TYPE_TEXT:
-        return (
-          <a href={item.file.url()} target="_blank">
-            <InlineSVG styleName="icon"
-                       src={require('assets/images/media-types/txt.svg')} />
-          </a>
-        );
-  
-      case TYPE_HTML:
-        return (
-          <a href={item.file.url()} target="_blank">
-            <InlineSVG styleName="icon"
-                       src={require('assets/images/media-types/html.svg')} />
-          </a>
-        );
-  
-      case TYPE_XML:
-        return (
-          <a href={item.file.url()} target="_blank">
-            <InlineSVG styleName="icon"
-                       src={require('assets/images/media-types/xml.svg')} />
-          </a>
-        );
-  
-      case TYPE_MARKDOWN:
-        return (
-          <a href={item.file.url()} target="_blank">
-            <InlineSVG styleName="icon"
-                       src={require('assets/images/media-types/md.svg')} />
-          </a>
-        );
-  
-      case TYPE_JSON:
-        return (
-          <a href={item.file.url()} target="_blank">
-            <InlineSVG styleName="icon"
-                       src={require('assets/images/media-types/json.svg')} />
-          </a>
-        );
-    
-      case TYPE_PDF:
-        return (
-          <a href={item.file.url()} target="_blank">
-            <InlineSVG styleName="icon"
-                       src={require('assets/images/media-types/pdf.svg')} />
-          </a>
-        );
-    
-      case TYPE_F_TEXT:
-        return (
-          <a href={item.file.url()} target="_blank">
-            <InlineSVG styleName="icon"
-                       src={require('assets/images/media-types/doc.svg')} />
-          </a>
-        );
-  
-      case TYPE_TABLE:
-        return (
-          <a href={item.file.url()} target="_blank">
-            <InlineSVG styleName="icon"
-                       src={require('assets/images/media-types/xls.svg')} />
-          </a>
-        );
-  
-      case TYPE_PRESENT:
-        return (
-          <a href={item.file.url()} target="_blank">
-            <InlineSVG styleName="icon"
-                       src={require('assets/images/media-types/ppt.svg')} />
           </a>
         );
     
@@ -117,30 +75,9 @@ export default class MediaView extends Component {
                  styleName="video">
           </video>
         );
-  
-      case TYPE_ARCHIVE:
-        return (
-          <a href={item.file.url()} target="_blank">
-            <InlineSVG styleName="icon"
-                       src={require('assets/images/media-types/archive.svg')} />
-          </a>
-        );
-  
-      case TYPE_EXE:
-        return (
-          <a href={item.file.url()} target="_blank">
-            <InlineSVG styleName="icon"
-                       src={require('assets/images/media-types/exe.svg')} />
-          </a>
-        );
     
       default:
-        return (
-          <a href={item.file.url()} target="_blank">
-            <InlineSVG styleName="icon"
-                       src={require('assets/images/media-types/other.svg')}/>
-          </a>
-        );
+        return this.getIcon(item);
     }
   }
 }
