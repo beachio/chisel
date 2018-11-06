@@ -5,14 +5,12 @@ import CheckboxControl from "components/elements/CheckboxControl/CheckboxControl
 import InputControl from "components/elements/InputControl/InputControl";
 import DropdownControl from "components/elements/DropdownControl/DropdownControl";
 import InputNumberControl from "components/elements/InputNumberControl/InputNumberControl";
+import {BYTES, DATA_UNITS, convertDataUnits} from 'utils/common';
+import {FILE_SIZE_MAX} from 'ConnectConstants';
 
 import styles from '../FieldModal.sss';
 
 
-const BYTES = "Bytes";
-const K_BYTES = "KBytes";
-const M_BYTES = "MBytes";
-const DATA_UNITS = [BYTES, K_BYTES, M_BYTES];
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -29,6 +27,8 @@ export default class ValidationMedia extends Component {
       errorMsg: ''
     }
   };
+  maxForMin = FILE_SIZE_MAX;
+  maxForMax = FILE_SIZE_MAX;
   
   constructor(props) {
     super(props);
@@ -79,17 +79,29 @@ export default class ValidationMedia extends Component {
       }}, this.update);
   };
   
-  onSizeMinUnit = value => {
+  onSizeMinUnit = newMinUnit => {
+    let {min, minUnit} = this.state.fileSize;
+    
+    min = convertDataUnits(min, minUnit, newMinUnit);
+    this.maxForMin = convertDataUnits(FILE_SIZE_MAX, BYTES, newMinUnit);
+    
     this.setState({fileSize: {
         ...this.state.fileSize,
-        minUnit: value
+        min,
+        minUnit: newMinUnit
       }}, this.update);
   };
   
-  onSizeMaxUnit = value => {
+  onSizeMaxUnit = newMaxUnit => {
+    let {max, maxUnit} = this.state.fileSize;
+  
+    max = convertDataUnits(max, maxUnit, newMaxUnit);
+    this.maxForMax = convertDataUnits(FILE_SIZE_MAX, BYTES, newMaxUnit);
+    
     this.setState({fileSize: {
         ...this.state.fileSize,
-        maxUnit: value
+        max,
+        maxUnit: newMaxUnit
       }}, this.update);
   };
   
@@ -122,6 +134,9 @@ export default class ValidationMedia extends Component {
             <div styleName="size-field">
               <InputNumberControl onChange={this.onSizeMin}
                                   value={this.state.fileSize.min}
+                                  isInt={true}
+                                  min={0}
+                                  max={this.maxForMin}
                                   readOnly={!this.state.fileSize.active || !this.state.fileSize.minActive} />
             </div>
             <div styleName="size-unit">
@@ -138,6 +153,9 @@ export default class ValidationMedia extends Component {
             <div styleName="size-field">
               <InputNumberControl onChange={this.onSizeMax}
                                   value={this.state.fileSize.max}
+                                  isInt={true}
+                                  min={0}
+                                  max={this.maxForMax}
                                   readOnly={!this.state.fileSize.active || !this.state.fileSize.maxActive} />
             </div>
             <div styleName="size-unit">

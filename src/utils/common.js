@@ -116,3 +116,34 @@ export function URLEncode(params) {
     .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
     .join('&');
 }
+
+export const BYTES = "Bytes";
+export const K_BYTES = "KBytes";
+export const M_BYTES = "MBytes";
+export const DATA_UNITS = [BYTES, K_BYTES, M_BYTES];
+
+export function convertDataUnits(data, oldUnit, newUnit) {
+  switch (newUnit) {
+    case BYTES:
+      switch (oldUnit) {
+        case K_BYTES: data = data * 1024; break;
+        case M_BYTES: data = data * 1024 * 1024; break;
+      }
+      break;
+    
+    case K_BYTES:
+      switch (oldUnit) {
+        case BYTES:   data = Math.floor(data / 1024); break;
+        case M_BYTES: data = data * 1024; break;
+      }
+      break;
+    
+    case M_BYTES:
+      switch (oldUnit) {
+        case BYTES:   data = Math.floor(data / 1024 / 1024); break;
+        case K_BYTES: data = Math.floor(data / 1024); break;
+      }
+      break;
+  }
+  return data;
+}
