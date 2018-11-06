@@ -12,6 +12,7 @@ export class MediaItemData {
   
   name = '';
   type = MEDIA_TYPE__IMAGE;
+  size = 0;
   file = null;
   assigned = false;
   
@@ -31,6 +32,7 @@ export class MediaItemData {
     
     if (origin.get('name'))     this.name     = origin.get('name');
     if (origin.get('type'))     this.type     = origin.get('type');
+    if (origin.get('size'))     this.size     = origin.get('size');
     if (origin.get('file'))     this.file     = origin.get('file');
     if (origin.get('assigned')) this.assigned = origin.get('assigned');
   
@@ -43,6 +45,7 @@ export class MediaItemData {
     
     this.origin.set("name",     this.name);
     this.origin.set("type",     this.type);
+    this.origin.set("size",     this.size);
     this.origin.set("file",     this.file);
     this.origin.set("assigned", this.assigned);
     this.origin.set("site",     this.site.origin);
@@ -50,11 +53,12 @@ export class MediaItemData {
   
   clone() {
     let item = new MediaItemData();
-    item.file     = this.file;
     item.name     = this.name;
     item.type     = this.type;
-    item.site     = this.site;
+    item.size     = this.size;
+    item.file     = this.file;
     item.assigned = this.assigned;
+    item.site     = this.site;
     return item;
   }
 }

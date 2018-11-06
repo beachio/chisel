@@ -74,6 +74,7 @@ export default class ContentMedia extends ContentBase {
       item.file = parseFile;
       item.name = trimFileExt(file.name);
       item.type = file.type;
+      item.size = file.size;
       item.site = this.site;
       addMediaItem(item);
       
