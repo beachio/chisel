@@ -119,8 +119,8 @@ export function URLEncode(params) {
 
 
 export const BYTES = "Bytes";
-export const K_BYTES = "KBytes";
-export const M_BYTES = "MBytes";
+export const K_BYTES = "KB";
+export const M_BYTES = "MB";
 export const DATA_UNITS = [BYTES, K_BYTES, M_BYTES];
 
 export function convertDataUnits(data, oldUnit, newUnit) {
