@@ -29,6 +29,9 @@ export default class ContentMedia extends ContentBase {
   }
   
   checkSize = size => {
+    if (!size)
+      return;
+    
     let max = FILE_SIZE_MAX;
     let fileSizeValid;
     
@@ -72,7 +75,7 @@ export default class ContentMedia extends ContentBase {
   };
   
   checkType = type => {
-    if (!this.field.validations)
+    if (!type || !this.field.validations)
       return;
     
     const {fileTypes} = this.field.validations;
@@ -130,6 +133,7 @@ export default class ContentMedia extends ContentBase {
     
     this.props.showModal(MODAL_TYPE_MEDIA, {
       isMult: this.field.isList,
+      filters: this.field.validations,
       
       callback: itemsSrc => {
         let newItems = [];

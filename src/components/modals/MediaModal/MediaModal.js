@@ -7,6 +7,8 @@ import MediaView from 'components/elements/MediaView/MediaView';
 import {store} from 'index';
 
 import styles from './MediaModal.sss';
+import {FILE_SIZE_MAX} from "ConnectConstants";
+import {BYTES, checkFileType, convertDataUnits} from "utils/common";
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -17,6 +19,7 @@ export default class MediaModal extends Component {
   };
   
   isMult = false;
+  filters = null;
   active = false;
   callback = null;
   items = [];
@@ -27,6 +30,7 @@ export default class MediaModal extends Component {
     super(props);
     
     this.isMult = props.params.isMult;
+    this.filters = props.params.filters;
     this.callback = props.params.callback;
     
     this.items = store.getState().media.items;
@@ -107,6 +111,41 @@ export default class MediaModal extends Component {
     this.props.onClose();
   };
 
+  filterSize = item => {
+    if (!item.size || !this.filters)
+      return true;
+  
+    const {fileSize} = this.filters;
+    if (!fileSize || !fileSize.active)
+      return true;
+    
+    let min = 0;
+    if (fileSize.minActive)
+      min = convertDataUnits(fileSize.min, fileSize.minUnit, BYTES);
+    let max = FILE_SIZE_MAX;
+    if (fileSize.maxActive)
+      max = convertDataUnits(fileSize.max, fileSize.maxUnit, BYTES);
+    
+    return item.size >= min && item.size <= max;
+  };
+  
+  filterType = item => {
+    if (!item.type || !this.filters)
+      return true;
+  
+    const {fileTypes} = this.filters;
+    if (!fileTypes || !fileTypes.active || !fileTypes.types || !fileTypes.types.length)
+      return true;
+  
+    let type = checkFileType(item.type);
+  
+    for (let typeTemp of fileTypes.types) {
+      if (type == typeTemp)
+        return true;
+    }
+    return false;
+  };
+  
   render() {
     return (
       <div styleName="modal" onClick={this.close}>
@@ -126,6 +165,8 @@ export default class MediaModal extends Component {
               {
                 this.items
                   .filter(item => !item.assigned)
+                  .filter(this.filterSize)
+                  .filter(this.filterType)
                   .filter(item => this.searchMatch(this.state.searchText, item.name))
                   .map(item => {
                     let itemStyle = "media-item";
