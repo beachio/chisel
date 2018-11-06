@@ -34,10 +34,12 @@ export default class ContentBoolean extends ContentBase {
                           disabled={!this.state.isEditable}
                           label={textNo}
                           onChange={this.setValue} />
-            <div styleName="clear"
-                 onClick={() => this.setValue(undefined)}>
-              Reset
-            </div>
+            {this.state.isEditable &&
+              <div styleName="clear"
+                   onClick={() => this.setValue(undefined)}>
+                Reset
+              </div>
+            }
           </div>
         );
     
@@ -49,10 +51,12 @@ export default class ContentBoolean extends ContentBase {
                              disabled={!this.state.isEditable}
                              onChange={this.setValue} />
             </div>
-            <div styleName="clear"
-                 onClick={() => this.setValue(undefined)}>
-              Reset
-            </div>
+            {this.state.isEditable &&
+              <div styleName="clear"
+                   onClick={() => this.setValue(undefined)}>
+                Reset
+              </div>
+            }
           </div>
         );
     }

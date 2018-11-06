@@ -268,10 +268,12 @@ export default class ContentString extends ContentBase {
                                    suggest={this.onChangeDropdown}
                                    current={value} />
                 </div>
-                <div styleName="clear"
-                     onClick={() => this.setValue(undefined)}>
-                  Reset
-                </div>
+                {this.state.isEditable &&
+                  <div styleName="clear"
+                       onClick={() => this.setValue(undefined)}>
+                    Reset
+                  </div>
+                }
               </div>
             );
         }

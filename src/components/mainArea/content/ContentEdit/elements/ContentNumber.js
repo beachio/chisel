@@ -140,10 +140,12 @@ export default class ContentNumber extends ContentBase {
                             edit={this.state.isEditable}
                             color1={'#F5F5F5'}
                             color2={'#5CA6DC'} />
-                <div styleName="clear"
-                     onClick={() => this.setValue(undefined)}>
-                  Reset
-                </div>
+                {this.state.isEditable &&
+                  <div styleName="clear"
+                       onClick={() => this.setValue(undefined)}>
+                    Reset
+                  </div>
+                }
               </div>
             );
         }
