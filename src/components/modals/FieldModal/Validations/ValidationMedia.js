@@ -118,6 +118,13 @@ export default class ValidationMedia extends Component {
   };
   
   render() {
+    let errorRange = false;
+    if (this.state.fileSize.active && this.state.fileSize.minActive && this.state.fileSize.maxActive) {
+      const min = convertDataUnits(this.state.fileSize.min, this.state.fileSize.minUnit, BYTES);
+      const max = convertDataUnits(this.state.fileSize.max, this.state.fileSize.maxUnit, BYTES);
+      errorRange = min > max;
+    }
+    
     return (
       <div>
         <div styleName="validation">
@@ -169,8 +176,7 @@ export default class ValidationMedia extends Component {
                         onChange={this.onSizeErrorMsg}
                         value={this.state.fileSize.errorMsg}
                         readOnly={!this.state.fileSize.active} />
-          {
-            (this.state.fileSize.min > this.state.fileSize.max) &&
+          {errorRange &&
             <div styleName="error">
               Error: the min value should be smaller than max value! Please, fix it.
             </div>
