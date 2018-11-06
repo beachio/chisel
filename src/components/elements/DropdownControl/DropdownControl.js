@@ -67,19 +67,19 @@ export default class DropdownControl extends Component {
 
   render() {
     const {label, type} = this.props;
-
-    if (this.state.disabled)
-      return <InputControl label={label}
-                           icon="lock"
-                           value={this.state.suggestionValue}
-                           dropdown={true}
-                           readOnly={true} />;
-
+  
     let value = this.state.suggestionValue;
     if (value == '')
       value = '(empty)';
     else if (!value)
       value = '(undefined)';
+
+    if (this.state.disabled)
+      return <InputControl label={label}
+                           icon="lock"
+                           value={value}
+                           dropdown={true}
+                           readOnly={true} />;
       
     const wrapperClasses = classNames({
       'input-wrapper type-wrapper': true,
