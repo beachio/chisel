@@ -117,6 +117,7 @@ export function URLEncode(params) {
     .join('&');
 }
 
+
 export const BYTES = "Bytes";
 export const K_BYTES = "KBytes";
 export const M_BYTES = "MBytes";
@@ -146,4 +147,38 @@ export function convertDataUnits(data, oldUnit, newUnit) {
       break;
   }
   return data;
+}
+
+
+export const TYPE_IMAGE   = "Image";
+export const TYPE_TEXT    = "Text";
+export const TYPE_PDF     = "PDF";
+export const TYPE_F_TEXT  = "Formatted text";
+export const TYPE_AUDIO   = "Audio";
+export const TYPE_VIDEO   = "Video";
+export const TYPE_OTHER   = "Other";
+export const FILE_TYPES   = [TYPE_IMAGE, TYPE_TEXT, TYPE_F_TEXT, TYPE_PDF, TYPE_PDF, TYPE_AUDIO, TYPE_VIDEO, TYPE_OTHER];
+
+export function checkFileType(type) {
+  if (type.slice(0, 6) == `image/`) {
+    return TYPE_IMAGE;
+    
+  } else if (type.slice(0, 5) == `text/`) {
+    return TYPE_TEXT;
+    
+  } else if (type == `application/msword` || type == `application/vnd.openxmlformats-officedocument.wordprocessingml.document`) {
+    return TYPE_F_TEXT;
+    
+  } else if (type == `application/pdf`) {
+    return TYPE_PDF;
+    
+  } else if (type.slice(0, 6) == `audio/`) {
+    return TYPE_AUDIO;
+    
+  } else if (type.slice(0, 6) == `video/`) {
+    return TYPE_VIDEO;
+    
+  } else {
+    return TYPE_OTHER;
+  }
 }
