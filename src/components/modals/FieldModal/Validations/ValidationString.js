@@ -153,7 +153,7 @@ export default class ValidationString extends Component {
                         value={this.state.range.errorMsg}
                         readOnly={!this.state.range.active} />
           {
-            (this.state.range.minActive && this.state.range.maxActive && this.state.range.min > this.state.range.max) &&
+            (this.state.range.active && this.state.range.minActive && this.state.range.maxActive && this.state.range.min > this.state.range.max) &&
               <div styleName="error">
                 Error: the min value should be smaller than max value! Please, fix it.
               </div>
