@@ -5,7 +5,7 @@ import CheckboxControl from "components/elements/CheckboxControl/CheckboxControl
 import InputControl from "components/elements/InputControl/InputControl";
 import DropdownControl from "components/elements/DropdownControl/DropdownControl";
 import InputNumberControl from "components/elements/InputNumberControl/InputNumberControl";
-import {BYTES, DATA_UNITS, convertDataUnits} from 'utils/common';
+import {BYTES, DATA_UNITS, convertDataUnits, FILE_TYPES} from 'utils/common';
 import {FILE_SIZE_MAX} from 'ConnectConstants';
 
 import styles from '../FieldModal.sss';
@@ -25,15 +25,28 @@ export default class ValidationMedia extends Component {
       minUnit: BYTES,
       maxUnit: BYTES,
       errorMsg: ''
+    },
+    fileTypes: {
+      active: false,
+      types: [],
+      errorMsg: ''
     }
   };
+  
   maxForMin = FILE_SIZE_MAX;
   maxForMax = FILE_SIZE_MAX;
+  
+  typesSet = new Set();
+  
   
   constructor(props) {
     super(props);
     
     Object.assign(this.state, props.validations);
+  
+    const types = this.state.fileTypes.types;
+    if (types && typeof types[Symbol.iterator] === 'function')
+      this.typesSet = new Set(types);
   }
   
   onSizeActive = value => {
@@ -113,6 +126,33 @@ export default class ValidationMedia extends Component {
       }}, this.update);
   };
   
+  onTypesActive = value => {
+    this.setState({fileTypes: {
+        ...this.state.fileTypes,
+        active: value
+      }}, this.update);
+  };
+  
+  onTypesErrorMsg = event => {
+    const {value} = event.target;
+    this.setState({fileTypes: {
+        ...this.state.fileTypes,
+        errorMsg: value
+      }}, this.update);
+  };
+  
+  onTypeChange = (type, value) => {
+    if (value)
+      this.typesSet.add(type);
+    else
+      this.typesSet.delete(type);
+    
+    this.setState({fileTypes: {
+        ...this.state.fileTypes,
+        types: Array.from(this.typesSet)
+      }}, this.update);
+  };
+  
   update = () => {
     this.props.update(this.state);
   };
@@ -181,6 +221,29 @@ export default class ValidationMedia extends Component {
               Error: the min value should be smaller than max value! Please, fix it.
             </div>
           }
+        </div>
+  
+        <div styleName="validation">
+          <div styleName="active">
+            <CheckboxControl title="Accept only specified file types"
+                             checked={this.state.fileTypes.active}
+                             onChange={this.onTypesActive} />
+          </div>
+          <div styleName="file-types">
+            {FILE_TYPES.map(type =>
+              <div styleName="file-types-checkbox"
+                   key={type}>
+                <CheckboxControl title={type}
+                                 checked={this.typesSet.has(type)}
+                                 onChange={value => this.onTypeChange(type, value)}
+                                 disabled={!this.state.fileTypes.active} />
+              </div>
+            )}
+          </div>
+          <InputControl label="Custom error message"
+                        onChange={this.onTypesErrorMsg}
+                        value={this.state.fileTypes.errorMsg}
+                        readOnly={!this.state.fileTypes.active} />
         </div>
       </div>
     );
