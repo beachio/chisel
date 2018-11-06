@@ -11,6 +11,7 @@ import ValidationNumber from 'components/modals/FieldModal/Validations/Validatio
 import ValidationString from 'components/modals/FieldModal/Validations/ValidationString';
 import ValidationDate from 'components/modals/FieldModal/Validations/ValidationDate';
 import ValidationReference from 'components/modals/FieldModal/Validations/ValidationReference';
+import ValidationMedia from "components/modals/FieldModal/Validations/ValidationMedia";
 import {removeOddSpaces} from "utils/common";
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST} from 'utils/data';
 
@@ -418,6 +419,11 @@ export default class FieldModal extends Component {
             validations = <ValidationReference validations={this.validations}
                                                models={this.models}
                                                update={this.onUpdateValidations} />;
+            break;
+  
+          case ftps.FIELD_TYPE_MEDIA:
+            validations = <ValidationMedia validations={this.validations}
+                                           update={this.onUpdateValidations} />;
             break;
         }
         
