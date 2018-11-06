@@ -80,7 +80,7 @@ Parameter names:
 | Port | --port | – | PORT | 9000 |
 | Parse Server URL | --serverURL | configServerURL | REACT_APP_SERVER_URL | http://localhost:1337/parse |
 | Application ID | --appId | configAppId | REACT_APP_APP_ID | SampleAppId |
-| JS key | -JSkey | configJSkey | JS_KEY | – |
+| JS key | --JSkey | configJSkey | JS_KEY | – |
 | REST key | --RESTkey | configRESTkey | REST_KEY | – |
 
 
