@@ -17,7 +17,8 @@ export default class ValidationString extends Component {
       max: 0,
       minActive: true,
       maxActive: true,
-      errorMsg: ''
+      errorMsg: '',
+      isError: false
     },
     pattern: {
       active: false,
@@ -36,21 +37,24 @@ export default class ValidationString extends Component {
   onRangeActive = value => {
     this.setState({range: {
         ...this.state.range,
-        active: value
+        active: value,
+        isError: false
     }}, this.update);
   };
   
   onRangeMin = value => {
     this.setState({range: {
         ...this.state.range,
-        min: value
+        min: value,
+        isError: false
     }}, this.update);
   };
   
   onRangeMax = value => {
     this.setState({range: {
         ...this.state.range,
-        max: value
+        max: value,
+        isError: false
     }}, this.update);
   };
   
@@ -61,7 +65,8 @@ export default class ValidationString extends Component {
     this.setState({range: {
         ...this.state.range,
         minActive: value,
-        maxActive
+        maxActive,
+        isError: false
     }}, this.update);
   };
   
@@ -72,7 +77,8 @@ export default class ValidationString extends Component {
     this.setState({range: {
         ...this.state.range,
         maxActive: value,
-        minActive
+        minActive,
+        isError: false
     }}, this.update);
   };
   
@@ -119,6 +125,19 @@ export default class ValidationString extends Component {
     this.props.update(this.state);
   };
   
+  getErrors() {
+    if (!this.state.range.active || !this.state.range.minActive || !this.state.range.maxActive)
+      return false;
+    
+    const isError = this.state.range.min > this.state.range.max;
+    
+    this.setState({range: {
+        ...this.state.range,
+        isError
+      }});
+    return isError;
+  }
+  
   render() {
     return (
       <div>
@@ -154,11 +173,10 @@ export default class ValidationString extends Component {
                             onChange={this.onRangeErrorMsg}
                             value={this.state.range.errorMsg}
                             readOnly={!this.state.range.active} />
-              {
-                (this.state.range.active && this.state.range.minActive && this.state.range.maxActive && this.state.range.min > this.state.range.max) &&
-                  <div styleName="error">
-                    Error: the min value should be smaller than max value! Please, fix it.
-                  </div>
+              {this.state.range.isError &&
+                <div styleName="error">
+                  Error: the min value should be smaller than max value! Please, fix it.
+                </div>
               }
             </div>
           }

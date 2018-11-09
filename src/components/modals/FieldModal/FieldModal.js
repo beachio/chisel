@@ -56,6 +56,7 @@ export default class FieldModal extends Component {
   models = null;
   validValuesList = null;
   focusElm = null;
+  validComp = null;
   
 
 
@@ -184,6 +185,11 @@ export default class FieldModal extends Component {
       this.field.name = name;
     }
     
+    if (this.validComp && this.validComp.getErrors()) {
+      this.setState({tab: TAB_VALIDATIONS});
+      return;
+    }
+
     this.field.type         = this.state.type;
     this.field.appearance   = this.state.appearance;
     this.field.boolTextYes  = this.state.boolTextYes;
@@ -366,7 +372,8 @@ export default class FieldModal extends Component {
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
               case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
-                validations = <ValidationString validations={this.validations}
+                validations = <ValidationString ref={c => this.validComp = c}
+                                                validations={this.validations}
                                                 update={this.onUpdateValidations} />;
                 break;
             }
@@ -376,7 +383,8 @@ export default class FieldModal extends Component {
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
               case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
-                validations = <ValidationString validations={this.validations}
+                validations = <ValidationString ref={c => this.validComp = c}
+                                                validations={this.validations}
                                                 update={this.onUpdateValidations} />;
                 break;
             }
@@ -385,7 +393,8 @@ export default class FieldModal extends Component {
           case ftps.FIELD_TYPE_INTEGER:
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
-                validations = <ValidationNumber validations={this.validations}
+                validations = <ValidationNumber ref={c => this.validComp = c}
+                                                validations={this.validations}
                                                 update={this.onUpdateValidations }/>;
                 break;
   
@@ -397,7 +406,8 @@ export default class FieldModal extends Component {
           case ftps.FIELD_TYPE_FLOAT:
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
-                validations = <ValidationNumber validations={this.validations}
+                validations = <ValidationNumber ref={c => this.validComp = c}
+                                                validations={this.validations}
                                                 update={this.onUpdateValidations} />;
                 break;
             }
@@ -408,7 +418,8 @@ export default class FieldModal extends Component {
               case ftps.FIELD_APPEARANCE__DATE__DATE:
               case ftps.FIELD_APPEARANCE__DATE__DATE_ONLY:
               case ftps.FIELD_APPEARANCE__DATE__TIME_ONLY:
-                validations = <ValidationDate appearance={this.state.appearance}
+                validations = <ValidationDate ref={c => this.validComp = c}
+                                              appearance={this.state.appearance}
                                               validations={this.validations}
                                               update={this.onUpdateValidations} />;
                 break;
@@ -416,13 +427,15 @@ export default class FieldModal extends Component {
             break;
           
           case ftps.FIELD_TYPE_REFERENCE:
-            validations = <ValidationReference validations={this.validations}
+            validations = <ValidationReference ref={c => this.validComp = c}
+                                               validations={this.validations}
                                                models={this.models}
                                                update={this.onUpdateValidations} />;
             break;
   
           case ftps.FIELD_TYPE_MEDIA:
-            validations = <ValidationMedia validations={this.validations}
+            validations = <ValidationMedia ref={c => this.validComp = c}
+                                           validations={this.validations}
                                            update={this.onUpdateValidations} />;
             break;
         }

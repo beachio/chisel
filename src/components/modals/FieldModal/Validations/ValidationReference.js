@@ -13,7 +13,8 @@ export default class ValidationReference extends Component {
     models: {
       active: false,
       modelsList: [],
-      errorMsg: ''
+      errorMsg: '',
+      isError: false
     }
   };
   
@@ -33,14 +34,15 @@ export default class ValidationReference extends Component {
       this.modelsSet = new Set(modelsList);
   }
   
-  onTypesActive = value => {
+  onModelsActive = value => {
     this.setState({models: {
         ...this.state.models,
-        active: value
+        active: value,
+        isError: false
       }}, this.update);
   };
   
-  onTypesErrorMsg = event => {
+  onModelsErrorMsg = event => {
     const {value} = event.target;
     this.setState({models: {
         ...this.state.models,
@@ -56,13 +58,28 @@ export default class ValidationReference extends Component {
   
     this.setState({models: {
         ...this.state.models,
-        modelsList: Array.from(this.modelsSet)
+        modelsList: Array.from(this.modelsSet),
+        isError: false
       }}, this.update);
   };
   
   update = () => {
     this.props.update(this.state);
   };
+  
+  getErrors() {
+    if (this.state.models.active && !this.state.models.modelsList.length) {
+      this.setState({
+        models: {
+          ...this.state.models,
+          isError: true
+        }
+      });
+      return true;
+    }
+    
+    return false;
+  }
   
   render() {
     return (
@@ -71,7 +88,7 @@ export default class ValidationReference extends Component {
           <div styleName="active">
             <CheckboxControl title="Accept only specified entry models"
                              checked={this.state.models.active}
-                             onChange={this.onTypesActive} />
+                             onChange={this.onModelsActive} />
           </div>
           {this.state.models.active &&
             <div>
@@ -87,9 +104,14 @@ export default class ValidationReference extends Component {
                 )}
               </div>
               <InputControl label="Custom error message"
-                            onChange={this.onTypesErrorMsg}
+                            onChange={this.onModelsErrorMsg}
                             value={this.state.models.errorMsg}
                             readOnly={!this.state.models.active}/>
+              {this.state.models.isError &&
+                <div styleName="error">
+                  Error: you should select at least one model.
+                </div>
+              }
             </div>
           }
         </div>

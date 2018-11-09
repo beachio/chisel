@@ -24,12 +24,14 @@ export default class ValidationMedia extends Component {
       maxActive: true,
       minUnit: BYTES,
       maxUnit: BYTES,
-      errorMsg: ''
+      errorMsg: '',
+      isError: false
     },
     fileTypes: {
       active: false,
       types: [],
-      errorMsg: ''
+      errorMsg: '',
+      isError: false
     }
   };
   
@@ -52,21 +54,24 @@ export default class ValidationMedia extends Component {
   onSizeActive = value => {
     this.setState({fileSize: {
         ...this.state.fileSize,
-        active: value
+        active: value,
+        isError: false
       }}, this.update);
   };
   
   onSizeMin = value => {
     this.setState({fileSize: {
         ...this.state.fileSize,
-        min: value
+        min: value,
+        isError: false
       }}, this.update);
   };
   
   onSizeMax = value => {
     this.setState({fileSize: {
         ...this.state.fileSize,
-        max: value
+        max: value,
+        isError: false
       }}, this.update);
   };
   
@@ -77,7 +82,8 @@ export default class ValidationMedia extends Component {
     this.setState({fileSize: {
         ...this.state.fileSize,
         minActive: value,
-        maxActive
+        maxActive,
+        isError: false
       }}, this.update);
   };
   
@@ -88,7 +94,8 @@ export default class ValidationMedia extends Component {
     this.setState({fileSize: {
         ...this.state.fileSize,
         maxActive: value,
-        minActive
+        minActive,
+        isError: false
       }}, this.update);
   };
   
@@ -101,7 +108,8 @@ export default class ValidationMedia extends Component {
     this.setState({fileSize: {
         ...this.state.fileSize,
         min,
-        minUnit: newMinUnit
+        minUnit: newMinUnit,
+        isError: false
       }}, this.update);
   };
   
@@ -114,7 +122,8 @@ export default class ValidationMedia extends Component {
     this.setState({fileSize: {
         ...this.state.fileSize,
         max,
-        maxUnit: newMaxUnit
+        maxUnit: newMaxUnit,
+        isError: false
       }}, this.update);
   };
   
@@ -129,7 +138,8 @@ export default class ValidationMedia extends Component {
   onTypesActive = value => {
     this.setState({fileTypes: {
         ...this.state.fileTypes,
-        active: value
+        active: value,
+        isError: false
       }}, this.update);
   };
   
@@ -149,7 +159,8 @@ export default class ValidationMedia extends Component {
     
     this.setState({fileTypes: {
         ...this.state.fileTypes,
-        types: Array.from(this.typesSet)
+        types: Array.from(this.typesSet),
+        isError: false
       }}, this.update);
   };
   
@@ -157,14 +168,37 @@ export default class ValidationMedia extends Component {
     this.props.update(this.state);
   };
   
-  render() {
-    let errorRange = false;
+  getErrors() {
     if (this.state.fileSize.active && this.state.fileSize.minActive && this.state.fileSize.maxActive) {
       const min = convertDataUnits(this.state.fileSize.min, this.state.fileSize.minUnit, BYTES);
       const max = convertDataUnits(this.state.fileSize.max, this.state.fileSize.maxUnit, BYTES);
-      errorRange = min > max;
+      const isError = min > max;
+  
+      if (isError) {
+        this.setState({
+          fileSize: {
+            ...this.state.fileSize,
+            isError: true
+          }
+        });
+        return true;
+      }
+    }
+  
+    if (this.state.fileTypes.active && !this.state.fileTypes.types.length) {
+      this.setState({
+        fileTypes: {
+          ...this.state.fileTypes,
+          isError: true
+        }
+      });
+      return true;
     }
     
+    return false;
+  }
+  
+  render() {
     return (
       <div>
         <div styleName="validation">
@@ -218,7 +252,7 @@ export default class ValidationMedia extends Component {
                             onChange={this.onSizeErrorMsg}
                             value={this.state.fileSize.errorMsg}
                             readOnly={!this.state.fileSize.active}/>
-              {errorRange &&
+              {this.state.fileSize.isError &&
                 <div styleName="error">
                   Error: the min value should be smaller than max value! Please, fix it.
                 </div>
@@ -250,6 +284,11 @@ export default class ValidationMedia extends Component {
                             onChange={this.onTypesErrorMsg}
                             value={this.state.fileTypes.errorMsg}
                             readOnly={!this.state.fileTypes.active}/>
+              {this.state.fileTypes.isError &&
+                <div styleName="error">
+                  Error: you should select at least one file type.
+                </div>
+              }
             </div>
           }
         </div>

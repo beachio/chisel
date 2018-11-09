@@ -20,7 +20,8 @@ export default class ValidationDate extends Component {
       max: new Date().toISOString(),
       minActive: true,
       maxActive: true,
-      errorMsg: ''
+      errorMsg: '',
+      isError: false
     }
   };
   showDate;
@@ -39,7 +40,8 @@ export default class ValidationDate extends Component {
   onRangeActive = value => {
     this.setState({rangeDate: {
         ...this.state.rangeDate,
-        active: value
+        active: value,
+        isError: false
       }}, this.update);
   };
   
@@ -56,7 +58,8 @@ export default class ValidationDate extends Component {
     
     this.setState({rangeDate: {
         ...this.state.rangeDate,
-        min: date.toISOString()
+        min: date.toISOString(),
+        isError: false
       }}, this.update);
   };
   
@@ -67,7 +70,8 @@ export default class ValidationDate extends Component {
     
     this.setState({rangeDate: {
         ...this.state.rangeDate,
-        min: date.toISOString()
+        min: date.toISOString(),
+        isError: false
       }}, this.update);
   };
   
@@ -83,7 +87,8 @@ export default class ValidationDate extends Component {
     
     this.setState({rangeDate: {
         ...this.state.rangeDate,
-        max: date.toISOString()
+        max: date.toISOString(),
+        isError: false
       }}, this.update);
   };
   
@@ -94,7 +99,8 @@ export default class ValidationDate extends Component {
     
     this.setState({rangeDate: {
         ...this.state.rangeDate,
-        max: date.toISOString()
+        max: date.toISOString(),
+        isError: false
       }}, this.update);
   };
   
@@ -106,7 +112,8 @@ export default class ValidationDate extends Component {
     this.setState({rangeDate: {
         ...this.state.rangeDate,
         minActive: value,
-        maxActive
+        maxActive,
+        isError: false
       }}, this.update);
   };
   
@@ -117,7 +124,8 @@ export default class ValidationDate extends Component {
     this.setState({rangeDate: {
         ...this.state.rangeDate,
         maxActive: value,
-        minActive
+        minActive,
+        isError: false
       }}, this.update);
   };
   
@@ -132,6 +140,21 @@ export default class ValidationDate extends Component {
   update = () => {
     this.props.update(this.state);
   };
+  
+  getErrors() {
+    if (!this.state.rangeDate.active || !this.state.rangeDate.minActive || !this.state.rangeDate.maxActive)
+      return false;
+    
+    const dateMin = new Date(this.state.rangeDate.min);
+    const dateMax = new Date(this.state.rangeDate.max);
+    const isError = dateMin > dateMax;
+    
+    this.setState({rangeDate: {
+        ...this.state.rangeDate,
+        isError
+      }});
+    return isError;
+  }
   
   render() {
     const styleMin = this.state.rangeDate.active && this.state.rangeDate.minActive ? '' : ' disabled';
@@ -204,7 +227,7 @@ export default class ValidationDate extends Component {
                             onChange={this.onRangeErrorMsg}
                             value={this.state.rangeDate.errorMsg}
                             readOnly={!this.state.rangeDate.active}/>
-              {(dateMin > dateMax) &&
+              {this.state.rangeDate.isError &&
                 <div styleName="error">
                   Error: the min value should be smaller than max value! Please, fix it.
                 </div>
