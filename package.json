@@ -1,7 +1,17 @@
 {
   "name": "chisel-cms",
-  "version": "0.8.1",
-  "description": "Parse CMS",
+  "version": "0.8.2",
+  "description": "API-first headless CMS running on Parse Server",
+  "author": "Beach.io <beach.io>",
+  "license": "MIT",
+  "homepage": "http://chiselcms.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/beachio/chisel"
+  },
+  "bugs": {
+    "url": "https://github.com/beachio/chisel/issues"
+  },
   "main": "dist/main.js",
   "files": [
     "bin",
@@ -19,16 +29,6 @@
   "bin": {
     "chisel-cms": "./bin/chisel-cms"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/beachio/chisel"
-  },
-  "author": "Beach.io <beach.io>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/beachio/chisel/issues"
-  },
-  "homepage": "http://beach.io",
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
