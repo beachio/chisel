@@ -9,6 +9,7 @@ import {FILE_SIZE_MAX} from 'ConnectConstants';
 import {MODAL_TYPE_MEDIA} from 'ducks/nav';
 import {trimFileExt, filterSpecials, convertDataUnits, BYTES, M_BYTES, checkFileType, TYPE_OTHER} from 'utils/common';
 import MediaView from 'components/elements/MediaView/MediaView';
+import LoaderComponent from "components/elements/LoaderComponent/LoaderComponent";
 
 import styles from '../ContentEdit.sss';
 
@@ -26,6 +27,8 @@ export default class ContentMedia extends ContentBase {
     super(props);
     
     this.site = props.site;
+    
+    this.state.loading = false;
   }
   
   checkSize = size => {
@@ -173,8 +176,11 @@ export default class ContentMedia extends ContentBase {
       return;
     }
     
+    this.setState({loading: true});
     let parseFile = new Parse.File(filterSpecials(file.name), file, file.type);
     parseFile.save().then(() => {
+      this.setState({loading: false});
+      
       const {addMediaItem} = this.props;
       
       let item = new MediaItemData();
@@ -252,21 +258,31 @@ export default class ContentMedia extends ContentBase {
     let btnStyle = `media-button`;
     if (!this.state.isEditable)
       btnStyle += ` media-button-disabled`;
-    let addMediaBlock = (
-      <div styleName="media-buttons">
-        <div styleName={btnStyle + ` media-upload`}>
-          Upload New
-          <input styleName="media-hidden"
-                 type="file"
-                 disabled={!this.state.isEditable}
-                 onChange={this.onMediaNew} />
+  
+    let addMediaBlock;
+    if (this.state.loading) {
+      addMediaBlock = (
+        <div styleName="loader-wrapper">
+          <LoaderComponent/>
         </div>
-        <div styleName={btnStyle + ` media-insert`}
-             onClick={this.onMediaChoose}>
-          Insert Existing
+      );
+    } else {
+      addMediaBlock = (
+        <div styleName="media-buttons">
+          <div styleName={btnStyle + ` media-upload`}>
+            Upload New
+            <input styleName="media-hidden"
+                   type="file"
+                   disabled={!this.state.isEditable}
+                   onChange={this.onMediaNew}/>
+          </div>
+          <div styleName={btnStyle + ` media-insert`}
+               onClick={this.onMediaChoose}>
+            Insert Existing
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   
     let mediaInner = addMediaBlock;
     if (this.field.isList) {
