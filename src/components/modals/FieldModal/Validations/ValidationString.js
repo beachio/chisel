@@ -128,35 +128,39 @@ export default class ValidationString extends Component {
                              checked={this.state.range.active}
                              onChange={this.onRangeActive} />
           </div>
-          <div styleName="range">
-            <CheckboxControl title="Min"
-                             checked={this.state.range.minActive}
-                             onChange={this.onRangeMinActive}
-                             disabled={!this.state.range.active} />
-            <div styleName="range-field">
-              <InputNumberControl onChange={this.onRangeMin}
-                                  value={this.state.range.min}
-                                  readOnly={!this.state.range.active || !this.state.range.minActive} />
-            </div>
-            <CheckboxControl title="Max"
-                             checked={this.state.range.maxActive}
-                             onChange={this.onRangeMaxActive}
-                             disabled={!this.state.range.active} />
-            <div styleName="range-field">
-              <InputNumberControl onChange={this.onRangeMax}
-                                  value={this.state.range.max}
-                                  readOnly={!this.state.range.active || !this.state.range.maxActive} />
-            </div>
-          </div>
-          <InputControl label="Custom error message"
-                        onChange={this.onRangeErrorMsg}
-                        value={this.state.range.errorMsg}
-                        readOnly={!this.state.range.active} />
-          {
-            (this.state.range.active && this.state.range.minActive && this.state.range.maxActive && this.state.range.min > this.state.range.max) &&
-              <div styleName="error">
-                Error: the min value should be smaller than max value! Please, fix it.
+          {this.state.range.active &&
+            <div>
+              <div styleName="range">
+                <CheckboxControl title="Min"
+                                 checked={this.state.range.minActive}
+                                 onChange={this.onRangeMinActive}
+                                 disabled={!this.state.range.active} />
+                <div styleName="range-field">
+                  <InputNumberControl onChange={this.onRangeMin}
+                                      value={this.state.range.min}
+                                      readOnly={!this.state.range.active || !this.state.range.minActive} />
+                </div>
+                <CheckboxControl title="Max"
+                                 checked={this.state.range.maxActive}
+                                 onChange={this.onRangeMaxActive}
+                                 disabled={!this.state.range.active} />
+                <div styleName="range-field">
+                  <InputNumberControl onChange={this.onRangeMax}
+                                      value={this.state.range.max}
+                                      readOnly={!this.state.range.active || !this.state.range.maxActive} />
+                </div>
               </div>
+              <InputControl label="Custom error message"
+                            onChange={this.onRangeErrorMsg}
+                            value={this.state.range.errorMsg}
+                            readOnly={!this.state.range.active} />
+              {
+                (this.state.range.active && this.state.range.minActive && this.state.range.maxActive && this.state.range.min > this.state.range.max) &&
+                  <div styleName="error">
+                    Error: the min value should be smaller than max value! Please, fix it.
+                  </div>
+              }
+            </div>
           }
         </div>
         
@@ -166,24 +170,28 @@ export default class ValidationString extends Component {
                              checked={this.state.pattern.active}
                              onChange={this.onPatternActive} />
           </div>
-          <div styleName="pattern">
-            <div styleName="pattern-pattern">
-              <InputControl onChange={this.onPatternPattern}
-                            placeholder="Pattern"
-                            value={this.state.pattern.pattern}
-                            readOnly={!this.state.pattern.active} />
+          {this.state.pattern.active &&
+            <div>
+              <div styleName="pattern">
+                <div styleName="pattern-pattern">
+                  <InputControl onChange={this.onPatternPattern}
+                                placeholder="Pattern"
+                                value={this.state.pattern.pattern}
+                                readOnly={!this.state.pattern.active}/>
+                </div>
+                <div styleName="pattern-flags">
+                  <InputControl onChange={this.onPatternFlags}
+                                placeholder="Flags"
+                                value={this.state.pattern.flags}
+                                readOnly={!this.state.pattern.active}/>
+                </div>
+              </div>
+              <InputControl label="Custom error message"
+                            onChange={this.onPatternErrorMsg}
+                            value={this.state.pattern.errorMsg}
+                            readOnly={!this.state.pattern.active}/>
             </div>
-            <div styleName="pattern-flags">
-              <InputControl onChange={this.onPatternFlags}
-                            placeholder="Flags"
-                            value={this.state.pattern.flags}
-                            readOnly={!this.state.pattern.active} />
-            </div>
-          </div>
-          <InputControl label="Custom error message"
-                        onChange={this.onPatternErrorMsg}
-                        value={this.state.pattern.errorMsg}
-                        readOnly={!this.state.pattern.active} />
+          }
         </div>
       </div>
     );

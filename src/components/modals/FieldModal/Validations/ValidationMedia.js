@@ -173,52 +173,56 @@ export default class ValidationMedia extends Component {
                              checked={this.state.fileSize.active}
                              onChange={this.onSizeActive} />
           </div>
-          <div styleName="size">
-            <CheckboxControl title="Min"
-                             checked={this.state.fileSize.minActive}
-                             onChange={this.onSizeMinActive}
-                             disabled={!this.state.fileSize.active} />
-            <div styleName="size-field">
-              <InputNumberControl onChange={this.onSizeMin}
-                                  value={this.state.fileSize.min}
-                                  isInt={true}
-                                  min={0}
-                                  max={this.maxForMin}
-                                  readOnly={!this.state.fileSize.active || !this.state.fileSize.minActive} />
-            </div>
-            <div styleName="size-unit">
-              <DropdownControl disabled={!this.state.fileSize.active || !this.state.fileSize.minActive}
-                               suggestionsList={DATA_UNITS}
-                               suggest={this.onSizeMinUnit}
-                               current={this.state.fileSize.minUnit} />
-            </div>
-            
-            <CheckboxControl title="Max"
-                             checked={this.state.fileSize.maxActive}
-                             onChange={this.onSizeMaxActive}
-                             disabled={!this.state.fileSize.active} />
-            <div styleName="size-field">
-              <InputNumberControl onChange={this.onSizeMax}
-                                  value={this.state.fileSize.max}
-                                  isInt={true}
-                                  min={0}
-                                  max={this.maxForMax}
-                                  readOnly={!this.state.fileSize.active || !this.state.fileSize.maxActive} />
-            </div>
-            <div styleName="size-unit">
-              <DropdownControl disabled={!this.state.fileSize.active || !this.state.fileSize.maxActive}
-                               suggestionsList={DATA_UNITS}
-                               suggest={this.onSizeMaxUnit}
-                               current={this.state.fileSize.maxUnit} />
-            </div>
-          </div>
-          <InputControl label="Custom error message"
-                        onChange={this.onSizeErrorMsg}
-                        value={this.state.fileSize.errorMsg}
-                        readOnly={!this.state.fileSize.active} />
-          {errorRange &&
-            <div styleName="error">
-              Error: the min value should be smaller than max value! Please, fix it.
+          {this.state.fileSize.active &&
+            <div>
+              <div styleName="size">
+                <CheckboxControl title="Min"
+                                 checked={this.state.fileSize.minActive}
+                                 onChange={this.onSizeMinActive}
+                                 disabled={!this.state.fileSize.active}/>
+                <div styleName="size-field">
+                  <InputNumberControl onChange={this.onSizeMin}
+                                      value={this.state.fileSize.min}
+                                      isInt={true}
+                                      min={0}
+                                      max={this.maxForMin}
+                                      readOnly={!this.state.fileSize.active || !this.state.fileSize.minActive}/>
+                </div>
+                <div styleName="size-unit">
+                  <DropdownControl disabled={!this.state.fileSize.active || !this.state.fileSize.minActive}
+                                   suggestionsList={DATA_UNITS}
+                                   suggest={this.onSizeMinUnit}
+                                   current={this.state.fileSize.minUnit}/>
+                </div>
+        
+                <CheckboxControl title="Max"
+                                 checked={this.state.fileSize.maxActive}
+                                 onChange={this.onSizeMaxActive}
+                                 disabled={!this.state.fileSize.active}/>
+                <div styleName="size-field">
+                  <InputNumberControl onChange={this.onSizeMax}
+                                      value={this.state.fileSize.max}
+                                      isInt={true}
+                                      min={0}
+                                      max={this.maxForMax}
+                                      readOnly={!this.state.fileSize.active || !this.state.fileSize.maxActive}/>
+                </div>
+                <div styleName="size-unit">
+                  <DropdownControl disabled={!this.state.fileSize.active || !this.state.fileSize.maxActive}
+                                   suggestionsList={DATA_UNITS}
+                                   suggest={this.onSizeMaxUnit}
+                                   current={this.state.fileSize.maxUnit}/>
+                </div>
+              </div>
+              <InputControl label="Custom error message"
+                            onChange={this.onSizeErrorMsg}
+                            value={this.state.fileSize.errorMsg}
+                            readOnly={!this.state.fileSize.active}/>
+              {errorRange &&
+                <div styleName="error">
+                  Error: the min value should be smaller than max value! Please, fix it.
+                </div>
+              }
             </div>
           }
         </div>
@@ -229,21 +233,25 @@ export default class ValidationMedia extends Component {
                              checked={this.state.fileTypes.active}
                              onChange={this.onTypesActive} />
           </div>
-          <div styleName="file-types">
-            {FILE_TYPES.map(type =>
-              <div styleName="file-types-checkbox"
-                   key={type}>
-                <CheckboxControl title={type}
-                                 checked={this.typesSet.has(type)}
-                                 onChange={value => this.onTypeChange(type, value)}
-                                 disabled={!this.state.fileTypes.active} />
+          {this.state.fileTypes.active &&
+            <div>
+              <div styleName="file-types">
+                {FILE_TYPES.map(type =>
+                  <div styleName="file-types-checkbox"
+                       key={type}>
+                    <CheckboxControl title={type}
+                                     checked={this.typesSet.has(type)}
+                                     onChange={value => this.onTypeChange(type, value)}
+                                     disabled={!this.state.fileTypes.active}/>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-          <InputControl label="Custom error message"
-                        onChange={this.onTypesErrorMsg}
-                        value={this.state.fileTypes.errorMsg}
-                        readOnly={!this.state.fileTypes.active} />
+              <InputControl label="Custom error message"
+                            onChange={this.onTypesErrorMsg}
+                            value={this.state.fileTypes.errorMsg}
+                            readOnly={!this.state.fileTypes.active}/>
+            </div>
+          }
         </div>
       </div>
     );

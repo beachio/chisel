@@ -148,63 +148,67 @@ export default class ValidationDate extends Component {
                              checked={this.state.rangeDate.active}
                              onChange={this.onRangeActive} />
           </div>
-          <div styleName="data-time-wrapper">
-            <div styleName="checkbox">
-              <CheckboxControl title="Min"
-                               checked={this.state.rangeDate.minActive}
-                               onChange={this.onRangeMinActive}
-                               disabled={!this.state.rangeDate.active} />
-            </div>
-            {this.showDate &&
-              <div styleName={"date" + styleMin}>
-                <Flatpickr value={dateMin}
-                           data-alt-input="true"
-                           onChange={this.onChangeMinDate}/>
+          {this.state.rangeDate.active &&
+            <div>
+              <div styleName="data-time-wrapper">
+                <div styleName="checkbox">
+                  <CheckboxControl title="Min"
+                                   checked={this.state.rangeDate.minActive}
+                                   onChange={this.onRangeMinActive}
+                                   disabled={!this.state.rangeDate.active}/>
+                </div>
+                {this.showDate &&
+                  <div styleName={"date" + styleMin}>
+                    <Flatpickr value={dateMin}
+                               data-alt-input="true"
+                               onChange={this.onChangeMinDate}/>
+                  </div>
+                }
+                {this.showTime &&
+                  <div styleName={"time" + styleMin}>
+                    <Flatpickr value={dateMin}
+                               data-no-calendar={true}
+                               data-enable-time={true}
+                               data-alt-format="h:i K"
+                               data-alt-input="true"
+                               onChange={this.onChangeMinTime}/>
+                  </div>
+                }
               </div>
-            }
-            {this.showTime &&
-              <div styleName={"time" + styleMin}>
-                <Flatpickr value={dateMin}
-                           data-no-calendar={true}
-                           data-enable-time={true}
-                           data-alt-format="h:i K"
-                           data-alt-input="true"
-                           onChange={this.onChangeMinTime}/>
+              <div styleName="data-time-wrapper">
+                <div styleName="checkbox">
+                  <CheckboxControl title="Max"
+                                   checked={this.state.rangeDate.maxActive}
+                                   onChange={this.onRangeMaxActive}
+                                   disabled={!this.state.rangeDate.active}/>
+                </div>
+                {this.showDate &&
+                  <div styleName={"date" + styleMax}>
+                    <Flatpickr value={dateMax}
+                               data-alt-input="true"
+                               onChange={this.onChangeMaxDate}/>
+                  </div>
+                }
+                {this.showTime &&
+                  <div styleName={"time" + styleMax}>
+                    <Flatpickr value={dateMax}
+                               data-no-calendar={true}
+                               data-enable-time={true}
+                               data-alt-format="h:i K"
+                               data-alt-input="true"
+                               onChange={this.onChangeMaxTime}/>
+                  </div>
+                }
               </div>
-            }
-          </div>
-          <div styleName="data-time-wrapper">
-            <div styleName="checkbox">
-              <CheckboxControl title="Max"
-                               checked={this.state.rangeDate.maxActive}
-                               onChange={this.onRangeMaxActive}
-                               disabled={!this.state.rangeDate.active} />
-            </div>
-            {this.showDate &&
-              <div styleName={"date" + styleMax}>
-                <Flatpickr value={dateMax}
-                           data-alt-input="true"
-                           onChange={this.onChangeMaxDate}/>
-              </div>
-            }
-            {this.showTime &&
-              <div styleName={"time" + styleMax}>
-                <Flatpickr value={dateMax}
-                           data-no-calendar={true}
-                           data-enable-time={true}
-                           data-alt-format="h:i K"
-                           data-alt-input="true"
-                           onChange={this.onChangeMaxTime}/>
-              </div>
-            }
-          </div>
-          <InputControl label="Custom error message"
-                        onChange={this.onRangeErrorMsg}
-                        value={this.state.rangeDate.errorMsg}
-                        readOnly={!this.state.rangeDate.active} />
-          {(dateMin > dateMax) &&
-            <div styleName="error">
-              Error: the min value should be smaller than max value! Please, fix it.
+              <InputControl label="Custom error message"
+                            onChange={this.onRangeErrorMsg}
+                            value={this.state.rangeDate.errorMsg}
+                            readOnly={!this.state.rangeDate.active}/>
+              {(dateMin > dateMax) &&
+                <div styleName="error">
+                  Error: the min value should be smaller than max value! Please, fix it.
+                </div>
+              }
             </div>
           }
         </div>

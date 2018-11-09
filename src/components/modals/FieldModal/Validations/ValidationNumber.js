@@ -91,35 +91,39 @@ export default class ValidationNumber extends Component {
                              checked={this.state.range.active}
                              onChange={this.onRangeActive} />
           </div>
-          <div styleName="range">
-            <CheckboxControl title="Min"
-                             checked={this.state.range.minActive}
-                             onChange={this.onRangeMinActive}
-                             disabled={!this.state.range.active} />
-            <div styleName="range-field">
-              <InputNumberControl onChange={this.onRangeMin}
-                                  value={this.state.range.min}
-                                  readOnly={!this.state.range.active || !this.state.range.minActive} />
-            </div>
-            <CheckboxControl title="Max"
-                             checked={this.state.range.maxActive}
-                             onChange={this.onRangeMaxActive}
-                             disabled={!this.state.range.active} />
-            <div styleName="range-field">
-              <InputNumberControl onChange={this.onRangeMax}
-                                  value={this.state.range.max}
-                                  readOnly={!this.state.range.active || !this.state.range.maxActive} />
-            </div>
-          </div>
-          <InputControl label="Custom error message"
-                        onChange={this.onRangeErrorMsg}
-                        value={this.state.range.errorMsg}
-                        readOnly={!this.state.range.active} />
-          {
-            (this.state.range.active && this.state.range.minActive && this.state.range.maxActive && this.state.range.min > this.state.range.max) &&
-              <div styleName="error">
-                Error: the min value should be smaller than max value! Please, fix it.
+          {this.state.range.active &&
+            <div>
+              <div styleName="range">
+                <CheckboxControl title="Min"
+                                 checked={this.state.range.minActive}
+                                 onChange={this.onRangeMinActive}
+                                 disabled={!this.state.range.active} />
+                <div styleName="range-field">
+                  <InputNumberControl onChange={this.onRangeMin}
+                                      value={this.state.range.min}
+                                      readOnly={!this.state.range.active || !this.state.range.minActive} />
+                </div>
+                <CheckboxControl title="Max"
+                                 checked={this.state.range.maxActive}
+                                 onChange={this.onRangeMaxActive}
+                                 disabled={!this.state.range.active} />
+                <div styleName="range-field">
+                  <InputNumberControl onChange={this.onRangeMax}
+                                      value={this.state.range.max}
+                                      readOnly={!this.state.range.active || !this.state.range.maxActive} />
+                </div>
               </div>
+              <InputControl label="Custom error message"
+                            onChange={this.onRangeErrorMsg}
+                            value={this.state.range.errorMsg}
+                            readOnly={!this.state.range.active} />
+              {
+                (this.state.range.active && this.state.range.minActive && this.state.range.maxActive && this.state.range.min > this.state.range.max) &&
+                  <div styleName="error">
+                    Error: the min value should be smaller than max value! Please, fix it.
+                  </div>
+              }
+            </div>
           }
         </div>
       </div>

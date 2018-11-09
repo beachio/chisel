@@ -73,21 +73,25 @@ export default class ValidationReference extends Component {
                              checked={this.state.models.active}
                              onChange={this.onTypesActive} />
           </div>
-          <div styleName="models">
-            {this.modelsAll.map(model =>
-              <div styleName="model-checkbox"
-                   key={model.nameId}>
-                <CheckboxControl title={model.name}
-                                 checked={this.modelsSet.has(model.nameId)}
-                                 onChange={value => this.onModelChange(model.nameId, value)}
-                                 disabled={!this.state.models.active} />
+          {this.state.models.active &&
+            <div>
+              <div styleName="models">
+                {this.modelsAll.map(model =>
+                  <div styleName="model-checkbox"
+                       key={model.nameId}>
+                    <CheckboxControl title={model.name}
+                                     checked={this.modelsSet.has(model.nameId)}
+                                     onChange={value => this.onModelChange(model.nameId, value)}
+                                     disabled={!this.state.models.active}/>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-          <InputControl label="Custom error message"
-                        onChange={this.onTypesErrorMsg}
-                        value={this.state.models.errorMsg}
-                        readOnly={!this.state.models.active} />
+              <InputControl label="Custom error message"
+                            onChange={this.onTypesErrorMsg}
+                            value={this.state.models.errorMsg}
+                            readOnly={!this.state.models.active}/>
+            </div>
+          }
         </div>
       </div>
     );
