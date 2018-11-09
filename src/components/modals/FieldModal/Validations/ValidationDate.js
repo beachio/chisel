@@ -141,21 +141,6 @@ export default class ValidationDate extends Component {
     this.props.update(this.state);
   };
   
-  getErrors() {
-    if (!this.state.rangeDate.active || !this.state.rangeDate.minActive || !this.state.rangeDate.maxActive)
-      return false;
-    
-    const dateMin = new Date(this.state.rangeDate.min);
-    const dateMax = new Date(this.state.rangeDate.max);
-    const isError = dateMin > dateMax;
-    
-    this.setState({rangeDate: {
-        ...this.state.rangeDate,
-        isError
-      }});
-    return isError;
-  }
-  
   render() {
     const styleMin = this.state.rangeDate.active && this.state.rangeDate.minActive ? '' : ' disabled';
     const styleMax = this.state.rangeDate.active && this.state.rangeDate.maxActive ? '' : ' disabled';

@@ -12,7 +12,7 @@ import ValidationString from 'components/modals/FieldModal/Validations/Validatio
 import ValidationDate from 'components/modals/FieldModal/Validations/ValidationDate';
 import ValidationReference from 'components/modals/FieldModal/Validations/ValidationReference';
 import ValidationMedia from "components/modals/FieldModal/Validations/ValidationMedia";
-import {removeOddSpaces} from "utils/common";
+import {BYTES, convertDataUnits, removeOddSpaces} from "utils/common";
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST} from 'utils/data';
 
 import {FIELD_TYPES, canBeList, canBeTitle} from 'models/ModelData';
@@ -56,7 +56,6 @@ export default class FieldModal extends Component {
   models = null;
   validValuesList = null;
   focusElm = null;
-  validComp = null;
   
 
 
@@ -185,7 +184,7 @@ export default class FieldModal extends Component {
       this.field.name = name;
     }
     
-    if (this.validComp && this.validComp.getErrors()) {
+    if (this.checkValidErrors()) {
       this.setState({tab: TAB_VALIDATIONS});
       return;
     }
@@ -235,6 +234,101 @@ export default class FieldModal extends Component {
   
     if (!canBeList(this.state))
       this.setState({isList: false});
+  }
+  
+  checkValidErrors() {
+    let error = false;
+    
+    switch (this.state.type) {
+      case ftps.FIELD_TYPE_SHORT_TEXT:
+        switch (this.state.appearance) {
+          case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
+          case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
+            const {range} = this.validations;
+            error = range.active && range.minActive && range.maxActive && range.min > range.max;
+            range.isError = error;
+            break;
+        }
+        break;
+    
+      case ftps.FIELD_TYPE_LONG_TEXT:
+        switch (this.state.appearance) {
+          case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
+          case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
+            const {range} = this.validations;
+            error = range.active && range.minActive && range.maxActive && range.min > range.max;
+            range.isError = error;
+            break;
+        }
+        break;
+    
+      case ftps.FIELD_TYPE_INTEGER:
+        switch (this.state.appearance) {
+          case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
+            const {range} = this.validations;
+            error = range.active && range.minActive && range.maxActive && range.min > range.max;
+            range.isError = error;
+            break;
+        
+          case ftps.FIELD_APPEARANCE__INTEGER__RATING:
+            break;
+        }
+        break;
+    
+      case ftps.FIELD_TYPE_FLOAT:
+        switch (this.state.appearance) {
+          case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
+            const {range} = this.validations;
+            error = range.active && range.minActive && range.maxActive && range.min > range.max;
+            range.isError = error;
+            break;
+        }
+        break;
+    
+      case ftps.FIELD_TYPE_DATE:
+        switch (this.state.appearance) {
+          case ftps.FIELD_APPEARANCE__DATE__DATE:
+          case ftps.FIELD_APPEARANCE__DATE__DATE_ONLY:
+          case ftps.FIELD_APPEARANCE__DATE__TIME_ONLY:
+            const {rangeDate} = this.validations;
+            if (rangeDate.active && rangeDate.minActive && rangeDate.maxActive) {
+              const dateMin = new Date(rangeDate.min);
+              const dateMax = new Date(rangeDate.max);
+              error = dateMin > dateMax;
+            }
+            rangeDate.isError = error;
+            break;
+        }
+        break;
+    
+      case ftps.FIELD_TYPE_REFERENCE:
+        const {models} = this.validations;
+        if (models.active && !models.modelsList.length)
+          error = true;
+        models.isError = error;
+        break;
+    
+      case ftps.FIELD_TYPE_MEDIA:
+        const {fileSize} = this.validations;
+        let error1 = false;
+        if (fileSize.active && fileSize.minActive && fileSize.maxActive) {
+          const min = convertDataUnits(fileSize.min, fileSize.minUnit, BYTES);
+          const max = convertDataUnits(fileSize.max, fileSize.maxUnit, BYTES);
+          error1 = min > max;
+        }
+        fileSize.isError = error1;
+  
+        const {fileTypes} = this.validations;
+        let error2 = false;
+        if (fileTypes.active && !fileTypes.types.length)
+          error2 = true;
+        fileTypes.isError = error2;
+        
+        error = error1 || error2;
+        break;
+    }
+   
+    return error;
   }
   
   onUpdateValidations = validations => {
@@ -372,8 +466,7 @@ export default class FieldModal extends Component {
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
               case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
-                validations = <ValidationString ref={c => this.validComp = c}
-                                                validations={this.validations}
+                validations = <ValidationString validations={this.validations}
                                                 update={this.onUpdateValidations} />;
                 break;
             }
@@ -383,8 +476,7 @@ export default class FieldModal extends Component {
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
               case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
-                validations = <ValidationString ref={c => this.validComp = c}
-                                                validations={this.validations}
+                validations = <ValidationString validations={this.validations}
                                                 update={this.onUpdateValidations} />;
                 break;
             }
@@ -393,8 +485,7 @@ export default class FieldModal extends Component {
           case ftps.FIELD_TYPE_INTEGER:
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
-                validations = <ValidationNumber ref={c => this.validComp = c}
-                                                validations={this.validations}
+                validations = <ValidationNumber validations={this.validations}
                                                 update={this.onUpdateValidations }/>;
                 break;
   
@@ -406,8 +497,7 @@ export default class FieldModal extends Component {
           case ftps.FIELD_TYPE_FLOAT:
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
-                validations = <ValidationNumber ref={c => this.validComp = c}
-                                                validations={this.validations}
+                validations = <ValidationNumber validations={this.validations}
                                                 update={this.onUpdateValidations} />;
                 break;
             }
@@ -418,8 +508,7 @@ export default class FieldModal extends Component {
               case ftps.FIELD_APPEARANCE__DATE__DATE:
               case ftps.FIELD_APPEARANCE__DATE__DATE_ONLY:
               case ftps.FIELD_APPEARANCE__DATE__TIME_ONLY:
-                validations = <ValidationDate ref={c => this.validComp = c}
-                                              appearance={this.state.appearance}
+                validations = <ValidationDate appearance={this.state.appearance}
                                               validations={this.validations}
                                               update={this.onUpdateValidations} />;
                 break;
@@ -427,15 +516,13 @@ export default class FieldModal extends Component {
             break;
           
           case ftps.FIELD_TYPE_REFERENCE:
-            validations = <ValidationReference ref={c => this.validComp = c}
-                                               validations={this.validations}
+            validations = <ValidationReference validations={this.validations}
                                                models={this.models}
                                                update={this.onUpdateValidations} />;
             break;
   
           case ftps.FIELD_TYPE_MEDIA:
-            validations = <ValidationMedia ref={c => this.validComp = c}
-                                           validations={this.validations}
+            validations = <ValidationMedia validations={this.validations}
                                            update={this.onUpdateValidations} />;
             break;
         }

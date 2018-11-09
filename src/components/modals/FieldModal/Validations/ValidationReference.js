@@ -67,20 +67,6 @@ export default class ValidationReference extends Component {
     this.props.update(this.state);
   };
   
-  getErrors() {
-    if (this.state.models.active && !this.state.models.modelsList.length) {
-      this.setState({
-        models: {
-          ...this.state.models,
-          isError: true
-        }
-      });
-      return true;
-    }
-    
-    return false;
-  }
-  
   render() {
     return (
       <div>

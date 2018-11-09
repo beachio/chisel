@@ -88,19 +88,6 @@ export default class ValidationNumber extends Component {
     this.props.update(this.state);
   };
   
-  getErrors() {
-    if (!this.state.range.active || !this.state.range.minActive || !this.state.range.maxActive)
-      return false;
-    
-    const isError = this.state.range.min > this.state.range.max;
-    
-    this.setState({range: {
-        ...this.state.range,
-        isError
-      }});
-    return isError;
-  }
-  
   render() {
     return (
       <div>

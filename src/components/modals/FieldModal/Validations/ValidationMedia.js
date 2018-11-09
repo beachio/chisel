@@ -168,36 +168,6 @@ export default class ValidationMedia extends Component {
     this.props.update(this.state);
   };
   
-  getErrors() {
-    if (this.state.fileSize.active && this.state.fileSize.minActive && this.state.fileSize.maxActive) {
-      const min = convertDataUnits(this.state.fileSize.min, this.state.fileSize.minUnit, BYTES);
-      const max = convertDataUnits(this.state.fileSize.max, this.state.fileSize.maxUnit, BYTES);
-      const isError = min > max;
-  
-      if (isError) {
-        this.setState({
-          fileSize: {
-            ...this.state.fileSize,
-            isError: true
-          }
-        });
-        return true;
-      }
-    }
-  
-    if (this.state.fileTypes.active && !this.state.fileTypes.types.length) {
-      this.setState({
-        fileTypes: {
-          ...this.state.fileTypes,
-          isError: true
-        }
-      });
-      return true;
-    }
-    
-    return false;
-  }
-  
   render() {
     return (
       <div>
