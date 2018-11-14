@@ -104,7 +104,7 @@ export default class SiteCreationModal extends Component {
     
     //Enter or Esc pressed
     if (event.keyCode == 13)
-      setTimeout(this.onChoose, 1);
+      setTimeout(this.onCreate, 1);
     else if (event.keyCode == 27)
       setTimeout(this.close, 1);
   };
