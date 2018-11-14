@@ -237,6 +237,9 @@ export default class FieldModal extends Component {
   }
   
   checkValidErrors() {
+    if (!this.validations)
+      return false;
+    
     let error = false;
     
     switch (this.state.type) {
