@@ -108,6 +108,7 @@ export default function navReducer(state = initialState, action) {
     case LOGOUT:
       return {
         ...state,
+        openedPage: PAGE_MODELS,
         initEnded: false
       };
     
