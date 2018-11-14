@@ -14,14 +14,14 @@ export default class User extends Component {
   render() {
     const {userData} = this.props;
 
-    let link = `/${URL_USERSPACE}/${URL_PROFILE}/`;
-    
     let name = userData.email;
     if (userData.firstName || userData.lastName)
       name = `${userData.firstName} ${userData.lastName}`;
     
     return (
-      <Link styleName="user" to={link} activeClassName={styles.activeBla}>
+      <Link styleName="user"
+            activeClassName={styles.activeBla}
+            to={`/${URL_USERSPACE}/${URL_PROFILE}/`} >
         <div styleName="profile">
           <div styleName="avatar">
             <Gravatar email={userData.email} styleName="gravatar"/>
