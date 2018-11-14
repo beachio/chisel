@@ -29,7 +29,9 @@ export default class Settings extends Component {
     error: null,
     icon: null
   };
+  
   site = null;
+  downloadElm = null;
 
 
   constructor(props) {
@@ -145,6 +147,13 @@ export default class Settings extends Component {
     };
     showAlert(params);
   };
+  
+  onExport = () => {
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.site.models, null, 2));
+    this.downloadElm.setAttribute("href", dataStr);
+    this.downloadElm.setAttribute("download", "models.json");
+    this.downloadElm.click();
+  };
 
   getIcon() {
     const {isEditable} = this.props;
@@ -240,6 +249,13 @@ export default class Settings extends Component {
                                  onClick={this.onDelete} />
                 </div>
             }
+            <div styleName="field button-wrapper">
+              <ButtonControl value="Export models"
+                             onClick={this.onExport} />
+            </div>
+            <a style={{display: 'none'}}
+               ref={elm => this.downloadElm = elm}>
+            </a>
           </div>
           {
             this.state.error &&
