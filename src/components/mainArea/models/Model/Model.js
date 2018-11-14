@@ -38,6 +38,9 @@ const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemove
       {field.isTitle &&
         <div className={styles.titleButton}>TITLE</div>
       }
+      {(!field.isTitle && field.isRequired) &&
+        <div className={styles.requiredButton}>REQUIRED</div>
+      }
       {isEditable &&
         <div className={styles.hiddenControls}>
           <div className={styles.hiddenRemove}
