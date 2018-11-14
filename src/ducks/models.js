@@ -1,12 +1,12 @@
 import {Parse} from 'parse';
 
-import {store} from '../index';
+import {store} from 'index';
+import {send} from 'utils/server';
+import {LOGOUT} from 'ducks/user';
 import {UserData, CollaborationData} from 'models/UserData';
 import {canBeTitle, FIELD_NAMES_RESERVED, ModelData, ModelFieldData, SiteData, TemplateData} from 'models/ModelData';
 import {filterSpecials, getRandomColor} from 'utils/common';
 import {getNameId, getRole} from 'utils/data';
-import {LOGOUT} from './user';
-import {send} from 'utils/server';
 
 
 export const INIT_END                   = 'app/models/INIT_END';
@@ -251,7 +251,8 @@ export function addSite(site, template = null) {
   
   let nameId = filterSpecials(site.name);
   nameId = `${site.owner.emailFiltered}___${nameId}`;
-  site.nameId = getNameId(nameId, store.getState().models.sites);
+  nameId = getNameId(nameId, store.getState().models.sites);
+  site.nameId = nameId;
   
   site.updateOrigin();
   site.origin.setACL(new Parse.ACL(site.owner.origin));
