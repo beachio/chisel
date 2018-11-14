@@ -651,53 +651,6 @@ template {
       cursor: pointer;
       font-size: 12px;
 }
-.Sidebar---sidebar---2oRaL {
-  margin-top: 60px;
-  overflow-x: hidden;
-  -js-display: flex;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  background: #f1f1f1;
-  height: calc(100vh - 60px);
-  width: 240px;
-  -webkit-transform: translate3d(0, 0, 0);
-          transform: translate3d(0, 0, 0);
-}
-
-  .Sidebar---sidebar---2oRaL .Sidebar---answer-wrapper---ny_jc {
-    flex: 0 0 100px;
-}
-
-  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p {
-    height: 32px;
-    width: 32px;
-    border-radius: 100%;
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-            transform: translateX(-50%);
-    background: #FFFFFF;
-    border: 1px solid #CCCCCC;
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.10);
-    transition: box-shadow 0.1s ease;
-    will-change: transition;
-    -js-display: flex;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-
-  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p:hover {
-  box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.10);
-}
-
-  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p .Sidebar---icon---30f0L svg {
-      height: 15px;
-}
 .Header---header---1OKbu {
   position: fixed;
   background: #fff;
@@ -756,6 +709,53 @@ template {
 
   .Header---header---1OKbu .Header---logout---53m2m:hover {
   opacity: 1;
+}
+.Sidebar---sidebar---2oRaL {
+  margin-top: 60px;
+  overflow-x: hidden;
+  -js-display: flex;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  background: #f1f1f1;
+  height: calc(100vh - 60px);
+  width: 240px;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
+
+  .Sidebar---sidebar---2oRaL .Sidebar---answer-wrapper---ny_jc {
+    flex: 0 0 100px;
+}
+
+  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p {
+    height: 32px;
+    width: 32px;
+    border-radius: 100%;
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+    background: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.10);
+    transition: box-shadow 0.1s ease;
+    will-change: transition;
+    -js-display: flex;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p:hover {
+  box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.10);
+}
+
+  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p .Sidebar---icon---30f0L svg {
+      height: 15px;
 }
 .MainArea---wrapper---CERgj {
   overflow: hidden;
@@ -884,6 +884,20 @@ template {
   100% {
     height: 0%;
   }
+}
+.SiteLoader---loader-wrapper---3uDnF {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.5);
+  -js-display: flex;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  z-index: 100
 }
 .ButtonControl---ButtonControl---W6bNo {
   font-family: 'Open Sans', sans-serif;
@@ -1054,20 +1068,6 @@ template {
 
 .InputControl---input-disabled---2wnBH {
     cursor: default
-}
-.SiteLoader---loader-wrapper---3uDnF {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255,255,255,0.5);
-  -js-display: flex;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
-  z-index: 100
 }
 .SiteCreationModal---modal---2QI4J {
   position: absolute;
@@ -3906,8 +3906,8 @@ template {
       letter-spacing: 0.46px;
 }
 
-.Model---titleButton---msufr {
-  background-image: linear-gradient(-180deg, #607D8B 0%, #3E5059 150%);
+.Model---titleButton---msufr,
+.Model---requiredButton---UZ0Ug {
   box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.20);
   border-radius: 2px;
   font-weight: 700;
@@ -3917,6 +3917,14 @@ template {
   line-height: 24px;
   padding: 0 15px;
   text-transform: uppercase;
+}
+
+.Model---titleButton---msufr {
+  background-image: linear-gradient(-180deg, #607D8B 0%, #3E5059 150%);
+}
+
+.Model---requiredButton---UZ0Ug {
+  background-image: linear-gradient(-180deg, #87abd2 0%, #5b75a5 150%);
 }
 
 .Model---hiddenControls---n9psi {
@@ -4200,6 +4208,10 @@ template {
     will-change: color;
 }
 
+.ContentEdit---field-title---2dAa7 {
+    position: relative;
+}
+
 .ContentEdit---field-error---15lcv {
     color: #DD5555;
 }
@@ -4211,7 +4223,7 @@ template {
 .ContentEdit---field---3L-mX .ContentEdit---link---1iT8I {
     position: absolute;
     right: 3px;
-    bottom: 4px;
+    bottom: -2px;
     opacity: .7;
     cursor: pointer;
 }
