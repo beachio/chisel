@@ -31,6 +31,8 @@ export default class MarkdownModal extends Component {
   };
   
   render() {
+    const {readOnly} = this.props.params;
+    
     return (
       <div styleName="wrapper">
         <div styleName="return" onClick={this.onClosing}>
@@ -39,6 +41,7 @@ export default class MarkdownModal extends Component {
         </div>
         <MarkdownEditor layout={LAYOUT_SPLIT}
                         value={this.text}
+                        readOnly={readOnly}
                         onChange={this.onChange} />
       </div>
     );

@@ -59,12 +59,15 @@ export default class MarkdownEditor extends Component {
     Promise.resolve(this.converter.makeHtml(markdown));
 
   render () {
+    const {readOnly} = this.props;
+    
     return (
       <ReactMde className={this.props.className}
                 onChange={this.onChangeMde}
                 editorState={this.state.mdeState}
                 generateMarkdownPreview={this.genPreview}
-                layout={this.layout} />
+                layout={this.layout}
+                readOnly={readOnly} />
     );
   }
 }

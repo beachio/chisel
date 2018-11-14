@@ -175,7 +175,8 @@ export default class ContentString extends ContentBase {
       MODAL_TYPE_MARKDOWN,
       {
         text: this.state.value,
-        callback: text => this.setValue(text, true)
+        callback: text => this.setValue(text, true),
+        readOnly: !this.state.isEditable
       }
     );
   };
@@ -316,6 +317,7 @@ export default class ContentString extends ContentBase {
             return (
               <MarkdownEditor styleName="markdown"
                               value={value}
+                              readOnly={!this.state.isEditable}
                               onChange={this.onChangeMarkdown} />
             );
         }
