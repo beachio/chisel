@@ -23,7 +23,8 @@ export default class MarkdownEditor extends Component {
   constructor(props) {
     super(props);
 
-    this.state.mdeState.markdown = props.value;
+    if (props.value)
+      this.state.mdeState.markdown = props.value;
     this.onChange = props.onChange;
     if (props.layout)
       this.layout = props.layout;
@@ -39,10 +40,11 @@ export default class MarkdownEditor extends Component {
 
   componentWillReceiveProps(nextProps) {
     const {mdeState} = this.state;
-    if (nextProps.value == mdeState.markdown)
+    let value = nextProps.value ? nextProps.value : '';
+    if (value == mdeState.markdown)
       return;
 
-    DraftUtil.buildNewMdeState(mdeState, this.genPreview, nextProps.value)
+    DraftUtil.buildNewMdeState(mdeState, this.genPreview, value)
       .then(newState => this.setState({mdeState: newState}));
   }
 
