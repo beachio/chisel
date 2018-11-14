@@ -149,9 +149,10 @@ export default class Settings extends Component {
   };
   
   onExport = () => {
-    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.site.models, null, 2));
+    const json = JSON.stringify(this.site.models, null, 2);
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(json);
     this.downloadElm.setAttribute("href", dataStr);
-    this.downloadElm.setAttribute("download", "models.json");
+    this.downloadElm.setAttribute("download", `${filterSpecials(this.site.name)}.json`);
     this.downloadElm.click();
   };
 
