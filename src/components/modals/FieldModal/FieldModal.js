@@ -83,8 +83,10 @@ export default class FieldModal extends Component {
     
     this.state.appList = FIELD_TYPES.get(this.field.type);
 
-    if (!this.updating && canBeTitle(this.state) && !this.field.model.hasTitle())
+    if (!this.updating && canBeTitle(this.state) && !this.field.model.hasTitle()) {
       this.state.isTitle = true;
+      this.state.isRequired = true;
+    }
   }
   
   componentDidMount() {
