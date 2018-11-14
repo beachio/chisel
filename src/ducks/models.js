@@ -250,7 +250,7 @@ export function addSite(site, template = null) {
   site.owner = store.getState().user.userData;
   
   let nameId = filterSpecials(site.name);
-  nameId = `${site.owner.emailFiltered}___${nameId}`;
+  nameId = `${site.owner.emailFiltered}__${nameId}`;
   nameId = getNameId(nameId, store.getState().models.sites);
   site.nameId = nameId;
   

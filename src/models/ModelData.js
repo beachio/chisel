@@ -150,7 +150,7 @@ export class ModelData {
   }
 
   setTableName() {
-    this.tableName = `ct___${this.site.owner.emailFiltered}___${this.site.nameId}___${this.nameId}`;
+    this.tableName = `ct____${this.site.nameId}____${this.nameId}`;
   }
 
   toJSON() {
