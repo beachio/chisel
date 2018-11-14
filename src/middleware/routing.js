@@ -2,7 +2,7 @@ import {browserHistory} from 'react-router';
 import {LOCATION_CHANGE} from 'react-router-redux';
 
 import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';
-import {setCurrentSite} from 'ducks/models';
+import {setCurrentSite, SITE_ADD} from 'ducks/models';
 import {getSiteByNameId} from 'utils/data';
 import {INIT_END, URL_SIGN, URL_SITE, URL_USERSPACE, URLS_EMAIL, URL_EMAIL_VERIFY, URL_INVALID_LINK, URL_PROFILE} from 'ducks/nav';
 
@@ -38,7 +38,7 @@ export const routing = store => next => action => {
   
   next(action);
   
-  let setFromURL = () => {
+  const setFromURL = () => {
     let path = URL;
     URL = '/';
     
@@ -74,31 +74,42 @@ export const routing = store => next => action => {
     }
   };
   
-  if (action.type == LOCATION_CHANGE) {
-    URL = action.payload.pathname;
-    
-    if (URL.indexOf(URL_USERSPACE) != -1 && !returnURL)
-      returnURL = URL;
   
-    if (store.getState().nav.initEnded)
+  switch (action.type) {
+    case LOCATION_CHANGE:
+      URL = action.payload.pathname;
+      
+      if (URL.indexOf(URL_USERSPACE) != -1 && !returnURL)
+        returnURL = URL;
+    
+      if (store.getState().nav.initEnded)
+        setFromURL();
+      
+      break;
+  
+    case INIT_END:
+      if (returnURL) {
+        URL = returnURL;
+        returnURL = null;
+        browserHistory.replace(URL);
+        
+      } else if (
+          URL.indexOf(URL_USERSPACE) == -1 &&
+          URL.indexOf(URL_EMAIL_VERIFY) == -1 &&
+          URL.indexOf(URL_INVALID_LINK) == -1) {
+        browserHistory.replace(`/${URL_USERSPACE}`);
+      }
+      
       setFromURL();
+      
+      break;
+      
+    case SITE_ADD:
+      browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${action.site.nameId}`);
+      break;
+      
+    case LOGOUT:
+      browserHistory.push(`/${URL_SIGN}`);
+      break;
   }
-  
-  if (action.type == INIT_END) {
-    if (returnURL) {
-      URL = returnURL;
-      returnURL = null;
-      browserHistory.replace(URL);
-    } else if (
-        URL.indexOf(URL_USERSPACE) == -1 &&
-        URL.indexOf(URL_EMAIL_VERIFY) == -1 &&
-        URL.indexOf(URL_INVALID_LINK) == -1) {
-      browserHistory.replace(`/${URL_USERSPACE}`);
-    }
-    
-    setFromURL();
-  }
-  
-  if (action.type == LOGOUT)
-    browserHistory.push(`/${URL_SIGN}`);
 };
