@@ -8,26 +8,24 @@ export function halt () {
   window.location = "/";
 }
 
-export function send (req) {
+export async function send (req) {
   const time = Date.now();
   store.dispatch(logRequest(time));
 
-  return req
+  try {
+    let result = await req;
+    store.dispatch(logResponse(time));
+    return result;
+  
+  } catch (error) {
+    if (error.code == 209)
+      halt();
 
-    .then(res => {
+    if (error.code == 100)
+      store.dispatch(setProblemB());
+    else
       store.dispatch(logResponse(time));
-      return res;
-    })
-
-    .catch(error => {
-      if (error.code == 209)
-        halt();
-
-      if (error.code == 100)
-        store.dispatch(setProblemB());
-      else
-        store.dispatch(logResponse(time));
-
-      throw error;
-    });
+    
+    throw error;
+  }
 }

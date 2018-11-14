@@ -8,25 +8,21 @@ import {config as _config} from 'ConnectConstants';
 export const config = {};
 
 
-function requestConfig() {
+async function requestConfig() {
   config.serverURL  = process.env.REACT_APP_SERVER_URL  || _config.serverURL;
   config.appId      = process.env.REACT_APP_APP_ID      || _config.appId;
   config.JSkey      = process.env.JS_KEY                || _config.JSkey;
   config.RESTkey    = process.env.REST_KEY              || _config.RESTkey;
 
-  return fetch('/chisel-config.json')
-    .then(response => {
-      if (response.ok)
-        return response.json();
-      throw response.statusText;
-    })
-    .then(res => {
-      config.serverURL  = res.configServerURL || config.serverURL;
-      config.appId      = res.configAppId     || config.appId;
-      config.JSkey      = res.configJSkey     || config.JSkey;
-      config.RESTkey    = res.configRESTkey   || config.RESTkey;
-    })
-    .catch(() => {});
+  const response = await fetch('/chisel-config.json');
+  if (!response.ok)
+    return;
+
+  const result = await response.json();
+  config.serverURL = result.configServerURL || config.serverURL;
+  config.appId = result.configAppId || config.appId;
+  config.JSkey = result.configJSkey || config.JSkey;
+  config.RESTkey = result.configRESTkey || config.RESTkey;
 }
 
 function subInitParse() {
@@ -34,16 +30,10 @@ function subInitParse() {
   Parse.serverURL = config.serverURL;
 }
 
-export function initApp() {
-  requestConfig()
-    .then(() => {
-      subInitParse();
-      store.dispatch(getLocalStorage());
-    })
-    .catch(e => {
-      console.log(e);
-      //halt();
-    });
+export async function initApp() {
+  await requestConfig();
+  subInitParse();
+  store.dispatch(getLocalStorage());
 }
 
 export function changeServerURL(URL) {
