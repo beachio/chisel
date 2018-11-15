@@ -7,7 +7,7 @@ import {ContentItemData, STATUS_DRAFT, STATUS_PUBLISHED, STATUS_UPDATED, STATUS_
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
-import {getModelByName} from 'utils/data';
+import {getModelByName, checkUniqueFieldValue} from 'utils/data';
 import {getRelativeTime} from 'utils/common';
 import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
 
@@ -97,8 +97,19 @@ export default class ContentList extends Component {
     let item = new ContentItemData();
     item.model = this.state.currentModel;
     item.title = this.state.itemTitle;
-    this.props.addItem(item);
+  
+    let titleField = this.state.currentModel.getTitle();
+    if (titleField && titleField.isUnique) {
+      if (checkUniqueFieldValue(titleField, item)) {
+        this.props.showAlert({
+          title: "Warning",
+          description: "There is a content item with same title. The title must be unique. Please, change it."
+        });
+        return;
+      }
+    }
     
+    this.props.addItem(item);
     this.setState({itemTitle: ""});
   };
 
@@ -288,6 +299,7 @@ export default class ContentList extends Component {
                       <InputControl placeholder="Create a new content item"
                                     value={this.state.itemTitle}
                                     icon="plus"
+                                    DOMRef={c => this.activeInput = c}
                                     onIconClick={this.onAddItem}
                                     onChange={this.onItemTitleChange}
                                     onKeyDown={this.onNewKeyDown} />
