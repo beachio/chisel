@@ -279,6 +279,18 @@ export function canBeList(field) {
     !field.isTitle;
 }
 
+export function canBeUnique(field) {
+  return (
+    field.type == FIELD_TYPE_SHORT_TEXT && (
+      field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE ||
+      field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SLUG ||
+      field.appearance == FIELD_APPEARANCE__SHORT_TEXT__URL ||
+      field.appearance == FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN) ||
+    field.type == FIELD_TYPE_INTEGER &&
+      field.appearance == FIELD_APPEARANCE__INTEGER__DECIMAL ||
+    field.type == FIELD_TYPE_FLOAT &&
+      field.appearance == FIELD_APPEARANCE__FLOAT__DECIMAL);
+}
 
 export class ModelFieldData {
   static get OriginClass() {return Parse.Object.extend("ModelField");}
@@ -295,6 +307,7 @@ export class ModelFieldData {
   isTitle = false;
   isList = false;
   isDisabled = false;
+  isUnique = false;
   order = -1;
   validations = null;
 
@@ -331,6 +344,7 @@ export class ModelFieldData {
     if (origin.get('isTitle'))      this.isTitle      = true;
     if (origin.get('isList'))       this.isList       = true;
     if (origin.get('isDisabled'))   this.isDisabled   = true;
+    if (origin.get('isUnique'))     this.isUnique     = true;
 
     if (origin.get('validations'))  this.validations  = origin.get('validations');
     
@@ -355,6 +369,7 @@ export class ModelFieldData {
     this.origin.set("isTitle",    this.isTitle);
     this.origin.set("isList",     this.isList);
     this.origin.set("isDisabled", this.isDisabled);
+    this.origin.set("isUnique",   this.isUnique);
     this.origin.set("order",      this.order);
   
     this.origin.set("validations",this.validations);
@@ -376,6 +391,7 @@ export class ModelFieldData {
       isTitle:      this.isTitle,
       isList:       this.isList,
       isDisabled:   this.isDisabled,
+      isUnique:     this.isUnique,
       order:        this.order,
       validations:  this.validations
     };

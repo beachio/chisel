@@ -15,7 +15,7 @@ import ValidationMedia from "components/modals/FieldModal/Validations/Validation
 import {BYTES, convertDataUnits, removeOddSpaces} from "utils/common";
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST} from 'utils/data';
 
-import {FIELD_TYPES, canBeList, canBeTitle} from 'models/ModelData';
+import {FIELD_TYPES, canBeList, canBeTitle, canBeUnique} from 'models/ModelData';
 import * as ftps from 'models/ModelData';
 
 import styles from './FieldModal.sss';
@@ -40,6 +40,7 @@ export default class FieldModal extends Component {
     isTitle: false,
     isList: false,
     isDisabled: false,
+    isUnique: false,
 
     errorName: false,
 
@@ -78,6 +79,7 @@ export default class FieldModal extends Component {
     this.state.isTitle      = this.field.isTitle;
     this.state.isList       = this.field.isList;
     this.state.isDisabled   = this.field.isDisabled;
+    this.state.isUnique     = this.field.isUnique;
     
     this.validations        = this.field.validations;
     
@@ -163,6 +165,10 @@ export default class FieldModal extends Component {
   onChangeIsRequired = isRequired => {
     this.setState({isRequired});
   };
+  
+  onChangeIsUnique = isUnique => {
+    this.setState({isUnique});
+  };
 
   onSave = () => {
     if (!this.active)
@@ -199,6 +205,7 @@ export default class FieldModal extends Component {
     this.field.isTitle      = this.state.isTitle;
     this.field.isList       = this.state.isList;
     this.field.isDisabled   = this.state.isDisabled;
+    this.field.isUnique     = this.state.isUnique;
   
     let values = this.state.validValues;
     if (values && values.length) {
@@ -542,6 +549,15 @@ export default class FieldModal extends Component {
                                  disabled={this.state.isTitle} />
               </div>
             </div>
+            {canBeUnique(this.state) &&
+              <div styleName="input-wrapper">
+                <div styleName="switch">
+                  <CheckboxControl title="Unique value"
+                                   checked={this.state.isUnique}
+                                   onChange={this.onChangeIsUnique} />
+                </div>
+              </div>
+            }
             {validations}
           </div>
         );
