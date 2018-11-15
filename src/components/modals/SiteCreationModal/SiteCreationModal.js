@@ -22,7 +22,7 @@ export class TemplateControl extends Component {
     super(props);
     
     this.template = props.template;
-    this.checked = props.checked;
+    this.state.checked = props.checked;
     
     if (!this.template) {
       this.templateEmpty = true;
