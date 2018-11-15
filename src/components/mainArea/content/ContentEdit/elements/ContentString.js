@@ -148,8 +148,18 @@ export default class ContentString extends ContentBase {
     this.setValue(values);
   };
   
-  onChangeDropdown = value => {
-    this.setValue(value);
+  onChangeDropdown = (v, i) => {
+    if (i === undefined) {
+      this.setValue(v);
+    
+    } else {
+      let list = this.state.value;
+      if (v === undefined)
+        list = list.slice(0, i).concat(list.slice(i + 1));
+      else
+        list[i] = v;
+      this.setValue(list);
+    }
   };
   
   onChangeWysiwyg = text => {
@@ -261,22 +271,37 @@ export default class ContentString extends ContentBase {
             );
   
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN:
-            return (
-              <div styleName="dropdown-wrapper">
+            const getElement = (v, i) => (
+              <div styleName="dropdown-wrapper" key={i}>
                 <div styleName="dropdown">
                   <DropdownControl disabled={!this.state.isEditable}
                                    suggestionsList={this.field.validValues}
-                                   suggest={this.onChangeDropdown}
-                                   current={value} />
+                                   suggest={_v => this.onChangeDropdown(_v, i)}
+                                   current={v}/>
                 </div>
                 {this.state.isEditable &&
                   <div styleName="clear"
-                       onClick={() => this.setValue(undefined)}>
+                       style={{visibility: v === undefined ? 'hidden' : 'visible'}}
+                       onClick={() => this.onChangeDropdown(undefined, i)}>
                     Reset
                   </div>
                 }
               </div>
             );
+            
+            if (this.field.isList) {
+              if (value)
+                return (
+                  <div>
+                    {value.map(getElement)}
+                    {getElement(undefined, value.length)}
+                  </div>
+                );
+              else
+                return getElement(undefined, 0);
+            } else {
+              return getElement(value);
+            }
         }
         break;
   
