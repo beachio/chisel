@@ -18,11 +18,13 @@ async function requestConfig() {
   if (!response.ok)
     return;
 
-  const result = await response.json();
-  config.serverURL = result.configServerURL || config.serverURL;
-  config.appId = result.configAppId || config.appId;
-  config.JSkey = result.configJSkey || config.JSkey;
-  config.RESTkey = result.configRESTkey || config.RESTkey;
+  try {
+    const result = await response.json();
+    config.serverURL = result.configServerURL || config.serverURL;
+    config.appId = result.configAppId || config.appId;
+    config.JSkey = result.configJSkey || config.JSkey;
+    config.RESTkey = result.configRESTkey || config.RESTkey;
+  } catch (e) {}
 }
 
 function subInitParse() {
