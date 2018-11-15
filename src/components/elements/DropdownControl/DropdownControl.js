@@ -44,8 +44,7 @@ export default class DropdownControl extends Component {
       this.setState({suggestionValue: '', disabled});
   }
 
-  onSuggestionClick = event => {
-    const item = event.target.innerText;
+  onSuggestionClick = item => {
     this.setState({
       suggestionValue: item,
       suggestionsVisibility: false
@@ -104,7 +103,7 @@ export default class DropdownControl extends Component {
         'empty': !suggestionsItem
       });
       return (
-        <div onMouseDown={this.onSuggestionClick}
+        <div onMouseDown={() => this.onSuggestionClick(suggestionsItem)}
              styleName={styleName}
              key={key}>
           {suggestionsItem ? suggestionsItem : '(empty)'}
