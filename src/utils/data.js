@@ -239,6 +239,23 @@ export function checkContentExistense(item, items) {
   return false;
 }
 
+export function checkUniqueFieldValue(field, item) {
+  const draft = item.draft ? item.draft : item;
+  const value = draft.fields.get(field);
+  
+  const items = store.getState().content.items
+    .filter(_item => _item.model == field.model)
+    .filter(_item => _item != item);
+  
+  for (let _item of items) {
+    const _value = _item.fields.get(field);
+    
+    if (value === _value)
+      return _item;
+  }
+  return null;
+}
+
 //============== media ============
 
 export function getMediaByO(origin, items) {

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 
+import {checkUniqueFieldValue} from 'utils/data';
+
 import styles from '../ContentEdit.sss';
 
 
@@ -13,14 +15,12 @@ export default class ContentBase extends Component {
   };
   
   field = null;
-  setFieldValue = null;
   
   
   constructor (props) {
     super(props);
     
     this.field = props.field;
-    this.setFieldValue = props.setFieldValue;
     
     this.state.isEditable = props.isEditable;
     this.state.value = props.value;
@@ -38,12 +38,23 @@ export default class ContentBase extends Component {
       value,
       error: null
     });
-    this.setFieldValue(this.field, value, save);
+    this.props.setFieldValue(this.field, value, save);
   };
   
   getError() {
     if (this.field.isRequired && this.state.value === undefined)
       return 'This field is required!';
+    
+    if (this.field.isUnique) {
+      const item = checkUniqueFieldValue(this.field, this.props.item);
+      if (item) {
+        if (item.title)
+          return `This field value must be unique! The "${item.title}" item has same value.`;
+        else
+          return `This field value must be unique! There is an untitled item with same value.`;
+      }
+    }
+    
     return null;
   }
   

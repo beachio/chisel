@@ -185,6 +185,7 @@ export default class ContentEdit extends Component {
       case ftps.FIELD_TYPE_LONG_TEXT:
         return <ContentString ref={ref}
                               field={field}
+                              item={this.item}
                               key={field.nameId}
                               value={value}
                               isEditable={isEditable}
@@ -196,6 +197,7 @@ export default class ContentEdit extends Component {
       case ftps.FIELD_TYPE_INTEGER:
         return <ContentNumber ref={ref}
                               field={field}
+                              item={this.item}
                               key={field.nameId}
                               value={value}
                               isEditable={isEditable}
@@ -204,6 +206,7 @@ export default class ContentEdit extends Component {
       case ftps.FIELD_TYPE_BOOLEAN:
         return <ContentBoolean ref={ref}
                                field={field}
+                               item={this.item}
                                key={field.nameId}
                                value={value}
                                isEditable={isEditable}
@@ -212,6 +215,7 @@ export default class ContentEdit extends Component {
       case ftps.FIELD_TYPE_DATE:
         return <ContentDate ref={ref}
                             field={field}
+                            item={this.item}
                             key={field.nameId}
                             value={value}
                             isEditable={isEditable}
@@ -220,6 +224,7 @@ export default class ContentEdit extends Component {
       case ftps.FIELD_TYPE_MEDIA:
         return <ContentMedia ref={ref}
                              field={field}
+                             item={this.item}
                              key={field.nameId}
                              value={value}
                              isEditable={isEditable}
@@ -233,9 +238,9 @@ export default class ContentEdit extends Component {
       case ftps.FIELD_TYPE_REFERENCE:
         return <ContentReference ref={ref}
                                  field={field}
+                                 item={this.item}
                                  key={field.nameId}
                                  value={value}
-                                 item={this.item}
                                  isEditable={isEditable}
                                  setFieldValue={this.setFieldValue}
                                  showModal={this.props.showModal}
