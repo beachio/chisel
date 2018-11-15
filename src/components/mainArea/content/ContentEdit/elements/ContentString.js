@@ -153,7 +153,7 @@ export default class ContentString extends ContentBase {
       this.setValue(v);
     
     } else {
-      let list = this.state.value;
+      let list = this.state.value ? this.state.value : [];
       if (v === undefined)
         list = list.slice(0, i).concat(list.slice(i + 1));
       else
@@ -288,20 +288,19 @@ export default class ContentString extends ContentBase {
                 }
               </div>
             );
-            
-            if (this.field.isList) {
-              if (value)
-                return (
-                  <div>
-                    {value.map(getElement)}
-                    {getElement(undefined, value.length)}
-                  </div>
-                );
-              else
-                return getElement(undefined, 0);
-            } else {
+  
+            if (!this.field.isList)
               return getElement(value);
-            }
+  
+            if (!value)
+              return getElement(undefined, 0);
+  
+            return (
+              <div>
+                {value.map(getElement)}
+                {getElement(undefined, value.length)}
+              </div>
+            );
         }
         break;
   
