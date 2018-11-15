@@ -213,7 +213,8 @@ export default class ContentList extends Component {
           <div styleName="list-wrapper">
             <div styleName="list">
               <div styleName="inputs-wrapper search">
-                <InputControl icon="search"
+                <InputControl placeholder="Searching content items"
+                              icon="search"
                               autoFocus
                               value={this.state.searchText}
                               onKeyDown={this.onSearchKeyDown}
@@ -284,7 +285,7 @@ export default class ContentList extends Component {
                                        current={this.state.currentModel.name} />
                     </div>
                     <div styleName="input-wrapper">
-                      <InputControl placeholder="Create a new Content Record"
+                      <InputControl placeholder="Create a new content item"
                                     value={this.state.itemTitle}
                                     icon="plus"
                                     onIconClick={this.onAddItem}
