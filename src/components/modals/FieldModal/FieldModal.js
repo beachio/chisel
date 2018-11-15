@@ -85,7 +85,7 @@ export default class FieldModal extends Component {
     
     this.state.appList = FIELD_TYPES.get(this.field.type);
 
-    if (!this.updating && canBeTitle(this.state) && !this.field.model.hasTitle()) {
+    if (!this.updating && canBeTitle(this.state) && !this.field.model.getTitle()) {
       this.state.isTitle = true;
       this.state.isRequired = true;
     }
@@ -236,7 +236,7 @@ export default class FieldModal extends Component {
 
   checkSwitches() {
     let can = canBeTitle(this.state);
-    if (can && !this.field.model.hasTitle())
+    if (can && !this.field.model.getTitle())
       this.setState({isTitle: true});
     if (!can && this.state.isTitle)
       this.setState({isTitle: false});

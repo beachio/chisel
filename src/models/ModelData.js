@@ -164,12 +164,12 @@ export class ModelData {
     };
   }
   
-  hasTitle() {
+  getTitle() {
     for (let field of this.fields) {
       if (field.isTitle)
-        return true;
+        return field;
     }
-    return false;
+    return null;
   }
 }
 

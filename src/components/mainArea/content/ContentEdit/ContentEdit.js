@@ -318,7 +318,7 @@ export default class ContentEdit extends Component {
         <EditableTitleControl text={this.state.title}
                               placeholder={"Item title"}
                               update={isEditable ? this.updateItemTitle : null}
-                              disabled={!this.item.model.hasTitle()} />
+                              disabled={!this.item.model.getTitle()} />
         <EditableTitleControl text={this.item.model.name}
                               isSmall={true} />
       </div>
