@@ -101,7 +101,7 @@ export default class ContentNumber extends ContentBase {
       this.setValue(v);
       
     } else {
-      let list = this.state.value;
+      let list = this.state.value ? this.state.value : [];
       if (v === undefined)
         list = list.slice(0, i).concat(list.slice(i + 1));
       else
