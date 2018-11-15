@@ -199,8 +199,10 @@ export const FIELD_APPEARANCE__LONG_TEXT__MARKDOWN  = "Markdown";
 
 export const FIELD_APPEARANCE__INTEGER__DECIMAL     = "Decimal";
 export const FIELD_APPEARANCE__INTEGER__RATING      = "Rating";
+export const FIELD_APPEARANCE__INTEGER__DROPDOWN    = "Dropdown";
 
 export const FIELD_APPEARANCE__FLOAT__DECIMAL       = "Decimal";
+export const FIELD_APPEARANCE__FLOAT__DROPDOWN      = "Dropdown";
 
 export const FIELD_APPEARANCE__BOOLEAN__RADIO       = "Radio buttons";
 export const FIELD_APPEARANCE__BOOLEAN__SWITCH      = "Switch";
@@ -232,10 +234,12 @@ export const FIELD_TYPES = new Map([
   ]],
   [FIELD_TYPE_INTEGER, [
     FIELD_APPEARANCE__INTEGER__DECIMAL,
-    FIELD_APPEARANCE__INTEGER__RATING
+    FIELD_APPEARANCE__INTEGER__RATING,
+    FIELD_APPEARANCE__INTEGER__DROPDOWN
   ]],
   [FIELD_TYPE_FLOAT, [
-    FIELD_APPEARANCE__FLOAT__DECIMAL
+    FIELD_APPEARANCE__FLOAT__DECIMAL,
+    FIELD_APPEARANCE__FLOAT__DROPDOWN
   ]],
   [FIELD_TYPE_BOOLEAN, [
     FIELD_APPEARANCE__BOOLEAN__RADIO,
@@ -268,10 +272,12 @@ export function canBeList(field) {
     field.type == FIELD_TYPE_SHORT_TEXT && (
       field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE ||
       field.appearance == FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN) ||
-    field.type == FIELD_TYPE_INTEGER &&
-      field.appearance == FIELD_APPEARANCE__INTEGER__DECIMAL ||
-    field.type == FIELD_TYPE_FLOAT &&
+    field.type == FIELD_TYPE_INTEGER && (
+      field.appearance == FIELD_APPEARANCE__INTEGER__DECIMAL  ||
+      field.appearance == FIELD_APPEARANCE__INTEGER__DROPDOWN) ||
+    field.type == FIELD_TYPE_FLOAT && (
       field.appearance == FIELD_APPEARANCE__FLOAT__DECIMAL ||
+      field.appearance == FIELD_APPEARANCE__FLOAT__DROPDOWN) ||
     field.type == FIELD_TYPE_MEDIA &&
       field.appearance == FIELD_APPEARANCE__MEDIA__MEDIA ||
     field.type == FIELD_TYPE_REFERENCE &&
@@ -286,10 +292,12 @@ export function canBeUnique(field) {
       field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SLUG ||
       field.appearance == FIELD_APPEARANCE__SHORT_TEXT__URL ||
       field.appearance == FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN) ||
-    field.type == FIELD_TYPE_INTEGER &&
+    field.type == FIELD_TYPE_INTEGER && (
       field.appearance == FIELD_APPEARANCE__INTEGER__DECIMAL ||
-    field.type == FIELD_TYPE_FLOAT &&
-      field.appearance == FIELD_APPEARANCE__FLOAT__DECIMAL);
+      field.appearance == FIELD_APPEARANCE__INTEGER__DROPDOWN) ||
+    field.type == FIELD_TYPE_FLOAT && (
+      field.appearance == FIELD_APPEARANCE__FLOAT__DECIMAL ||
+      field.appearance == FIELD_APPEARANCE__FLOAT__DROPDOWN));
 }
 
 export class ModelFieldData {

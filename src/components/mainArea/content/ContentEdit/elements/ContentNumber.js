@@ -5,7 +5,7 @@ import ReactStars from 'react-stars';
 import ContentBase from './ContentBase';
 import InputNumberControl from 'components/elements/InputNumberControl/InputNumberControl';
 import DynamicListComponent from "components/elements/DynamicListComponent/DynamicListComponent";
-
+import DropdownControl from "components/elements/DropdownControl/DropdownControl";
 import * as ftps from 'models/ModelData';
 
 import styles from '../ContentEdit.sss';
@@ -96,6 +96,20 @@ export default class ContentNumber extends ContentBase {
     this.setValue(value);
   };
   
+  onChangeDropdown = (v, i) => {
+    if (i === undefined) {
+      this.setValue(v);
+      
+    } else {
+      let list = this.state.value;
+      if (v === undefined)
+        list = list.slice(0, i).concat(list.slice(i + 1));
+      else
+        list[i] = v;
+      this.setValue(list);
+    }
+  };
+  
   getInput() {
     let value = this.state.value;
     
@@ -148,6 +162,40 @@ export default class ContentNumber extends ContentBase {
                 }
               </div>
             );
+            
+          case ftps.FIELD_APPEARANCE__INTEGER__DROPDOWN:
+          case ftps.FIELD_APPEARANCE__FLOAT__DROPDOWN:
+            const getElement = (v, i) => (
+              <div styleName="dropdown-wrapper" key={i}>
+                <div styleName="dropdown">
+                  <DropdownControl disabled={!this.state.isEditable}
+                                   suggestionsList={this.field.validValues}
+                                   suggest={_v => this.onChangeDropdown(_v, i)}
+                                   current={v}/>
+                </div>
+                {this.state.isEditable &&
+                  <div styleName="clear"
+                       style={{visibility: v === undefined ? 'hidden' : 'visible'}}
+                       onClick={() => this.onChangeDropdown(undefined, i)}>
+                    Reset
+                  </div>
+                }
+              </div>
+            );
+    
+            if (!this.field.isList)
+              return getElement(value);
+            
+            if (!value)
+              return getElement(undefined, 0);
+            
+            return (
+              <div>
+                {value.map(getElement)}
+                {getElement(undefined, value.length)}
+              </div>
+            );
+            
         }
     }
   }

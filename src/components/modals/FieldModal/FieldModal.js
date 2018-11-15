@@ -422,35 +422,63 @@ export default class FieldModal extends Component {
         tabAppStyle += ' active';
   
         let inner = null;
-        
-        switch (this.state.appearance) {
-          case ftps.FIELD_APPEARANCE__BOOLEAN__RADIO:
-            inner = (
-              <div styleName="input-wrapper boolean-text">
-                <div styleName="input">
-                  <InputControl placeholder="Text for yes"
-                                onChange={this.onChangeBoolTextYes}
-                                value={this.state.boolTextYes} />
-                </div>
-                <div styleName="input">
-                  <InputControl placeholder="Text for no"
-                                onChange={this.onChangeBoolTextNo}
-                                value={this.state.boolTextNo} />
-                </div>
-              </div>
-            );
+  
+        switch (this.state.type) {
+          case ftps.FIELD_TYPE_SHORT_TEXT:
+            switch (this.state.appearance) {
+              case ftps.FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN:
+                inner = (
+                  <div>
+                    <div styleName="label">Valid values:</div>
+                    <DynamicListComponent values={this.state.validValues}
+                                          ref={comp => this.validValuesList = comp}
+                                          onChange={this.onValidValuesChange}
+                                          disableEmpty />
+                  </div>
+                );
+                break;
+            }
+            break;
+  
+          case ftps.FIELD_TYPE_INTEGER:
+          case ftps.FIELD_TYPE_FLOAT:
+            switch (this.state.appearance) {
+              case ftps.FIELD_APPEARANCE__INTEGER__DROPDOWN:
+              case ftps.FIELD_APPEARANCE__FLOAT__DROPDOWN:
+                inner = (
+                  <div>
+                    <div styleName="label">Valid values:</div>
+                    <DynamicListComponent values={this.state.validValues}
+                                          ref={comp => this.validValuesList = comp}
+                                          numeric
+                                          numericInt={this.state.type == ftps.FIELD_TYPE_INTEGER}
+                                          onChange={this.onValidValuesChange}
+                                          disableEmpty />
+                  </div>
+                );
+                break;
+            }
             break;
             
-          case ftps.FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN:
-            inner = (
-              <div>
-                <div styleName="label">Valid values:</div>
-                <DynamicListComponent values={this.state.validValues}
-                                      ref={comp => this.validValuesList = comp}
-                                      onChange={this.onValidValuesChange}
-                                      disableEmpty />
-              </div>
-            );
+          case ftps.FIELD_TYPE_BOOLEAN:
+            switch (this.state.appearance) {
+              case ftps.FIELD_APPEARANCE__BOOLEAN__RADIO:
+                inner = (
+                  <div styleName="input-wrapper boolean-text">
+                    <div styleName="input">
+                      <InputControl placeholder="Text for yes"
+                                    onChange={this.onChangeBoolTextYes}
+                                    value={this.state.boolTextYes}/>
+                    </div>
+                    <div styleName="input">
+                      <InputControl placeholder="Text for no"
+                                    onChange={this.onChangeBoolTextNo}
+                                    value={this.state.boolTextNo}/>
+                    </div>
+                  </div>
+                );
+                break;
+            }
             break;
         }
   
