@@ -5,11 +5,11 @@ import Gravatar from 'react-gravatar';
 import {Parse} from 'parse';
 import FlipMove from 'react-flip-move';
 
-import {ROLE_ADMIN, ROLE_EDITOR, ROLE_DEVELOPER} from 'models/UserData';
 import {getUser, checkCollaboration, COLLAB_CORRECT, COLLAB_ERROR_EXIST, COLLAB_ERROR_SELF} from 'utils/data';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
+import {MODAL_TYPE_ROLE} from "ducks/nav";
 
 import styles from './Sharing.sss';
 
@@ -110,18 +110,16 @@ export default class Sharing extends Component {
   
   onRoleClick(e, index) {
     e.stopPropagation();
-    
-    let collaborations = this.state.collaborations;
-    let collab = collaborations[index];
-    if (collab.role == ROLE_ADMIN)
-      collab.role = ROLE_EDITOR;
-    else if (collab.role == ROLE_EDITOR)
-      collab.role = ROLE_DEVELOPER;
-    else if (collab.role == ROLE_DEVELOPER)
-      collab.role = ROLE_ADMIN;
-    
-    this.setState({collaborations});
-    this.props.updateCollaboration(collab);
+  
+    const collab = this.state.collaborations[index];
+  
+    this.props.showModal(MODAL_TYPE_ROLE, {
+      role: collab.role,
+      callback: role => {
+        collab.role = role;
+        this.props.updateCollaboration(collab);
+      }
+    });
   }
   
   onDeleteClick(event, collab) {

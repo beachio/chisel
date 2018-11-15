@@ -7,7 +7,7 @@ import Sharing from 'components/mainArea/sharing/Sharing';
 import {ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';
 import {addCollaboration, addInviteCollaboration, updateCollaboration, deleteCollaboration, deleteSelfCollaboration}
   from 'ducks/models';
-import {showAlert} from 'ducks/nav';
+import {showAlert, showModal} from 'ducks/nav';
 
 
 export class SharingContainer extends Component  {
@@ -15,7 +15,7 @@ export class SharingContainer extends Component  {
     const {models, nav, user} = this.props;
     const {addCollaboration, addInviteCollaboration, updateCollaboration, deleteCollaboration, deleteSelfCollaboration} = 
       this.props.modelsActions;
-    const {showAlert} = this.props.navActions;
+    const {showAlert, showModal} = this.props.navActions;
     
     let site = models.currentSite;
     if (!site)
@@ -37,6 +37,7 @@ export class SharingContainer extends Component  {
                  deleteCollaboration={deleteCollaboration}
                  deleteSelfCollaboration={deleteSelfCollaboration}
                  showAlert={showAlert}
+                 showModal={showModal}
                  alertShowing={nav.alertShowing}
                  isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
       </div>
@@ -55,7 +56,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     modelsActions:  bindActionCreators({addCollaboration, addInviteCollaboration, updateCollaboration, deleteCollaboration, deleteSelfCollaboration}, dispatch),
-    navActions:     bindActionCreators({showAlert}, dispatch),
+    navActions:     bindActionCreators({showAlert, showModal}, dispatch),
   };
 }
 

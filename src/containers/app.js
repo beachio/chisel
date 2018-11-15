@@ -12,9 +12,12 @@ import WysiwygModal from 'components/modals/WysiwygModal/WysiwygModal';
 import MarkdownModal from 'components/modals/MarkdownModal/MarkdownModal';
 import ReferenceModal from 'components/modals/ReferenceModal/ReferenceModal';
 import ModelChooseModal from 'components/modals/ModelChooseModal/ModelChooseModal';
+import CollabRoleModal from 'components/modals/CollabRoleModal/CollabRoleModal';
 import AlertModal, {ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
-import {closeAlert, closeModal, MODAL_TYPE_SITE, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG,
-  MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN} from 'ducks/nav';
+import {
+  closeAlert, closeModal, MODAL_TYPE_SITE, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG,
+  MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN, MODAL_TYPE_ROLE
+} from 'ducks/nav';
 import {addSite, addField, updateField} from 'ducks/models';
 
 import styles from './app.sss';
@@ -94,6 +97,9 @@ class App extends React.Component {
                                    models={models.currentSite.models}
                                    onClose={closeModal}/>;
       
+        case MODAL_TYPE_ROLE:
+          return <CollabRoleModal params={nav.modalParams}
+                                  onClose={closeModal} />;
       }
     };
 

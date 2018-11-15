@@ -25,6 +25,7 @@ export const MODAL_TYPE_REFERENCE     = 'app/nav/modals/MODAL_TYPE_REFERENCE';
 export const MODAL_TYPE_WYSIWYG       = 'app/nav/modals/MODAL_TYPE_WYSIWYG';
 export const MODAL_TYPE_MARKDOWN      = 'app/nav/modals/MODAL_TYPE_MARKDOWN';
 export const MODAL_TYPE_MODEL_CHOOSE  = 'app/nav/modals/MODAL_TYPE_MODEL_CHOOSE';
+export const MODAL_TYPE_ROLE          = 'app/nav/modals/MODAL_TYPE_ROLE';
 
 
 export const URL_EMAIL_VERIFY     = 'email-verify';
