@@ -105,6 +105,11 @@ export default class ReferenceModal extends Component {
       this.setState({searchText: ``});
   };
   
+  onSearchClear = () => {
+    this.setState({searchText: ''});
+    this.focusElm.focus();
+  };
+  
   onChoose = () => {
     if (!this.state.selectedItems.length || !this.active)
       return;
@@ -129,6 +134,8 @@ export default class ReferenceModal extends Component {
             <div styleName="input-wrapper">
               <InputControl type="big"
                             label="search entries"
+                            icon={this.state.searchText ? "cross" : "search"}
+                            onIconClick={this.state.searchText ? this.onSearchClear : null}
                             value={this.state.searchText}
                             DOMRef={inp => this.focusElm = inp}
                             onKeyDown={this.onSearchKeyDown}

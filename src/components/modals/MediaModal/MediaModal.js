@@ -97,6 +97,11 @@ export default class MediaModal extends Component {
     if (event.keyCode == 27)
       this.setState({searchText: ``});
   };
+  
+  onSearchClear = () => {
+    this.setState({searchText: ''});
+    this.focusElm.focus();
+  };
 
   onChoose = () => {
     if (!this.state.selectedItems.length || !this.active)
@@ -157,6 +162,8 @@ export default class MediaModal extends Component {
                             label="search media files"
                             DOMRef={inp => this.focusElm = inp}
                             value={this.state.searchText}
+                            icon={this.state.searchText ? "cross" : "search"}
+                            onIconClick={this.state.searchText ? this.onSearchClear : null}
                             onKeyDown={this.onSearchKeyDown}
                             onChange={this.onSearch} />
             </div>
