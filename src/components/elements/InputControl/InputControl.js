@@ -39,7 +39,7 @@ export default class InputControl extends Component {
         </div>);
   
     return (
-      <div>
+      <div styleName="InputControl">
         <label styleName="label"> {label} </label>
         <div styleName="input-wrapper">
           {iconEl}
