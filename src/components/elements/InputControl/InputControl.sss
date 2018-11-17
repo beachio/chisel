@@ -1,10 +1,8 @@
-.InputControl
+.input-wrapper
   width: 100%
   text-align: left
-
   display: flex
   flex-flow: column nowrap
-
   position: relative
 
 .label
@@ -42,38 +40,44 @@
   &:focus + .label
     color: #5DAD47
 
-.lock
-  position: absolute
-  height: 24px
-  width: 16px
-  top: 8px
-  right: 12px
-
-.plus
+.icon
   position: absolute
   top: 50%
   transform: translateY(-50%)
   right: 15px
   width: 14px
   height: 14px
+
+.lock
+  right: 12px
+  height: 24px
+  width: 16px
+
+.plus
   cursor: pointer
+  opacity: .6
+
+  &:hover
+    opacity: 1
 
 .users
-  position: absolute
-  top: 50%
-  transform: translateY(-50%)
-  right: 15px
   width: 15px
   height: 16px
   cursor: pointer
+  opacity: .6
+
+  &:hover
+    opacity: 1
 
 .search
-  position: absolute
-  top: 50%
-  transform: translateY(-50%)
-  right: 15px
-  width: 14px
   height: 14px
+
+.cross
+  opacity: .6
+  cursor: pointer
+
+  &:hover
+    opacity: 1
 
 .input
   background: #FFFFFF

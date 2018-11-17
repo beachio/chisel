@@ -34,25 +34,27 @@ export default class InputControl extends Component {
     let iconEl;
     if (icon)
       iconEl = (
-        <div onClick={onIconClick} styleName={icon}>
+        <div onClick={onIconClick} styleName={'icon ' + icon}>
           <IconsComponent icon={icon} />
         </div>);
   
     return (
-      <div styleName="InputControl">
-        {iconEl}
-        <input type={inputType}
-               styleName={inputStyles}
-               icon={icon}
-               value={value}
-               autoFocus={autoFocus}
-               placeholder={placeholder}
-               onChange={onChange}
-               onBlur={onBlur}
-               onKeyDown={onKeyDown}
-               readOnly={readOnly}
-               ref={DOMRef} />
+      <div>
         <label styleName="label"> {label} </label>
+        <div styleName="input-wrapper">
+          {iconEl}
+          <input type={inputType}
+                 styleName={inputStyles}
+                 icon={icon}
+                 value={value}
+                 autoFocus={autoFocus}
+                 placeholder={placeholder}
+                 onChange={onChange}
+                 onBlur={onBlur}
+                 onKeyDown={onKeyDown}
+                 readOnly={readOnly}
+                 ref={DOMRef} />
+        </div>
       </div>
     );
   }
