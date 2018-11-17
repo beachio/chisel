@@ -9,18 +9,18 @@ import {routing} from 'middleware/routing';
 
 export default function configureStore(initialState) {
   const logger = createLogger();
+  
+  const middleware = [initialization, routing, thunk];
+  if (process.env.NODE_ENV == 'development')
+    middleware.push(logger);
 
-  const store = createStore(
-    rootReducer,
-    initialState,
-    applyMiddleware(initialization, routing, thunk, logger));
+  const store = createStore(rootReducer, initialState, applyMiddleware(...middleware));
 
-  if (module.hot) {
+  if (module.hot)
     module.hot.accept('../ducks', () => {
       const nextRootReducer = require('../ducks');
       store.replaceReducer(nextRootReducer);
     });
-  }
 
   return store;
 }
