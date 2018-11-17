@@ -69,7 +69,7 @@
       transform: translateY(-50%)
 
     .type
-      flex: 0 0 85%
+      flex: 1 1 200px
 
     .name,
     .description,
@@ -89,7 +89,7 @@
       letter-spacing: 0.46px
 
     .updated
-      flex: 0 0 15%
+      flex: 0 1 150px
 
 
 .filters
@@ -149,6 +149,8 @@
     
 .hidden
   &-controls
+    position: absolute
+    right: -40px
     opacity: 0.001
     transition: opacity 0.1s ease
     will-change: opacity

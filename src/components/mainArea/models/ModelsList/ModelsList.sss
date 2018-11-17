@@ -16,7 +16,7 @@
     background: #fff
 
     margin: 3px 10%
-    padding: 5px
+    padding: 10px
 
     z-index: 5
 
@@ -35,7 +35,7 @@
       transform: translateY(-50%)
 
     .type
-      flex: 0 0 70%
+      flex: 1 1 200px
 
     .name,
     .description,
@@ -53,9 +53,11 @@
       letter-spacing: 0.46px
       margin-top: 3px
 
-    .fields,
+    .fields
+      flex: 0 0 60px
+
     .updated
-      flex: 0 0 15%
+      flex: 0 1 150px
 
 
   &-header
@@ -94,6 +96,8 @@
 
 .hidden
   &-controls
+    position: absolute
+    right: -40px
     opacity: 0.001
     transition: opacity 0.1s ease
     will-change: opacity
