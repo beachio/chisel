@@ -46,7 +46,7 @@ const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemove
           <div className={styles.hiddenRemove}
                onClick={event => onRemoveClick(event, field)}>
             <InlineSVG className={styles.cross}
-                       src={require("assets/images/cross.svg")}/>
+                       src={require("assets/images/cross-circle.svg")}/>
           </div>
         </div>
       }

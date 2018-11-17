@@ -235,7 +235,7 @@ export default class Sharing extends Component {
                           <div styleName="hidden-controls">
                             <div styleName="hidden-remove" onClick={event => this.onDeleteClick(event, collaboration)}>
                               <InlineSVG styleName="cross"
-                                         src={require("assets/images/cross.svg")}/>
+                                         src={require("assets/images/cross-circle.svg")}/>
                             </div>
                           </div>
                       }

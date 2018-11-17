@@ -129,7 +129,7 @@ export default class ContentReference extends ContentBase {
               <span styleName={titleStyle}> {title}</span>
             </span>
             <InlineSVG styleName="reference-cross"
-                       src={require('assets/images/cross.svg')}
+                       src={require('assets/images/cross-circle.svg')}
                        onClick={e => this.onReferenceClear(e, item)} />
           </div>
         );

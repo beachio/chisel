@@ -39,7 +39,7 @@ export default class WysiwygModal extends Component {
       <div styleName="wrapper">
         <div styleName="return" onClick={this.onClosing}>
           <InlineSVG styleName="cross"
-                     src={require("assets/images/cross.svg")} />
+                     src={require("assets/images/cross-circle.svg")} />
         </div>
         <Editor styleName="editor"
                 text={this.text}
