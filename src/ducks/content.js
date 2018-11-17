@@ -6,7 +6,7 @@ import {SITE_DELETE, MODEL_DELETE, FIELD_ADD, FIELD_UPDATE, FIELD_DELETE} from '
 import {LOGOUT} from './user';
 import {getRandomColor} from 'utils/common';
 import {getContentForModel, getContentForSite} from 'utils/data';
-import {send} from 'utils/server';
+import {send, getAllObjects} from 'utils/server';
 
 
 export const INIT_END           = 'app/content/INIT_END';
@@ -22,10 +22,9 @@ export const FILTER_MODEL       = 'app/content/FILTER_MODEL';
 export const FILTER_STATUS      = 'app/content/FILTER_STATUS';
 
 function requestContentItems(model, items, itemsDraft) {
-  return send(
+  return send(getAllObjects(
     new Parse.Query(Parse.Object.extend(model.tableName))
-      .find()
-  )
+  ))
     .then(items_o => {
       for (let item_o of items_o) {
         let item = new ContentItemData();

@@ -1,7 +1,7 @@
 import {Parse} from 'parse';
 
 import {store} from 'index';
-import {send} from 'utils/server';
+import {send, getAllObjects} from 'utils/server';
 import {LOGOUT} from 'ducks/user';
 import {UserData, CollaborationData} from 'models/UserData';
 import {canBeTitle, FIELD_NAMES_RESERVED, ModelData, ModelFieldData, SiteData, TemplateData} from 'models/ModelData';
@@ -30,10 +30,9 @@ export const SET_CURRENT_MODEL          = 'app/models/SET_CURRENT_MODEL';
 
 
 function requestTemplates(templates_o, templates) {
-  return send(
+  return send(getAllObjects(
     new Parse.Query(TemplateData.OriginClass)
-      .find()
-  )
+  ))
     .then(_templates_o => {
       Array.prototype.push.apply(templates_o, _templates_o);
       
@@ -43,11 +42,10 @@ function requestTemplates(templates_o, templates) {
 }
 
 function requestCollaborationsPre(sites) {
-  return send(
+  return send(getAllObjects(
     new Parse.Query(CollaborationData.OriginClass)
       .equalTo("user", Parse.User.current())
-      .find()
-  )
+  ))
     .then(collabs => {
       for (let collab of collabs)
         sites.push(collab.get('site'));
@@ -57,19 +55,17 @@ function requestCollaborationsPre(sites) {
 }
 
 function requestUserSites() {
-  return send(
+  return send(getAllObjects(
     new Parse.Query(SiteData.OriginClass)
       .equalTo("owner", Parse.User.current())
-      .find()
-  );
+  ));
 }
 
 function requestCollaborationsPost(sites_o, sites) {
-  return send(
+  return send(getAllObjects(
     new Parse.Query(CollaborationData.OriginClass)
       .containedIn("site", sites_o)
-      .find()
-  )
+  ))
     .then(collabs_o => {
       const promises = [];
       for (let collab_o of collabs_o) {
@@ -99,11 +95,10 @@ function requestCollaborationsPost(sites_o, sites) {
 }
 
 function requestModels(templates_o, templates, sites_o, sites, models_o, models) {
-  return send(
+  return send(getAllObjects(
     new Parse.Query(ModelData.OriginClass)
       .containedIn("site", sites_o)
-      .find()
-  )
+  ))
     .then(_models_o => {
       Array.prototype.push.apply(models_o, _models_o);
   
@@ -120,12 +115,11 @@ function requestModels(templates_o, templates, sites_o, sites, models_o, models)
         }
       }
   
-      return send(
+      return send(getAllObjects(
         new Parse.Query(ModelData.OriginClass)
           .equalTo("site", undefined)
           .containedIn("template", templates_o)
-          .find()
-      );
+      ));
     })
     
     .then(_models_o => {
@@ -147,11 +141,10 @@ function requestModels(templates_o, templates, sites_o, sites, models_o, models)
 }
 
 function requestFields(models_o, models) {
-  return send(
+  return send(getAllObjects(
     new Parse.Query(ModelFieldData.OriginClass)
       .containedIn("model", models_o)
-      .find()
-  )
+  ))
     .then(fields_o => {
       for (let field_o of fields_o) {
         let field = new ModelFieldData().setOrigin(field_o);

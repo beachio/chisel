@@ -29,3 +29,24 @@ export async function send (req) {
     throw error;
   }
 }
+
+export function getAllObjects (query) {
+  const MAX_COUNT = 90;
+  let objects = [];
+  
+  const getObjects = (offset = 0) => {
+    return query
+      .limit(MAX_COUNT)
+      .skip(offset)
+      .find()
+      .then(res => {
+        if (!res.length)
+          return objects;
+        
+        objects = objects.concat(res);
+        return getObjects(offset + MAX_COUNT);
+      })
+  };
+  
+  return getObjects();
+}

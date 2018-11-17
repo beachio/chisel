@@ -3,7 +3,7 @@ import {Parse} from 'parse';
 import {store} from 'index';
 import {MediaItemData} from 'models/MediaItemData';
 import {getSite} from 'utils/data';
-import {send} from 'utils/server';
+import {getAllObjects, send} from 'utils/server';
 
 
 export const INIT_END       = 'app/media/INIT_END';
@@ -18,11 +18,10 @@ function requestMedia() {
   for (let site of sites)
     sites_o.push(site.origin);
   
-  return send(
+  return send(getAllObjects(
     new Parse.Query(MediaItemData.OriginClass)
       .containedIn("site", sites_o)
-      .find()
-  )
+  ))
     .then(items_o => {
       let items = [];
       for (let item_o of items_o) {
