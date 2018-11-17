@@ -6,6 +6,7 @@ import {Parse} from 'parse';
 import FlipMove from 'react-flip-move';
 
 import {getUser, checkCollaboration, COLLAB_CORRECT, COLLAB_ERROR_EXIST, COLLAB_ERROR_SELF} from 'utils/data';
+import {checkEmail} from 'utils/common';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
@@ -66,6 +67,16 @@ export default class Sharing extends Component {
     let email = this.state.input;
     if (!email)
       return;
+    
+    if (!checkEmail(email)) {
+      this.props.showAlert({
+        title: "Error",
+        description: "The email is not correct!",
+        buttonText: "OK"
+      });
+      this.returnFocus = true;
+      return;
+    }
     
     getUser(email)
       .then(user => {
