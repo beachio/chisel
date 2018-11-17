@@ -6,9 +6,9 @@ import {Helmet} from "react-helmet";
 
 import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import {ROLE_DEVELOPER} from 'models/UserData';
-import {setCurrentItem, addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem} from 'ducks/content';
+import {setCurrentItem, addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem} from 'ducks/content';
 import {addMediaItem, updateMediaItem, removeMediaItem} from 'ducks/media';
-import {showModal, URL_CONTENT, URL_ITEM, URL_USERSPACE, URL_SITE} from 'ducks/nav';
+import {showModal, showAlert, URL_CONTENT, URL_ITEM, URL_USERSPACE, URL_SITE} from 'ducks/nav';
 import {getContentByModelAndId} from 'utils/data';
 
 
@@ -53,8 +53,8 @@ export class ContentEditContainer extends Component {
   
   render() {
     const {models, content} = this.props;
-    const {addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem} = this.props.contentActions;
-    const {showModal} = this.props.navActions;
+    const {addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem} = this.props.contentActions;
+    const {showModal, showAlert} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
     
     const site = models.currentSite;
@@ -91,10 +91,12 @@ export class ContentEditContainer extends Component {
                      archiveItem={archiveItem}
                      restoreItem={restoreItem}
                      discardItem={discardItem}
+                     deleteItem={deleteItem}
                      addMediaItem={addMediaItem}
                      updateMediaItem={updateMediaItem}
                      removeMediaItem={removeMediaItem}
                      lastItem={lastItem}
+                     showAlert={showAlert}
                      showModal={showModal}
                      isEditable={models.role != ROLE_DEVELOPER} />
       </div>
@@ -111,9 +113,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    contentActions: bindActionCreators({setCurrentItem, addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem}, dispatch),
+    contentActions: bindActionCreators({setCurrentItem, addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem}, dispatch),
     mediaActions:   bindActionCreators({addMediaItem, updateMediaItem, removeMediaItem}, dispatch),
-    navActions:     bindActionCreators({showModal}, dispatch)
+    navActions:     bindActionCreators({showModal, showAlert}, dispatch)
   };
 }
 

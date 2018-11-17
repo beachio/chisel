@@ -6,6 +6,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {STATUS_ARCHIVED, STATUS_PUBLISHED, STATUS_DRAFT, STATUS_UPDATED} from 'models/ContentData';
+import {ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 import * as ftps from 'models/ModelData';
 
 import ContentString from './elements/ContentString';
@@ -118,6 +119,21 @@ export default class ContentEdit extends Component {
   onRestore = () => {
     this.props.restoreItem(this.item);
     this.updateItem();
+  };
+  
+  onDelete = () => {
+    const {showAlert, deleteItem, onClose} = this.props;
+    const title = this.item.title ? this.item.title : 'content item';
+  
+    showAlert({
+      type: ALERT_TYPE_CONFIRM,
+      title: `Deleting <strong>${title}</strong>`,
+      description: "Are you sure?",
+      onConfirm: () => {
+        deleteItem(this.item);
+        this.onClose();
+      }
+    });
   };
   
   setFieldValue = (field, value, save = false) => {
@@ -302,6 +318,12 @@ export default class ContentEdit extends Component {
                                onClick={this.onArchive}/>
               </div>
             }
+            <div styleName="button-publish">
+              <ButtonControl color="red"
+                             value="Delete"
+                             disabled={this.item.status == STATUS_PUBLISHED || this.item.status == STATUS_UPDATED}
+                             onClick={this.onDelete}/>
+            </div>
           </div>
         }
       </div>
