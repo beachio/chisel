@@ -28,6 +28,7 @@ export default class ContentList extends Component {
   };
 
   activeInput;
+  searchInput;
   returnFocus = false;
 
 
@@ -77,6 +78,11 @@ export default class ContentList extends Component {
   onSearch = event => {
     const searchText = event.target.value;
     this.setState({searchText});
+  };
+  
+  onSearchClear = () => {
+    this.setState({searchText: ''});
+    this.searchInput.focus();
   };
 
   onSearchKeyDown = event => {
@@ -225,8 +231,10 @@ export default class ContentList extends Component {
             <div styleName="list">
               <div styleName="inputs-wrapper search">
                 <InputControl placeholder="Searching content items"
-                              icon="search"
                               autoFocus
+                              DOMRef={c => this.searchInput = c}
+                              icon={this.state.searchText ? "cross" : "search"}
+                              onIconClick={this.state.searchText ? this.onSearchClear : null}
                               value={this.state.searchText}
                               onKeyDown={this.onSearchKeyDown}
                               onChange={this.onSearch} />
