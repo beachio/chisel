@@ -173,7 +173,7 @@ export function init() {
   
     requestTemplates(templates_o, templates)
       
-      .then(requestCollaborationsPre(sites_o))
+      .then(() => requestCollaborationsPre(sites_o))
       
       .then(requestUserSites)
       
