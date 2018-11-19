@@ -3,7 +3,7 @@ import {Parse} from 'parse';
 import {store} from 'index';
 import {send, getAllObjects} from 'utils/server';
 import {LOGOUT} from 'ducks/user';
-import {UserData, CollaborationData} from 'models/UserData';
+import {UserData, CollaborationData, ROLE_OWNER} from 'models/UserData';
 import {canBeTitle, FIELD_NAMES_RESERVED, ModelData, ModelFieldData, SiteData, TemplateData} from 'models/ModelData';
 import {filterSpecials, getRandomColor} from 'utils/common';
 import {getNameId, getRole} from 'utils/data';
@@ -550,7 +550,8 @@ export default function modelsReducer(state = initialState, action) {
       return {
         ...state,
         sites,
-        currentSite: action.site
+        currentSite: action.site,
+        role: ROLE_OWNER
       };
       
     case SITE_DELETE:
