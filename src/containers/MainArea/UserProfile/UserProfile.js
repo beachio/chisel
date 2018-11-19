@@ -256,12 +256,12 @@ export class UserProfile extends Component  {
   };
   
   render() {
-    return (
-      <div className="mainArea">
-        <Helmet>
+    return [
+        <Helmet key="helmet">
           <title>User profile - Chisel</title>
-        </Helmet>
-        <ContainerComponent title="User profile">
+        </Helmet>,
+      
+        <ContainerComponent key="content" title="User profile">
           <div styleName="content">
 
             <form styleName="section" onSubmit={this.onSaveData}>
@@ -402,8 +402,7 @@ export class UserProfile extends Component  {
 
           </div>
         </ContainerComponent>
-      </div>
-    );
+    ];
   }
 }
 

@@ -12,33 +12,13 @@ import {showAlert, URL_CONTENT, URL_ITEM, URL_USERSPACE, URL_SITE} from 'ducks/n
 
 
 export class ContentListContainer extends Component {
-  mainArea;
-  lastScroll = 0;
-
-  componentDidMount() {
-    this.mainArea.scrollTop = 0;
-    this.mainArea.addEventListener('scroll', this.onScroll);
-  }
-
-  onScroll = () => {
-    this.lastScroll = this.mainArea.scrollTop;
-  };
-
-  componentWillUnmount() {
-    this.mainArea.removeEventListener('scroll', this.onScroll);
-  }
-
-  keepScroll = () => {
-    this.mainArea.scrollTop = this.lastScroll;
-  };
-
   render() {
     const {models, content, nav} = this.props;
     const {addItem, deleteItem, filterModel, filterStatus} = this.props.contentActions;
     const {showAlert} = this.props.navActions;
     
     let cmpContent = (
-      <div className="start-working">
+      <div key="content" className="start-working">
         <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
         There are no models.
       </div>
@@ -59,7 +39,7 @@ export class ContentListContainer extends Component {
 
       if (!items.length && models.role == ROLE_DEVELOPER) {
         cmpContent = (
-          <div className="start-working">
+          <div key="content" className="start-working">
             <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
             There are no items.
           </div>
@@ -73,12 +53,12 @@ export class ContentListContainer extends Component {
             `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_CONTENT}/${URL_ITEM}${modelId}~${itemId}`);
         };
 
-        cmpContent = <ContentList items={items}
+        cmpContent = <ContentList key="content"
+                                  items={items}
                                   models={site.models}
                                   gotoItem={gotoItem}
                                   addItem={addItem}
                                   deleteItem={deleteItem}
-                                  keepScroll={this.keepScroll}
                                   showAlert={showAlert}
                                   alertShowing={nav.alertShowing}
                                   isEditable={models.role != ROLE_DEVELOPER}
@@ -90,21 +70,19 @@ export class ContentListContainer extends Component {
 
     } else if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN) {
       cmpContent = (
-        <div className="start-working">
+        <div key="content" className="start-working">
           <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
           There are no models. Add any model to start creating content.
         </div>
       );
     }
     
-    return (
-      <div className="mainArea" ref={c => this.mainArea = c}>
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
-        {cmpContent}
-      </div>
-    );
+    return [
+      <Helmet key="helmet">
+        <title>{title}</title>
+      </Helmet>,
+      cmpContent
+    ];
   }
 }
 

@@ -42,10 +42,7 @@ export default class ContentList extends Component {
   componentWillReceiveProps(nextProps) {
     if (!nextProps.alertShowing && this.returnFocus && this.activeInput) {
       this.returnFocus = false;
-      setTimeout(() => {
-        this.activeInput.focus();
-        this.props.keepScroll();
-      }, 1);
+      setTimeout(this.activeInput.focus, 1);
     }
 
     this.setState({items: nextProps.items});

@@ -27,18 +27,17 @@ export class SettingsContainer extends Component  {
       browserHistory.push(`/${URL_USERSPACE}`);
     };
     
-    return (
-      <div className="mainArea">
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
-        <Settings site={site}
-                  updateSite={updateSite}
-                  deleteSite={onDeleteSite}
-                  showAlert={showAlert}
-                  isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
-      </div>
-    );
+    return [
+      <Helmet key="helmet">
+        <title>{title}</title>
+      </Helmet>,
+      <Settings key="content"
+                site={site}
+                updateSite={updateSite}
+                deleteSite={onDeleteSite}
+                showAlert={showAlert}
+                isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
+    ];
   }
 }
 

@@ -15,8 +15,6 @@ import {NoRights} from "components/mainArea/common/NoRights";
 export class ModelContainer extends Component  {
   // TODO: костыль!
   model = null;
-  mainArea;
-  lastScroll = 0;
 
   //on mount: get model ID from URL, then send action "setCurrentModel"
   constructor(props) {
@@ -40,25 +38,6 @@ export class ModelContainer extends Component  {
       }
     }
   }
-
-  // Scroll memory
-  // TODO вопрос: нафига оно тут?
-  componentDidMount() {
-    this.mainArea.scrollTop = 0;
-    this.mainArea.addEventListener('scroll', this.onScroll);
-  }
-
-  onScroll = () => {
-    this.lastScroll = this.mainArea.scrollTop;
-  };
-
-  componentWillUnmount() {
-    this.mainArea.removeEventListener('scroll', this.onScroll);
-  }
-
-  keepScroll = () => {
-    this.mainArea.scrollTop = this.lastScroll;
-  };
   
   render() {
     const {models, nav} = this.props;
@@ -66,7 +45,7 @@ export class ModelContainer extends Component  {
     const {showAlert, showModal} = this.props.navActions;
     
     let title = `Chisel`;
-    let content = <NoRights />;
+    let content = <NoRights key="content" />;
 
     const site = models.currentSite;
     const model = this.model;
@@ -78,9 +57,9 @@ export class ModelContainer extends Component  {
         `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}`);
 
       content = (
-        <Model model={model}
+        <Model key="content"
+               model={model}
                onClose={closeModel}
-               keepScroll={this.keepScroll}
                updateModel={updateModel}
                updateField={updateField}
                deleteField={deleteField}
@@ -92,14 +71,12 @@ export class ModelContainer extends Component  {
       );
     }
     
-    return (
-      <div className="mainArea" ref={c => this.mainArea = c}>
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
-        {content}
-      </div>
-    );
+    return [
+      <Helmet key="helmet">
+        <title>{title}</title>
+      </Helmet>,
+      content
+    ];
   }
 }
 

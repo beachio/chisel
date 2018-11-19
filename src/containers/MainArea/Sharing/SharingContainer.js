@@ -23,12 +23,12 @@ export class SharingContainer extends Component  {
     
     let title = `Sharing - Site: ${site.name} - Chisel`;
     
-    return (
-      <div className="mainArea">
-        <Helmet>
+    return [
+        <Helmet key="helmet">
           <title>{title}</title>
         </Helmet>,
-        <Sharing collaborations={site.collaborations}
+        <Sharing key="content"
+                 collaborations={site.collaborations}
                  owner={site.owner}
                  user={user.userData}
                  addCollaboration={addCollaboration}
@@ -40,8 +40,7 @@ export class SharingContainer extends Component  {
                  showModal={showModal}
                  alertShowing={nav.alertShowing}
                  isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
-      </div>
-    );
+    ];
   }
 }
 

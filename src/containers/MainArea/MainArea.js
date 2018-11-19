@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import {Helmet} from "react-helmet";
+import {ScrollContainer} from 'react-router-scroll';
 
 import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
@@ -14,12 +15,10 @@ import styles from './MainArea.sss';
 @CSSModules(styles, {allowMultiple: true})
 export class MainArea extends Component {
   cmpNoSites = (
-    <div className="mainArea">
-      <div className="start-working">
-        <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
-        Add new site to start working
-        <div className="hint">Find "Add new site" button in the sidebar</div>
-      </div>
+    <div className="start-working">
+      <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
+      Add new site to start working
+      <div className="hint">Find "Add new site" button in the sidebar</div>
     </div>
   );
 
@@ -48,7 +47,11 @@ export class MainArea extends Component {
         </Helmet>
         <div styleName="wrapper-inner">
           <Sidebar />
-          {content}
+          <ScrollContainer scrollKey="mainArea" shouldUpdateScroll={() => [0,0]}>
+            <div styleName="mainArea">
+              {content}
+            </div>
+          </ScrollContainer>
         </div>
         <Header />
       </div>

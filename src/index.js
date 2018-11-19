@@ -7,8 +7,9 @@ import './styles.global.sss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {Router, Route, browserHistory, IndexRedirect, Redirect} from 'react-router';
+import {Router, Route, browserHistory, IndexRedirect, Redirect, applyRouterMiddleware} from 'react-router';
 import {syncHistoryWithStore} from 'react-router-redux';
+import {useScroll} from 'react-router-scroll';
 
 import App from 'containers/app';
 import configureStore from 'store/configureStore';
@@ -41,7 +42,7 @@ let SCP = page => store.dispatch(setCurrentPage(page));
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={history}>
+    <Router history={history} render={applyRouterMiddleware(useScroll(() => [0,0]))}>
       <Route path='/' component={App}>
         <Route path="/email-verify" component={EmailVerify} />
         <Route path="/password-set-success" component={PasswordSet} />

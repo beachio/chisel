@@ -35,7 +35,7 @@ export default class Sharing extends Component {
   componentWillReceiveProps(nextProps) {
     if (!nextProps.alertShowing && this.activeInput && this.returnFocus) {
       this.returnFocus = false;
-      setTimeout(() => this.activeInput.focus(), 1);
+      setTimeout(this.activeInput.focus, 1);
     }
 
     if (nextProps.collaborations != this.state.collaborations)

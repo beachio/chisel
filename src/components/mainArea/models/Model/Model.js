@@ -100,10 +100,7 @@ export default class Model extends Component {
         
       } else if (this.activeInput && this.returnFocus) {
         this.returnFocus = false;
-        setTimeout(() => {
-          this.activeInput.focus();
-          this.props.keepScroll();
-        }, 1);
+        setTimeout(this.activeInput.focus, 1);
       }
     }
 

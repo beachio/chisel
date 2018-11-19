@@ -77,30 +77,29 @@ export class ContentEditContainer extends Component {
     const itemTitle = item.title ? item.title : 'Untitled';
     const title = `Item: ${itemTitle} - Site: ${site.name} - Chisel`;
     
-    return (
-      <div className="mainArea">
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
-        <ContentEdit item={item}
-                     onClose={closeItem}
-                     gotoItem={gotoItem}
-                     addItem={addItem}
-                     updateItem={updateItem}
-                     publishItem={publishItem}
-                     archiveItem={archiveItem}
-                     restoreItem={restoreItem}
-                     discardItem={discardItem}
-                     deleteItem={deleteItem}
-                     addMediaItem={addMediaItem}
-                     updateMediaItem={updateMediaItem}
-                     removeMediaItem={removeMediaItem}
-                     lastItem={lastItem}
-                     showAlert={showAlert}
-                     showModal={showModal}
-                     isEditable={models.role != ROLE_DEVELOPER} />
-      </div>
-    );
+    return [
+      <Helmet key="helmet">
+        <title>{title}</title>
+      </Helmet>,
+      <ContentEdit key="content"
+                   item={item}
+                   onClose={closeItem}
+                   gotoItem={gotoItem}
+                   addItem={addItem}
+                   updateItem={updateItem}
+                   publishItem={publishItem}
+                   archiveItem={archiveItem}
+                   restoreItem={restoreItem}
+                   discardItem={discardItem}
+                   deleteItem={deleteItem}
+                   addMediaItem={addMediaItem}
+                   updateMediaItem={updateMediaItem}
+                   removeMediaItem={removeMediaItem}
+                   lastItem={lastItem}
+                   showAlert={showAlert}
+                   showModal={showModal}
+                   isEditable={models.role != ROLE_DEVELOPER} />
+    ];
   }
 }
 

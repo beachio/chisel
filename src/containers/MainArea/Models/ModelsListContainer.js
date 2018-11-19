@@ -12,19 +12,13 @@ import {NoRights} from "components/mainArea/common/NoRights";
 
 
 export class ModelsListContainer extends Component {
-  mainArea;
-
-  componentDidMount() {
-    this.mainArea.scrollTop = 0;
-  }
-
   render() {
     const {models, nav} = this.props;
     const {addModel, deleteModel} = this.props.modelsActions;
     const {showAlert} = this.props.navActions;
     
     let title = `Chisel`;
-    let content = <NoRights />;
+    let content = <NoRights key="content" />;
 
     const site = models.currentSite;
     if (site && (models.role == ROLE_ADMIN || models.role == ROLE_OWNER)) {
@@ -32,7 +26,8 @@ export class ModelsListContainer extends Component {
       const gotoModel = model => browserHistory.push(
         `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}/${URL_MODEL}${model.nameId}`);
       content = (
-        <ModelsList site={site}
+        <ModelsList key="content"
+                    site={site}
                     gotoModel={gotoModel}
                     addModel={addModel}
                     deleteModel={deleteModel}
@@ -42,14 +37,12 @@ export class ModelsListContainer extends Component {
       );
     }
     
-    return (
-      <div className="mainArea" ref={c => this.mainArea = c}>
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
-        {content}
-      </div>
-    );
+    return [
+      <Helmet key="helmet">
+        <title>{title}</title>
+      </Helmet>,
+      content
+    ];
   }
 }
 
