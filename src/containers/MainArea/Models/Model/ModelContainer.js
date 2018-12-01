@@ -28,14 +28,12 @@ export class ModelContainer extends Component  {
   
     const {setCurrentModel} = props.modelsActions;
     const {models} = props;
-
     this.model = models.currentModel;
-    if (!this.model || modelId != this.model.nameId) {
-      const model = getModelByNameId(modelId);
-      if (model) {
-        this.model = model;
-        setCurrentModel(model);
-      }
+    
+    const model = getModelByNameId(modelId);
+    if (model && model != this.model) {
+      this.model = model;
+      setCurrentModel(model);
     }
   }
   
