@@ -7,7 +7,7 @@ import {browserHistory} from 'react-router';
 
 import User from 'components/sidebar/User/User';
 import Sites from 'components/sidebar/Sites/Sites';
-import {showModal, URL_USERSPACE, URL_SITE} from 'ducks/nav';
+import {showModal, showAlert, URL_USERSPACE, URL_SITE} from 'ducks/nav';
 
 import styles from './Sidebar.sss';
 
@@ -16,7 +16,7 @@ import styles from './Sidebar.sss';
 export class Sidebar extends Component {
   render() {
     const {models, user} = this.props;
-    const {showModal} = this.props.navActions;
+    const {showModal, showAlert} = this.props.navActions;
   
     const gotoSite = site => {
       const nameId = site.nameId;
@@ -30,7 +30,9 @@ export class Sidebar extends Component {
           <Sites sites={models.sites}
                  currentSite={models.currentSite}
                  gotoSite={gotoSite}
-                 showModal={showModal}/>
+                 payPlan={user.userData.payPlan}
+                 showModal={showModal}
+                 showAlert={showAlert} />
         </div>
         <div styleName="answer-wrapper">
           <a styleName="answer-question" href="http://guild.beach.io" target="_blank">
@@ -51,7 +53,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    navActions:     bindActionCreators({showModal}, dispatch)
+    navActions:     bindActionCreators({showModal, showAlert}, dispatch)
   };
 }
 

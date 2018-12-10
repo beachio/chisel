@@ -3,6 +3,7 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
 import {MODAL_TYPE_SITE} from "ducks/nav";
+import {ALERT_TYPE_ALERT} from "components/modals/AlertModal/AlertModal";
 
 import styles from './Sites.sss';
 
@@ -13,11 +14,18 @@ export default class Sites extends Component {
     site: null
   };
   
-  site = null;
+  sitesLimit = 0;
   
 
+  constructor(props) {
+    super(props);
+  }
+  
   componentWillReceiveProps(nextProps) {
     this.setState({site: nextProps.currentSite});
+  
+    const {payPlan} = nextProps;
+    this.sitesLimit = payPlan ? payPlan.limitSites : 0;
   }
 
   onClickSite = site => {
@@ -26,7 +34,15 @@ export default class Sites extends Component {
   };
 
   onClickAdd = () => {
-    this.props.showModal(MODAL_TYPE_SITE);
+    const {sites} = this.props;
+    if (this.sitesLimit && sites.length >= this.sitesLimit)
+      this.props.showAlert({
+        title: `Warinng`,
+        type: ALERT_TYPE_ALERT,
+        description: `You can't add new site because you have exhausted your limit (${this.sitesLimit}).`
+      });
+    else
+      this.props.showModal(MODAL_TYPE_SITE);
   };
 
   render() {
@@ -36,7 +52,11 @@ export default class Sites extends Component {
       <div styleName="sites">
         <div styleName="header">
           <div styleName="title">Your sites</div>
-          <div styleName="counter">{sites.length}</div>
+          {this.sitesLimit ?
+            <div styleName="counter">{sites.length}/{this.sitesLimit}</div>
+          :
+            <div styleName="counter">{sites.length}</div>
+          }
         </div>
         <div styleName="list">
           {
