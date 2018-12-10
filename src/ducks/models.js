@@ -415,10 +415,7 @@ export function addModel(name) {
   model.setTableName();
   
   model.updateOrigin();
-  send(model.origin.save())
-    .then(() =>
-      send(Parse.Cloud.run('onModelAdd', {modelId: model.origin.id}))
-    );
+  send(model.origin.save());
 
   return {
     type: MODEL_ADD,
