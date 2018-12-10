@@ -7,6 +7,7 @@ import nav from './nav';
 import user from './user';
 import media from './media';
 import serverStatus from './serverStatus';
+import pay from './pay';
 
 
 export default combineReducers({
@@ -16,5 +17,6 @@ export default combineReducers({
   user,
   media,
   serverStatus,
+  pay,
   routing: routerReducer
 });

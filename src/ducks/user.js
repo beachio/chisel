@@ -4,6 +4,7 @@ import {Parse} from 'parse';
 import {UserData} from 'models/UserData';
 import {config} from 'utils/initialize';
 import {send} from 'utils/server';
+import {INIT_END as INIT_END_pay} from "ducks/pay";
 
 
 export const LOGIN_REQUEST      = 'app/user/LOGIN_REQUEST';
@@ -250,6 +251,8 @@ const initialState = {
 };
 
 export default function userReducer(state = initialState, action) {
+  const userData = state.userData;
+  
   switch (action.type) {
 
     case LOGIN_REQUEST:
@@ -292,6 +295,21 @@ export default function userReducer(state = initialState, action) {
         pending: false
       };
 
+    case INIT_END_pay:
+      const userPayPlan = userData.origin.get('payPlan');
+      for (let payPlan of action.payPlans) {
+        if (userPayPlan && userPayPlan.id == payPlan.origin.id ||
+           !userPayPlan && payPlan.isDefault) {
+          userData.payPlan = payPlan;
+          break;
+        }
+      }
+      
+      return {
+        ...state,
+        userData
+      };
+      
     case LOGOUT:
       return {
         ...state,
@@ -306,7 +324,6 @@ export default function userReducer(state = initialState, action) {
       };
   
     case UPDATE_EMAIL:
-      let userData = state.userData;
       if (action.email)
         userData.emailNew = action.email;
       return {

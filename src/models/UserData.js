@@ -11,6 +11,9 @@ export class UserData {
   avatar = null;
   sex = "male";
   
+  //links
+  payPlan = null;
+  
   
   setOrigin(origin = Parse.User.current()) {
     this.origin = origin;
@@ -32,6 +35,8 @@ export class UserData {
     this.origin.set("lastName",  this.lastName);
     this.origin.set("avatar",    this.avatar);
     this.origin.set("sex",       this.sex);
+    if (this.payPlan)
+      this.origin.set("payPlan", this.payPlan.origin);
   }
   
   get emailFiltered () {
