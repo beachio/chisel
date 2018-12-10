@@ -48,12 +48,7 @@ export function init() {
 
 export function addMediaItem(item) {
   item.updateOrigin();
-  send(item.origin.save())
-    .then(() =>
-      send(
-        Parse.Cloud.run('onMediaItemAdd', {itemId: item.origin.id})
-      )
-    );
+  send(item.origin.save());
   
   return {
     type: ITEM_ADD,
