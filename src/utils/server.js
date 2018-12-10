@@ -34,18 +34,17 @@ export function getAllObjects (query) {
   const MAX_COUNT = 90;
   let objects = [];
   
-  const getObjects = (offset = 0) => {
-    return query
+  const getObjects = async (offset = 0) => {
+    const res = await query
       .limit(MAX_COUNT)
       .skip(offset)
-      .find()
-      .then(res => {
-        if (!res.length)
-          return objects;
-        
-        objects = objects.concat(res);
-        return getObjects(offset + MAX_COUNT);
-      })
+      .find();
+    
+    if (!res.length)
+      return objects;
+      
+    objects = objects.concat(res);
+    return getObjects(offset + MAX_COUNT);
   };
   
   return getObjects();
