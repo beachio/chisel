@@ -473,10 +473,7 @@ export function addField(field) {
   checkNewTitle(field);
 
   field.updateOrigin();
-  send(field.origin.save())
-    .then(() =>
-      send(Parse.Cloud.run('onFieldAdd', {fieldId: field.origin.id}))
-    );
+  send(field.origin.save());
   send(field.model.origin.save());
   
   return {
