@@ -35,7 +35,8 @@ function requestContentItems(model, items, itemsDraft) {
         else
           items.push(item);
       }
-    });
+    })
+    .catch(() => {});
 }
 
 export function init() {
