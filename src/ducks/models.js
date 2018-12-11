@@ -423,7 +423,7 @@ export function setCurrentModel(currentModel) {
 }
 
 export function deleteModel(model) {
-  send(Parse.Cloud.run('deleteModel', {modelId: model.origin.id}));
+  send(model.origin.destroy());
   
   return {
     type: MODEL_DELETE,
