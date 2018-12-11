@@ -306,7 +306,7 @@ export function updateSite(site) {
 }
 
 export function deleteSite(site) {
-  send(Parse.Cloud.run('deleteSite', {siteId: site.origin.id}));
+  send(site.origin.destroy());
   
   return {
     type: SITE_DELETE,
