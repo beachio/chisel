@@ -14,7 +14,7 @@ import {useScroll} from 'react-router-scroll';
 import App from 'containers/app';
 import configureStore from 'store/configureStore';
 import {initApp} from 'utils/initialize';
-import {setCurrentPage, PAGE_MODELS, PAGE_MODELS_ITEM,  PAGE_PROFILE, PAGE_CONTENT, PAGE_CONTENT_ITEM,
+import {setCurrentPage, PAGE_MODELS, PAGE_MODELS_ITEM,  PAGE_PROFILE, PAGE_PAY_PLANS, PAGE_CONTENT, PAGE_CONTENT_ITEM,
   PAGE_API, PAGE_SETTINGS, PAGE_SHARING} from 'ducks/nav';
 
 import APIPage from 'containers/MainArea/API/APIPage';
@@ -27,6 +27,7 @@ import ModelContainer from 'containers/MainArea/Models/Model/ModelContainer';
 import ContentListContainer from 'containers/MainArea/Content/ContentListContainer';
 import ContentEditContainer from 'containers/MainArea/Content/ContentEdit/ContentEditContainer';
 import UserProfile from 'containers/MainArea/UserProfile/UserProfile';
+import PayPlans from 'containers/MainArea/PayPlans/PayPlans';
 import EmailVerify from 'containers/LinksEmail/EmailVerify/EmailVerify';
 import PasswordSet from 'containers/LinksEmail/PasswordSet/PasswordSet';
 import InvalidLink from 'containers/LinksEmail/InvalidLink/InvalidLink';
@@ -51,6 +52,7 @@ ReactDOM.render(
         <Route path="/sign" component={Sign} />
         <Route path="/userspace" component={MainArea} >
           <Route path="/userspace/profile"              component={UserProfile}           onEnter={() => SCP(PAGE_PROFILE)} />
+          <Route path="/userspace/pay-plans"            component={PayPlans}              onEnter={() => SCP(PAGE_PAY_PLANS)} />
           <Route path="/userspace/:site/models"         component={ModelsListContainer}   onEnter={() => SCP(PAGE_MODELS)} />
           <Route path="/userspace/:site/models/:model"  component={ModelContainer}        onEnter={() => SCP(PAGE_MODELS_ITEM)} />
           <Route path="/userspace/:site/content"        component={ContentListContainer}  onEnter={() => SCP(PAGE_CONTENT)} />

@@ -17,6 +17,7 @@ export const PAGE_API           = 'app/nav/pages/PAGE_API';
 export const PAGE_SETTINGS      = 'app/nav/pages/PAGE_SETTINGS';
 export const PAGE_SHARING       = 'app/nav/pages/PAGE_SHARING';
 export const PAGE_PROFILE       = 'app/nav/pages/PAGE_PROFILE';
+export const PAGE_PAY_PLANS     = 'app/nav/pages/PAGE_PAY_PLANS';
 
 export const MODAL_TYPE_SITE          = 'app/nav/modals/MODAL_TYPE_SITE';
 export const MODAL_TYPE_FIELD         = 'app/nav/modals/MODAL_TYPE_FIELD';
@@ -43,6 +44,7 @@ export const URL_API              = 'api';
 export const URL_SETTINGS         = 'settings';
 export const URL_SHARING          = 'sharing';
 export const URL_PROFILE          = 'profile';
+export const URL_PAY_PLANS        = 'pay-plans';
 
 export const URLS_EMAIL = [URL_EMAIL_VERIFY, URL_PASSWORD_SET, URL_PASSWORD_SUCCESS, URL_INVALID_LINK];
 
