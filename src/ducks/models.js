@@ -325,12 +325,7 @@ export function addCollaboration(user, email) {
   collab.updateOrigin();
   
   collab.origin.setACL(new Parse.ACL(currentSite.owner.origin));
-  send(collab.origin.save())
-    .then(() =>
-      send(
-        Parse.Cloud.run('onCollaborationModify', {collabId: collab.origin.id})
-      )
-    );
+  send(collab.origin.save());
   
   return {
     type: COLLABORATION_ADD,
@@ -365,12 +360,7 @@ export function addInviteCollaboration(email) {
 
 export function updateCollaboration(collab) {
   collab.updateOrigin();
-  send(collab.origin.save())
-    .then(() =>
-      send(
-        Parse.Cloud.run('onCollaborationModify', {collabId: collab.origin.id})
-      )
-    );
+  send(collab.origin.save());
   
   return {
     type: COLLABORATION_UPDATE,
@@ -379,15 +369,7 @@ export function updateCollaboration(collab) {
 }
 
 export function deleteCollaboration(collab) {
-  send(
-    Parse.Cloud.run('onCollaborationModify', {
-      collabId: collab.origin.id,
-      deleting: true
-    })
-  )
-    .then(() =>
-      send(collab.origin.destroy())
-    );
+  send(collab.origin.destroy());
   
   return {
     type: COLLABORATION_DELETE,
