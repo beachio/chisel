@@ -18,6 +18,7 @@ export const UPDATE_PASSWORD    = 'app/user/UPDATE_PASSWORD';
 export const RESTORE_PASSWORD   = 'app/user/RESTORE_PASSWORD';
 export const RESEND_VERIF       = 'app/user/RESEND_VERIF';
 export const RESET_STATUS       = 'app/user/RESET_STATUS';
+export const CHANGE_PAY_PLAN    = 'app/user/CHANGE_PAY_PLAN';
 
 export const ERROR_USER_EXISTS  = 'app/user/ERROR_USER_EXISTS';
 export const ERROR_WRONG_PASS   = 'app/user/ERROR_WRONG_PASS';
@@ -236,6 +237,18 @@ export function resetStatus() {
   };
 }
 
+export function changePayPlan(payPlan) {
+  const userData = store.getState().user.userData;
+  userData.payPlan = payPlan;
+  userData.updateOrigin();
+  send(userData.origin.save());
+  
+  return {
+    type: CHANGE_PAY_PLAN,
+    payPlan
+  };
+}
+
 const initialState = {
   localStorageReady: false,
 
@@ -346,6 +359,13 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         status: null
+      };
+      
+    case CHANGE_PAY_PLAN:
+      userData.payPlan = action.payPlan;
+      return {
+        ...state,
+        userData
       };
       
     default:

@@ -6,7 +6,7 @@ import CSSModules from 'react-css-modules';
 
 import ContainerComponent from "components/elements/ContainerComponent/ContainerComponent";
 import ButtonControl from "components/elements/ButtonControl/ButtonControl";
-import {resendVerEmail, update, updateEmail, updatePassword} from "ducks/user";
+import {changePayPlan} from "ducks/user";
 
 import styles from './PayPlans.sss';
 
@@ -74,10 +74,12 @@ export class PayPlans extends Component {
   };
   
   onUpdatePayPlan = () => {
-    console.log('хуй');
+    this.props.userActions.changePayPlan(this.state.payPlan);
   };
   
   render() {
+    const {userData} = this.props.user;
+    
     return [
       <Helmet key="helmet">
         <title>Pay plans - Chisel</title>
@@ -100,7 +102,8 @@ export class PayPlans extends Component {
         <div styleName="buttons-wrapper">
           <ButtonControl color="green"
                          onClick={this.onUpdatePayPlan}
-                         value="Update pay plan"/>
+                         value="Update pay plan"
+                         disabled={this.state.payPlan == userData.payPlan} />
         </div>
         
       </ContainerComponent>
@@ -118,7 +121,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators({update, updateEmail, updatePassword, resendVerEmail}, dispatch)
+    userActions: bindActionCreators({changePayPlan}, dispatch)
   };
 }
 
