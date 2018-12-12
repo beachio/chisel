@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
+import {browserHistory} from "react-router";
 
-import {MODAL_TYPE_SITE} from "ducks/nav";
-import {ALERT_TYPE_ALERT} from "components/modals/AlertModal/AlertModal";
+import {MODAL_TYPE_SITE, URL_USERSPACE, URL_PAY_PLANS} from "ducks/nav";
+import {ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 
 import styles from './Sites.sss';
 
@@ -38,8 +39,11 @@ export default class Sites extends Component {
     if (this.sitesLimit && sites.length >= this.sitesLimit)
       this.props.showAlert({
         title: `Warinng`,
-        type: ALERT_TYPE_ALERT,
-        description: `You can't add new site because you have exhausted your limit (${this.sitesLimit}).`
+        type: ALERT_TYPE_CONFIRM,
+        description: `You can't add new site because you have exhausted your limit (${this.sitesLimit}).`,
+        confirmLabel: `Upgrade my account`,
+        cancelLabel: `Close`,
+        onConfirm: () => browserHistory.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`)
       });
     else
       this.props.showModal(MODAL_TYPE_SITE);
