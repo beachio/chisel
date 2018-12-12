@@ -14,7 +14,7 @@ export const ALERT_TYPE_CONFIRM = "modals/alert/ALERT_TYPE_CONFIRM";
 @CSSModules(styles, {allowMultiple: true})
 export default class AlertModal extends Component {
   state = {
-    confirmString: ''
+    confirmString: null
   };
   
   active = false;
@@ -27,8 +27,7 @@ export default class AlertModal extends Component {
   constructor(props) {
     super(props);
     
-    if (props.params.confirmString)
-      this.confirmString = props.params.confirmString;
+    this.confirmString = props.params.confirmString;
   }
   
   componentDidMount() {
@@ -83,7 +82,7 @@ export default class AlertModal extends Component {
   };
 
   render() {
-    const {title, description, type, btnText} = this.props.params;
+    const {title, description, type, btnText, confirmLabel, cancelLabel} = this.props.params;
 
     if (type)
       this.type = type;
@@ -127,14 +126,14 @@ export default class AlertModal extends Component {
                 <div styleName="buttons-wrapper">
                   <div styleName="buttons-inner">
                     <ButtonControl color="red"
-                                   value="Yes"
+                                   value={confirmLabel ? confirmLabel : "Yes"}
                                    disabled={this.confirmString != this.state.confirmString}
                                    DOMRef={btn => this.focusBtn = btn}
                                    onClick={this.onConfirm} />
                   </div>
                   <div styleName="buttons-inner">
                     <ButtonControl color="gray"
-                                   value="No"
+                                   value={cancelLabel ? cancelLabel : "No"}
                                    onClick={this.close} />
                   </div>
                 </div>
