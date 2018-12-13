@@ -7,6 +7,7 @@ import CSSModules from 'react-css-modules';
 import ContainerComponent from "components/elements/ContainerComponent/ContainerComponent";
 import ButtonControl from "components/elements/ButtonControl/ButtonControl";
 import {changePayPlan} from "ducks/user";
+import {MODAL_TYPE_PAYMENT_METHODS, showModal} from "ducks/nav";
 
 import styles from './PayPlans.sss';
 
@@ -74,19 +75,22 @@ export class PayPlans extends Component {
   };
   
   onUpdatePayPlan = () => {
-    this.props.userActions.changePayPlan(this.state.payPlan);
+    //this.props.userActions.changePayPlan(this.state.payPlan);
+    const {showModal} = this.props.navActions;
+    showModal(
+      MODAL_TYPE_PAYMENT_METHODS,
+      {payPlan: this.state.payPlan}
+    );
   };
   
   render() {
-    const {userData} = this.props.user;
-    
     return [
       <Helmet key="helmet">
         <title>Pay plans - Chisel</title>
       </Helmet>,
     
       <ContainerComponent key="content" title="Pay plans">
-        <div>
+        <div styleName="content">
           <div styleName="label">Choose your pay plan:</div>
           <div styleName="plans">
             {this.payPlans.map(payPlan =>
@@ -96,14 +100,14 @@ export class PayPlans extends Component {
                            onChange={this.onChangePayPlan} />)
             }
           </div>
-        </div>
   
         
-        <div styleName="buttons-wrapper">
-          <ButtonControl color="green"
-                         onClick={this.onUpdatePayPlan}
-                         value="Update pay plan"
-                         disabled={this.state.payPlan == userData.payPlan} />
+          <div styleName="buttons-wrapper">
+            <ButtonControl color="green"
+                           //disabled={this.state.payPlan == userData.payPlan}
+                           onClick={this.onUpdatePayPlan}
+                           value="Update pay plan" />
+          </div>
         </div>
         
       </ContainerComponent>
@@ -121,7 +125,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators({changePayPlan}, dispatch)
+    userActions: bindActionCreators({changePayPlan}, dispatch),
+    navActions: bindActionCreators({showModal}, dispatch)
   };
 }
 

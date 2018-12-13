@@ -1,0 +1,126 @@
+.modal
+  position: absolute
+  height: 100%
+  width: 100%
+  top: 0
+  left: 0
+
+  z-index: 80
+
+  overflow-y: scroll
+
+  background: rgba(0, 0, 0, 0.5)
+
+  &-header
+    border-bottom: 1px solid #E5E5E5
+
+    padding: 4px 0
+    width: 100%
+
+    display: flex
+    flex-flow: column nowrap
+    justify-content: center
+    align-items: center
+
+    .title
+      font-size: 20px
+      color: #666666
+      letter-spacing: 0.83px
+      margin-top: 15px
+      margin-bottom: 15px
+
+  &-inner
+    position: absolute
+    left: 50%
+    transform: translateX(-50%)
+    background: #F9F9F9
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.10)
+    border-radius: 5px
+
+    margin: 30px 0
+
+    width: 85%
+    display: flex
+    flex-flow: column nowrap
+    align-items: center
+
+    .content
+      width: 100%
+      display: flex
+      flex-flow: row nowrap
+      justify-content: space-between
+      padding-top: 20px
+      padding-bottom: 20px
+
+      .side
+        flex: 0 0 270px
+        padding-right: 20px
+        padding-left: 20px
+
+        .title
+          font-size: 15px
+          font-weight: 600
+          color: #666666
+          padding-bottom: 15px
+          padding-left: 15px
+
+        .method
+          padding-bottom: 15px
+          padding-top: 15px
+          cursor: pointer
+
+          &-checked
+            background: #eeeeee
+
+          .name
+            font-size: 13px
+            font-weight: 600
+            color: #666666
+            padding-left: 15px
+
+          &-new
+            .name
+              font-weight: 300
+
+
+      .main
+        flex: 1
+        padding-left: 20px
+
+        .payplan-info
+          padding-bottom: 20px
+          font-size: 13px
+          color: #666666
+
+          p
+            margin-top: 0px
+
+        .method-content
+          color: #666666
+
+          .method-name
+            font-size: 15px
+            color: #666666
+
+
+
+.form
+  padding-bottom: 20px
+
+  .card-wrapper
+    margin-top: 20px
+    max-width: 400px
+
+  .checkbox-wrapper
+    margin-top: 30px
+    font-size: 13px
+
+.label
+  font-size: 15px
+  color: #666666
+  margin-bottom: 20px
+
+.button-wrapper
+  margin-top: 40px
+  margin-bottom: 20px
+
