@@ -101,6 +101,7 @@
     "react-router-redux": "^4.0.0",
     "react-router-scroll": "^0.4.4",
     "react-stars": "^2.2.5",
+    "react-stripe-elements": "^2.0.1",
     "react-transition-group": "^2.2.1",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",

@@ -1,8 +1,9 @@
 import {Parse} from 'parse';
 
-import {store} from 'index';
+import {store, setStripeKey} from 'index';
 import {getLocalStorage} from 'ducks/user';
 import {config as _config} from 'ConnectConstants';
+import {send} from 'utils/server';
 
 
 export const config = {};
@@ -27,14 +28,21 @@ async function requestConfig() {
   } catch (e) {}
 }
 
-function subInitParse() {
+async function initParse() {
   Parse.initialize(config.appId, config.JSkey);
   Parse.serverURL = config.serverURL;
+  
+  const appConfig = await send(Parse.Config.get());
+  if (appConfig) {
+    const key = appConfig.get('StripeKeyPublic');
+    if (key)
+      setStripeKey(key);
+  }
 }
 
 export async function initApp() {
   await requestConfig();
-  subInitParse();
+  await initParse();
   store.dispatch(getLocalStorage());
 }
 
