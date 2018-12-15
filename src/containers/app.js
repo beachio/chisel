@@ -20,6 +20,8 @@ import {
   MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN, MODAL_TYPE_ROLE, MODAL_TYPE_PAYMENT_METHODS
 } from 'ducks/nav';
 import {addSite, addField, updateField} from 'ducks/models';
+import {addSource, updateSubscription} from 'ducks/pay';
+import {update as updateUser} from 'ducks/user';
 
 import styles from './app.sss';
 
@@ -30,9 +32,11 @@ class App extends React.Component {
   lastModal = <span></span>;
 
   render() {
-    const {nav, user, content, models, serverStatus} = this.props;
+    const {nav, user, content, models, serverStatus, pay} = this.props;
     const {closeAlert, closeModal} = this.props.navActions;
     const {addSite, addField, updateField} = this.props.modelActions;
+    const {addSource, updateSubscription} = this.props.payActions;
+    const {updateUser} = this.props.userActions;
   
     const getAlarm = () => {
       if (serverStatus.problemA && !serverStatus.problemB)
@@ -106,6 +110,10 @@ class App extends React.Component {
         case MODAL_TYPE_PAYMENT_METHODS:
           return <PaymentMethods params={nav.modalParams}
                                  userData={user.userData}
+                                 addSource={addSource}
+                                 updateSubscription={updateSubscription}
+                                 updateUser={updateUser}
+                                 stripeData={pay.stripeData}
                                  onClose={closeModal} />;
       }
     };
@@ -156,6 +164,7 @@ function mapStateToProps(state) {
     content:      state.content,
     models:       state.models,
     nav:          state.nav,
+    pay:          state.pay,
     serverStatus: state.serverStatus,
     user:         state.user
   };
@@ -164,7 +173,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     modelActions: bindActionCreators({addSite, addField, updateField}, dispatch),
-    navActions: bindActionCreators({closeAlert, closeModal}, dispatch)
+    navActions: bindActionCreators({closeAlert, closeModal}, dispatch),
+    payActions: bindActionCreators({addSource, updateSubscription}, dispatch),
+    userActions: bindActionCreators({updateUser}, dispatch)
   };
 }
 

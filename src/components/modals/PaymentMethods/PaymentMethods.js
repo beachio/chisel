@@ -20,26 +20,7 @@ class _PayElement extends Component {
     e.preventDefault();
     
     const {token} = await this.props.stripe.createToken({name: "Card 1"});
-  
-    if (this.state.saveMethod) {
-      try {
-        const paymentMethod = await send(
-          Parse.Cloud.run('savePaymentInfo', {tokenId: token.id, card: token.card})
-        );
-        
-        this.props.onComplete();
-      } catch (e) {
-      }
-      
-    } else {
-      try {
-        await send(
-          Parse.Cloud.run('payOnce', {tokenId: token.id})
-        );
-        this.props.onComplete();
-      } catch (e) {
-      }
-    }
+    this.props.onComplete(token, this.state.saveMethod);
   };
   
   onSaveMethodCheck = checked => {
@@ -109,18 +90,47 @@ export default class PaymentMethods extends Component {
     this.active = true;
   }
   
-  onComplete = () => {
-  
-  };
-  
-  submit = async (e) => {
-    e.preventDefault();
+  onNewSourceSubscribe = async (token, saveMethod) => {
+    const {addSource, updateSubscription, updateUser, userData} = this.props;
+    const {payPlan, isYearly} = this.props.params;
     
     try {
-      await send(
-        Parse.Cloud.run('pay', {methodId: this.state.method.id})
+      const StripeId = await send(
+        Parse.Cloud.run('savePaymentSource', {tokenId: token.id, card: token.card})
       );
-      this.onComplete();
+      if (StripeId) {
+        userData.StripeId = StripeId;
+        updateUser(userData);
+      }
+      addSource(token.card);
+      
+      const subscription = await send(
+        Parse.Cloud.run('paySubscription', {
+          planId: payPlan.origin.id,
+          source: token.card.id,
+          isYearly
+        })
+      );
+      updateSubscription(subscription);
+    
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  
+  onSubscribe = async () => {
+    const {updateSubscription} = this.props;
+    const {payPlan, isYearly} = this.props.params;
+    
+    try {
+      const subscription = await send(
+        Parse.Cloud.run('paySubscription', {
+          planId: payPlan.origin.id,
+          source: this.state.method.id,
+          isYearly
+        })
+      );
+      updateSubscription(subscription);
     } catch (e) {
     }
   };
@@ -136,7 +146,10 @@ export default class PaymentMethods extends Component {
   
   render() {
     const {payPlan} = this.props.params;
-    const {paymentInfo} = this.props.userData;
+    const {stripeData} = this.props;
+    let methods = [];
+    if (stripeData)
+      methods = stripeData.sources;
     
     let newMethodStyle = "method method-new";
     if (!this.state.method)
@@ -154,8 +167,8 @@ export default class PaymentMethods extends Component {
               <div styleName="title">
                 Your payment methods
               </div>
-              {paymentInfo &&
-                paymentInfo.map(method => {
+              {methods &&
+                methods.map(method => {
                   let style = "method";
                   if (method == this.state.method)
                     style += " method-checked";
@@ -190,16 +203,22 @@ export default class PaymentMethods extends Component {
                   <div styleName="method-name">
                     {this.state.method.brand} xxxx-{this.state.method.last4}
                   </div>
+                  <div styleName="checkbox-wrapper">
+                    <CheckboxControl title="Use payment method as default"
+                                     checked={this.state.saveMethod}
+                                     onChange={this.onSaveMethodCheck} />
+                  </div>
                   <div styleName="button-wrapper">
                     <ButtonControl color="green"
-                                   onClick={this.submit}
+                                   onClick={this.onSubscribe}
                                    value="Subscribe" />
                   </div>
                 </div>
               :
                 <div styleName="method-content">
                   <Elements>
-                    <PayElement onComplete={this.onComplete}/>
+                    <PayElement onComplete={this.onNewSourceSubscribe}
+                                canBeDefault={methods && methods.length} />
                   </Elements>
                 </div>
               }

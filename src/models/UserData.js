@@ -10,7 +10,7 @@ export class UserData {
   lastName = "";
   avatar = null;
   sex = "male";
-  paymentInfo = {};
+  StripeId = '';
   
   //links
   payPlan = null;
@@ -19,15 +19,15 @@ export class UserData {
   setOrigin(origin = Parse.User.current()) {
     this.origin = origin;
     
-    if (origin.get('email'))        this.email      = origin.get('email');
-      if (!this.email)              this.email      = origin.get('username');
+    if (origin.get('email'))      this.email      = origin.get('email');
+      if (!this.email)            this.email      = origin.get('username');
     
-    if (origin.get('emailNew'))     this.emailNew   = origin.get('emailNew');
-    if (origin.get('firstName'))    this.firstName  = origin.get('firstName');
-    if (origin.get('lastName'))     this.lastName   = origin.get('lastName');
-    if (origin.get('avatar'))       this.avatar     = origin.get('avatar');
-    if (origin.get('sex'))          this.sex        = origin.get('sex');
-    if (origin.get('paymentInfo'))  this.paymentInfo= origin.get('paymentInfo');
+    if (origin.get('emailNew'))   this.emailNew   = origin.get('emailNew');
+    if (origin.get('firstName'))  this.firstName  = origin.get('firstName');
+    if (origin.get('lastName'))   this.lastName   = origin.get('lastName');
+    if (origin.get('avatar'))     this.avatar     = origin.get('avatar');
+    if (origin.get('sex'))        this.sex        = origin.get('sex');
+    if (origin.get('StripeId'))   this.StripeId   = origin.get('StripeId');
 
     return this;
   }
@@ -37,7 +37,7 @@ export class UserData {
     this.origin.set("lastName",   this.lastName);
     this.origin.set("avatar",     this.avatar);
     this.origin.set("sex",        this.sex);
-    this.origin.set("paymentInfo",this.paymentInfo);
+    this.origin.set("StripeId",   this.StripeId);
     if (this.payPlan)
       this.origin.set("payPlan", this.payPlan.origin);
   }
