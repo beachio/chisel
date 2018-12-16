@@ -5,6 +5,7 @@ import {Parse} from 'parse';
 
 import ButtonControl from "components/elements/ButtonControl/ButtonControl";
 import CheckboxControl from "components/elements/CheckboxControl/CheckboxControl";
+import LoaderComponent from "components/elements/LoaderComponent/LoaderComponent";
 import {send} from 'utils/server';
 
 import styles from './PaymentMethods.sss';
@@ -19,8 +20,11 @@ class _PayElement extends Component {
   submit = async (e) => {
     e.preventDefault();
     
+    const {onStart, onComplete} = this.props;
+    
+    onStart();
     const {token} = await this.props.stripe.createToken({name: "Card 1"});
-    this.props.onComplete(token, this.state.saveMethod);
+    onComplete(token, this.state.saveMethod);
   };
   
   onSaveMethodCheck = checked => {
@@ -54,11 +58,14 @@ class _PayElement extends Component {
         <div styleName="checkbox-wrapper">
           <CheckboxControl title="Save payment method"
                            checked={this.state.saveMethod}
+                           disabled={this.props.disabled}
                            onChange={this.onSaveMethodCheck} />
         </div>
         <div styleName="button-wrapper">
           <ButtonControl color="green"
                          type="submit"
+                         disabled={this.props.disabled}
+                         showLoader={this.props.disabled}
                          value="Subscribe" />
         </div>
       </form>
@@ -72,7 +79,10 @@ export const PayElement = injectStripe(_PayElement);
 @CSSModules(styles, {allowMultiple: true})
 export default class PaymentMethods extends Component {
   state = {
-    method: null
+    method: null,
+    pending: false,
+    pendingSubscribe: false,
+    pendingRemove: false
   };
   
   active = false;
@@ -95,6 +105,7 @@ export default class PaymentMethods extends Component {
     const {payPlan, isYearly} = this.props.params;
     
     try {
+      this.setState({pending: true});
       const StripeId = await send(
         Parse.Cloud.run('savePaymentSource', {tokenId: token.id, card: token.card})
       );
@@ -115,6 +126,8 @@ export default class PaymentMethods extends Component {
     
     } catch (e) {
       console.log(e);
+    } finally {
+      this.setState({pending: false});
     }
   };
   
@@ -123,6 +136,7 @@ export default class PaymentMethods extends Component {
     const {payPlan, isYearly} = this.props.params;
     
     try {
+      this.setState({pending: true, pendingSubscribe: true});
       const subscription = await send(
         Parse.Cloud.run('paySubscription', {
           planId: payPlan.origin.id,
@@ -132,6 +146,8 @@ export default class PaymentMethods extends Component {
       );
       updateSubscription(subscription);
     } catch (e) {
+    } finally {
+      this.setState({pending: false, pendingSubscribe: false});
     }
   };
   
@@ -139,14 +155,14 @@ export default class PaymentMethods extends Component {
     const {removeSource} = this.props;
     
     try {
-      this.setState({pending: true});
+      this.setState({pending: true, pendingRemove: true});
       await send(
         Parse.Cloud.run('removePaymentSource', {source: this.state.method.id})
       );
       removeSource(this.state.method);
     } catch (e) {
     } finally {
-      this.setState({pending: false});
+      this.setState({pending: false, pendingRemove: false});
     }
   };
   
@@ -221,24 +237,30 @@ export default class PaymentMethods extends Component {
                   <div styleName="checkbox-wrapper">
                     <CheckboxControl title="Use payment method as default"
                                      checked={this.state.saveMethod}
+                                     disabled={this.state.pending}
                                      onChange={this.onSaveMethodCheck} />
                   </div>
                   <div styleName="button-wrapper">
                     <ButtonControl color="red"
                                    onClick={this.onRemoveMethod}
                                    disabled={this.state.pending}
+                                   showLoader={this.state.pendingRemove}
                                    value="Remove method" />
                   </div>
                   <div styleName="button-wrapper">
                     <ButtonControl color="green"
                                    onClick={this.onSubscribe}
+                                   disabled={this.state.pending}
+                                   showLoader={this.state.pendingSubscribe}
                                    value="Subscribe" />
                   </div>
                 </div>
               :
                 <div styleName="method-content">
                   <Elements>
-                    <PayElement onComplete={this.onNewSourceSubscribe}
+                    <PayElement onStart={() => this.setState({pending: true})}
+                                onComplete={this.onNewSourceSubscribe}
+                                disabled={this.state.pending}
                                 canBeDefault={methods && methods.length} />
                   </Elements>
                 </div>
