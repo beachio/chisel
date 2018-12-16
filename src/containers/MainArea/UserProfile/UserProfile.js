@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Helmet} from "react-helmet";
+import {browserHistory} from "react-router";
 import CSSModules from 'react-css-modules';
 
 import InputControl from 'components/elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {update, updateEmail, updatePassword, resendVerEmail, ERROR_USER_EXISTS, ERROR_OTHER} from 'ducks/user';
+import {MODAL_TYPE_PAYMENT_METHODS, URL_PAY_PLANS, URL_USERSPACE, showModal} from "ducks/nav";
 import {config, changeServerURL} from 'utils/initialize';
 import {checkURL, checkEmail} from 'utils/common';
 import {checkPassword} from 'utils/data';
@@ -255,6 +257,18 @@ export class UserProfile extends Component  {
     resendVerEmail();
   };
   
+  onChangePayPlan = () => {
+    browserHistory.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
+  };
+  
+  onChangePayMethods = () => {
+    const {showModal} = this.props.navActions;
+    showModal(
+      MODAL_TYPE_PAYMENT_METHODS,
+      {payPlan: this.userData.payPlan}
+    );
+  };
+  
   render() {
     return [
         <Helmet key="helmet">
@@ -369,6 +383,24 @@ export class UserProfile extends Component  {
                 {this.state.errorPassword}
               </div>
             </form>
+            
+            <div styleName="section">
+              <div styleName="section-header">Pay plan</div>
+              <div styleName="field">
+                <div styleName="field-title">Your pay plan:</div>
+                <div styleName="field-value">{this.userData.payPlan.name}</div>
+              </div>
+              <div styleName="buttons-wrapper">
+                <ButtonControl color="green"
+                               onClick={this.onChangePayPlan}
+                               value="Change pay plan"/>
+              </div>
+              <div styleName="buttons-wrapper">
+                <ButtonControl color="green"
+                               onClick={this.onChangePayMethods}
+                               value="Change pay methods"/>
+              </div>
+            </div>
 
             <div styleName="section">
               <div styleName="section-header">Session</div>
@@ -417,7 +449,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators({update, updateEmail, updatePassword, resendVerEmail}, dispatch)
+    userActions: bindActionCreators({update, updateEmail, updatePassword, resendVerEmail}, dispatch),
+    navActions: bindActionCreators({showModal}, dispatch)
   };
 }
 
