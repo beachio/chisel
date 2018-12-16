@@ -370,6 +370,14 @@ export class UserProfile extends Component  {
               </div>
             </form>
 
+            <div styleName="section">
+              <div styleName="section-header">Session</div>
+              <div styleName="field">
+                <div styleName="field-title">User session token:</div>
+                <div styleName="field-value">{this.userData.origin.id}</div>
+              </div>
+            </div>
+  
             <form styleName="section" onSubmit={this.onSaveServer}>
               <div styleName="section-header">Parse server data</div>
               <div styleName="field">
@@ -393,12 +401,6 @@ export class UserProfile extends Component  {
                 {this.state.errorServer}
               </div>
             </form>
-            
-            <div styleName="section">
-              <div styleName="field-title">
-                User session token: {this.userData.origin.id}
-              </div>
-            </div>
 
           </div>
         </ContainerComponent>
