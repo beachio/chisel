@@ -135,6 +135,21 @@ export default class PaymentMethods extends Component {
     }
   };
   
+  onRemoveMethod = async () => {
+    const {removeSource} = this.props;
+    
+    try {
+      this.setState({pending: true});
+      await send(
+        Parse.Cloud.run('removePaymentSource', {source: this.state.method.id})
+      );
+      removeSource(this.state.method);
+    } catch (e) {
+    } finally {
+      this.setState({pending: false});
+    }
+  };
+  
   onMethodClick = method => {
     this.setState({method});
   };
@@ -207,6 +222,12 @@ export default class PaymentMethods extends Component {
                     <CheckboxControl title="Use payment method as default"
                                      checked={this.state.saveMethod}
                                      onChange={this.onSaveMethodCheck} />
+                  </div>
+                  <div styleName="button-wrapper">
+                    <ButtonControl color="red"
+                                   onClick={this.onRemoveMethod}
+                                   disabled={this.state.pending}
+                                   value="Remove method" />
                   </div>
                   <div styleName="button-wrapper">
                     <ButtonControl color="green"

@@ -6,6 +6,7 @@ import {send, getAllObjects} from 'utils/server';
 
 export const INIT_END             = 'app/pay/INIT_END';
 export const ADD_SOURCE           = 'app/pay/ADD_SOURCE';
+export const REMOVE_SOURCE        = 'app/pay/REMOVE_SOURCE';
 export const UPDATE_SUBSCRIPTION  = 'app/pay/UPDATE_SUBSCRIPTION';
 
 
@@ -52,6 +53,13 @@ export function addSource(source, isDefault) {
   }
 }
 
+export function removeSource(source) {
+  return {
+    type: REMOVE_SOURCE,
+    source
+  }
+}
+
 export function updateSubscription(subscription) {
   return {
     type: UPDATE_SUBSCRIPTION,
@@ -67,6 +75,7 @@ const initialState = {
 
 export default function payReducer(state = initialState, action) {
   const {stripeData} = state;
+  const sources = stripeData.sources ? stripeData.sources : [];
   
   switch (action.type) {
     case INIT_END:
@@ -77,10 +86,18 @@ export default function payReducer(state = initialState, action) {
       };
   
     case ADD_SOURCE:
-      const sources = stripeData.sources ? stripeData.sources : [];
       sources.push(action.source);
       if (action.isDefault)
         stripeData.defaultSource = source;
+      return {
+        ...state,
+        stripeData
+      };
+      
+    case REMOVE_SOURCE:
+      let ind = sources.indexOf(action.source);
+      if (ind != -1)
+        sources.splice(ind, 1);
       return {
         ...state,
         stripeData
