@@ -8,7 +8,7 @@
   font-size: 13px
   color: #FFFFFF
   letter-spacing: 0.5px
-  line-height: 40px
+  height: 40px
 
   cursor: pointer
 
@@ -18,6 +18,9 @@
 
   background-image: linear-gradient(-180deg, #658ad2 0%, #476a9e 150%)
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15)
+
+  display: flex
+  align-items: center
 
   &-red
     background-image: linear-gradient(-180deg, #F5897C 0%, #B44A2F 150%)
@@ -30,7 +33,11 @@
   &-gray
     background-image: linear-gradient(-180deg, #607D8B 0%, #3E5059 150%)
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.20)
-  
+
   &-disabled
     background-image: linear-gradient(-180deg, #929fab 0%, #7b848d 150%)
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.20)
+
+
+  .loader-wrapper
+    margin-left: 15px

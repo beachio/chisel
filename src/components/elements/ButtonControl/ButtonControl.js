@@ -2,13 +2,15 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import classNames from 'classnames';
 
+import LoaderComponent from "components/elements//LoaderComponent/LoaderComponent";
+
 import styles from './ButtonControl.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ButtonControl extends Component {
   render() {
-    let {value, color, onClick, type, disabled, DOMRef} = this.props;
+    let {value, color, onClick, type, disabled, DOMRef, showLoader} = this.props;
     if (!type)
       type = 'button';
 
@@ -33,6 +35,11 @@ export default class ButtonControl extends Component {
               type={type}
               ref={DOMRef}>
         {value || 'Clear'}
+        {showLoader &&
+          <div styleName="loader-wrapper">
+            <LoaderComponent/>
+          </div>
+        }
       </button>
     );
   }
