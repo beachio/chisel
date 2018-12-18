@@ -15,8 +15,10 @@ import {StripeProvider} from 'react-stripe-elements';
 import App from 'containers/app';
 import configureStore from 'store/configureStore';
 import {initApp} from 'utils/initialize';
-import {setCurrentPage, PAGE_MODELS, PAGE_MODELS_ITEM,  PAGE_PROFILE, PAGE_PAY_PLANS, PAGE_CONTENT,
-  PAGE_CONTENT_ITEM, PAGE_API, PAGE_SETTINGS, PAGE_SHARING} from 'ducks/nav';
+import {
+  setCurrentPage, PAGE_MODELS, PAGE_MODELS_ITEM, PAGE_PROFILE, PAGE_PAY_PLANS, PAGE_CONTENT,
+  PAGE_CONTENT_ITEM, PAGE_API, PAGE_SETTINGS, PAGE_SHARING, PAGE_PAYMENT_METHODS
+} from 'ducks/nav';
 
 import APIPage from 'containers/MainArea/API/APIPage';
 import Sign from 'containers/Sign/Sign';
@@ -32,6 +34,7 @@ import PayPlans from 'containers/MainArea/PayPlans/PayPlans';
 import EmailVerify from 'containers/LinksEmail/EmailVerify/EmailVerify';
 import PasswordSet from 'containers/LinksEmail/PasswordSet/PasswordSet';
 import InvalidLink from 'containers/LinksEmail/InvalidLink/InvalidLink';
+import PaymentMethods from "containers/MainArea/PaymentMethods/PaymentMethods";
 
 
 export const store = configureStore();
@@ -62,6 +65,7 @@ class Root extends Component {
             <Route path="/userspace" component={MainArea} >
               <Route path="/userspace/profile"              component={UserProfile}           onEnter={() => SCP(PAGE_PROFILE)} />
               <Route path="/userspace/pay-plans"            component={PayPlans}              onEnter={() => SCP(PAGE_PAY_PLANS)} />
+              <Route path="/userspace/payment-methods"      component={PaymentMethods}        onEnter={() => SCP(PAGE_PAYMENT_METHODS)} />
               <Route path="/userspace/:site/models"         component={ModelsListContainer}   onEnter={() => SCP(PAGE_MODELS)} />
               <Route path="/userspace/:site/models/:model"  component={ModelContainer}        onEnter={() => SCP(PAGE_MODELS_ITEM)} />
               <Route path="/userspace/:site/content"        component={ContentListContainer}  onEnter={() => SCP(PAGE_CONTENT)} />

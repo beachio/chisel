@@ -13,15 +13,11 @@ import MarkdownModal from 'components/modals/MarkdownModal/MarkdownModal';
 import ReferenceModal from 'components/modals/ReferenceModal/ReferenceModal';
 import ModelChooseModal from 'components/modals/ModelChooseModal/ModelChooseModal';
 import CollabRoleModal from 'components/modals/CollabRoleModal/CollabRoleModal';
-import PaymentMethods from "components/modals/PaymentMethods/PaymentMethods";
 import AlertModal, {ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
 import {
   closeAlert, closeModal, MODAL_TYPE_SITE, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG,
-  MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN, MODAL_TYPE_ROLE, MODAL_TYPE_PAYMENT_METHODS
-} from 'ducks/nav';
+  MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN, MODAL_TYPE_ROLE} from 'ducks/nav';
 import {addSite, addField, updateField} from 'ducks/models';
-import {addSource, removeSource, updateSubscription} from 'ducks/pay';
-import {update as updateUser} from 'ducks/user';
 
 import styles from './app.sss';
 
@@ -32,11 +28,9 @@ class App extends React.Component {
   lastModal = <span></span>;
 
   render() {
-    const {nav, user, content, models, serverStatus, pay} = this.props;
+    const {nav, user, content, models, serverStatus} = this.props;
     const {closeAlert, closeModal} = this.props.navActions;
     const {addSite, addField, updateField} = this.props.modelActions;
-    const {addSource, removeSource, updateSubscription} = this.props.payActions;
-    const {updateUser} = this.props.userActions;
   
     const getAlarm = () => {
       if (serverStatus.problemA && !serverStatus.problemB)
@@ -106,16 +100,6 @@ class App extends React.Component {
         case MODAL_TYPE_ROLE:
           return <CollabRoleModal params={nav.modalParams}
                                   onClose={closeModal} />;
-  
-        case MODAL_TYPE_PAYMENT_METHODS:
-          return <PaymentMethods params={nav.modalParams}
-                                 userData={user.userData}
-                                 addSource={addSource}
-                                 removeSource={removeSource}
-                                 updateSubscription={updateSubscription}
-                                 updateUser={updateUser}
-                                 stripeData={pay.stripeData}
-                                 onClose={closeModal} />;
       }
     };
 
@@ -165,7 +149,6 @@ function mapStateToProps(state) {
     content:      state.content,
     models:       state.models,
     nav:          state.nav,
-    pay:          state.pay,
     serverStatus: state.serverStatus,
     user:         state.user
   };
@@ -174,9 +157,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     modelActions: bindActionCreators({addSite, addField, updateField}, dispatch),
-    navActions: bindActionCreators({closeAlert, closeModal}, dispatch),
-    payActions: bindActionCreators({addSource, removeSource, updateSubscription}, dispatch),
-    userActions: bindActionCreators({updateUser}, dispatch)
+    navActions: bindActionCreators({closeAlert, closeModal}, dispatch)
   };
 }
 

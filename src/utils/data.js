@@ -312,3 +312,12 @@ export function getNameId(name, objects, reserved = []) {
   
   return getNameIdInc();
 }
+
+export function getPayPlan(id) {
+  const plans = store.getState().pay.payPlans;
+  for (let plan of plans) {
+    if (plan.origin && plan.origin.id == id)
+      return plan;
+  }
+  return null;
+}

@@ -8,16 +8,17 @@ export const SHOW_MODAL       = 'app/nav/SHOW_MODAL';
 export const CLOSE_MODAL      = 'app/nav/CLOSE_MODAL';
 export const SET_CURRENT_PAGE = 'app/nav/SET_CURRENT_PAGE';
 
-export const PAGE_NO_SITES      = 'app/nav/pages/PAGE_NO_SITES';
-export const PAGE_MODELS        = 'app/nav/pages/PAGE_MODELS';
-export const PAGE_MODELS_ITEM   = 'app/nav/pages/PAGE_MODELS_ITEM';
-export const PAGE_CONTENT       = 'app/nav/pages/PAGE_CONTENT';
-export const PAGE_CONTENT_ITEM  = 'app/nav/pages/PAGE_CONTENT_ITEM';
-export const PAGE_API           = 'app/nav/pages/PAGE_API';
-export const PAGE_SETTINGS      = 'app/nav/pages/PAGE_SETTINGS';
-export const PAGE_SHARING       = 'app/nav/pages/PAGE_SHARING';
-export const PAGE_PROFILE       = 'app/nav/pages/PAGE_PROFILE';
-export const PAGE_PAY_PLANS     = 'app/nav/pages/PAGE_PAY_PLANS';
+export const PAGE_NO_SITES        = 'app/nav/pages/PAGE_NO_SITES';
+export const PAGE_MODELS          = 'app/nav/pages/PAGE_MODELS';
+export const PAGE_MODELS_ITEM     = 'app/nav/pages/PAGE_MODELS_ITEM';
+export const PAGE_CONTENT         = 'app/nav/pages/PAGE_CONTENT';
+export const PAGE_CONTENT_ITEM    = 'app/nav/pages/PAGE_CONTENT_ITEM';
+export const PAGE_API             = 'app/nav/pages/PAGE_API';
+export const PAGE_SETTINGS        = 'app/nav/pages/PAGE_SETTINGS';
+export const PAGE_SHARING         = 'app/nav/pages/PAGE_SHARING';
+export const PAGE_PROFILE         = 'app/nav/pages/PAGE_PROFILE';
+export const PAGE_PAY_PLANS       = 'app/nav/pages/PAGE_PAY_PLANS';
+export const PAGE_PAYMENT_METHODS = 'app/nav/pages/PAGE_PAYMENT_METHODS';
 
 export const MODAL_TYPE_SITE            = 'app/nav/modals/MODAL_TYPE_SITE';
 export const MODAL_TYPE_FIELD           = 'app/nav/modals/MODAL_TYPE_FIELD';
@@ -27,7 +28,6 @@ export const MODAL_TYPE_WYSIWYG         = 'app/nav/modals/MODAL_TYPE_WYSIWYG';
 export const MODAL_TYPE_MARKDOWN        = 'app/nav/modals/MODAL_TYPE_MARKDOWN';
 export const MODAL_TYPE_MODEL_CHOOSE    = 'app/nav/modals/MODAL_TYPE_MODEL_CHOOSE';
 export const MODAL_TYPE_ROLE            = 'app/nav/modals/MODAL_TYPE_ROLE';
-export const MODAL_TYPE_PAYMENT_METHODS = 'app/nav/modals/MODAL_TYPE_PAYMENT_METHODS';
 
 
 export const URL_EMAIL_VERIFY     = 'email-verify';
@@ -46,6 +46,8 @@ export const URL_SETTINGS         = 'settings';
 export const URL_SHARING          = 'sharing';
 export const URL_PROFILE          = 'profile';
 export const URL_PAY_PLANS        = 'pay-plans';
+export const URL_PAYMENT_METHODS  = 'payment-methods';
+
 
 export const URLS_EMAIL = [URL_EMAIL_VERIFY, URL_PASSWORD_SET, URL_PASSWORD_SUCCESS, URL_INVALID_LINK];
 

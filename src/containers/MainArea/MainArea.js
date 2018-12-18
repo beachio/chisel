@@ -7,7 +7,7 @@ import {ScrollContainer} from 'react-router-scroll';
 
 import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
-import {PAGE_PROFILE, PAGE_PAY_PLANS} from 'ducks/nav';
+import {PAGE_PROFILE, PAGE_PAY_PLANS, PAGE_PAYMENT_METHODS} from 'ducks/nav';
 
 import styles from './MainArea.sss';
 
@@ -34,7 +34,10 @@ export class MainArea extends Component {
       if (curSite)
         title = `Site: ${curSite.name} - Chisel`;
 
-      if (curSite || nav.openedPage == PAGE_PROFILE || nav.openedPage == PAGE_PAY_PLANS)
+      if (curSite ||
+          nav.openedPage == PAGE_PROFILE ||
+          nav.openedPage == PAGE_PAY_PLANS ||
+          nav.openedPage == PAGE_PAYMENT_METHODS)
         content = this.props.children;
       else
         content = this.cmpNoSites;

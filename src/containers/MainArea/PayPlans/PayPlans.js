@@ -3,14 +3,14 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Helmet} from "react-helmet";
 import CSSModules from 'react-css-modules';
+import {browserHistory} from "react-router";
 
 import ContainerComponent from "components/elements/ContainerComponent/ContainerComponent";
 import ButtonControl from "components/elements/ButtonControl/ButtonControl";
 import {changePayPlan} from "ducks/user";
-import {MODAL_TYPE_PAYMENT_METHODS, showModal} from "ducks/nav";
+import {URL_PAYMENT_METHODS, URL_USERSPACE} from "ducks/nav";
 
 import styles from './PayPlans.sss';
-
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -75,12 +75,11 @@ export class PayPlans extends Component {
   };
   
   onUpdatePayPlan = () => {
-    //this.props.userActions.changePayPlan(this.state.payPlan);
-    const {showModal} = this.props.navActions;
-    showModal(
-      MODAL_TYPE_PAYMENT_METHODS,
-      {payPlan: this.state.payPlan}
-    );
+    let URL = `/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`;
+    const {payPlan} = this.state;
+    if (payPlan)
+      URL += `?plan=${payPlan.origin.id}&yearly=${false}`;
+    browserHistory.push(URL);
   };
   
   render() {
@@ -125,8 +124,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators({changePayPlan}, dispatch),
-    navActions: bindActionCreators({showModal}, dispatch)
+    userActions: bindActionCreators({changePayPlan}, dispatch)
   };
 }
 

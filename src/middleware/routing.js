@@ -4,7 +4,18 @@ import {LOCATION_CHANGE} from 'react-router-redux';
 import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';
 import {setCurrentSite, SITE_ADD} from 'ducks/models';
 import {getSiteByNameId} from 'utils/data';
-import {INIT_END, URL_SIGN, URL_SITE, URL_USERSPACE, URLS_EMAIL, URL_EMAIL_VERIFY, URL_INVALID_LINK, URL_PROFILE, URL_PAY_PLANS} from 'ducks/nav';
+import {
+  INIT_END,
+  URL_SIGN,
+  URL_SITE,
+  URL_USERSPACE,
+  URLS_EMAIL,
+  URL_EMAIL_VERIFY,
+  URL_INVALID_LINK,
+  URL_PROFILE,
+  URL_PAY_PLANS,
+  URL_PAYMENT_METHODS
+} from 'ducks/nav';
 
 
 let URL = '/';
@@ -69,7 +80,9 @@ export const routing = store => next => action => {
           setDefaultSite();
       }
       
-    } else if (path.indexOf(URL_PROFILE) == -1 && path.indexOf(URL_PAY_PLANS) == -1) {
+    } else if (path.indexOf(URL_PROFILE) == -1 &&
+               path.indexOf(URL_PAY_PLANS) == -1 &&
+               path.indexOf(URL_PAYMENT_METHODS) == -1) {
       setDefaultSite();
     }
   };
