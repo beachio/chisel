@@ -11,7 +11,7 @@ import CheckboxControl from "components/elements/CheckboxControl/CheckboxControl
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {send} from 'utils/server';
 import {update as updateUser} from "ducks/user";
-import {showAlert, URL_MODEL} from "ducks/nav";
+import {showAlert} from "ducks/nav";
 import {addSource, removeSource, updateSubscription} from 'ducks/pay';
 import {getPayPlan} from "utils/data";
 
@@ -145,7 +145,6 @@ class PaymentMethods extends Component {
   
   onSubscribe = async () => {
     const {updateSubscription} = this.props.payActions;
-    const {desiredPlan, desiredYearly} = this.props.pay;
     
     try {
       this.setState({pending: true, pendingSubscribe: true});
