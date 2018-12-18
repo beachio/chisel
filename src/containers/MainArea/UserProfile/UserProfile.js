@@ -11,7 +11,7 @@ import ContainerComponent from 'components/elements/ContainerComponent/Container
 import {update, updateEmail, updatePassword, resendVerEmail, ERROR_USER_EXISTS, ERROR_OTHER} from 'ducks/user';
 import {MODAL_TYPE_PAYMENT_METHODS, URL_PAY_PLANS, URL_USERSPACE, showModal} from "ducks/nav";
 import {config, changeServerURL} from 'utils/initialize';
-import {checkURL, checkEmail} from 'utils/common';
+import {checkURL, checkEmail, getTextDate} from 'utils/common';
 import {checkPassword} from 'utils/data';
 
 import styles from './UserProfile.sss';
@@ -270,6 +270,11 @@ export class UserProfile extends Component  {
   };
   
   render() {
+    let dateSubEnd;
+    const {subscription} = this.props.pay.stripeData;
+    if (subscription)
+      dateSubEnd = getTextDate(new Date(subscription.current_period_end * 1000));
+    
     return [
         <Helmet key="helmet">
           <title>User profile - Chisel</title>
@@ -390,6 +395,12 @@ export class UserProfile extends Component  {
                 <div styleName="field-title">Your pay plan:</div>
                 <div styleName="field-value">{this.userData.payPlan.name}</div>
               </div>
+              {!!subscription &&
+                <div styleName="field">
+                  <div styleName="field-title">Next payment:</div>
+                  <div styleName="field-value">{dateSubEnd}</div>
+                </div>
+              }
               <div styleName="buttons-wrapper">
                 <ButtonControl color="green"
                                onClick={this.onChangePayPlan}
@@ -443,7 +454,8 @@ export class UserProfile extends Component  {
 
 function mapStateToProps(state) {
   return {
-    user: state.user
+    user: state.user,
+    pay: state.pay
   };
 }
 
