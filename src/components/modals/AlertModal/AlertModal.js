@@ -77,8 +77,11 @@ export default class AlertModal extends Component {
   };
 
   close = () => {
+    const {callback} = this.props.params;
     this.active = false;
     this.props.onClose();
+    if (callback)
+      callback();
   };
 
   render() {
