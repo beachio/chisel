@@ -15,40 +15,55 @@ import styles from './PayPlans.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export class PlanControl extends Component {
-  state = {
-    checked: false
-  };
-  payPlan = null;
-  
-  constructor(props) {
-    super(props);
-    
-    this.payPlan = props.payPlan;
-    this.state.checked = props.checked;
-  }
-  
-  componentWillReceiveProps({checked}) {
-    this.setState({checked});
-  }
-  
-  onClick = () => {
-    this.props.onChange(this.payPlan);
-  };
-  
   render() {
+    const {onClick, payPlan, current} = this.props;
+    
     let style = 'plan-content';
-    if (this.state.checked)
-      style += ' checked';
+    let changeElm;
+    
+    if (current) {
+      changeElm = "It's your current plan";
+      style += ' current';
+      
+    } else if (payPlan.priceMonthly) {
+      changeElm = [
+        <div styleName="buttons-wrapper" key="monthly">
+          <ButtonControl color="green"
+                         value="Buy monthly"
+                         onClick={() => onClick()} />
+        </div>,
+        <div styleName="buttons-wrapper" key="yearly">
+          <ButtonControl color="green"
+                         value="Buy yearly"
+                         onClick={() => onClick(true)} />
+        </div>];
+      
+    } else {
+       changeElm =
+         <div styleName="buttons-wrapper">
+          <ButtonControl color="green"
+                         value="Go free"
+                         onClick={() => onClick()} />
+         </div>;
+    }
     
     return (
-      <div styleName="PlanControl"
-           onClick={this.onClick}>
+      <div styleName="PlanControl">
         <div styleName={style}>
           <div styleName="text">
-            <div styleName="title">{this.payPlan.name}</div>
-            <div styleName="description">Maximum sites: {this.payPlan.limitSites ? this.payPlan.limitSites : 'unlimited'}</div>
-            <div styleName="description">Price (monthly): ${this.payPlan.priceMonthly}</div>
-            <div styleName="description">Price (yearly): ${this.payPlan.priceYearly}</div>
+            <div styleName="title">{payPlan.name}</div>
+            <div styleName="description">Maximum sites: {payPlan.limitSites ? payPlan.limitSites : 'unlimited'}</div>
+            
+            {!!payPlan.priceMonthly ? [
+              <div styleName="description" key="monthly">Price (monthly): ${payPlan.priceMonthly}</div>,
+              <div styleName="description" key="yearly" >Price (yearly): ${payPlan.priceYearly}</div>]
+            :
+              <div styleName="description">Price: free</div>
+            }
+  
+            <div styleName="change">
+              {changeElm}
+            </div>
           </div>
         </div>
       </div>
@@ -58,31 +73,17 @@ export class PlanControl extends Component {
 
 @CSSModules(styles, {allowMultiple: true})
 export class PayPlans extends Component {
-  state = {
-    payPlan: null
-  };
-  payPlans = [];
-  
-  constructor(props) {
-    super(props);
-    
-    this.payPlans = props.pay.payPlans;
-    this.state.payPlan = props.user.userData.payPlan;
-  }
-  
-  onChangePayPlan = payPlan => {
-    this.setState({payPlan});
-  };
-  
-  onUpdatePayPlan = () => {
+  onUpdatePayPlan = (payPlan, isYearly = false) => {
     let URL = `/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`;
-    const {payPlan} = this.state;
     if (payPlan)
-      URL += `?plan=${payPlan.origin.id}&yearly=${false}`;
+      URL += `?plan=${payPlan.origin.id}&yearly=${isYearly}`;
     browserHistory.push(URL);
   };
   
   render() {
+    const {payPlans} = this.props.pay;
+    const payPlanUser = this.props.user.userData.payPlan;
+    
     return [
       <Helmet key="helmet">
         <title>Pay plans - Chisel</title>
@@ -92,20 +93,12 @@ export class PayPlans extends Component {
         <div styleName="content">
           <div styleName="label">Choose your pay plan:</div>
           <div styleName="plans">
-            {this.payPlans.map(payPlan =>
+            {payPlans.map(payPlan =>
               <PlanControl payPlan={payPlan}
                            key={payPlan.origin.id}
-                           checked={this.state.payPlan == payPlan}
-                           onChange={this.onChangePayPlan} />)
+                           current={payPlan == payPlanUser}
+                           onClick={isYearly => this.onUpdatePayPlan(payPlan, isYearly)} />)
             }
-          </div>
-  
-        
-          <div styleName="buttons-wrapper">
-            <ButtonControl color="green"
-                           //disabled={this.state.payPlan == userData.payPlan}
-                           onClick={this.onUpdatePayPlan}
-                           value="Update pay plan" />
           </div>
         </div>
         
