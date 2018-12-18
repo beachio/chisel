@@ -60,10 +60,11 @@ export function removeSource(source) {
   }
 }
 
-export function updateSubscription(subscription) {
+export function updateSubscription(subscription, payPlan) {
   return {
     type: UPDATE_SUBSCRIPTION,
-    subscription
+    subscription,
+    payPlan
   }
 }
 

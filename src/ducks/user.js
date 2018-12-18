@@ -4,7 +4,7 @@ import {Parse} from 'parse';
 import {UserData} from 'models/UserData';
 import {config} from 'utils/initialize';
 import {send} from 'utils/server';
-import {INIT_END as INIT_END_pay} from "ducks/pay";
+import {INIT_END as INIT_END_pay, UPDATE_SUBSCRIPTION} from "ducks/pay";
 
 
 export const LOGIN_REQUEST      = 'app/user/LOGIN_REQUEST';
@@ -323,6 +323,13 @@ export default function userReducer(state = initialState, action) {
         userData
       };
       
+    case UPDATE_SUBSCRIPTION:
+      userData.payPlan = action.payPlan;
+      return {
+        ...state,
+        userData
+      };
+    
     case LOGOUT:
       return {
         ...state,

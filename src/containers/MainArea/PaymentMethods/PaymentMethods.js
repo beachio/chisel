@@ -140,7 +140,7 @@ class PaymentMethods extends Component {
             isYearly: this.isYearly
           })
         );
-        updateSubscription(subscription);
+        updateSubscription(subscription, this.payPlan);
   
         showAlert({
           type: ALERT_TYPE_ALERT,
@@ -174,7 +174,7 @@ class PaymentMethods extends Component {
           isYearly: this.isYearly
         })
       );
-      updateSubscription(subscription);
+      updateSubscription(subscription, this.payPlan);
   
       showAlert({
         type: ALERT_TYPE_ALERT,
