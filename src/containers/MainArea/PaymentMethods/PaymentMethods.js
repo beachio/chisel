@@ -42,9 +42,9 @@ class _PayElement extends Component {
   render() {
     const style = {
       base: {
-        fontSize: '13px',
+        fontSize: '18px',
         fontWeight: '300',
-        fontFamily: "Open Sans, sans-serif",
+        fontFamily: "Source Code Pro, monospace",
         color: '#666666',
         '::placeholder': {
           color: '#999999',
