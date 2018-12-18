@@ -8,6 +8,7 @@ import {browserHistory, Link} from 'react-router';
 import User from 'components/sidebar/User/User';
 import Sites from 'components/sidebar/Sites/Sites';
 import {showModal, showAlert, URL_USERSPACE, URL_SITE, URL_PAY_PLANS} from 'ducks/nav';
+import {isPayPlanTop} from 'utils/data';
 
 import styles from './Sidebar.sss';
 
@@ -15,31 +16,36 @@ import styles from './Sidebar.sss';
 @CSSModules(styles, {allowMultiple: true})
 export class Sidebar extends Component {
   render() {
-    const {models, user} = this.props;
+    const {models} = this.props;
+    const {userData} = this.props.user;
     const {showModal, showAlert} = this.props.navActions;
   
     const gotoSite = site => {
       const nameId = site.nameId;
       browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${nameId}`);
     };
+    
+    const showUpgrade = !isPayPlanTop(userData.payPlan);
 
     return (
       <div styleName="sidebar">
         <div>
-          <User userData={user.userData} />
+          <User userData={userData} />
           <Sites sites={models.sites}
                  currentSite={models.currentSite}
                  gotoSite={gotoSite}
-                 payPlan={user.userData.payPlan}
+                 payPlan={userData.payPlan}
                  showModal={showModal}
                  showAlert={showAlert} />
         </div>
   
         <div styleName="bottom-panel">
-          <Link styleName="pay-plans"
-                to={`/${URL_USERSPACE}/${URL_PAY_PLANS}/`}>
-            Upgrade your account
-          </Link>
+          {showUpgrade &&
+            <Link styleName="pay-plans"
+                  to={`/${URL_USERSPACE}/${URL_PAY_PLANS}/`}>
+              Upgrade your account
+            </Link>
+          }
         
           <a styleName="answer-question" href="http://guild.beach.io" target="_blank">
             <InlineSVG styleName="icon" src={require("./question.svg")} />
@@ -53,7 +59,8 @@ export class Sidebar extends Component {
 function mapStateToProps(state) {
   return {
     models: state.models,
-    user:   state.user
+    user:   state.user,
+    pay:    state.pay
   };
 }
 

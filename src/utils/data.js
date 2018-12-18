@@ -321,3 +321,12 @@ export function getPayPlan(id) {
   }
   return null;
 }
+
+export function isPayPlanTop(plan) {
+  const plans = store.getState().pay.payPlans;
+  for (let plan1 of plans) {
+    if (plan1.priceMonthly > plan.priceMonthly)
+      return false;
+  }
+  return true;
+}
