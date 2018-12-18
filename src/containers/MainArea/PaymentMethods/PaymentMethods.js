@@ -182,7 +182,7 @@ class PaymentMethods extends Component {
   };
   
   render() {
-    const {stripeData} = this.props;
+    const {stripeData} = this.props.pay;
     let methods = [];
     if (stripeData)
       methods = stripeData.sources;
