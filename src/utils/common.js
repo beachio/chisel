@@ -1,3 +1,5 @@
+const locale = navigator.language || navigator.userLanguage;
+
 export function removeOddSpaces(str) {
   if (!str)
     return '';
@@ -46,6 +48,11 @@ export function checkEmail(str) {
   return pattern.test(str);
 }
 
+export function getTextDate(date) {
+  return date.toLocaleString(locale,
+    {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
+}
+
 export function getRelativeTime(date) {
   let now = new Date();
   
@@ -55,10 +62,7 @@ export function getRelativeTime(date) {
   
   let diff = now - date;
   
-  let locale = navigator.language || navigator.userLanguage;
   let time = date.toLocaleString(locale, {hour: 'numeric', minute: 'numeric'});
-  let fullDate = date.toLocaleString(locale,
-    {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
   
   if (diff < MINUTE) {
     if (diff < 10 * SECOND)
@@ -90,7 +94,7 @@ export function getRelativeTime(date) {
       return `Yesterday, at ${time}`;
   }
   
-  return fullDate;
+  return getTextDate(date);
 }
 
 export function parseURLParams(querystring = null) {
