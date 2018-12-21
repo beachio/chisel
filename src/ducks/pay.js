@@ -4,10 +4,11 @@ import {PayPlanData} from 'models/PayPlanData';
 import {send, getAllObjects} from 'utils/server';
 
 
-export const INIT_END             = 'app/pay/INIT_END';
-export const ADD_SOURCE           = 'app/pay/ADD_SOURCE';
-export const REMOVE_SOURCE        = 'app/pay/REMOVE_SOURCE';
-export const UPDATE_SUBSCRIPTION  = 'app/pay/UPDATE_SUBSCRIPTION';
+export const INIT_END               = 'app/pay/INIT_END';
+export const ADD_SOURCE             = 'app/pay/ADD_SOURCE';
+export const REMOVE_SOURCE          = 'app/pay/REMOVE_SOURCE';
+export const UPDATE_SUBSCRIPTION    = 'app/pay/UPDATE_SUBSCRIPTION';
+export const UPDATE_DEFAULT_SOURCE  = 'app/pay/UPDATE_DEFAULT_SOURCE';
 
 
 async function requestPayPlans() {
@@ -68,6 +69,13 @@ export function updateSubscription(subscription, payPlan) {
   }
 }
 
+export function updateDefaultSource(sourceId) {
+  return {
+    type: UPDATE_DEFAULT_SOURCE,
+    sourceId
+  }
+}
+
 
 const initialState = {
   payPlans: [],
@@ -106,6 +114,13 @@ export default function payReducer(state = initialState, action) {
   
     case UPDATE_SUBSCRIPTION:
       stripeData.subscription = action.subscription;
+      return {
+        ...state,
+        stripeData
+      };
+  
+    case UPDATE_DEFAULT_SOURCE:
+      stripeData.defaultSource = action.sourceId;
       return {
         ...state,
         stripeData

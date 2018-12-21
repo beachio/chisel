@@ -14,7 +14,7 @@ import {ALERT_TYPE_ALERT, ALERT_TYPE_CONFIRM} from "components/modals/AlertModal
 import {send} from 'utils/server';
 import {update as updateUser} from "ducks/user";
 import {showAlert, URL_USERSPACE} from "ducks/nav";
-import {addSource, removeSource, updateSubscription} from 'ducks/pay';
+import {addSource, removeSource, updateSubscription, updateDefaultSource} from 'ducks/pay';
 import {getPayPlan, getPayMethod} from "utils/data";
 
 
@@ -24,7 +24,7 @@ import styles from './PaymentMethods.sss';
 @CSSModules(styles, {allowMultiple: true})
 class _PayElement extends Component {
   state = {
-    saveMethod: true
+    defaultMethod: true
   };
   
   submit = async (e) => {
@@ -34,11 +34,11 @@ class _PayElement extends Component {
     
     onStart();
     const {token} = await this.props.stripe.createToken({name: "Card 1"});
-    onComplete(token, this.state.saveMethod);
+    onComplete(token, this.state.defaultMethod);
   };
   
-  onSaveMethodCheck = checked => {
-    this.setState({saveMethod: checked});
+  onDefaultMethodCheck = checked => {
+    this.setState({defaultMethod: checked});
   };
   
   render() {
@@ -57,7 +57,7 @@ class _PayElement extends Component {
       }
     };
     
-    const {payPlan} = this.props;
+    const {payPlan, canBeDefault} = this.props;
     
     return (
       <form onSubmit={this.submit} styleName="form">
@@ -67,18 +67,20 @@ class _PayElement extends Component {
             <CardElement style={style} />
           </div>
         </label>
-        <div styleName="checkbox-wrapper">
-          <CheckboxControl title="Use the payment method as default"
-                           checked={this.state.saveMethod}
-                           disabled={this.props.disabled}
-                           onChange={this.onSaveMethodCheck} />
-        </div>
+        {canBeDefault &&
+          <div styleName="checkbox-wrapper">
+            <CheckboxControl title="Use the payment method as a default"
+                             checked={this.state.defaultMethod}
+                             disabled={this.props.disabled}
+                             onChange={this.onDefaultMethodCheck} />
+          </div>
+        }
         <div styleName="button-wrapper">
           <ButtonControl color="green"
                          type="submit"
                          disabled={this.props.disabled}
                          showLoader={this.props.disabled}
-                         value={payPlan ? "Subscribe" : "Add method"}/>
+                         value={payPlan ? "Subscribe" : "Add method"} />
         </div>
       </form>
     );
@@ -94,7 +96,9 @@ class PaymentMethods extends Component {
     method: null,
     pending: false,
     pendingSubscribe: false,
-    pendingRemove: false
+    pendingRemove: false,
+    pendingDefault: false,
+    defaultMethod: true
   };
   
   payPlan = null;
@@ -115,28 +119,29 @@ class PaymentMethods extends Component {
       this.state.method = getPayMethod(stripeData.defaultSource);
   }
   
-  onNewSourceSubscribe = async (token, saveMethod) => {
+  onNewSourceSubscribe = async (token, asDefault) => {
     const {userData} = this.props.user;
     const {updateUser} = this.props.userActions;
-    const {addSource, updateSubscription} = this.props.payActions;
+    const {addSource, updateSubscription, updateDefaultSource} = this.props.payActions;
     const {showAlert} = this.props.navActions;
     
     try {
       this.setState({pending: true});
       const StripeId = await send(
-        Parse.Cloud.run('savePaymentSource', {tokenId: token.id, card: token.card})
+        Parse.Cloud.run('savePaymentSource', {tokenId: token.id, asDefault})
       );
       if (StripeId) {
         userData.StripeId = StripeId;
         updateUser(userData);
       }
       addSource(token.card);
+      if (asDefault)
+        updateDefaultSource(token.card.id);
       
       if (this.payPlan) {
         const subscription = await send(
           Parse.Cloud.run('paySubscription', {
             planId: this.payPlan.origin.id,
-            source: token.card.id,
             isYearly: this.isYearly
           })
         );
@@ -170,7 +175,6 @@ class PaymentMethods extends Component {
       const subscription = await send(
         Parse.Cloud.run('paySubscription', {
           planId: this.payPlan.origin.id,
-          source: this.state.method.id,
           isYearly: this.isYearly
         })
       );
@@ -193,6 +197,7 @@ class PaymentMethods extends Component {
   
   onRemoveMethod = async () => {
     const {showAlert} = this.props.navActions;
+    const {updateDefaultSource} = this.props.payActions;
     showAlert({
       type: ALERT_TYPE_CONFIRM,
       title: `Deleting <strong>${this.state.method.brand} xxxx-${this.state.method.last4}</strong>`,
@@ -202,11 +207,13 @@ class PaymentMethods extends Component {
   
         try {
           this.setState({pending: true, pendingRemove: true});
-          await send(
-            Parse.Cloud.run('removePaymentSource', {source: this.state.method.id})
+          const res = await send(
+            Parse.Cloud.run('removePaymentSource', {sourceId: this.state.method.id})
           );
           removeSource(this.state.method);
-  
+          if (res)
+            updateDefaultSource(res.defaultSource);
+          
           const methods = this.props.pay.stripeData.sources;
           this.setState({method: methods[0]});
         } catch (e) {
@@ -217,19 +224,65 @@ class PaymentMethods extends Component {
     });
   };
   
+  onSetDefaultMethod = async () => {
+    try {
+      const {updateDefaultSource} = this.props.payActions;
+      
+      this.setState({pending: true, pendingDefault: true});
+      await send(
+        Parse.Cloud.run('setDefaultPaymentSource', {sourceId: this.state.method.id})
+      );
+      updateDefaultSource(this.state.method.id);
+    
+    } catch (e) {
+    } finally {
+      this.setState({pending: false, pendingDefault: false});
+    }
+  };
+  
+  onCheckDefaultMethod = checked => {
+    this.setState({defaultMethod: checked});
+  };
+  
   onMethodClick = method => {
-    this.setState({method});
+    this.setState({method, defaultMethod: true});
   };
   
   render() {
     const {stripeData} = this.props.pay;
     let methods = [];
-    if (stripeData)
+    let defaultMethod = null;
+    if (stripeData) {
       methods = stripeData.sources;
+      defaultMethod = stripeData.defaultSource;
+    }
     
     let newMethodStyle = "method method-new";
     if (!this.state.method)
       newMethodStyle += " method-checked";
+    
+    let setAsDefaultElm = <div>This is default method.</div>;
+    if (this.state.method && this.state.method.id != defaultMethod) {
+      if (this.payPlan) {
+        setAsDefaultElm = (
+          <div styleName="checkbox-wrapper">
+            <CheckboxControl title="Use the payment method as a default"
+                             checked={this.state.defaultMethod}
+                             disabled={this.state.pending}
+                             onChange={this.onCheckDefaultMethod}/>
+          </div>);
+      } else {
+        setAsDefaultElm = (
+          <div styleName="button-wrapper">
+            <ButtonControl color="green"
+                           onClick={this.onSetDefaultMethod}
+                           disabled={this.state.pending}
+                           showLoader={this.state.pendingDefault}
+                           value="Set method as default"/>
+          </div>
+        );
+      }
+    }
     
     return [
       <Helmet key="helmet">
@@ -280,12 +333,9 @@ class PaymentMethods extends Component {
                 <div styleName="method-name">
                   {this.state.method.brand} xxxx-{this.state.method.last4}
                 </div>
-                <div styleName="checkbox-wrapper">
-                  <CheckboxControl title="Use the payment method as default"
-                                   checked={this.state.saveMethod}
-                                   disabled={this.state.pending}
-                                   onChange={this.onSaveMethodCheck} />
-                </div>
+                
+                {setAsDefaultElm}
+                
                 <div styleName="button-wrapper">
                   <ButtonControl color="red"
                                  onClick={this.onRemoveMethod}
@@ -310,7 +360,7 @@ class PaymentMethods extends Component {
                               onComplete={this.onNewSourceSubscribe}
                               disabled={this.state.pending}
                               payPlan={this.payPlan}
-                              canBeDefault={methods && methods.length} />
+                              canBeDefault={!!methods && !!methods.length} />
                 </Elements>
               </div>
             }
@@ -333,7 +383,7 @@ function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators({updateUser}, dispatch),
     navActions: bindActionCreators({showAlert}, dispatch),
-    payActions: bindActionCreators({addSource, removeSource, updateSubscription}, dispatch)
+    payActions: bindActionCreators({addSource, removeSource, updateSubscription, updateDefaultSource}, dispatch)
   };
 }
 
