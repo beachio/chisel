@@ -2,22 +2,31 @@
   flex: 1
   display: flex
   justify-content: center
+  position: relative
 
 .button
-  font-size: 13px
-  color: #666666
+  font-size: 14px
+  color: #A4A4AE
   letter-spacing: 0.5px
   cursor: pointer
   user-select: none
-  line-height: 60px
+  min-height: 72px
   padding: 0 30px
-
-  transition: background 0.2s ease
-  will-change: background
+  display: flex
+  align-items: center
+  transition: color .2s ease
 
   &:hover
-    background: #f9f9f9
-    
+    color: #212121
+
 .activeItem
-  background: #F9F9F9
-  color: #6D9EE1
+  color: #212121
+
+.caret
+  position: absolute
+  bottom: 0
+  left: 0
+  height: 2px
+  background: #212121
+  transition: transform .2s ease, width .2s ease, opacity .2s ease
+  will-change: width

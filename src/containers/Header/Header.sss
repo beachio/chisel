@@ -1,10 +1,10 @@
 .header
-  position: fixed
   background: #fff
   top: 0
   left: 0
   width: 100%
   min-height: 60px
+  z-index: 10
 
   display: flex
   justify-content: space-between
@@ -19,30 +19,3 @@
 
     img
       height: 30px
-
-  .logout
-    position: absolute
-    right: 20px
-    top: 0
-    font-size: 13px
-    color: #000
-    line-height: 60px
-    opacity: 0.7
-    font-weight: 300
-    cursor: pointer
-    transition: opacity 0.2s ease
-    will-change: opacity
-
-    display: flex
-    flex-flow: row nowrap
-    align-items: center
-
-    &-icon
-      margin-left: 10px
-
-      svg
-        opacity: 0.5
-        height: 14px
-
-    &:hover
-      opacity: 1

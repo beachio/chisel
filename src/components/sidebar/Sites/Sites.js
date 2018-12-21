@@ -75,6 +75,7 @@ export default class Sites extends Component {
               return (
                 <div styleName={style}
                      onClick={() => this.onClickSite(site)}
+                     
                      key={key}>
 
                   {!!site.icon ?
@@ -105,8 +106,7 @@ export default class Sites extends Component {
           }
         </div>
         <div styleName="new-site" onClick={this.onClickAdd}>
-          <InlineSVG src={require("assets/images/plus.svg")} />
-          Add new site
+          Create a new site
         </div>
       </div>
     );

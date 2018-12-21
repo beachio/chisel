@@ -50,13 +50,15 @@ export class MainArea extends Component {
         </Helmet>
         <div styleName="wrapper-inner">
           <Sidebar />
-          <ScrollContainer scrollKey="mainArea" shouldUpdateScroll={() => [0,0]}>
-            <div styleName="mainArea">
-              {content}
-            </div>
-          </ScrollContainer>
+          <div styleName="inner">
+            <Header />
+            <ScrollContainer scrollKey="mainArea" shouldUpdateScroll={() => [0,0]}>
+              <div styleName="mainArea">
+                {content}
+              </div>
+            </ScrollContainer>
+          </div>
         </div>
-        <Header />
       </div>
     );
   }

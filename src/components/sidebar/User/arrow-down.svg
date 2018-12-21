@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="5px" viewBox="0 0 8 5" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Arrow</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Models" transform="translate(-1482.000000, -33.000000)" fill="#A4A4AE" fill-rule="nonzero">
+            <g id="Top-Bar" transform="translate(360.000000, 0.000000)">
+                <g id="Account-Button" transform="translate(999.000000, 15.000000)">
+                    <g id="Icons/8px/Arrow---Down" transform="translate(123.000000, 16.000000)">
+                        <path d="M6.46230815,2.47713531 C6.75107835,2.18017631 7.22590568,2.17353796 7.52286469,2.46230815 C7.81982369,2.75107835 7.82646204,3.22590568 7.53769185,3.52286469 L4.67942159,6.46218817 C4.50128539,6.64565408 4.25658802,6.75 4,6.75 C3.74341198,6.75 3.49871461,6.64565408 3.32097482,6.46259613 L0.462308154,3.52286469 C0.173537962,3.22590568 0.180176308,2.75107835 0.477135315,2.46230815 C0.774094321,2.17353796 1.24892165,2.18017631 1.53769185,2.47713531 L3.99999987,5.00926862 L6.46230815,2.47713531 Z" id="Arrow"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

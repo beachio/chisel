@@ -5,7 +5,6 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import {browserHistory, Link} from 'react-router';
 
-import User from 'components/sidebar/User/User';
 import Sites from 'components/sidebar/Sites/Sites';
 import {showModal, showAlert, URL_USERSPACE, URL_SITE, URL_PAY_PLANS} from 'ducks/nav';
 import {isPayPlanTop} from 'utils/data';
@@ -29,8 +28,10 @@ export class Sidebar extends Component {
 
     return (
       <div styleName="sidebar">
-        <div>
-          <User userData={userData} />
+        <div styleName="header">
+          Chisel
+        </div>
+        <div styleName="sites-wrapper">
           <Sites sites={models.sites}
                  currentSite={models.currentSite}
                  gotoSite={gotoSite}
@@ -47,9 +48,9 @@ export class Sidebar extends Component {
             </Link>
           }
         
-          <a styleName="answer-question" href="http://guild.beach.io" target="_blank">
+          {/* <a styleName="answer-question" href="http://guild.beach.io" target="_blank">
             <InlineSVG styleName="icon" src={require("./question.svg")} />
-          </a>
+          </a> */}
         </div>
       </div>
     );

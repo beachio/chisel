@@ -1,13 +1,26 @@
 .sidebar
-  margin-top: 60px
   overflow-x: hidden
   display: flex
   flex-flow: column nowrap
-  justify-content: space-between
-  background: #f1f1f1
-  height: calc(100vh - 60px)
-  width: 240px
+  background: #1A1A1C
+  height: 100vh
+  width: 300px
   transform: translate3d(0, 0, 0)
+  box-shadow: inset -10px 0 30px 0 rgba(0,0,0,0.25)
+
+  .header
+    height: 72px
+    border-bottom: 1px solid #313133
+    font-size: 24px
+    color: #FFFFFF
+    display: flex
+    align-items: center
+    padding-left: 21px
+
+  .sites-wrapper
+    flex: 1 1 auto
+    display: flex
+    flex-flow: column nowrap
 
   .bottom-panel
     display: flex
