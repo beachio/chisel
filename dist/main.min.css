@@ -711,38 +711,48 @@ template {
           transform: translate3d(0, 0, 0);
 }
 
-  .Sidebar---sidebar---2oRaL .Sidebar---answer-wrapper---ny_jc {
-    flex: 0 0 100px;
-}
-
-  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p {
-    height: 32px;
-    width: 32px;
-    border-radius: 100%;
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-            transform: translateX(-50%);
-    background: #FFFFFF;
-    border: 1px solid #CCCCCC;
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.10);
-    transition: box-shadow 0.1s ease;
-    will-change: transition;
+  .Sidebar---sidebar---2oRaL .Sidebar---bottom-panel---2uPnJ {
     -js-display: flex;
     display: flex;
     flex-flow: column nowrap;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    cursor: pointer;
 }
 
-  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p:hover {
+  .Sidebar---sidebar---2oRaL .Sidebar---bottom-panel---2uPnJ .Sidebar---pay-plans---1NvaW {
+      margin-bottom: 30px;
+      font-size: 13px;
+      color: #666666;
+}
+
+  .Sidebar---sidebar---2oRaL .Sidebar---bottom-panel---2uPnJ .Sidebar---pay-plans---1NvaW:hover {
+  color: #6D9EE1;
+}
+
+  .Sidebar---sidebar---2oRaL .Sidebar---bottom-panel---2uPnJ .Sidebar---answer-question---1zx7p {
+      height: 32px;
+      width: 32px;
+      margin-bottom: 30px;
+      border-radius: 100%;
+      background: #FFFFFF;
+      border: 1px solid #CCCCCC;
+      box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.10);
+      transition: box-shadow 0.1s ease;
+      will-change: transition;
+      -js-display: flex;
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+}
+
+  .Sidebar---sidebar---2oRaL .Sidebar---bottom-panel---2uPnJ .Sidebar---answer-question---1zx7p:hover {
   box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.10);
 }
 
-  .Sidebar---sidebar---2oRaL .Sidebar---answer-question---1zx7p .Sidebar---icon---30f0L svg {
-      height: 15px;
+  .Sidebar---sidebar---2oRaL .Sidebar---bottom-panel---2uPnJ .Sidebar---answer-question---1zx7p .Sidebar---icon---30f0L svg {
+        height: 15px;
 }
 .MainArea---wrapper---CERgj {
   overflow: hidden;
@@ -910,7 +920,7 @@ template {
   font-size: 13px;
   color: #FFFFFF;
   letter-spacing: 0.5px;
-  line-height: 40px;
+  height: 40px;
 
   cursor: pointer;
 
@@ -920,6 +930,12 @@ template {
 
   background-image: linear-gradient(-180deg, #658ad2 0%, #476a9e 150%);
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
+
+  -js-display: flex;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
   .ButtonControl---ButtonControl-red---3RZN3 {
@@ -940,7 +956,12 @@ template {
   .ButtonControl---ButtonControl-disabled---3attr {
     background-image: linear-gradient(-180deg, #929fab 0%, #7b848d 150%);
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.20);
-}.InputControl---InputControl---BkKKu {
+}
+
+  .ButtonControl---ButtonControl---W6bNo .ButtonControl---loader-wrapper---2IRaM {
+    margin-left: 15px;
+}
+.InputControl---InputControl---BkKKu {
   width: 100%
 }
   
@@ -1227,71 +1248,6 @@ template {
 }
 
 
-.CheckboxControl---CheckboxControl---kLRku {
-  -js-display: flex;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-}
-
-.CheckboxControl---checkbox---4lbDT {
-  display: none;
-}
-
-.CheckboxControl---checkbox-button---3QY-_ {
-    margin-right: 26px;
-}
-
-.CheckboxControl---checkbox-label---1ctNj {
-    cursor: pointer;
-    position: relative;
-    padding-left: 30px;
-
-    font-size: 13px;
-    color: #666666;
-    letter-spacing: 0.5px;
-}
-
-.CheckboxControl---checkbox-label---1ctNj:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
-    height: 20px;
-    width: 20px;
-    border-radius: 10%;
-    background: #fff;
-    border: 1px solid #979797;
-}
-
-.CheckboxControl---checkbox---4lbDT:checked + .CheckboxControl---checkbox-label---1ctNj:before {
-    content: '\2713';
-    color: #ffffff;
-    font-size: 21px;
-    text-indent: 2px;
-    line-height: 20px;
-    background: #5CA6DC;
-}
-
-.CheckboxControl---checkbox---4lbDT + .CheckboxControl---checkbox-label---1ctNj:before,
-  .CheckboxControl---checkbox---4lbDT:checked + .CheckboxControl---checkbox-label---1ctNj:before {
-    transition: background 0.1s ease;
-}
-
-.CheckboxControl---disabled---ps5xb .CheckboxControl---checkbox-label---1ctNj {
-    color: #999999;
-}
-
-.CheckboxControl---disabled---ps5xb .CheckboxControl---checkbox-label---1ctNj:before {
-    border: 1px solid #bfbfbf;
-}
-
-.CheckboxControl---disabled---ps5xb .CheckboxControl---checkbox---4lbDT:checked + .CheckboxControl---checkbox-label---1ctNj:before {
-    background: #dbdbdb;
-}
-
 .SwitchControl---SwitchControl---rT2QO .SwitchControl---checkbox---1XUYp {
     vertical-align: top;
     margin: 0 3px 0 0
@@ -1377,33 +1333,71 @@ template {
 .SwitchControl---disabled---3ycZR .SwitchControl---checkbox---1XUYp:checked + .SwitchControl---label---2ddtD:before {
     background-image: linear-gradient(-180deg, rgb(128, 189, 255) 0%, rgb(166, 210, 255) 100%)
 }
-.DynamicListComponent---item---3PEBK {
+.CheckboxControl---CheckboxControl---kLRku {
   -js-display: flex;
   display: flex;
+  flex-flow: row nowrap;
   align-items: center;
 }
 
-  .DynamicListComponent---item-input---3Etpc {
-    cursor: auto;
+.CheckboxControl---checkbox---4lbDT {
+  display: none;
 }
 
-  .DynamicListComponent---item-plus---28A6J,
-  .DynamicListComponent---item-minus---1xhEg {
-    margin-left: 10px;
-    font-size: 26px;
-    color: #999999;
+.CheckboxControl---checkbox-button---3QY-_ {
+    margin-right: 26px;
+}
+
+.CheckboxControl---checkbox-label---1ctNj {
     cursor: pointer;
+    position: relative;
+    padding-left: 30px;
+
+    font-size: 13px;
+    color: #666666;
+    letter-spacing: 0.5px;
 }
 
-  .DynamicListComponent---item-plus---28A6J {
-    padding-top: 4px;
+.CheckboxControl---checkbox-label---1ctNj:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+    height: 20px;
+    width: 20px;
+    border-radius: 10%;
+    background: #fff;
+    border: 1px solid #979797;
 }
 
-.DynamicListComponent---plus---28lj_ {
-  font-size: 13px;
-  color: #999999;
-  cursor: pointer;
+.CheckboxControl---checkbox---4lbDT:checked + .CheckboxControl---checkbox-label---1ctNj:before {
+    content: '\2713';
+    color: #ffffff;
+    font-size: 21px;
+    text-indent: 2px;
+    line-height: 20px;
+    background: #5CA6DC;
 }
+
+.CheckboxControl---checkbox---4lbDT + .CheckboxControl---checkbox-label---1ctNj:before,
+  .CheckboxControl---checkbox---4lbDT:checked + .CheckboxControl---checkbox-label---1ctNj:before {
+    transition: background 0.1s ease;
+}
+
+.CheckboxControl---disabled---ps5xb .CheckboxControl---checkbox-label---1ctNj {
+    color: #999999;
+}
+
+.CheckboxControl---disabled---ps5xb .CheckboxControl---checkbox-label---1ctNj:before {
+    border: 1px solid #bfbfbf;
+}
+
+.CheckboxControl---disabled---ps5xb .CheckboxControl---checkbox---4lbDT:checked + .CheckboxControl---checkbox-label---1ctNj:before {
+    background: #dbdbdb;
+}
+
 .DropdownControl---label---1njqz {
   font-size: 13px;
   font-weight: 600;
@@ -1577,6 +1571,33 @@ template {
 
 .DropdownControl---empty---9xzOB {
   color: #bbbbbb !important;
+}
+.DynamicListComponent---item---3PEBK {
+  -js-display: flex;
+  display: flex;
+  align-items: center;
+}
+
+  .DynamicListComponent---item-input---3Etpc {
+    cursor: auto;
+}
+
+  .DynamicListComponent---item-plus---28A6J,
+  .DynamicListComponent---item-minus---1xhEg {
+    margin-left: 10px;
+    font-size: 26px;
+    color: #999999;
+    cursor: pointer;
+}
+
+  .DynamicListComponent---item-plus---28A6J {
+    padding-top: 4px;
+}
+
+.DynamicListComponent---plus---28lj_ {
+  font-size: 13px;
+  color: #999999;
+  cursor: pointer;
 }
 .FieldModal---modal---3_e1b {
   position: absolute;
@@ -3331,7 +3352,8 @@ template {
 }
   
   .UserProfile---content---3Z7XE .UserProfile---section---29dFc {
-    margin-bottom: 50px;
+    margin-top: 20px;
+    margin-bottom: 40px;
     width: 100%;
 }
   
@@ -3385,30 +3407,104 @@ template {
   color: #5DAD47;
 }
   
-  .UserProfile---content---3Z7XE .UserProfile---field---FB0xi .UserProfile---input---1g1wW {
-      background: #FFFFFF;
-      border: 1px solid #CCCCCC;
-      box-shadow: inset 0px 1px 2px 0px rgba(0,0,0,0.10);
-      border-radius: 2px;
-      line-height: 34px;
-      padding: 0 9px;
-      margin-top: 10px;
-      outline: none;
-}
-  
-  .UserProfile---content---3Z7XE .UserProfile---field---FB0xi .UserProfile---input---1g1wW:first-child {
-  margin-top: 0px;
+  .UserProfile---content---3Z7XE .UserProfile---field-value---27t1w {
+      font-size: 18px;
+      color: #666666;
+      margin-bottom: 10px;
 }
   
   .UserProfile---content---3Z7XE .UserProfile---field---FB0xi .UserProfile---input-wrapper---3MiMd {
-        -js-display: flex;
-        -js-display: flex;
-        display: flex;
-        flex-flow: column nowrap;
+      -js-display: flex;
+      display: flex;
+      flex-flow: column nowrap;
 }
   
   .UserProfile---content---3Z7XE .UserProfile---buttons-wrapper---3Ya-t {
     margin-top: 20px;
+    -js-display: flex;
+    display: flex;
+    flex-flow: row nowrap;
+}
+.PayPlans---PlanControl---12QlI {
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+  .PayPlans---PlanControl---12QlI .PayPlans---plan-content---2MxgH {
+    width: 100%;
+    border: 2px solid #6D9EE1;
+    border-radius: 5px;
+    -js-display: flex;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+}
+
+  .PayPlans---PlanControl---12QlI .PayPlans---plan-content---2MxgH .PayPlans---text---21QWr {
+      flex-grow: 1;
+      text-align: center;
+}
+
+  .PayPlans---PlanControl---12QlI .PayPlans---plan-content---2MxgH .PayPlans---text---21QWr .PayPlans---title---wfG6R {
+        font-size: 18px;
+        font-weight: 600;
+        color: #666666;
+        margin-bottom: 20px;
+}
+
+  .PayPlans---PlanControl---12QlI .PayPlans---plan-content---2MxgH .PayPlans---text---21QWr .PayPlans---description---1VcAu {
+        font-size: 13px;
+        color: #666666;
+        margin-bottom: 10px;
+}
+
+  .PayPlans---PlanControl---12QlI .PayPlans---current---1XDKf {
+    border-color: #dddddd;
+}
+
+  .PayPlans---PlanControl---12QlI .PayPlans---change---1wBl2 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #666666;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+  .PayPlans---PlanControl---12QlI .PayPlans---buttons-wrapper---3M0lg {
+    width: 100%;
+    margin-top: 30px;
+    -js-display: flex;
+    display: flex;
+    justify-content: center;
+}
+
+
+.PayPlans---content---2303Q {
+  padding: 0 35px;
+
+  width: 100%;
+}
+
+
+.PayPlans---content---2303Q .PayPlans---label---37c9b {
+    font-size: 18px;
+    font-weight: 600;
+    color: #666666;
+    padding-bottom: 20px;
+    padding-left: 2px;
+}
+
+
+.PayPlans---content---2303Q .PayPlans---plans---3qgMm {
+    -js-display: flex;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.PayPlans---content---2303Q .PayPlans---buttons-wrapper---3M0lg {
+    width: 100%;
+    margin-top: 30px;
     -js-display: flex;
     display: flex;
     flex-flow: row nowrap;
@@ -3601,6 +3697,102 @@ template {
   .InvalidLink---InvalidLink---Om-_c .InvalidLink---form---20frx .InvalidLink---button---25TGR {
       margin-top: 30px;
 }
+.PaymentMethods---content---Aw4cK {
+  width: 100%;
+  -js-display: flex;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+  .PaymentMethods---content---Aw4cK .PaymentMethods---side---3YCs3 {
+    flex: 0 0 270px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+  .PaymentMethods---content---Aw4cK .PaymentMethods---side---3YCs3 .PaymentMethods---title---2vLKJ {
+      font-size: 15px;
+      font-weight: 600;
+      color: #666666;
+      padding-bottom: 15px;
+      padding-left: 15px;
+}
+
+  .PaymentMethods---content---Aw4cK .PaymentMethods---side---3YCs3 .PaymentMethods---method---2kN5I {
+      padding-bottom: 15px;
+      padding-top: 15px;
+      cursor: pointer;
+}
+
+  .PaymentMethods---content---Aw4cK .PaymentMethods---side---3YCs3 .PaymentMethods---method-checked---3YrJJ {
+        background: #eeeeee;
+}
+
+  .PaymentMethods---content---Aw4cK .PaymentMethods---side---3YCs3 .PaymentMethods---method---2kN5I .PaymentMethods---name---1bbVo {
+        font-size: 13px;
+        font-weight: 600;
+        color: #666666;
+        padding-left: 15px;
+}
+
+  .PaymentMethods---content---Aw4cK .PaymentMethods---side---3YCs3 .PaymentMethods---method-new---HHvrG .PaymentMethods---name---1bbVo {
+          font-weight: 300;
+}
+
+  .PaymentMethods---content---Aw4cK .PaymentMethods---main---2mdln {
+    flex: 1 1;
+    padding-left: 20px;
+}
+
+  .PaymentMethods---content---Aw4cK .PaymentMethods---main---2mdln .PaymentMethods---payplan-info---2shFc {
+      padding-bottom: 20px;
+      font-size: 13px;
+      color: #666666;
+}
+
+  .PaymentMethods---content---Aw4cK .PaymentMethods---main---2mdln .PaymentMethods---payplan-info---2shFc p {
+        margin-top: 0px;
+}
+
+  .PaymentMethods---content---Aw4cK .PaymentMethods---main---2mdln .PaymentMethods---method-content---1fGUm {
+      color: #666666;
+}
+
+  .PaymentMethods---content---Aw4cK .PaymentMethods---main---2mdln .PaymentMethods---method-content---1fGUm .PaymentMethods---method-name---3-1LW {
+        font-size: 15px;
+        color: #666666;
+}
+
+
+
+.PaymentMethods---form---VTN6B {
+  padding-bottom: 20px;
+}
+
+
+
+.PaymentMethods---form---VTN6B .PaymentMethods---card-wrapper---7BKPU {
+    margin-top: 20px;
+    max-width: 400px;
+}
+
+
+.PaymentMethods---label---2xocv {
+  font-size: 15px;
+  color: #666666;
+  margin-bottom: 20px;
+}
+
+.PaymentMethods---checkbox-wrapper---3ysj- {
+  margin-top: 30px;
+  font-size: 13px;
+}
+
+.PaymentMethods---button-wrapper---1ktMR {
+  margin-top: 40px;
+}
+
 @-webkit-keyframes medium-editor-image-loading {
   0% {
     -webkit-transform: scale(0);
@@ -4749,6 +4941,65 @@ template {
     flex-grow: 1;
 }
 
+.medium-toolbar-arrow-under:after {
+  border-color: #242424 transparent transparent transparent;
+  top: 50px; }
+
+.medium-toolbar-arrow-over:before {
+  border-color: transparent transparent #242424 transparent;
+  top: -8px; }
+
+.medium-editor-toolbar {
+  background-color: #242424;
+  background: linear-gradient(to bottom, #242424, rgba(36, 36, 36, 0.75));
+  border: 1px solid #000;
+  border-radius: 5px;
+  box-shadow: 0 0 3px #000; }
+  .medium-editor-toolbar li button {
+    background-color: #242424;
+    background: linear-gradient(to bottom, #242424, rgba(36, 36, 36, 0.89));
+    border: 0;
+    border-right: 1px solid #000;
+    border-left: 1px solid #333;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    height: 50px;
+    min-width: 50px;
+    transition: background-color .2s ease-in; }
+    .medium-editor-toolbar li button:hover {
+      background-color: #000;
+      color: yellow; }
+  .medium-editor-toolbar li .medium-editor-button-first {
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px; }
+  .medium-editor-toolbar li .medium-editor-button-last {
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px; }
+  .medium-editor-toolbar li .medium-editor-button-active {
+    background-color: #000;
+    background: linear-gradient(to bottom, #242424, rgba(0, 0, 0, 0.89));
+    color: #fff; }
+
+.medium-editor-toolbar-form {
+  background: #242424;
+  border-radius: 5px;
+  color: #999; }
+  .medium-editor-toolbar-form .medium-editor-toolbar-input {
+    background: #242424;
+    box-sizing: border-box;
+    color: #ccc;
+    height: 50px; }
+  .medium-editor-toolbar-form a {
+    color: #fff; }
+
+.medium-editor-toolbar-anchor-preview {
+  background: #242424;
+  border-radius: 5px;
+  color: #fff; }
+
+.medium-editor-placeholder:after {
+  color: #b3b3b1; }
 .mde-header {
   flex-shrink: 0;
   -js-display: flex;
@@ -5117,62 +5368,3 @@ template {
     overflow-y: auto; }
   .react-mde-tabbed-layout .mde-preview {
     overflow-y: auto; }
-.medium-toolbar-arrow-under:after {
-  border-color: #242424 transparent transparent transparent;
-  top: 50px; }
-
-.medium-toolbar-arrow-over:before {
-  border-color: transparent transparent #242424 transparent;
-  top: -8px; }
-
-.medium-editor-toolbar {
-  background-color: #242424;
-  background: linear-gradient(to bottom, #242424, rgba(36, 36, 36, 0.75));
-  border: 1px solid #000;
-  border-radius: 5px;
-  box-shadow: 0 0 3px #000; }
-  .medium-editor-toolbar li button {
-    background-color: #242424;
-    background: linear-gradient(to bottom, #242424, rgba(36, 36, 36, 0.89));
-    border: 0;
-    border-right: 1px solid #000;
-    border-left: 1px solid #333;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
-    color: #fff;
-    height: 50px;
-    min-width: 50px;
-    transition: background-color .2s ease-in; }
-    .medium-editor-toolbar li button:hover {
-      background-color: #000;
-      color: yellow; }
-  .medium-editor-toolbar li .medium-editor-button-first {
-    border-bottom-left-radius: 5px;
-    border-top-left-radius: 5px; }
-  .medium-editor-toolbar li .medium-editor-button-last {
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px; }
-  .medium-editor-toolbar li .medium-editor-button-active {
-    background-color: #000;
-    background: linear-gradient(to bottom, #242424, rgba(0, 0, 0, 0.89));
-    color: #fff; }
-
-.medium-editor-toolbar-form {
-  background: #242424;
-  border-radius: 5px;
-  color: #999; }
-  .medium-editor-toolbar-form .medium-editor-toolbar-input {
-    background: #242424;
-    box-sizing: border-box;
-    color: #ccc;
-    height: 50px; }
-  .medium-editor-toolbar-form a {
-    color: #fff; }
-
-.medium-editor-toolbar-anchor-preview {
-  background: #242424;
-  border-radius: 5px;
-  color: #fff; }
-
-.medium-editor-placeholder:after {
-  color: #b3b3b1; }
