@@ -71,15 +71,12 @@ class _PayElement extends Component {
           <div styleName="checkbox-wrapper">
             <CheckboxControl title="Use the payment method as a default"
                              checked={this.state.defaultMethod}
-                             disabled={this.props.disabled}
                              onChange={this.onDefaultMethodCheck} />
           </div>
         }
         <div styleName="button-wrapper">
           <ButtonControl color="green"
                          type="submit"
-                         disabled={this.props.disabled}
-                         showLoader={this.props.disabled}
                          value={payPlan ? "Subscribe" : "Add method"} />
         </div>
       </form>
@@ -95,9 +92,6 @@ class PaymentMethods extends Component {
   state = {
     method: null,
     pending: false,
-    pendingSubscribe: false,
-    pendingRemove: false,
-    pendingDefault: false,
     defaultMethod: true
   };
   
@@ -171,7 +165,7 @@ class PaymentMethods extends Component {
     const {showAlert} = this.props.navActions;
     
     try {
-      this.setState({pending: true, pendingSubscribe: true});
+      this.setState({pending: true});
       const subscription = await send(
         Parse.Cloud.run('paySubscription', {
           planId: this.payPlan.origin.id,
@@ -191,7 +185,7 @@ class PaymentMethods extends Component {
       console.log(e);
       
     } finally {
-      this.setState({pending: false, pendingSubscribe: false});
+      this.setState({pending: false});
     }
   };
   
@@ -206,7 +200,7 @@ class PaymentMethods extends Component {
         const {removeSource} = this.props.payActions;
   
         try {
-          this.setState({pending: true, pendingRemove: true});
+          this.setState({pending: true});
           const res = await send(
             Parse.Cloud.run('removePaymentSource', {sourceId: this.state.method.id})
           );
@@ -218,7 +212,7 @@ class PaymentMethods extends Component {
           this.setState({method: methods[0]});
         } catch (e) {
         } finally {
-          this.setState({pending: false, pendingRemove: false});
+          this.setState({pending: false});
         }
       }
     });
@@ -228,7 +222,7 @@ class PaymentMethods extends Component {
     try {
       const {updateDefaultSource} = this.props.payActions;
       
-      this.setState({pending: true, pendingDefault: true});
+      this.setState({pending: true});
       await send(
         Parse.Cloud.run('setDefaultPaymentSource', {sourceId: this.state.method.id})
       );
@@ -236,7 +230,7 @@ class PaymentMethods extends Component {
     
     } catch (e) {
     } finally {
-      this.setState({pending: false, pendingDefault: false});
+      this.setState({pending: false});
     }
   };
   
@@ -268,7 +262,6 @@ class PaymentMethods extends Component {
           <div styleName="checkbox-wrapper">
             <CheckboxControl title="Use the payment method as a default"
                              checked={this.state.defaultMethod}
-                             disabled={this.state.pending}
                              onChange={this.onCheckDefaultMethod}/>
           </div>);
       } else {
@@ -276,8 +269,6 @@ class PaymentMethods extends Component {
           <div styleName="button-wrapper">
             <ButtonControl color="green"
                            onClick={this.onSetDefaultMethod}
-                           disabled={this.state.pending}
-                           showLoader={this.state.pendingDefault}
                            value="Set method as default"/>
           </div>
         );
@@ -289,7 +280,9 @@ class PaymentMethods extends Component {
         <title>Payment methods - Chisel</title>
       </Helmet>,
     
-      <ContainerComponent key="content" title="Payment methods">
+      <ContainerComponent key="content"
+                          title="Payment methods"
+                          showLoader={this.state.pending} >
         <div styleName="content">
           <div styleName="side">
             <div styleName="title">
@@ -339,16 +332,12 @@ class PaymentMethods extends Component {
                 <div styleName="button-wrapper">
                   <ButtonControl color="red"
                                  onClick={this.onRemoveMethod}
-                                 disabled={this.state.pending}
-                                 showLoader={this.state.pendingRemove}
                                  value="Remove method" />
                 </div>
                 {!!this.payPlan &&
                   <div styleName="button-wrapper">
                     <ButtonControl color="green"
                                    onClick={this.onSubscribe}
-                                   disabled={this.state.pending}
-                                   showLoader={this.state.pendingSubscribe}
                                    value={"Subscribe"}/>
                   </div>
                 }
@@ -358,7 +347,6 @@ class PaymentMethods extends Component {
                 <Elements>
                   <PayElement onStart={() => this.setState({pending: true})}
                               onComplete={this.onNewSourceSubscribe}
-                              disabled={this.state.pending}
                               payPlan={this.payPlan}
                               canBeDefault={!!methods && !!methods.length} />
                 </Elements>
