@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 
+import LoaderComponent from "components/elements/LoaderComponent/LoaderComponent";
+
 import styles from './ContainerComponent.sss';
+
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContainerComponent extends Component {
   render() {
-    const {haveTitle2, title, titles, children, onClickBack, onClickRLink, rLinkTitle, backgroundOffset} = this.props;
+    const {haveTitle2, title, titles, children, onClickBack, onClickRLink, rLinkTitle, backgroundOffset, showLoader} = this.props;
     
     let headerStyles = 'header';
     if (haveTitle2)
@@ -22,6 +25,11 @@ export default class ContainerComponent extends Component {
 
     return (
       <div styleName='ContainerComponent'>
+        {showLoader &&
+          <div styleName="loader-wrapper">
+            <LoaderComponent/>
+          </div>
+        }
         <div styleName="background" style={backStyle}></div>
         <div styleName={headerStyles}>
           {
