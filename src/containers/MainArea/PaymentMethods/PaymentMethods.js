@@ -183,7 +183,7 @@ class PaymentMethods extends Component {
       showAlert({
         type: ALERT_TYPE_ALERT,
         title: "Payment complete",
-        description: `You are successfully subscribed to ${this.payPlan.name}.`,
+        description: `You are successfully change your subscription to ${this.payPlan.name}.`,
         callback: () => browserHistory.push(`/${URL_USERSPACE}`)
       });
       

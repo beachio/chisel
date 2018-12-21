@@ -30,4 +30,8 @@ export class PayPlanData {
     
     return this;
   }
+  
+  isGreater(payPlan) {
+    return this.priceMonthly > payPlan.priceMonthly;
+  }
 }

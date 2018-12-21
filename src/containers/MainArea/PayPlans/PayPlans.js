@@ -4,11 +4,15 @@ import {connect} from 'react-redux';
 import {Helmet} from "react-helmet";
 import CSSModules from 'react-css-modules';
 import {browserHistory} from "react-router";
+import {Parse} from "parse";
 
+import {send} from "utils/server";
 import ContainerComponent from "components/elements/ContainerComponent/ContainerComponent";
 import ButtonControl from "components/elements/ButtonControl/ButtonControl";
 import {changePayPlan} from "ducks/user";
-import {URL_PAYMENT_METHODS, URL_USERSPACE} from "ducks/nav";
+import {URL_PAYMENT_METHODS, URL_USERSPACE, showAlert} from "ducks/nav";
+import {updateSubscription} from 'ducks/pay';
+import {ALERT_TYPE_ALERT, ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 
 import styles from './PayPlans.sss';
 
@@ -73,11 +77,56 @@ export class PlanControl extends Component {
 
 @CSSModules(styles, {allowMultiple: true})
 export class PayPlans extends Component {
+  state = {
+    pending: false
+  };
+  
   onUpdatePayPlan = (payPlan, isYearly = false) => {
-    let URL = `/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`;
-    if (payPlan)
-      URL += `?plan=${payPlan.origin.id}&yearly=${isYearly}`;
-    browserHistory.push(URL);
+    const payPlanUser = this.props.user.userData.payPlan;
+    
+    if (payPlan.isGreater(payPlanUser)) {
+      let URL = `/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`;
+      if (payPlan)
+        URL += `?plan=${payPlan.origin.id}&yearly=${isYearly}`;
+      browserHistory.push(URL);
+    
+    } else {
+      const {showAlert} = this.props.navActions;
+      showAlert({
+        type: ALERT_TYPE_CONFIRM,
+        title: `Subscription reduction.`,
+        description: "You are trying to reduce your payment plan. Are you sure?",
+        onConfirm: async () => {
+          this.setState({pending: true});
+          
+          const {updateSubscription} = this.props.payActions;
+  
+          if (payPlan.priceMonthly) {
+            const subscription = await send(
+              Parse.Cloud.run('paySubscription', {
+                planId: payPlan.origin.id,
+                isYearly
+              })
+            );
+            updateSubscription(subscription, payPlan);
+          } else {
+            await send(
+              Parse.Cloud.run('cancelSubscription')
+            );
+            updateSubscription(null, payPlan);
+          }
+  
+          this.setState({pending: false});
+          
+          showAlert({
+            type: ALERT_TYPE_ALERT,
+            title: "Payment complete",
+            description: `You are successfully change your subscription to ${payPlan.name}.`,
+            callback: () => browserHistory.push(`/${URL_USERSPACE}`)
+          });
+        }
+      });
+    }
   };
   
   render() {
@@ -89,7 +138,9 @@ export class PayPlans extends Component {
         <title>Pay plans - Chisel</title>
       </Helmet>,
     
-      <ContainerComponent key="content" title="Pay plans">
+      <ContainerComponent key="content"
+                          title="Pay plans"
+                          showLoader={this.state.pending} >
         <div styleName="content">
           <div styleName="label">Choose your pay plan:</div>
           <div styleName="plans">
@@ -117,6 +168,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    navActions: bindActionCreators({showAlert}, dispatch),
+    payActions: bindActionCreators({updateSubscription}, dispatch),
     userActions: bindActionCreators({changePayPlan}, dispatch)
   };
 }
