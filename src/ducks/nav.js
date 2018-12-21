@@ -8,6 +8,8 @@ export const SHOW_MODAL       = 'app/nav/SHOW_MODAL';
 export const CLOSE_MODAL      = 'app/nav/CLOSE_MODAL';
 export const SET_CURRENT_PAGE = 'app/nav/SET_CURRENT_PAGE';
 
+export const TOGGLE_SIDEBAR   = 'app/nav/TOGGLE_SIDEBAR'
+
 export const PAGE_NO_SITES        = 'app/nav/pages/PAGE_NO_SITES';
 export const PAGE_MODELS          = 'app/nav/pages/PAGE_MODELS';
 export const PAGE_MODELS_ITEM     = 'app/nav/pages/PAGE_MODELS_ITEM';
@@ -51,6 +53,11 @@ export const URL_PAYMENT_METHODS  = 'payment-methods';
 
 export const URLS_EMAIL = [URL_EMAIL_VERIFY, URL_PASSWORD_SET, URL_PASSWORD_SUCCESS, URL_INVALID_LINK];
 
+export function toggleSidebar() {
+  return {
+    type: TOGGLE_SIDEBAR
+  }
+}
 
 export function initEnd() {
   return {
@@ -92,6 +99,8 @@ export function setCurrentPage(openedPage) {
 
 const initialState = {
   initEnded: false,
+
+  isSidebarVisible: true,
   
   openedPage: PAGE_MODELS,
   
@@ -110,7 +119,13 @@ export default function navReducer(state = initialState, action) {
         ...state,
         initEnded: true
       };
-      
+
+    case TOGGLE_SIDEBAR:
+      return {
+        ...state,
+        isSidebarVisible: !state.isSidebarVisible
+      };
+
     case LOGOUT:
       return {
         ...state,

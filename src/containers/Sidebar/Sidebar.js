@@ -9,13 +9,13 @@ import Sites from 'components/sidebar/Sites/Sites';
 import {showModal, showAlert, URL_USERSPACE, URL_SITE, URL_PAY_PLANS} from 'ducks/nav';
 import {isPayPlanTop} from 'utils/data';
 
-import styles from './Sidebar.sss';
+import styles, {sidebarHidden} from './Sidebar.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
 export class Sidebar extends Component {
   render() {
-    const {models} = this.props;
+    const {models, isSidebarVisible} = this.props;
     const {userData} = this.props.user;
     const {showModal, showAlert} = this.props.navActions;
   
@@ -27,7 +27,10 @@ export class Sidebar extends Component {
     const showUpgrade = !isPayPlanTop(userData.payPlan);
 
     return (
-      <div styleName="sidebar">
+      <div 
+        styleName="sidebar"
+        className={isSidebarVisible ? `sidebar-visible` : sidebarHidden}
+      >
         <div styleName="header">
           Chisel
         </div>

@@ -14,7 +14,9 @@ export default class Menu extends Component  {
   constructor(props) {
     super(props);
 
-    this.activeMenuItem = null;
+    this.state = {
+      isSidebarOpened: 'kek'
+    };
   }
 
   calcCaretPos = () => {
@@ -32,12 +34,17 @@ export default class Menu extends Component  {
   }
 
   componentDidMount() {
-
     this.calcCaretPos()
   }
 
-  componentDidUpdate() {
-    this.calcCaretPos()
+  componentDidUpdate(prevProps) {
+    if (prevProps.isSidebarOpened !== this.props.isSidebarOpened) {
+      setTimeout(this.calcCaretPos, 200)
+    }
+    else {
+      this.calcCaretPos()
+    }
+    
   }
 
   render() {

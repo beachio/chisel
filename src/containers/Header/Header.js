@@ -9,6 +9,8 @@ import User from 'components/sidebar/User/User';
 
 import {logout} from 'ducks/user';
 
+import { toggleSidebar } from 'ducks/nav'
+
 import styles from './Header.sss';
 
 
@@ -18,15 +20,17 @@ export class Header extends Component  {
     const {models, nav} = this.props;
     const {userData} = this.props.user;
     const {logout} = this.props.userActions;
+    const {toggleSidebar} = this.props.sidebarActions;
 
     let nameId = models.currentSite ? models.currentSite.nameId : null;
-    
+
     return (
       <div styleName="header">
-        <div styleName="logo">
-          <img src={require("assets/images/chisel-logo.png")} />
+        <div styleName="sidebar-icon" onClick={toggleSidebar}>
+          <InlineSVG src={require("assets/images/sidebar.svg")} />
         </div>
         <Menu siteNameId={nameId}
+              isSidebarOpened={nav.isSidebarVisible}
               openedPage={nav.openedPage} />
         <User userData={userData} logoutHandler={logout} />
       </div>
@@ -44,7 +48,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions:  bindActionCreators({logout}, dispatch)
+    userActions: bindActionCreators({logout}, dispatch),
+    sidebarActions: bindActionCreators({toggleSidebar}, dispatch)
   };
 }
 

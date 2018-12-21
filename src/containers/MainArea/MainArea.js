@@ -49,7 +49,7 @@ export class MainArea extends Component {
           <title>{title}</title>
         </Helmet>
         <div styleName="wrapper-inner">
-          <Sidebar />
+          <Sidebar isSidebarVisible={nav.isSidebarVisible}/>
           <div styleName="inner">
             <Header />
             <ScrollContainer scrollKey="mainArea" shouldUpdateScroll={() => [0,0]}>
