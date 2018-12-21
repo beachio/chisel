@@ -330,3 +330,15 @@ export function isPayPlanTop(plan) {
   }
   return true;
 }
+
+export function getPayMethod(id) {
+  const {stripeData} = store.getState().pay;
+  if (!stripeData || !stripeData.sources || !id)
+    return null;
+  
+  for (let method of stripeData.sources) {
+    if (method.id == id)
+      return method;
+  }
+  return null;
+}

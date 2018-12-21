@@ -15,7 +15,7 @@ import {send} from 'utils/server';
 import {update as updateUser} from "ducks/user";
 import {showAlert, URL_USERSPACE} from "ducks/nav";
 import {addSource, removeSource, updateSubscription} from 'ducks/pay';
-import {getPayPlan} from "utils/data";
+import {getPayPlan, getPayMethod} from "utils/data";
 
 
 import styles from './PaymentMethods.sss';
@@ -104,15 +104,15 @@ class PaymentMethods extends Component {
   constructor(props) {
     super(props);
     
-    const {paymentInfo} = props.user.userData;
-    if (paymentInfo && paymentInfo.length)
-      this.state.method = paymentInfo[paymentInfo.length - 1];
-  
     if (props.location && props.location.query) {
       if (props.location.query.plan)
         this.payPlan = getPayPlan(props.location.query.plan);
       this.isYearly = props.location.query.yearly == 'true';
     }
+  
+    const {stripeData} = props.pay;
+    if (stripeData)
+      this.state.method = getPayMethod(stripeData.defaultSource);
   }
   
   onNewSourceSubscribe = async (token, saveMethod) => {
