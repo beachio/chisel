@@ -82,9 +82,10 @@ export class PayPlans extends Component {
   };
   
   onUpdatePayPlan = (payPlan, isYearly = false) => {
+    const {stripeData} = this.props.pay;
     const payPlanUser = this.props.user.userData.payPlan;
     
-    if (payPlan.isGreater(payPlanUser)) {
+    if (!stripeData.sources || !stripeData.sources.length) {
       let URL = `/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`;
       if (payPlan)
         URL += `?plan=${payPlan.origin.id}&yearly=${isYearly}`;
@@ -92,10 +93,15 @@ export class PayPlans extends Component {
     
     } else {
       const {showAlert} = this.props.navActions;
+      
+      let description = `You are going to upgrade your payment plan. Are you sure?`;
+      if (payPlanUser.isGreater(payPlan))
+        description = `You are going to reduce your payment plan. Are you sure? <br/>(Your rest of the money will be used in next payments.)`;
+      
       showAlert({
         type: ALERT_TYPE_CONFIRM,
-        title: `Subscription reduction.`,
-        description: "You are trying to reduce your payment plan. Are you sure?",
+        title: `Changing subscription`,
+        description,
         onConfirm: async () => {
           this.setState({pending: true});
           
