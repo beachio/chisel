@@ -34,25 +34,21 @@
     justify-content: space-between
     align-items: center
 
-    padding: 14px
+    padding: 14px 32px
     cursor: pointer
-    transition: background 0.1s ease
-    will-change: background
 
     &:hover
-      background: #ececec
 
       .site-name
-        border: 1px solid #ececec
+        color: #fff
 
     .site-name
       background: none
       outline: none
 
       cursor: pointer
-
       font-size: 12px
-      color: #333333
+      color: #ffffff50
       letter-spacing: 0.5px
       overflow: hidden
       white-space: nowrap
@@ -60,13 +56,13 @@
       max-width: 160px
       padding: 5px 3px
       flex: 1 0 auto
-      border: 1px solid #f1f1f1
 
-      transition: border 0.1s ease
+      transition: color 0.2s ease
 
     .icon
-      background: #EEEEEE
-      border-radius: 2px
+      background: #000
+      border-radius: 50%
+      border: 1px solid #fff
 
       display: flex
       flex-flow: column nowrap
@@ -103,23 +99,25 @@
       height: 12px
 
   .element-active
-    background: #F9F9F9
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.10)
 
     .site-name
-      border: 1px solid #f9f9f9
+      color: #ffffff
 
     &:hover
-      background: #F9F9F9
-
       .site-name
-        border: 1px solid #f9f9f9
+        color: #ffffff
 
 .new-site
-  padding: 20px 14px
+  /* Button Background: */
+  background: #FFFFFF
+  box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.05)
+  border-radius: 20px
+  padding: 14px
   visibility: visible
   display: flex
   align-items: center
+  justify-content: center
+  margin: 0 50px 40px 50px
 
   font-size: 12px
   color: #666666

@@ -14,17 +14,19 @@
     position: relative
     cursor: pointer
     background: #fff
-
-    margin: 3px 10%
     padding: 10px
 
     z-index: 5
+
+    &:nth-child(2n)
+      background: #FCFCFC
 
     &:hover
       .hidden-controls
         opacity: 0.999
 
     .colorLabel
+      display: none
       margin-right: 10px
       height: 20px
       width: 20px
@@ -35,7 +37,8 @@
       transform: translateY(-50%)
 
     .type
-      flex: 1 1 200px
+      flex: 1 1 auto
+      max-width: 300px
 
     .name,
     .description,
@@ -61,15 +64,15 @@
 
 
   &-header
-    margin-bottom: 5px
-
-    &:hover
-      background: initial
+    background: #FFFFFF
+    box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.05)
+    border-radius: 20px 20px 0 0
 
     .colorLabel
       visibility: hidden
 
     .fields,
+    .name-head,
     .updated
       color: #999999
 
@@ -96,8 +99,6 @@
 
 .hidden
   &-controls
-    position: absolute
-    right: -40px
     opacity: 0.001
     transition: opacity 0.1s ease
     will-change: opacity

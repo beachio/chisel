@@ -84,7 +84,7 @@ export default class Sites extends Component {
                     </img>
                   :
                     <div styleName="icon">
-                      <InlineSVG src={require("assets/images/hammer.svg")}/>
+                     
                     </div>
                   }
 

@@ -119,7 +119,7 @@ export default class ModelsList extends Component {
     const {isEditable} = this.props;
 
     return (
-      <ContainerComponent title='Models' backgroundOffset={110}>
+      <ContainerComponent title='Models / Posts' backgroundOffset={110}>
         <div styleName="content">
           <div styleName="list">
             <FlipMove duration={250}
@@ -131,9 +131,9 @@ export default class ModelsList extends Component {
               {this.state.models.length > 0 &&
                 <div styleName="list-item list-header" key="header!">
                   <div styleName="colorLabel"></div>
-                  <div styleName="type"></div>
-                  <div styleName="fields">FIELDS</div>
-                  <div styleName="updated">UPDATED</div>
+                  <div styleName="name-head">Name</div>
+                  <div styleName="fields">Fields</div>
+                  <div styleName="updated">Updated</div>
                 </div>
               }
               {this.state.models.map(model => {

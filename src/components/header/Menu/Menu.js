@@ -15,7 +15,7 @@ export default class Menu extends Component  {
     super(props);
 
     this.state = {
-      isSidebarOpened: 'kek'
+      isSidebarOpened: true
     };
   }
 
