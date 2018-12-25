@@ -2,12 +2,30 @@
 
 
 .input-wrapper
-  margin-top: 9px
+  margin-top: 20px
+
+.input-title
+  font-size: 14px
+  color: #2C2C30
+  line-height: 30px
+  text-align: left
+
+.list .head
+  position: relative
+
+  display: flex
+  flex-flow: row nowrap
+  align-items: center
+  padding: 16px
+
+  font-size: 18px
+  border-bottom: 1px solid #e8e8e8
 
 .list
   display: flex
   flex-flow: column nowrap
   margin: 22px auto 0
+  overflow: hidden
   
   background: #FFFFFF
   box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.05)
@@ -18,7 +36,7 @@
     flex-flow: row nowrap
     align-items: center
     position: relative
-    margin-bottom: 9px
+    padding: 16px
 
     &:nth-child(2n)
       background: #FCFCFC
@@ -45,62 +63,59 @@
       top: 50%
       transform: translateY(-50%)
 
-    &Text
-      flex: 1
-
+    &Text,
     &Name,
     &Type
-      font-size: 13px
-      color: #666666
+      font-size: 15px
+      color: #2C2C30
       letter-spacing: 0.5px
       text-align: left
 
-    &Name
-      font-weight: 600
+    &Text
+      display: flex
+      flex-flow: row nowrap
+      align-items: center
+      flex: 1 1 auto
 
+    &Name
+      flex: 1 0 auto
+      max-width: 300px
+      width: 100%
+    
     &Type
-      margin-top: 3px
-      letter-spacing: 0.46px
 
 .titleButton,
 .requiredButton
+  margin-right: 10%
+
+  background: #E5E5E5
+  font-size: 14px
+  color: #6A6A6A
+  text-align: center
+
   box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.20)
-  border-radius: 2px
-  font-weight: 700
+  border-radius: 20px
   font-size: 11px
-  color: #FFFFFF
   letter-spacing: 0.42px
   line-height: 24px
   padding: 0 15px
-  text-transform: uppercase
+  text-transform: none
 
-.titleButton
-  background-image: linear-gradient(-180deg, #607D8B 0%, #3E5059 150%)
-  
-.requiredButton
-  background-image: linear-gradient(-180deg, #87abd2 0%, #5b75a5 150%)
+.controls
+  display: flex
+  flex-flow: row nowrap
+  align-items: center
 
-.hidden
-  &Controls
-    position: absolute
-    right: -40px
-    opacity: 0.001
-    transition: opacity 0.1s ease
-    will-change: opacity
+.controlIcon
+  position: relative
+  z-index: 10
+  margin-left: 20px
+  height: 18px
+  width: 18px
 
-    display: flex
-    flex-flow: row nowrap
-    align-items: center
+  .cross
+    cursor: pointer
 
-  &Remove
-    margin-left: 25px
-    height: 24px
-    width: 24px
+  .edit
+    cursor: pointer
 
-    .cross
-      height: 24px
-      width: 24px
-      opacity: .6
-
-      &:hover
-        opacity: 1

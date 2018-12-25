@@ -22,31 +22,30 @@ const DragHandle = SortableHandle(({color}) =>
 
 const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemoveClick}) => {
   let style = [styles.listItem];
-  if (isEditable)
-    style.push(styles.listItemPointer);
   if (field.isDisabled)
     style.push(styles.listItemDisabled);
 
   return (
-    <div className={style.join(' ')}
-         onClick={() => onFieldClick(field)}>
+    <div className={style.join(' ')}>
         <div className={styles.listItemText}>
           <div className={styles.listItemName}>{field.name}</div>
-          <div className={styles.listItemType}>{field.type} — {field.appearance}</div>
+          <div className={styles.listItemType}>
+            {field.type} - {field.appearance}
+          </div>
         </div>
         {field.isTitle &&
-          <div className={styles.titleButton}>TITLE</div>
+          <div className={styles.titleButton}>Title</div>
         }
         {(!field.isTitle && field.isRequired) &&
-          <div className={styles.requiredButton}>REQUIRED</div>
+          <div className={styles.requiredButton}>Required</div>
         }
         {isEditable &&
-          <div className={styles.hiddenControls}>
-            <div className={styles.hiddenRemove} onClick={() => this.onModelClick(model)}>
-              <InlineSVG styleName="cross"
+          <div className={styles.controls}>
+            <div className={styles.controlIcon} onClick={() => onFieldClick(field)}>
+              <InlineSVG className={styles.edit}
                         src={require("assets/images/icon-edit.svg")}/>
             </div>
-            <div className={styles.hiddenRemove} onClick={event => this.onRemoveClick(event, field)}>
+            <div className={styles.controlIcon} onClick={event => onRemoveClick(event, field)}>
               <InlineSVG className={styles.cross}
                         src={require("assets/images/icon-delete.svg")}/>
             </div>
@@ -244,15 +243,20 @@ export default class Model extends Component {
       content = (
         <div styleName="model-wrapper">
           <div styleName="list">
+            <div styleName="head">Name</div>
             <SortableList onSortEnd={this.onSortEnd}
                           useDragHandle={true}
                           fields={this.state.fields}
                           isEditable={isEditable}
                           onFieldClick={this.onFieldClick}
                           onRemoveClick={this.onRemoveClick} />
-            {isEditable &&
+          </div>
+          {isEditable &&
               <div styleName="input-wrapper">
-                <InputControl placeholder="Add New Field"
+                <div styleName="input-title">
+                  Add a New Content Type
+                </div>
+                <InputControl placeholder=""
                               value={this.state.fieldName}
                               onKeyDown={this.onAddKeyDown}
                               onChange={this.onFieldNameChange}
@@ -262,7 +266,6 @@ export default class Model extends Component {
                               onIconClick={this.onAddField} />
               </div>
             }
-          </div>
         </div>
       );
     }
@@ -286,9 +289,7 @@ export default class Model extends Component {
     return (
       <ContainerComponent hasTitle2={true}
                           titles={titles}
-                          onClickBack={onClose}
-                          onClickRLink={this.onJSONClick}
-                          rLinkTitle={this.state.jsonVisibility ? 'Fields' : 'JSON'} >
+                          title='Models'>
         {content}
       </ContainerComponent>
     );
