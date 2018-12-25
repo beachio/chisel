@@ -30,30 +30,31 @@ const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemove
   return (
     <div className={style.join(' ')}
          onClick={() => onFieldClick(field)}>
-      <DragHandle color={field.color} />
-      <div className={styles.listItemText}>
-        <div className={styles.listItemName}>{field.name}</div>
-        <div className={styles.listItemType}>{field.type} — {field.appearance}</div>
-      </div>
-      {field.isTitle &&
-        <div className={styles.titleButton}>TITLE</div>
-      }
-      {(!field.isTitle && field.isRequired) &&
-        <div className={styles.requiredButton}>REQUIRED</div>
-      }
-      {isEditable &&
-        <div className={styles.hiddenControls}>
-          <div className={styles.hiddenRemove}
-               onClick={event => onRemoveClick(event, field)}>
-            <InlineSVG className={styles.cross}
-                       src={require("assets/images/cross-circle.svg")}/>
-          </div>
+        <div className={styles.listItemText}>
+          <div className={styles.listItemName}>{field.name}</div>
+          <div className={styles.listItemType}>{field.type} — {field.appearance}</div>
         </div>
-      }
+        {field.isTitle &&
+          <div className={styles.titleButton}>TITLE</div>
+        }
+        {(!field.isTitle && field.isRequired) &&
+          <div className={styles.requiredButton}>REQUIRED</div>
+        }
+        {isEditable &&
+          <div className={styles.hiddenControls}>
+            <div className={styles.hiddenRemove} onClick={() => this.onModelClick(model)}>
+              <InlineSVG styleName="cross"
+                        src={require("assets/images/icon-edit.svg")}/>
+            </div>
+            <div className={styles.hiddenRemove} onClick={event => this.onRemoveClick(event, field)}>
+              <InlineSVG className={styles.cross}
+                        src={require("assets/images/icon-delete.svg")}/>
+            </div>
+          </div>
+        }
     </div>
   );
 });
-//const SortableItem = CSSModules(_SortableItem, styles, {allowMultiple: true});
 
 const SortableList = SortableContainer(({fields, isEditable, onFieldClick, onRemoveClick}) => {
   return (
@@ -274,11 +275,11 @@ export default class Model extends Component {
                               alertShowing={alertShowing}
                               required
                               update={isEditable ? this.updateModelName : null} />
-        <EditableTitleControl text={this.model.description}
+        {/* <EditableTitleControl text={this.model.description}
                               placeholder={"Model description"}
                               isSmall={true}
                               alertShowing={alertShowing}
-                              update={isEditable ? this.updateModelDescription : null} />
+                              update={isEditable ? this.updateModelDescription : null} /> */}
       </div>
     );
 

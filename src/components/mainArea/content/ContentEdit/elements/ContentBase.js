@@ -15,8 +15,7 @@ export default class ContentBase extends Component {
   };
   
   field = null;
-  
-  
+
   constructor (props) {
     super(props);
     

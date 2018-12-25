@@ -26,7 +26,6 @@ export default class ModelsList extends Component {
 
   animate = true;
 
-
   constructor(props) {
     super(props);
 
@@ -145,9 +144,7 @@ export default class ModelsList extends Component {
                 let colorStyle = {background: model.color};
 
                 return(
-                  <div styleName="list-item"
-                       key={model.nameId}
-                       onClick={() => this.onModelClick(model)}>
+                  <div styleName="list-item" key={model.nameId}>
                     <div styleName="colorLabel" style={colorStyle}></div>
                     <div styleName="type">
                       <div styleName="name">{model.name}</div>
@@ -157,33 +154,39 @@ export default class ModelsList extends Component {
                     <div styleName="updated">{updatedStr}</div>
                     {
                       isEditable &&
-                        <div styleName="hidden-controls">
-                          <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, model)}>
+                        <div styleName="controls">
+                          <div styleName="control-icon" onClick={() => this.onModelClick(model)}>
                             <InlineSVG styleName="cross"
-                                       src={require("assets/images/cross-circle.svg")}/>
+                                      src={require("assets/images/icon-edit.svg")}/>
+                          </div>
+                          <div styleName="remove control-icon" onClick={event => this.onRemoveClick(event, model)}>
+                            <InlineSVG styleName="cross"
+                                      src={require("assets/images/icon-delete.svg")}/>
                           </div>
                         </div>
                     }
                   </div>
                 );
               })}
-              {isEditable &&
-                <div styleName="input-wrapper" key="input!">
-                  <div styleName="input-wrapper-back"></div>
-                  <div styleName="input">
-                    <InputControl value={this.state.modelName}
-                                  placeholder="Create a new Content Type"
-                                  onChange={this.onModelNameChange}
-                                  onKeyDown={this.onKeyDown}
-                                  DOMRef={c => this.activeInput = c}
-                                  icon="plus"
-                                  autoFocus
-                                  onIconClick={this.onAddModel} />
-                  </div>
-                </div>
-              }
             </FlipMove>
           </div>
+          {isEditable &&
+              <div styleName="input-wrapper" key="input!">
+                <div styleName="input-title">
+                  Add a New Field
+                </div>
+                <div>
+                  <InputControl value={this.state.modelName}
+                                placeholder=""
+                                onChange={this.onModelNameChange}
+                                onKeyDown={this.onKeyDown}
+                                DOMRef={c => this.activeInput = c}
+                                icon="plus"
+                                autoFocus
+                                onIconClick={this.onAddModel} />
+                </div>
+              </div>
+            }
         </div>
       </ContainerComponent>
     );

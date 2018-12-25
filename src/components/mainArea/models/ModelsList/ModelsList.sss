@@ -6,24 +6,24 @@
   flex-flow: column nowrap
   width: 100%
   margin: 0 auto
+  overflow: hidden
+
+  background: #FFFFFF
+  box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.05)
+  border-radius: 20px
 
   &-item
     display: flex
     flex-flow: row nowrap
     align-items: center
     position: relative
-    cursor: pointer
     background: #fff
-    padding: 10px
+    padding: 16px
 
     z-index: 5
 
     &:nth-child(2n)
       background: #FCFCFC
-
-    &:hover
-      .hidden-controls
-        opacity: 0.999
 
     .colorLabel
       display: none
@@ -44,29 +44,27 @@
     .description,
     .fields,
     .updated
-      font-size: 13px
-      color: #666666
+      font-size: 15px
+      color: #2C2C30
       letter-spacing: 0.5px
       text-align: left
 
-    .name
-      font-weight: 600
 
     .description
       letter-spacing: 0.46px
       margin-top: 3px
 
     .fields
-      flex: 0 0 60px
+      flex: 0 0 auto
+      max-width: 240px
+      width: 100%
 
     .updated
-      flex: 0 1 150px
+      flex: 0 1 auto
 
 
   &-header
-    background: #FFFFFF
-    box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.05)
-    border-radius: 20px 20px 0 0
+    border-bottom: 1px solid #e8e8e8
 
     .colorLabel
       visibility: hidden
@@ -74,48 +72,62 @@
     .fields,
     .name-head,
     .updated
-      color: #999999
+      color: #313133
+      text-align: left
+      font-size: 18px
+    
+    .name-head 
+      max-width: 300px
+      width: 100%
+    
+    .fields
+      flex: 1 1 auto
+      max-width: 240px
+      width: 100%
+    
+    .updated
+      flex: 1 1 auto
 
 .input-wrapper
-  background: #fff
   margin-top: 9px
   width: 100%
   position: relative
-
-  .input
-    padding-left: 10%
-    padding-right: 10%
 
   .input-wrapper-back
     position: absolute
     top: -70px
     width: 100%
-    height: calc(70px + 100% + 20px)
     background: #fff
     box-shadow: 0px 2px 4px 0px rgba(230,230,230,1)
     border-width: 0px 1px 1px 1px
     border-radius: 5px
     z-index: -5
 
-.hidden
-  &-controls
-    opacity: 0.001
-    transition: opacity 0.1s ease
-    will-change: opacity
+.input-title
+  font-size: 14px
+  color: #2C2C30
+  line-height: 30px
+  text-align: left
 
-    display: flex
-    flex-flow: row nowrap
-    align-items: center
+.controls
+  display: flex
+  flex-flow: row nowrap
+  align-items: center
+  margin-left: auto
 
-  &-remove
-    margin-left: 25px
+.remove
+  margin-left: 25px
+  height: 24px
+  width: 24px
+
+  .cross
     height: 24px
     width: 24px
 
-    .cross
-      height: 24px
-      width: 24px
-      opacity: .6
+    &:hover
+      opacity: 1
 
-      &:hover
-        opacity: 1
+.control-icon
+  width: 18px
+  height: 18px
+  cursor: pointer
