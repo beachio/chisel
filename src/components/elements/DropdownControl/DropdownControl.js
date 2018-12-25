@@ -111,7 +111,7 @@ export default class DropdownControl extends Component {
       );
     });
 
-    let icon = <InlineSVG styleName={arrowClasses} src={require("assets/images/arrow-down.svg")} />;
+    let icon = <InlineSVG styleName={arrowClasses} src={require("assets/images/icon-triangular-arrow.svg")} />;
     if (type === 'big')
       icon = <InlineSVG styleName="arrows" src={require("assets/images/arrows.svg")} />;
 

@@ -14,8 +14,8 @@
     position: relative
     padding-left: 30px
 
-    font-size: 13px
-    color: #666666
+    font-size: 14px
+    color: #2C2C30
     letter-spacing: 0.5px
 
   &-label:before
@@ -26,17 +26,16 @@
     transform: translateY(-50%)
     height: 20px
     width: 20px
-    border-radius: 10%
+    border-radius: 33%
     background: #fff
-    border: 1px solid #979797
+    border: 1px solid #E5E5E5
 
   &:checked + &-label:before
-    content: '✓'
+    content: ''
     color: #ffffff
     font-size: 21px
     text-indent: 2px
-    line-height: 20px
-    background: #5CA6DC
+    background: url('assets/images/Checkbox.png') no-repeat center center / contain
 
   & + &-label:before,
   &:checked + &-label:before

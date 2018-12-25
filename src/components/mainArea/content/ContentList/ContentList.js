@@ -227,7 +227,7 @@ export default class ContentList extends Component {
           <div styleName="list-wrapper">
             <div styleName="list">
               <div styleName="inputs-wrapper search">
-                <InputControl placeholder="Searching content items"
+                <InputControl placeholder=""
                               autoFocus
                               DOMRef={c => this.searchInput = c}
                               icon={this.state.searchText ? "cross" : "search"}
@@ -241,77 +241,77 @@ export default class ContentList extends Component {
                   There are no items here.
                 </div>
               }
-              <FlipMove duration={250}
-                        enterAnimation="accordionVertical"
-                        leaveAnimation="accordionVertical"
-                        maintainContainerHeight
-                        easing="ease-out">
-                {visibleItems.length > 0 &&
-                  <div styleName="list-item" key="header!">
-                    <div styleName="colorLabel"></div>
-                    <div styleName="type"></div>
-                    <div styleName="updated">UPDATED</div>
-                  </div>
-                }
-                {visibleItems
-                  .map(item => {
-                    const title = item.draft ? item.draft.title : item.title;
-                    
-                    let updatedDate = item.draft ? item.draft.origin.updatedAt : item.origin.updatedAt;
-                    if (!updatedDate)
-                      updatedDate = new Date();
-                    const updatedStr = getRelativeTime(updatedDate);
+              <div styleName="items">
+                <FlipMove duration={250}
+                          enterAnimation="accordionVertical"
+                          leaveAnimation="accordionVertical"
+                          maintainContainerHeight
+                          easing="ease-out">
+    
+                  {visibleItems
+                    .map(item => {
+                      const title = item.draft ? item.draft.title : item.title;
+                      
+                      let updatedDate = item.draft ? item.draft.origin.updatedAt : item.origin.updatedAt;
+                      if (!updatedDate)
+                        updatedDate = new Date();
+                      const updatedStr = getRelativeTime(updatedDate);
 
-                    const colorStyle = {background: item.color};
-                    const key = item.origin && item.origin.id  ?  item.origin.id  :  Math.random();
-  
-                    return(
-                      <div styleName="list-item"
-                           key={key}
-                           onClick={() => this.onItemClick(item)} >
-                        <div styleName="colorLabel" style={colorStyle}></div>
-                        <div styleName="type">
+                      const colorStyle = {background: '#D1BE9C'};
+                      const key = item.origin && item.origin.id  ?  item.origin.id  :  Math.random();
+    
+                      return(
+                        <div styleName="list-item"
+                            key={key}
+                            >
+                          <div styleName="colorLabel" style={colorStyle}></div>
+                          <div styleName="type">
+                            {
+                              title ?
+                                <div styleName="name">{title}</div>
+                              :
+                                <div styleName="name untitled">Untitled</div>
+                            }
+                            <div styleName="description">{item.model.name}</div>
+                          </div>
+                          <div styleName="updated">{updatedStr}</div>
                           {
-                            title ?
-                              <div styleName="name">{title}</div>
-                            :
-                              <div styleName="name untitled">Untitled</div>
-                          }
-                          <div styleName="description">{item.model.name}</div>
-                        </div>
-                        <div styleName="updated">{updatedStr}</div>
-                        {
-                          isEditable &&
-                            <div styleName="hidden-controls">
-                              <div styleName="hidden-remove" onClick={event => this.onRemoveClick(event, item)}>
+                            isEditable &&
+                            <div styleName="controls">
+                              <div styleName="control-icon" onClick={() => this.onItemClick(item)}>
                                 <InlineSVG styleName="cross"
-                                           src={require("assets/images/cross-circle.svg")}/>
+                                          src={require("assets/images/icon-edit.svg")}/>
+                              </div>
+                              <div styleName="remove control-icon" onClick={event => this.onRemoveClick(event, item)}>
+                                <InlineSVG styleName="cross"
+                                          src={require("assets/images/icon-delete.svg")}/>
                               </div>
                             </div>
-                        }
-                      </div>
-                    );
-                  })
-                }
-                {isEditable &&
-                  <div styleName="inputs-wrapper" key="input!">
-                    <div styleName="dropdown-wrapper">
-                      <DropdownControl suggestionsList={models.map(m => m.name)}
-                                       suggest={this.onChangeModel}
-                                       current={this.state.currentModel.name} />
-                    </div>
-                    <div styleName="input-wrapper">
-                      <InputControl placeholder="Create a new content item"
-                                    value={this.state.itemTitle}
-                                    icon="plus"
-                                    DOMRef={c => this.activeInput = c}
-                                    onIconClick={this.onAddItem}
-                                    onChange={this.onItemTitleChange}
-                                    onKeyDown={this.onNewKeyDown} />
-                    </div>
+                          }
+                        </div>
+                      );
+                    })
+                  }
+                </FlipMove>
+              </div>
+              {isEditable &&
+                <div styleName="inputs-wrapper bottom-inputs" key="input!">
+                  <div styleName="dropdown-wrapper">
+                    <DropdownControl suggestionsList={models.map(m => m.name)}
+                                    suggest={this.onChangeModel}
+                                    current={this.state.currentModel.name} />
                   </div>
-                }
-              </FlipMove>
+                  <div styleName="input-wrapper">
+                    <InputControl placeholder="Create a new content item"
+                                  value={this.state.itemTitle}
+                                  icon="plus"
+                                  DOMRef={c => this.activeInput = c}
+                                  onIconClick={this.onAddItem}
+                                  onChange={this.onItemTitleChange}
+                                  onKeyDown={this.onNewKeyDown} />
+                  </div>
+                </div>
+              }
             </div>
             
           </div>

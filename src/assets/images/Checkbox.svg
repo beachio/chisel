@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Checkbox</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M4.31231809,10.2622016 C3.89589396,9.8494201 3.89589397,9.18016915 4.31231812,8.7673877 C4.72874226,8.35460626 5.4038992,8.35460624 5.82032336,8.76738767 L7.95228181,10.8806967 L12.0811747,5.42272398 C12.4344091,4.95586465 13.1025663,4.86124859 13.5735456,5.21139308 C14.0445248,5.56153758 14.1399759,6.22385004 13.7867414,6.69070937 L9.66069118,12.1557264 C9.28908775,12.6462246 8.72081785,12.9524717 8.10347819,12.9949262 C7.48613854,13.0373807 6.88065016,12.811853 6.44427653,12.3769194 L4.31231809,10.2622016 Z" id="path-1"></path>
+        <filter x="-45.0%" y="-56.2%" width="190.0%" height="212.5%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.05 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.05 0" type="matrix" in="shadowOffsetOuter2" result="shadowMatrixOuter2"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Add-a-New-Field-(Validations)" transform="translate(-506.000000, -519.000000)">
+            <g id="Popup-Window" transform="translate(485.000000, 389.000000)">
+                <g id="Light-Mode/Elements/Checkbox/Active" transform="translate(20.000000, 129.000000)">
+                    <rect id="Checkbox" stroke="#297AD6" stroke-width="1" fill="#297AD6" fill-rule="evenodd" x="1.5" y="1.5" width="15" height="15" rx="4"></rect>
+                    <g id="Check" fill-rule="nonzero">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="#FFFFFF" xlink:href="#path-1"></use>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

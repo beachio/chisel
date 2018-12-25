@@ -10,8 +10,8 @@
   justify-content: space-between
   align-items: center
 
-  width: 100%
-  margin: 15px auto 0
+  width: 400px
+  margin: 15px 0 0 auto
 
   .dropdown-wrapper
     flex: 0 0 27%
@@ -24,77 +24,83 @@
 
 .list-wrapper
   flex: 1
+  margin-top: -75px
 
 .list
   display: flex
   flex-flow: column nowrap
-  width: 80%
-  margin: 0 auto
+  width: 100%
+  border-radius: 20px
 
   &-no-items
-    margin-top: 3px
-    margin-bottom: 3px
-    padding: 5px
+    padding: 16px
 
-    font-size: 13px
-    color: #666666
+    font-size: 14px
+    color: #2C2C30
 
   &-item
     display: flex
     flex-flow: row nowrap
     align-items: center
     position: relative
-    cursor: pointer
 
-    margin-top: 3px
-    margin-bottom: 3px
-    padding: 5px
+    background: #fff
+    padding: 16px
+
+    z-index: 5
+
+    &:nth-child(2n)
+      background: #FCFCFC
   
     &:hover
       .hidden-controls
         opacity: 0.999
-
-    &:first-child
-      margin-top: 0
-      padding-top: 0
 
     .colorLabel
       margin-right: 10px
       height: 20px
       width: 20px
       border-radius: 100%
-      position: absolute
-      left: -25px
-      top: 50%
-      transform: translateY(-50%)
 
     .type
+      display: flex
+      flex-flow: row nowrap
       flex: 1 1 200px
+      max-width: 460px
 
     .name,
     .description,
     .updated
-      font-size: 13px
-      color: #666666
+      font-size: 14px
+      color: #2C2C30
       letter-spacing: 0.5px
       text-align: left
 
     .name
-      font-weight: 600
+      max-width: 300px
+      width: 100%
       
       &.untitled
         font-weight: 400
 
     .description
+      max-width: 160px
+      width: 100%
       letter-spacing: 0.46px
 
     .updated
-      flex: 0 1 150px
+      flex: 0 1 auto
 
+.items
+  background: #ffffff
+  border-radius: 20px
+  box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.05)
+  overflow: hidden
+
+  margin-left: 40px
 
 .filters
   flex: 0 0 16%
-  padding: 0 0 0 18px
 
   &-item
     margin-top: 15px
@@ -104,17 +110,15 @@
       margin-top: 0
 
   &-title
-    font-weight: 600
-    font-size: 13px
-    color: #666666
+    font-size: 16px
+    color: #2C2C30
     letter-spacing: 0.5px
 
   &-type
     margin-top: 15px
 
-    font-weight: 300
-    font-size: 13px
-    color: #666666
+    font-size: 14px
+    color: #297AD6
     letter-spacing: 0.5px
 
     display: flex
@@ -135,39 +139,38 @@
     color: #a7a7a7
 
   .eye
-    width: 20px
-    height: 11px
+    width: 17px
+    height: 15px
     opacity: 0
     transition: opacity 0.2s ease
     will-change: opacity
 
     &-active
       opacity: 1
+      color: #297AD6
 
   &-status
     margin-top: 27px
-    
-.hidden
-  &-controls
-    position: absolute
-    right: -40px
-    opacity: 0.001
-    transition: opacity 0.1s ease
-    will-change: opacity
-    
-    display: flex
-    flex-flow: row nowrap
-    align-items: center
-  
-  &-remove
-    margin-left: 25px
-    height: 24px
-    width: 24px
-  
-    .cross
-      height: 24px
-      width: 24px
-      opacity: .6
 
-      &:hover
-        opacity: 1
+.controls
+  display: flex
+  flex-flow: row nowrap
+  align-items: center
+  margin-left: auto
+
+.remove
+  margin-left: 20px
+
+  .cross
+    height: 18px
+    width: 18px
+
+.control-icon
+  width: 18px
+  height: 18px
+  cursor: pointer
+
+.bottom-inputs
+  padding-left: 40px
+  width: 100%
+  

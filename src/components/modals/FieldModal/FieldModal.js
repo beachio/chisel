@@ -367,7 +367,7 @@ export default class FieldModal extends Component {
         content = (
           <div>
             <div styleName="input-wrapper">
-              <InputControl label="Name"
+              <InputControl label="Ttlte"
                             placeholder="Main Title"
                             DOMRef={inp => this.focusElm = inp}
                             onChange={this.onChangeName}
@@ -600,10 +600,9 @@ export default class FieldModal extends Component {
           <div styleName="modal-header">
             <div styleName="titles">
               <div styleName="title">{headName}</div>
-              <div styleName="subtitle">{this.state.type} — {this.state.appearance}</div>
             </div>
             <div styleName="tabs">
-              <div styleName={tabSettStyle}   onClick={() => this.setState({tab: TAB_SETTINGS})}    >Settings</div>
+              <div styleName={tabSettStyle}   onClick={() => this.setState({tab: TAB_SETTINGS})}    >General</div>
               <div styleName={tabAppStyle}    onClick={() => this.setState({tab: TAB_APPEARANCE})}  >Appearance</div>
               <div styleName={tabValidStyle}  onClick={() => this.setState({tab: TAB_VALIDATIONS})} >Validations</div>
             </div>
@@ -613,14 +612,12 @@ export default class FieldModal extends Component {
               {content}
               <div styleName="input-wrapper buttons-wrapper">
                 <div styleName="buttons-inner">
-                  <ButtonControl color="green"
-                                 value="Save"
-                                 onClick={this.onSave} />
+                  <ButtonControl value="Cancel"
+                                 onClick={this.close} />
                 </div>
                 <div styleName="buttons-inner">
-                  <ButtonControl color="gray"
-                                 value="Cancel"
-                                 onClick={this.close} />
+                  <ButtonControl value="Save Changes"
+                                 onClick={this.onSave} />
                 </div>
               </div>
             </form>

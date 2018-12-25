@@ -252,21 +252,21 @@ export default class Model extends Component {
                           onRemoveClick={this.onRemoveClick} />
           </div>
           {isEditable &&
-              <div styleName="input-wrapper">
-                <div styleName="input-title">
-                  Add a New Content Type
-                </div>
-                <InputControl placeholder=""
-                              value={this.state.fieldName}
-                              onKeyDown={this.onAddKeyDown}
-                              onChange={this.onFieldNameChange}
-                              DOMRef={c => this.activeInput = c}
-                              icon="plus"
-                              autoFocus
-                              onIconClick={this.onAddField} />
+            <div styleName="input-wrapper">
+              <div styleName="input-title">
+                Add a New Content Type
               </div>
+              <InputControl placeholder=""
+                            value={this.state.fieldName}
+                            onKeyDown={this.onAddKeyDown}
+                            onChange={this.onFieldNameChange}
+                            DOMRef={c => this.activeInput = c}
+                            icon="plus"
+                            autoFocus
+                            onIconClick={this.onAddField} />
+            </div>
             }
-        </div>
+        </div> 
       );
     }
 
