@@ -52,9 +52,11 @@ export default class User extends Component {
         
         {
           this.state.isAccountOpened && 
-            <div styleName="logout" onClick={logoutHandler}>
-              Log out
-              <InlineSVG styleName="logout-icon" src={require("./logout.svg")} />
+            <div styleName="submenu">
+              <div styleName="logout" onClick={logoutHandler}>
+                Log out
+                <InlineSVG styleName="logout-icon" src={require("./logout.svg")} />
+              </div>
             </div>
         }
       </div>

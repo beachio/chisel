@@ -246,7 +246,7 @@ export default class ContentMedia extends ContentBase {
             {
               this.state.isEditable &&
                 <InlineSVG styleName="media-cross"
-                           src={require('assets/images/cross-circle.svg')}
+                           src={require('assets/images/icon-delete.svg')}
                            onClick={() => this.onMediaClear(item)}/>
             }
           </div>

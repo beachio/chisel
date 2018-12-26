@@ -167,17 +167,19 @@ export default class Settings extends Component {
     if (this.state.icon)
       icon = (
         <img styleName="icon-img"
-             src={this.state.icon.url()}>
+          src={this.state.icon.url()}>
         </img>
       );
 
     return (
-      <div styleName="field">
-        <div styleName="field-title">Site icon</div>
-        {icon}
+      <div styleName="field field-icon">
+        <div styleName="field-title">Site Icon</div>
+        <div styleName="icon-img__wrapper">
+          {icon}
+        </div>
         <div styleName="button-wrapper">
           <div styleName={btnStyle + ` icon-upload`}>
-            Upload
+            Upload Site Icon
             <input styleName="icon-hidden"
                    type="file"
                    disabled={!isEditable}
@@ -192,10 +194,10 @@ export default class Settings extends Component {
     const {isEditable} = this.props;
 
     return (
-      <ContainerComponent title="Site settings">
+      <ContainerComponent title={`${this.state.name} settings`}>
         <form styleName="content" onSubmit={this.onSave}>
           <div styleName="field">
-            <div styleName="field-title">Site name</div>
+            <div styleName="field-title">Site Name</div>
             <div styleName="input-wrapper">
               <InputControl type="big"
                             value={this.state.name}
@@ -204,7 +206,7 @@ export default class Settings extends Component {
             </div>
           </div>
           <div styleName="field">
-            <div styleName="field-title">Site domain URL</div>
+            <div styleName="field-title">Site Domain URL</div>
             <div styleName="input-wrapper">
               <InputControl type="big"
                             value={this.state.domain}
@@ -236,24 +238,22 @@ export default class Settings extends Component {
             {
               isEditable &&
                 <div styleName="field button-wrapper">
-                  <ButtonControl color="green"
-                                 type="submit"
-                                 disabled={!this.state.dirty || this.state.error}
-                                 value="Save changes"/>
-                </div>
-            }
-            {
-              isEditable &&
-                <div styleName="field button-wrapper">
-                  <ButtonControl color="red"
-                                 value="Delete site"
+                  <ButtonControl value="Delete site"
                                  onClick={this.onDelete} />
                 </div>
             }
-            <div styleName="field button-wrapper">
-              <ButtonControl value="Export models"
+            <div styleName="field button-wrapper button-export">
+              <ButtonControl value="Export Models"
                              onClick={this.onExport} />
             </div>
+            {
+              isEditable &&
+                <div styleName="field button-wrapper">
+                  <ButtonControl type="submit"
+                                 disabled={!this.state.dirty || this.state.error}
+                                 value="Save Changes"/>
+                </div>
+            }
             <a style={{display: 'none'}}
                ref={elm => this.downloadElm = elm}>
             </a>

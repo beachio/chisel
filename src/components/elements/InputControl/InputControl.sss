@@ -20,28 +20,22 @@
   will-change: color
 
 .input-big
-  background: transparent
-  font-size: 18px
-  letter-spacing: 0.69px
-  color: #666666
-  line-height: 30px
-  width: 100%
-  border: none
+  background: #FFFFFF
+  border: 1px solid rgba(0,0,0,0.05)
+  box-shadow: inset 0 1px 5px 0 rgba(0,0,0,0.05)
+  border-radius: 20px
+
   outline: none
-  /*margin-top: -6px*/
+  font-size: 14px
+  line-height: 24px
+  color: #2C2C30
+  letter-spacing: 0.5px
+  padding: 8px 16px
+
+  width: 100%
+  outline: none
   margin-top: 0
-  padding-bottom: 5px
-  border-bottom: 1px dashed #CCCCCC
-
-  transition: border-color 0.2s ease
-  will-change: border-color
   order: 2
-
-  &:focus
-    border-bottom: 1px solid #5CA6DC
-
-  &:focus + .label
-    color: #5DAD47
 
 .icon
   position: absolute
@@ -63,20 +57,12 @@
   width: 15px
   height: 16px
   cursor: pointer
-  opacity: .6
-
-  &:hover
-    opacity: 1
 
 .search
   height: 14px
 
 .cross
-  opacity: .6
   cursor: pointer
-
-  &:hover
-    opacity: 1
 
 .input
   background: #FFFFFF

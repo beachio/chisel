@@ -2,7 +2,6 @@
   display: flex
   flex-flow: column nowrap
   align-items: flex-start
-  padding: 0 35px
   
   width: 100%
 
@@ -19,9 +18,8 @@
   
   &-title,
   &-error
-    font-weight: 600
-    font-size: 13px
-    color: #CCCCCC
+    font-size: 14px
+    color: #2C2C30
     letter-spacing: 0.5px
     line-height: 30px
     position: relative
@@ -31,9 +29,7 @@
   
   &-error
     color: #DD5555
-  
-  &:hover > .field-title
-    color: #5DAD47
+
   
   .input
     background: #FFFFFF
@@ -57,31 +53,46 @@
   flex-flow: row nowrap
 
 .buttons
+  display: flex
+  flex-flow: row nowrap
   margin-top: 30px
+  width: 100%
 
+  .field
+    width: auto
+
+.button-export
+  margin-left: auto
+  margin-right: 20px
+
+.icon-img__wrapper
+  width: 50px
+  height: 50px
+  margin-right: 10px
+
+  background: #D8D8D8
+  border-radius: 50%
+  overflow: hidden
 
 .icon
   &-img
+    display: block
     height: 50px
     width: 50px
 
   &-button
     background: rgba(255,255,255,0.80)
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10)
-    border-radius: 10px
-    border: 2px solid #DDDDDD
+    border-radius: 20px
+    border: 1px solid #DDDDDD
 
-    font-size: 24px
-    color: #666666
+    font-size: 14px
+    color: #313133
+    text-align: center
+    line-height: 24px
     letter-spacing: 0.54px
 
-    transition: border-color 0.2s ease
-    will-change: border-color
-
     cursor: pointer
-
-    &:hover
-      border-color: #258BF8
 
     &-disabled
       cursor: auto
@@ -91,7 +102,13 @@
         border-color: #DDDDDD
 
   &-upload
-    padding: 9px 36px 10px
+    display: flex
+    flex-flow: row nowrap
+    justify-content: center
+    align-items: center
+
+    padding: 0 15px
+    height: 40px
     margin-right: 20px
     position: relative
 
@@ -103,3 +120,14 @@
     left: 0
     top: 0
     cursor: pointer
+
+.field-icon
+  display: flex
+  flex-flow: row wrap
+
+  .field-title
+    flex: 1 1 100%
+
+  .button-wrapper
+    display: flex
+    align-items: center

@@ -164,7 +164,7 @@ export default class Sharing extends Component {
 
     return (
       <div styleName="wrapper">
-        <ContainerComponent title="Collaborators">
+        <ContainerComponent title="Sharing">
           <div styleName="sharing-wrapper">
             <div styleName="list">
               <div styleName="list-item">
@@ -176,7 +176,7 @@ export default class Sharing extends Component {
                   <div styleName="email">{owner.email}</div>
                 </div>
                 <div styleName="role">
-                  OWNER
+                  Owner
                 </div>
               </div>
               <FlipMove duration={500}

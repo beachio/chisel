@@ -2,13 +2,8 @@
   position: relative
 
   .logout
-    position: absolute
-    width: 100%
-    bottom: 0
-    transform: translateY(100%)
-    font-size: 13px
+    font-size: 14px
     color: #000
-    opacity: 0.7
     font-weight: 300
     cursor: pointer
     transition: opacity 0.2s ease
@@ -25,10 +20,6 @@
       svg
         opacity: 0.5
         height: 14px
-
-    &:hover
-      opacity: 1
-
 
 .user
   padding: 20px 14px
@@ -79,8 +70,13 @@
     & svg
       height: 8px
       width: 8px
-      
-/* .activeBla
-  background: white
-  &:hover
-    background: white */
+
+.submenu
+  position: absolute
+  transform: translateY(100%)
+  width: 100%
+  bottom: 0
+
+  padding: 8px
+
+  background: #ffffff

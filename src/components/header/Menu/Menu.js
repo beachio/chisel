@@ -79,20 +79,20 @@ export default class Menu extends Component  {
             API
           </div>
         </Link>
-        <Link to={prefix + URL_SETTINGS}>
-          <div 
-            styleName="button"
-            className={openedPage == PAGE_SETTINGS ? `${activeItem} header-link-active header-link` : 'header-link'}
-          >
-            Settings
-          </div>
-        </Link>
         <Link to={prefix + URL_SHARING}>
           <div 
             styleName="button"
             className={openedPage == PAGE_SHARING ? `${activeItem} header-link-active header-link` : 'header-link'}
           >
             Sharing
+          </div>
+        </Link>
+        <Link to={prefix + URL_SETTINGS}>
+          <div 
+            styleName="button"
+            className={openedPage == PAGE_SETTINGS ? `${activeItem} header-link-active header-link` : 'header-link'}
+          >
+            Settings
           </div>
         </Link>
 
