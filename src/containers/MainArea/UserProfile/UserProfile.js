@@ -276,30 +276,31 @@ export class UserProfile extends Component  {
           <title>User profile - Chisel</title>
         </Helmet>,
       
-        <ContainerComponent key="content" title="User profile">
+        <ContainerComponent key="content" title="Profile">
           <div styleName="content">
 
             <form styleName="section" onSubmit={this.onSaveData}>
-              <div styleName="section-header">Your personal data</div>
-              <div styleName="field">
-                <div styleName="field-title">First name</div>
-                <div styleName="input-wrapper">
-                  <InputControl type="big"
-                                value={this.state.firstName}
-                                onChange={this.onChangeFirstName} />
+              <div styleName="section-header">Your Personal Data</div>
+              <div styleName="name-wrapper">
+                <div styleName="field">
+                  <div styleName="field-title">First Name</div>
+                  <div styleName="input-wrapper">
+                    <InputControl type="big"
+                                  value={this.state.firstName}
+                                  onChange={this.onChangeFirstName} />
+                  </div>
+                </div>
+                <div styleName="field">
+                  <div styleName="field-title">Last Name</div>
+                  <div styleName="input-wrapper">
+                    <InputControl type="big"
+                                  value={this.state.lastName}
+                                  onChange={this.onChangeLastName} />
                 </div>
               </div>
-              <div styleName="field">
-                <div styleName="field-title">Last name</div>
-                <div styleName="input-wrapper">
-                  <InputControl type="big"
-                                value={this.state.lastName}
-                                onChange={this.onChangeLastName} />
-                </div>
               </div>
               <div styleName="buttons-wrapper">
-                <ButtonControl color="green"
-                               type="submit"
+                <ButtonControl type="submit"
                                disabled={!this.state.dirtyData || this.state.errorData}
                                value="Update personal data"/>
               </div>
@@ -322,8 +323,7 @@ export class UserProfile extends Component  {
                 </div>
               </div>
               <div styleName="buttons-wrapper">
-                <ButtonControl color="green"
-                               type="submit"
+                <ButtonControl type="submit"
                                disabled={!this.state.dirtyEmail || this.state.errorEmail}
                                value="Change email"/>
               </div>
@@ -372,8 +372,7 @@ export class UserProfile extends Component  {
                 </div>
               </div>
               <div styleName="buttons-wrapper">
-                <ButtonControl color="green"
-                               type="submit"
+                <ButtonControl type="submit"
                                disabled={!this.state.dirtyPassword || this.state.errorPassword}
                                value="Set new password"/>
               </div>
@@ -398,13 +397,11 @@ export class UserProfile extends Component  {
                 </div>
               }
               <div styleName="buttons-wrapper">
-                <ButtonControl color="green"
-                               onClick={this.onChangePayPlan}
+                <ButtonControl onClick={this.onChangePayPlan}
                                value="Change pay plan"/>
               </div>
               <div styleName="buttons-wrapper">
-                <ButtonControl color="green"
-                               onClick={this.onChangePayMethods}
+                <ButtonControl onClick={this.onChangePayMethods}
                                value="Change pay methods"/>
               </div>
             </div>

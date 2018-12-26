@@ -44,8 +44,6 @@
 
 
 .content
-  padding: 0 35px
-
   width: 100%
 
   .label
@@ -65,3 +63,51 @@
     margin-top: 30px
     display: flex
     flex-flow: row nowrap
+
+.period
+  display: flex
+  flex-flow: row nowrap
+  align-items: center
+
+.checkbox-wrapper
+  position: relative
+  width: 50px
+  height: 24px
+  margin-left: 10px
+  margin-right: 10px
+
+  background: #FFFFFF
+  border: 1px solid rgba(0,0,0,0.05)
+  box-shadow: inset 0 1px 5px 0 rgba(0,0,0,0.05)
+  border-radius: 20px
+
+.checkbox
+  display: none
+
+.circle
+  position: relative
+  left: 0
+
+  display: block
+  width: 22px
+  height: 22px
+
+  border-radius: 50%
+  background: #FFFFFF
+  box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.05)
+
+  transition: left 0.2s linear
+
+.checkbox:checked + .circle 
+  left: 25px
+
+.monthly
+.yearly
+
+.head
+.card
+.card-title
+.card-cost
+.card-sites
+.card-number
+.card-button

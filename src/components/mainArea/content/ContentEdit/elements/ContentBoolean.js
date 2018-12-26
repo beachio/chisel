@@ -61,5 +61,4 @@ export default class ContentBoolean extends ContentBase {
         );
     }
   }
-  
 }

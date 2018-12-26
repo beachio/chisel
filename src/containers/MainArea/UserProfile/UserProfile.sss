@@ -2,7 +2,6 @@
   display: flex
   flex-flow: column nowrap
   align-items: flex-start
-  padding: 0 35px
   
   width: 100%
   
@@ -13,8 +12,8 @@
 
     &-header
       font-size: 18px
-      font-weight: 600
-      color: #666666
+      color: #313133
+
 
   .field
     margin-top: 15px
@@ -30,9 +29,8 @@
     &-title,
     &-error,
     &-success
-      font-weight: 600
-      font-size: 13px
-      color: #999999
+      font-size: 14px
+      color: #2C2C30
       letter-spacing: 0.5px
       line-height: 30px
       
@@ -49,9 +47,6 @@
         cursor: pointer
         text-decoration: underline
 
-    &:hover > .field-title
-      color: #5DAD47
-
     &-value
       font-size: 18px
       color: #666666
@@ -65,3 +60,13 @@
     margin-top: 20px
     display: flex
     flex-flow: row nowrap
+    justify-content: flex-end
+
+.name-wrapper
+  display: flex
+  flex-flow: row nowrap
+  justify-content: space-between
+  width: 100%
+
+  .field
+    width: 49%

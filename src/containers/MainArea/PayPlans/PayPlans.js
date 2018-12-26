@@ -7,6 +7,7 @@ import {browserHistory} from "react-router";
 
 import ContainerComponent from "components/elements/ContainerComponent/ContainerComponent";
 import ButtonControl from "components/elements/ButtonControl/ButtonControl";
+import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import {changePayPlan} from "ducks/user";
 import {URL_PAYMENT_METHODS, URL_USERSPACE} from "ducks/nav";
 
@@ -25,7 +26,8 @@ export class PlanControl extends Component {
       changeElm = "It's your current plan";
       style += ' current';
       
-    } else if (payPlan.priceMonthly) {
+    } 
+    else if (payPlan.priceMonthly) {
       changeElm = [
         <div styleName="buttons-wrapper" key="monthly">
           <ButtonControl color="green"
@@ -72,6 +74,32 @@ export class PlanControl extends Component {
 }
 
 @CSSModules(styles, {allowMultiple: true})
+export class NewPlanControl extends Component {
+  render() {
+    return (
+      <div styleName="card">
+        <div styleName="card-title">
+          Starter
+        </div>
+        <div styleName="card-cost">
+          $0<span>/mo</span>
+        </div>
+        <div styleName="card-sites">
+          Sites
+        </div>
+        <div styleName="card-number">
+          1
+        </div>
+        <div styleName="card-button">
+          Current Plan
+        </div>
+      </div>
+    )
+  }
+}
+
+
+@CSSModules(styles, {allowMultiple: true})
 export class PayPlans extends Component {
   onUpdatePayPlan = (payPlan, isYearly = false) => {
     let URL = `/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`;
@@ -89,16 +117,37 @@ export class PayPlans extends Component {
         <title>Pay plans - Chisel</title>
       </Helmet>,
     
-      <ContainerComponent key="content" title="Pay plans">
+      <ContainerComponent key="content" title="Billing">
         <div styleName="content">
-          <div styleName="label">Choose your pay plan:</div>
+          <div styleName="head">
+            <div styleName="label">
+              Current Plan: <span> Starter </span>
+            </div>
+
+            <div styleName="period">
+              <label htmlFor="check" styleName="monthly">
+                Monthly
+              </label> 
+              <div styleName="checkbox-wrapper">
+                <input type="checkbox"
+                       styleName="checkbox"
+                       id="check"
+                />
+                <label styleName="circle" htmlFor="check" />
+              </div>
+              <label styleName="yearly" htmlFor="check">
+                Yearly
+              </label> 
+            </div>
+          </div>
           <div styleName="plans">
-            {payPlans.map(payPlan =>
+            {/* {payPlans.map(payPlan =>
               <PlanControl payPlan={payPlan}
-                           key={payPlan.origin.id}
+                           key={payPlan.origin ? payPlan.origin.id : 1}
                            current={payPlan == payPlanUser}
                            onClick={isYearly => this.onUpdatePayPlan(payPlan, isYearly)} />)
-            }
+            } */}
+            <NewPlanControl />
           </div>
         </div>
         
