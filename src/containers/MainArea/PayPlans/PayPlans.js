@@ -77,7 +77,8 @@ export class PlanControl extends Component {
 export class NewPlanControl extends Component {
   render() {
     return (
-      <div styleName="card">
+      [
+      <div styleName="card" key="1">
         <div styleName="card-title">
           Starter
         </div>
@@ -90,10 +91,45 @@ export class NewPlanControl extends Component {
         <div styleName="card-number">
           1
         </div>
-        <div styleName="card-button">
+        <div styleName="card-button downgrade">
+          Current Plan
+        </div>
+      </div>,
+      <div styleName="card" key="2">
+        <div styleName="card-title">
+          Starter
+        </div>
+        <div styleName="card-cost">
+          $50<span>/mo</span>
+        </div>
+        <div styleName="card-sites">
+          Sites
+        </div>
+        <div styleName="card-number">
+          1
+        </div>
+        <div styleName="card-button upgrade">
+          Current Plan
+        </div>
+      </div>,
+      <div styleName="card" key="3">
+        <div styleName="card-title">
+          Starter
+        </div>
+        <div styleName="card-cost">
+          $50<span>/mo</span>
+        </div>
+        <div styleName="card-sites">
+          Sites
+        </div>
+        <div styleName="card-number">
+          10
+        </div>
+        <div styleName="card-button upgrade">
           Current Plan
         </div>
       </div>
+      ]
     )
   }
 }
@@ -101,6 +137,16 @@ export class NewPlanControl extends Component {
 
 @CSSModules(styles, {allowMultiple: true})
 export class PayPlans extends Component {
+  state = {
+    period: 'monthly'
+  }
+
+  onChangePeriod = () => {
+    this.state.period === 'monthly' ?
+      this.setState({period: 'yearly'}) :
+      this.setState({period: 'monthly'})
+  }
+
   onUpdatePayPlan = (payPlan, isYearly = false) => {
     let URL = `/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`;
     if (payPlan)
@@ -124,30 +170,28 @@ export class PayPlans extends Component {
               Current Plan: <span> Starter </span>
             </div>
 
-            <div styleName="period">
-              <label htmlFor="check" styleName="monthly">
+            <div styleName={`period ${this.state.period}`} onClick={() => this.onChangePeriod() }>
+              <div htmlFor="check" styleName="monthly">
                 Monthly
-              </label> 
+              </div> 
               <div styleName="checkbox-wrapper">
-                <input type="checkbox"
-                       styleName="checkbox"
-                       id="check"
-                />
-                <label styleName="circle" htmlFor="check" />
+                <span styleName="circle"/>
               </div>
-              <label styleName="yearly" htmlFor="check">
+              <div styleName="yearly">
                 Yearly
-              </label> 
+              </div> 
             </div>
           </div>
           <div styleName="plans">
-            {/* {payPlans.map(payPlan =>
+            {payPlans.map(payPlan =>
               <PlanControl payPlan={payPlan}
                            key={payPlan.origin ? payPlan.origin.id : 1}
                            current={payPlan == payPlanUser}
                            onClick={isYearly => this.onUpdatePayPlan(payPlan, isYearly)} />)
-            } */}
-            <NewPlanControl />
+            }
+
+            {/* static */}
+            {/* <NewPlanControl /> */}
           </div>
         </div>
         
