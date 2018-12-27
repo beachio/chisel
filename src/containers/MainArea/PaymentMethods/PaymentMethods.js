@@ -9,6 +9,7 @@ import {browserHistory} from "react-router";
 
 import ButtonControl from "components/elements/ButtonControl/ButtonControl";
 import CheckboxControl from "components/elements/CheckboxControl/CheckboxControl";
+import IconsComponent from 'components/elements/IconsComponent/IconsComponent';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {ALERT_TYPE_ALERT, ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 import {send} from 'utils/server';
@@ -44,10 +45,10 @@ class _PayElement extends Component {
   render() {
     const style = {
       base: {
-        fontSize: '18px',
-        fontWeight: '300',
+        fontSize: '14px',
+        color: '#313133',
+        lineHeight: '24px',
         fontFamily: "Source Code Pro, monospace",
-        color: '#666666',
         '::placeholder': {
           color: '#999999',
         }
@@ -75,8 +76,7 @@ class _PayElement extends Component {
           </div>
         }
         <div styleName="button-wrapper">
-          <ButtonControl color="green"
-                         type="submit"
+          <ButtonControl type="submit"
                          value={payPlan ? "Subscribe" : "Add method"} />
         </div>
       </form>
@@ -267,8 +267,7 @@ class PaymentMethods extends Component {
       } else {
         setAsDefaultElm = (
           <div styleName="button-wrapper">
-            <ButtonControl color="green"
-                           onClick={this.onSetDefaultMethod}
+            <ButtonControl onClick={this.onSetDefaultMethod}
                            value="Set method as default"/>
           </div>
         );
@@ -286,7 +285,7 @@ class PaymentMethods extends Component {
         <div styleName="content">
           <div styleName="side">
             <div styleName="title">
-              Your payment methods
+              Payment Methods
             </div>
             {methods &&
               methods.map(method => {
@@ -307,7 +306,10 @@ class PaymentMethods extends Component {
             <div styleName={newMethodStyle}
                  onClick={() => this.onMethodClick()}>
               <div styleName="name">
-                Add new payment method
+                Add Payment Method
+              </div>
+              <div styleName="icon-plus">
+                <IconsComponent icon="plus" />
               </div>
             </div>
           </div>
@@ -330,14 +332,12 @@ class PaymentMethods extends Component {
                 {setAsDefaultElm}
                 
                 <div styleName="button-wrapper">
-                  <ButtonControl color="red"
-                                 onClick={this.onRemoveMethod}
+                  <ButtonControl onClick={this.onRemoveMethod}
                                  value="Remove method" />
                 </div>
                 {!!this.payPlan &&
                   <div styleName="button-wrapper">
-                    <ButtonControl color="green"
-                                   onClick={this.onSubscribe}
+                    <ButtonControl onClick={this.onSubscribe}
                                    value={"Subscribe"}/>
                   </div>
                 }
