@@ -325,8 +325,20 @@ export function getPayPlan(id) {
 export function isPayPlanTop(plan) {
   const plans = store.getState().pay.payPlans;
   for (let plan1 of plans) {
-    if (plan1.priceMonthly > plan.priceMonthly)
+    if (plan1.isGreater(plan))
       return false;
   }
   return true;
+}
+
+export function getPayMethod(id) {
+  const {stripeData} = store.getState().pay;
+  if (!stripeData || !stripeData.sources || !id)
+    return null;
+  
+  for (let method of stripeData.sources) {
+    if (method.id == id)
+      return method;
+  }
+  return null;
 }

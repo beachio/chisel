@@ -4,12 +4,17 @@ import {connect} from 'react-redux';
 import {Helmet} from "react-helmet";
 import CSSModules from 'react-css-modules';
 import {browserHistory} from "react-router";
+import {Parse} from "parse";
 
+import {send} from "utils/server";
 import ContainerComponent from "components/elements/ContainerComponent/ContainerComponent";
 import ButtonControl from "components/elements/ButtonControl/ButtonControl";
-import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
+import PayCard from "components/elements/PayCard/PayCard";
+
 import {changePayPlan} from "ducks/user";
-import {URL_PAYMENT_METHODS, URL_USERSPACE} from "ducks/nav";
+import {URL_PAYMENT_METHODS, URL_USERSPACE, showAlert} from "ducks/nav";
+import {updateSubscription} from 'ducks/pay';
+import {ALERT_TYPE_ALERT, ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 
 import styles from './PayPlans.sss';
 
@@ -78,57 +83,30 @@ export class NewPlanControl extends Component {
   render() {
     return (
       [
-      <div styleName="card" key="1">
-        <div styleName="card-title">
-          Starter
-        </div>
-        <div styleName="card-cost">
-          $0<span>/mo</span>
-        </div>
-        <div styleName="card-sites">
-          Sites
-        </div>
-        <div styleName="card-number">
-          1
-        </div>
-        <div styleName="card-button downgrade">
-          Current Plan
-        </div>
-      </div>,
-      <div styleName="card" key="2">
-        <div styleName="card-title">
-          Starter
-        </div>
-        <div styleName="card-cost">
-          $50<span>/mo</span>
-        </div>
-        <div styleName="card-sites">
-          Sites
-        </div>
-        <div styleName="card-number">
-          1
-        </div>
-        <div styleName="card-button upgrade">
-          Current Plan
-        </div>
-      </div>,
-      <div styleName="card" key="3">
-        <div styleName="card-title">
-          Starter
-        </div>
-        <div styleName="card-cost">
-          $50<span>/mo</span>
-        </div>
-        <div styleName="card-sites">
-          Sites
-        </div>
-        <div styleName="card-number">
-          10
-        </div>
-        <div styleName="card-button upgrade">
-          Current Plan
-        </div>
-      </div>
+        <PayCard
+          key={1}
+          title="Starter"
+          cost="0"
+          sites="1"
+          type="downgrade"
+          buttonText="Current Plan"
+        />,
+        <PayCard
+          key={2}
+          title="Lite"
+          cost="10"
+          sites="10"
+          type="upgrade"
+          buttonText="Upgrade"
+        />,
+        <PayCard
+          key={3}
+          title="Lite"
+          cost="50"
+          sites="Unlimited"
+          type="upgrade"
+          buttonText="Upgrade"
+        />
       ]
     )
   }
@@ -148,10 +126,57 @@ export class PayPlans extends Component {
   }
 
   onUpdatePayPlan = (payPlan, isYearly = false) => {
-    let URL = `/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`;
-    if (payPlan)
-      URL += `?plan=${payPlan.origin.id}&yearly=${isYearly}`;
-    browserHistory.push(URL);
+    const {stripeData} = this.props.pay;
+    const payPlanUser = this.props.user.userData.payPlan;
+    
+    if (!stripeData.sources || !stripeData.sources.length) {
+      let URL = `/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`;
+      if (payPlan)
+        URL += `?plan=${payPlan.origin.id}&yearly=${isYearly}`;
+      browserHistory.push(URL);
+    
+    } else {
+      const {showAlert} = this.props.navActions;
+      
+      let description = `You are going to upgrade your payment plan. Are you sure?`;
+      if (payPlanUser.isGreater(payPlan))
+        description = `You are going to reduce your payment plan. Are you sure? <br/>(Your rest of the money will be used in next payments.)`;
+      
+      showAlert({
+        type: ALERT_TYPE_CONFIRM,
+        title: `Changing subscription`,
+        description,
+        onConfirm: async () => {
+          this.setState({pending: true});
+          
+          const {updateSubscription} = this.props.payActions;
+  
+          if (payPlan.priceMonthly) {
+            const subscription = await send(
+              Parse.Cloud.run('paySubscription', {
+                planId: payPlan.origin.id,
+                isYearly
+              })
+            );
+            updateSubscription(subscription, payPlan);
+          } else {
+            await send(
+              Parse.Cloud.run('cancelSubscription')
+            );
+            updateSubscription(null, payPlan);
+          }
+  
+          this.setState({pending: false});
+          
+          showAlert({
+            type: ALERT_TYPE_ALERT,
+            title: "Payment complete",
+            description: `You are successfully change your subscription to ${payPlan.name}.`,
+            callback: () => browserHistory.push(`/${URL_USERSPACE}`)
+          });
+        }
+      });
+    }
   };
   
   render() {
@@ -160,10 +185,12 @@ export class PayPlans extends Component {
     
     return [
       <Helmet key="helmet">
-        <title>Pay plans - Chisel</title>
+        <title>Billing - Chisel</title>
       </Helmet>,
     
-      <ContainerComponent key="content" title="Billing">
+      <ContainerComponent key="content"
+                          title="Billing"
+                          showLoader={this.state.pending} >
         <div styleName="content">
           <div styleName="head">
             <div styleName="label">
@@ -183,15 +210,15 @@ export class PayPlans extends Component {
             </div>
           </div>
           <div styleName="plans">
-            {payPlans.map(payPlan =>
+            {/* {payPlans.map(payPlan =>
               <PlanControl payPlan={payPlan}
                            key={payPlan.origin ? payPlan.origin.id : 1}
                            current={payPlan == payPlanUser}
                            onClick={isYearly => this.onUpdatePayPlan(payPlan, isYearly)} />)
-            }
+            } */}
 
             {/* static */}
-            {/* <NewPlanControl /> */}
+            <NewPlanControl />
           </div>
         </div>
         
@@ -210,6 +237,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    navActions: bindActionCreators({showAlert}, dispatch),
+    payActions: bindActionCreators({updateSubscription}, dispatch),
     userActions: bindActionCreators({changePayPlan}, dispatch)
   };
 }
