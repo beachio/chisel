@@ -238,18 +238,21 @@ export default class Settings extends Component {
             {
               isEditable &&
                 <div styleName="field button-wrapper">
-                  <ButtonControl value="Delete site"
+                  <ButtonControl color="red"
+                                 value="Delete site"
                                  onClick={this.onDelete} />
                 </div>
             }
             <div styleName="field button-wrapper button-export">
-              <ButtonControl value="Export Models"
+              <ButtonControl color="black"
+                             value="Export Models"
                              onClick={this.onExport} />
             </div>
             {
               isEditable &&
                 <div styleName="field button-wrapper">
-                  <ButtonControl type="submit"
+                  <ButtonControl color= "purple"
+                                 type="submit"
                                  disabled={!this.state.dirty || this.state.error}
                                  value="Save Changes"/>
                 </div>

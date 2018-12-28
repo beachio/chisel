@@ -144,7 +144,7 @@ export default class ModelsList extends Component {
                 let colorStyle = {background: model.color};
 
                 return(
-                  <div styleName="list-item" key={model.nameId}>
+                  <div styleName="list-item" key={model.nameId} onClick={() => this.onModelClick(model)}>
                     <div styleName="colorLabel" style={colorStyle}></div>
                     <div styleName="type">
                       <div styleName="name">{model.name}</div>
@@ -155,10 +155,6 @@ export default class ModelsList extends Component {
                     {
                       isEditable &&
                         <div styleName="controls">
-                          <div styleName="control-icon" onClick={() => this.onModelClick(model)}>
-                            <InlineSVG styleName="cross"
-                                      src={require("assets/images/icon-edit.svg")}/>
-                          </div>
                           <div styleName="remove control-icon" onClick={event => this.onRemoveClick(event, model)}>
                             <InlineSVG styleName="cross"
                                       src={require("assets/images/icon-delete.svg")}/>

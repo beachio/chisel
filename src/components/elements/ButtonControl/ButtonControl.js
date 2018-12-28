@@ -18,7 +18,9 @@ export default class ButtonControl extends Component {
       'ButtonControl': true,
       'ButtonControl-red': color === 'red',
       'ButtonControl-green': color === 'green',
-      'ButtonControl-gray': color === 'gray'
+      'ButtonControl-gray': color === 'gray',
+      'ButtonControl-purple': color === 'purple',
+      'ButtonControl-black': color === 'black',
     });
     
     if (disabled) {

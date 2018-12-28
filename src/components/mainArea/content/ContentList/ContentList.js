@@ -263,6 +263,7 @@ export default class ContentList extends Component {
                       return(
                         <div styleName="list-item"
                             key={key}
+                            onClick={() => this.onItemClick(item)}
                             >
                           <div styleName="colorLabel" style={colorStyle}></div>
                           <div styleName="type">
@@ -278,10 +279,6 @@ export default class ContentList extends Component {
                           {
                             isEditable &&
                             <div styleName="controls">
-                              <div styleName="control-icon" onClick={() => this.onItemClick(item)}>
-                                <InlineSVG styleName="cross"
-                                          src={require("assets/images/icon-edit.svg")}/>
-                              </div>
                               <div styleName="remove control-icon" onClick={event => this.onRemoveClick(event, item)}>
                                 <InlineSVG styleName="cross"
                                           src={require("assets/images/icon-delete.svg")}/>

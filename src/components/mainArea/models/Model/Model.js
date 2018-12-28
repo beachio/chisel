@@ -26,7 +26,7 @@ const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemove
     style.push(styles.listItemDisabled);
 
   return (
-    <div className={style.join(' ')}>
+    <div className={style.join(' ')} onClick={() => onFieldClick(field)}>
         <div className={styles.listItemText}>
           <div className={styles.listItemName}>{field.name}</div>
           <div className={styles.listItemType}>
@@ -41,10 +41,6 @@ const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemove
         }
         {isEditable &&
           <div className={styles.controls}>
-            <div className={styles.controlIcon} onClick={() => onFieldClick(field)}>
-              <InlineSVG className={styles.edit}
-                        src={require("assets/images/icon-edit.svg")}/>
-            </div>
             <div className={styles.controlIcon} onClick={event => onRemoveClick(event, field)}>
               <InlineSVG className={styles.cross}
                         src={require("assets/images/icon-delete.svg")}/>

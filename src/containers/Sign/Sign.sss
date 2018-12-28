@@ -1,30 +1,47 @@
 .Sign
+  position: relative
   display: flex
   flex-flow: column nowrap
   justify-content: center
   align-items: center
+  max-width: 500px
+  width: 100%
+  margin-left: auto
+  margin-right: calc(15% - 100px)
 
-  position: absolute
-  top: 50%
-  left: 50%
-  transform: translate(-50%, -50%)
 
-  min-width: 46%
+  &-container 
+    position: relative
+    width: 100%
+    padding: 96px 50px 42px
+
+    background: rgba(255,255,255,0.95)
+    box-shadow: 0 10px 30px 0 rgba(0,0,0,0.10)
+    border-radius: 20px
+    border-top-left-radius: 10px
 
   .logo
-    margin-bottom: 15px
+    position: absolute
+    left: 50%
+    top: -81px
+    transform: translateX(-50%)
+
+    width: 179px
+    height: 179px
     text-align: center
   
     img
       height: 35px
   
   .title
-    font-size: 20px
-    color: #666666
-    letter-spacing: 0.83px
+    font-size: 18px
+    color: #2C2C30
+    text-align: center
+    line-height: 28px
+    text-align: center
     
   .form
-    margin-top: 25px
+    margin-top: 30px
     display: flex
     flex-flow: column nowrap
     width: 100%
@@ -35,30 +52,47 @@
       color: #666666
       font-size: 12px
       text-align: center
-  
+
+    .checkbox-wrapper
+      display: flex
+      flex-flow: row wrap
+      justify-content: space-between
+      align-items: center
+      width: 100%
+      margin-top: 30px
+
+      .input-wrapper
+        width: auto
+
+
+    .input-wrapper
+      margin-top: 20px
+      width: 100%
+      font-size: 14px
+
+      &:first-child
+        margin-top: 0
+
     .input
       background: #FFFFFF
-      border: none
-      border-bottom: 1px #ccc solid
-      border-radius: 2px
       line-height: 38px
-      padding: 0 40px 0 9px
+      padding: 0 16px
       outline: none
-      width: 50%
+      width: 100%
+      margin-top: 8px
       font-size: 13px
       color: #333333
       letter-spacing: 0.5px
-    
-      margin-top: 20px
+      border: 1px solid rgba(0,0,0,0.05)
+      box-shadow: inset 0 1px 5px 0 rgba(0,0,0,0.05)
+      border-radius: 20px
+      
     
       transition: border-color 0.2s ease
       will-change: border-color
     
-      &:focus
-        border-color: #5CA6DC
-    
-      &:first-child
-        margin-top: 0
+      /* &:focus
+        border-color: #5CA6DC */
     
     .button
       margin-top: 30px
@@ -73,7 +107,52 @@
         text-align: center
         
     .forgot
-      margin-top: 40px
-      color: #5DAD47
       cursor: pointer
-      font-size: 12px
+      font-size: 13px
+      color: #297AD6
+      line-height: 18px
+      text-decoration: underline
+
+.image
+  position: absolute
+  left: 0
+  top: 0
+  width: 45%
+  img
+    display: block
+    width: 100%
+
+.bottom-content
+  display: flex
+  flex-flow: column nowrap
+  justify-content: center
+
+  margin-top: 24px
+
+  font-size: 14px
+  color: #2C2C30
+  text-align: center
+
+.button-wrapper
+  margin-top: 16px
+  display: flex
+  flex-flow: row nowrap
+  justify-content: center
+
+.reg-info
+  font-size: 12px
+  line-height: 18px
+  color: #A4A4AE
+  text-align: center
+
+  a 
+    color: #8B5FBF
+    text-decoration: underline
+
+.reg-text
+  margin-top: 16px
+  font-size: 14px
+  color: #2C2C30
+  text-align: center
+
+

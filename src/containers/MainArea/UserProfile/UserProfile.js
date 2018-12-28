@@ -300,7 +300,8 @@ export class UserProfile extends Component  {
               </div>
               </div>
               <div styleName="buttons-wrapper">
-                <ButtonControl type="submit"
+                <ButtonControl color="purple"
+                               type="submit"
                                disabled={!this.state.dirtyData || this.state.errorData}
                                value="Update personal data"/>
               </div>
@@ -323,7 +324,8 @@ export class UserProfile extends Component  {
                 </div>
               </div>
               <div styleName="buttons-wrapper">
-                <ButtonControl type="submit"
+                <ButtonControl color="purple"
+                               type="submit"
                                disabled={!this.state.dirtyEmail || this.state.errorEmail}
                                value="Change email"/>
               </div>
@@ -372,7 +374,8 @@ export class UserProfile extends Component  {
                 </div>
               </div>
               <div styleName="buttons-wrapper">
-                <ButtonControl type="submit"
+                <ButtonControl color="purple"
+                               type="submit"
                                disabled={!this.state.dirtyPassword || this.state.errorPassword}
                                value="Set new password"/>
               </div>
@@ -397,11 +400,13 @@ export class UserProfile extends Component  {
                 </div>
               }
               <div styleName="buttons-wrapper">
-                <ButtonControl onClick={this.onChangePayPlan}
+                <ButtonControl color="purple"
+                               onClick={this.onChangePayPlan}
                                value="Change pay plan"/>
               </div>
               <div styleName="buttons-wrapper">
-                <ButtonControl onClick={this.onChangePayMethods}
+                <ButtonControl color="purple"
+                               onClick={this.onChangePayMethods}
                                value="Change pay methods"/>
               </div>
             </div>
@@ -425,7 +430,7 @@ export class UserProfile extends Component  {
                 </div>
               </div>
               <div styleName="buttons-wrapper">
-                <ButtonControl color="green"
+                <ButtonControl color="purple"
                                type="submit"
                                disabled={!this.state.dirtyServer || this.state.errorServer}
                                value="Update server data"/>
