@@ -179,9 +179,9 @@ export class Sign extends Component  {
 
 
   render() {
-    
+
     this.elmEmail = <div styleName="input-wrapper">
-                      Username
+                      Email
                       <input styleName="input"
                              type="text"
                              autoFocus
@@ -207,7 +207,7 @@ export class Sign extends Component  {
     this.elmCheckbox = <div styleName="input-wrapper">
                           <CheckboxControl title="Remember Me"
                                             />
-                       </div>              
+                       </div>
 
     let content;
     let bottomContent;
@@ -249,8 +249,8 @@ export class Sign extends Component  {
             <div styleName="button-wrapper">
               <ButtonControl color="black"
                 type="submit"
-                value="Sign Up" 
-                onClick={() => this.setMode(MODE_REG)}/> 
+                value="Sign Up"
+                onClick={() => this.setMode(MODE_REG)}/>
             </div>
           </div>
         )
@@ -258,7 +258,7 @@ export class Sign extends Component  {
         title = (
           <div styleName="title">
               Welcome to Chisel <br />
-              A powerfully simple headless CMS
+              A simple powerful headless CMS
             </div>
         );
 
@@ -304,16 +304,16 @@ export class Sign extends Component  {
             <div styleName="button-wrapper">
               <ButtonControl color="black"
                 type="submit"
-                value="Log in" 
-                onClick={() => this.setMode(MODE_LOGIN)}/> 
+                value="Log in"
+                onClick={() => this.setMode(MODE_LOGIN)}/>
             </div>
           </div>
         )
 
         title = (
           <div styleName="title">
-            Providing a single login experience <br/>
-            across all Beach products + services.
+            Create your new account <br/>
+            and get started with Chisel today.
           </div>
         );
 
@@ -361,7 +361,7 @@ export class Sign extends Component  {
         content = (
           <form styleName="form" onSubmit={this.onRestore}>
             <div styleName="description">
-              Please, type your email, and we will send you a link to reset your password.
+              Enter your email address and we will send you a a link to reset your password.
             </div>
             {this.elmEmail}
             <div styleName="button">
@@ -422,7 +422,7 @@ export class Sign extends Component  {
           <img src={require("assets/images/chisel_login_illustration.png")} />
         </div>
         <div styleName="Sign">
-          <div styleName="Sign-container"> 
+          <div styleName="Sign-container">
             <div styleName="logo">
               {icon}
             </div>
