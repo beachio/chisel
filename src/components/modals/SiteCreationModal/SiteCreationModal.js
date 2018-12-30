@@ -17,36 +17,36 @@ export class TemplateControl extends Component {
   };
   template = null;
   templateEmpty = false;
-  
+
   constructor(props) {
     super(props);
-    
+
     this.template = props.template;
     this.state.checked = props.checked;
-    
+
     if (!this.template) {
       this.templateEmpty = true;
       this.template = {
         name: 'Empty',
-        description: 'The site will has not any models',
+        description: 'No Models will be created.',
         icon: null
       }
     }
   }
-  
+
   componentWillReceiveProps({checked}) {
     this.setState({checked});
   }
-  
+
   onClick = () => {
     this.props.onChange(this.templateEmpty ? null : this.template);
   };
-  
+
   render() {
     let style = 'template-content';
     if (this.state.checked)
       style += ' checked';
-    
+
     return (
       <div styleName="TemplateControl"
            onClick={this.onClick}>
@@ -71,57 +71,57 @@ export default class SiteCreationModal extends Component {
     template: null,
     errorName: false
   };
-  
+
   templates = [];
   site = null;
   active = false;
   focusElm = null;
-  
-  
+
+
   constructor(props) {
     super(props);
-    
+
     this.templates = props.templates;
     this.site = new SiteData();
   }
-  
+
   componentDidMount() {
     this.active = true;
     document.addEventListener('keydown', this.onKeyDown);
-    
+
     if (this.focusElm)
       setTimeout(() => this.focusElm.focus(), 2);
   }
-  
+
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onKeyDown);
   }
-  
+
   onKeyDown = event => {
     if (!event)
       event = window.event;
     event.stopPropagation();
-    
+
     //Enter or Esc pressed
     if (event.keyCode == 13)
       setTimeout(this.onCreate, 1);
     else if (event.keyCode == 27)
       setTimeout(this.close, 1);
   };
-  
+
   onChangeName = event => {
     const name = event.target.value;
     this.setState({name, errorName: null});
   };
-  
+
   onChangeTemplate = template => {
     this.setState({template});
   };
-  
+
   onCreate = () => {
     if (!this.state.name || !this.active)
       return;
-  
+
     const name = removeOddSpaces(this.state.name);
     const error = checkSiteName(name);
     if (error == NAME_ERROR_NAME_EXIST) {
@@ -129,17 +129,17 @@ export default class SiteCreationModal extends Component {
       return;
     }
     this.site.name = name;
-  
+
     this.props.addSite(this.site, this.state.template);
     this.close();
   };
-  
+
   close = () => {
     this.active = false;
     this.props.onClose();
   };
-  
-  
+
+
   render() {
     return (
       <div styleName="modal" onClick={this.close}>
@@ -154,11 +154,11 @@ export default class SiteCreationModal extends Component {
                             onChange={this.onChangeName}
                             value={this.state.name} />
             </div>
-            
+
             {this.state.errorName &&
               <div styleName="error-same-name">This name is already in use.</div>
             }
-  
+
             {this.templates.length &&
               <div>
                 <div styleName="label">Choose template:</div>
@@ -174,10 +174,10 @@ export default class SiteCreationModal extends Component {
                 </div>
               </div>
             }
-            
+
             <div styleName="input-wrapper buttons-wrapper">
               <div styleName="buttons-inner">
-                <ButtonControl color="green"
+                <ButtonControl color="purple"
                                value="Create"
                                //disabled={!this.state.template}
                                onClick={this.onCreate} />

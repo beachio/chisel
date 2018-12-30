@@ -14,17 +14,17 @@ export default class Sites extends Component {
   state = {
     site: null
   };
-  
+
   sitesLimit = 0;
-  
+
 
   constructor(props) {
     super(props);
   }
-  
+
   componentWillReceiveProps(nextProps) {
     this.setState({site: nextProps.currentSite});
-  
+
     const {payPlan} = nextProps;
     this.sitesLimit = payPlan ? payPlan.limitSites : 0;
   }
@@ -75,7 +75,7 @@ export default class Sites extends Component {
               return (
                 <div styleName={style}
                      onClick={() => this.onClickSite(site)}
-                     
+
                      key={key}>
 
                   {!!site.icon ?
@@ -106,7 +106,7 @@ export default class Sites extends Component {
           }
         </div>
         <div styleName="new-site" onClick={this.onClickAdd}>
-          Create a new site
+          Create New Site
         </div>
       </div>
     );

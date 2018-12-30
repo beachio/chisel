@@ -89,10 +89,10 @@ export default class ModelsList extends Component {
   onModelClick = model => {
     this.props.gotoModel(model);
   };
-  
+
   onRemoveClick = (event, model) => {
     event.stopPropagation();
-  
+
     let params;
     const contentCount = getContentForModel(model).length;
     if (contentCount) {
@@ -109,7 +109,7 @@ export default class ModelsList extends Component {
         onConfirm: () => this.props.deleteModel(model)
       };
     }
-  
+
     this.props.showAlert(params);
     this.returnFocus = true;
   };
@@ -179,6 +179,7 @@ export default class ModelsList extends Component {
                                 DOMRef={c => this.activeInput = c}
                                 icon="plus"
                                 autoFocus
+                                titled
                                 onIconClick={this.onAddModel} />
                 </div>
               </div>
