@@ -21,14 +21,14 @@ export default class Sharing extends Component {
     collaborations: [],
     input: ""
   };
-  
+
   activeInput = null;
   returnFocus = false;
 
 
   constructor(props) {
     super(props);
-    
+
     this.state.collaborations = props.collaborations;
   }
 
@@ -53,7 +53,7 @@ export default class Sharing extends Component {
   onKeyDown = event => {
     if (this.props.alertShowing)
       return;
-    
+
     //Enter pressed
     if (event.keyCode == 13) {
       this.onAddCollaboration();
@@ -67,7 +67,7 @@ export default class Sharing extends Component {
     let email = this.state.input;
     if (!email)
       return;
-    
+
     if (!checkEmail(email)) {
       this.props.showAlert({
         title: "Error",
@@ -77,17 +77,17 @@ export default class Sharing extends Component {
       this.returnFocus = true;
       return;
     }
-    
+
     getUser(email)
       .then(user => {
         let error = checkCollaboration(user);
-        
+
         switch (error) {
           case COLLAB_CORRECT:
             this.props.addCollaboration(user, email);
             this.setState({input: ``});
             break;
-            
+
           case COLLAB_ERROR_SELF:
             this.props.showAlert({
               title: "Error",
@@ -96,11 +96,11 @@ export default class Sharing extends Component {
             });
             this.returnFocus = true;
             break;
-  
+
           case COLLAB_ERROR_EXIST:
             this.props.showAlert({
               title: "Error",
-              description: "This user is also exist",
+              description: "This user already exists",
               buttonText: "OK"
             });
             this.returnFocus = true;
@@ -110,20 +110,20 @@ export default class Sharing extends Component {
       .catch(error => {
         this.props.showAlert({
           type: ALERT_TYPE_CONFIRM,
-          title: `Not registered user`,
-          description: `The user ${email} is not registered at Chisel. Would you like to send an invitation to them?`,
+          title: `New User`,
+          description: `The user ${email} is not registered at Chisel. Would you like to send an invitation?`,
           onConfirm: () => this.props.addInviteCollaboration(email)
         });
         this.returnFocus = true;
         this.setState({input: ``});
       });
   };
-  
+
   onRoleClick(e, index) {
     e.stopPropagation();
-  
+
     const collab = this.state.collaborations[index];
-  
+
     this.props.showModal(MODAL_TYPE_ROLE, {
       role: collab.role,
       callback: role => {
@@ -132,22 +132,22 @@ export default class Sharing extends Component {
       }
     });
   }
-  
+
   onDeleteClick(event, collab) {
     event.stopPropagation();
-  
-    let description = "This action cannot be undone. Are you sure?";
+
+    let description = "This action cannot be undone. Type CONFIRM to complete";
     let delFunc = this.props.deleteCollaboration;
-    let confirmString = '';
+    let confirmString = 'CONFIRM';
     let user = collab.email;
-    
+
     if (collab.user && collab.user.origin.id == Parse.User.current().id) {
       description = `You are trying to stop managing this site. ${description}<br><br>Please, type site name to confirm:`;
       delFunc = this.props.deleteSelfCollaboration;
       confirmString = collab.site.name;
       user = 'self';
     }
-  
+
     this.props.showAlert({
       type: ALERT_TYPE_CONFIRM,
       title: `Deleting ${user} from collaborators`,
@@ -176,7 +176,7 @@ export default class Sharing extends Component {
                   <div styleName="email">{owner.email}</div>
                 </div>
                 <div styleName="role">
-                  Owner
+                  OWNER
                 </div>
               </div>
               <FlipMove duration={500}
@@ -186,20 +186,20 @@ export default class Sharing extends Component {
                         easing="ease-out">
                 {this.state.collaborations.map((collaboration, index) => {
                   let user = collaboration.user;
-                  
+
                   let localDelete = isEditable;
                   let localRole = isEditable;
-                  
+
                   let blockName = null;
                   let style;
-  
+
                   if (user) {
                     style = "list-item";
                     if (user.origin.id == self.origin.id) {
                       localDelete = true;
                       localRole = false;
                     }
-                    
+
                     if (user.firstName || user.lastName) {
                       blockName = (
                         <div styleName="type">
@@ -214,17 +214,17 @@ export default class Sharing extends Component {
                         </div>
                       );
                     }
-                    
+
                   } else {
                     style = "list-item list-item-pending";
-                    
+
                     blockName = (
                       <div styleName="type-one-str">
                         <div styleName="email">{collaboration.email} (pending)</div>
                       </div>
                     );
                   }
-                  
+
                   return (
                     <div styleName={style} key={collaboration.email}>
                       <div styleName="avatar">
@@ -263,8 +263,8 @@ export default class Sharing extends Component {
                                   icon="users"
                                   onIconClick={this.onAddCollaboration}
                                   DOMRef={c => this.activeInput = c}/>
-      
-      
+
+
                     <div styleName="footer">
                       If the recipient doesn’t yet have a Chisel account, they will be sent an invitation to join.
                     </div>
