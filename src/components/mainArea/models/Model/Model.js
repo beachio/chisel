@@ -26,7 +26,7 @@ const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemove
     style.push(styles.listItemDisabled);
 
   return (
-    <div className={style.join(' ')}>
+    <div className={style.join(' ')} onClick={() => onFieldClick(field)}>
         <div className={styles.listItemText}>
           <div className={styles.listItemName}>{field.name}</div>
           <div className={styles.listItemType}>
@@ -41,7 +41,7 @@ const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemove
         }
         {isEditable &&
           <div className={styles.controls}>
-            <div className={styles.controlIcon} onClick={() => onFieldClick(field)}>
+            <div className={styles.controlIcon}>
               <InlineSVG className={styles.edit}
                         src={require("assets/images/icon-edit.svg")}/>
             </div>
@@ -289,7 +289,7 @@ export default class Model extends Component {
     return (
       <ContainerComponent hasTitle2={true}
                           titles={titles}
-                          title='Models'>
+                          title={`Models${this.model.name ? ` / ${this.model.name}` : ''}`}>
         {content}
       </ContainerComponent>
     );

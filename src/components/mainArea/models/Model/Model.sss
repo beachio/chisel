@@ -37,13 +37,14 @@
     align-items: center
     position: relative
     padding: 16px
+    cursor: pointer
 
     &:nth-child(2n)
       background: #FCFCFC
 
     &:hover
-      .hiddenControls
-        opacity: 0.999
+      .controlIcon
+        opacity: 1
 
     &Pointer
       cursor: pointer
@@ -112,10 +113,14 @@
   margin-left: 20px
   height: 18px
   width: 18px
+  opacity: 0
+  transition: opacity .2s ease
+
 
   .cross
     cursor: pointer
 
   .edit
     cursor: pointer
+    display: none
 

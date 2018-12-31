@@ -10,7 +10,7 @@ import styles from './ContainerComponent.sss';
 export default class ContainerComponent extends Component {
   render() {
     const {haveTitle2, title, titles, children, onClickBack, onClickRLink, rLinkTitle, backgroundOffset, showLoader} = this.props;
-    
+
     let headerStyles = 'header';
     if (haveTitle2)
       headerStyles = 'header header-double';

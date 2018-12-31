@@ -19,8 +19,13 @@
     position: relative
     background: #fff
     padding: 16px
+    cursor: pointer
 
     z-index: 5
+
+    &:hover
+      .remove
+        opacity: 1
 
     &:nth-child(2n)
       background: #FCFCFC
@@ -35,6 +40,7 @@
       left: -25px
       top: 50%
       transform: translateY(-50%)
+      
 
     .type
       flex: 1 1 auto
@@ -116,7 +122,9 @@
   margin-left: auto
 
 .remove
+  opacity: 0
   margin-left: 20px
+  transition: opacity .2s ease
 
   .cross
     height: 18px

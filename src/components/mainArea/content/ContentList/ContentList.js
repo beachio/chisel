@@ -257,14 +257,28 @@ export default class ContentList extends Component {
                         updatedDate = new Date();
                       const updatedStr = getRelativeTime(updatedDate);
 
-                      const colorStyle = {background: '#D1BE9C'};
+                      const colorStyle = {
+                        Draft: {
+                          background: '#dcc191'
+                        },
+                        Published: {
+                          background: '#297AD6'
+                        },
+                        Updated: {
+                          background: '#B1560F'
+                        },
+                        Archived: {
+                          background: '#AFAFAF'
+                        }
+                      };
                       const key = item.origin && item.origin.id  ?  item.origin.id  :  Math.random();
-    
                       return(
-                        <div styleName="list-item"
-                            key={key}
-                            >
-                          <div styleName="colorLabel" style={colorStyle}></div>
+                        <div 
+                          styleName={`list-item`}
+                          key={key}
+                          onClick={() => this.onItemClick(item)}
+                        >
+                          <div styleName="colorLabel" style={colorStyle[item.status]}></div>
                           <div styleName="type">
                             {
                               title ?
@@ -278,7 +292,7 @@ export default class ContentList extends Component {
                           {
                             isEditable &&
                             <div styleName="controls">
-                              <div styleName="control-icon" onClick={() => this.onItemClick(item)}>
+                              <div styleName="control-icon edit">
                                 <InlineSVG styleName="cross"
                                           src={require("assets/images/icon-edit.svg")}/>
                               </div>

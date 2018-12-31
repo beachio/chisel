@@ -43,7 +43,7 @@
     flex-flow: row nowrap
     align-items: center
     position: relative
-
+    cursor: pointer
     background: #fff
     padding: 16px
 
@@ -53,8 +53,8 @@
       background: #FCFCFC
   
     &:hover
-      .hidden-controls
-        opacity: 0.999
+      .remove
+        opacity: 1
 
     .colorLabel
       margin-right: 10px
@@ -160,10 +160,14 @@
 
 .remove
   margin-left: 20px
+  opacity: 0
 
   .cross
     height: 18px
     width: 18px
+
+.edit
+  display: none
 
 .control-icon
   width: 18px
@@ -173,4 +177,3 @@
 .bottom-inputs
   padding-left: 40px
   width: 100%
-  
