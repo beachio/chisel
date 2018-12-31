@@ -118,7 +118,7 @@ export default class ModelsList extends Component {
     const {isEditable} = this.props;
 
     return (
-      <ContainerComponent title='Models / Posts' backgroundOffset={110}>
+      <ContainerComponent title='Models' backgroundOffset={110}>
         <div styleName="content">
           <div styleName="list">
             <FlipMove duration={250}
@@ -168,11 +168,9 @@ export default class ModelsList extends Component {
           </div>
           {isEditable &&
               <div styleName="input-wrapper" key="input!">
-                <div styleName="input-title">
-                  Add a New Field
-                </div>
-                <div>
+                <div styleName="input-wrapper-align">
                   <InputControl value={this.state.modelName}
+                                label="Add a New Content Type"
                                 placeholder=""
                                 onChange={this.onModelNameChange}
                                 onKeyDown={this.onKeyDown}
