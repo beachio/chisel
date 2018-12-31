@@ -258,16 +258,16 @@ export default class ContentList extends Component {
                       const updatedStr = getRelativeTime(updatedDate);
 
                       const colorStyle = {
-                        Draft: {
+                        [STATUS_DRAFT]: {
                           background: '#dcc191'
                         },
-                        Published: {
+                        [STATUS_PUBLISHED]: {
                           background: '#297AD6'
                         },
-                        Updated: {
+                        [STATUS_UPDATED]: {
                           background: '#B1560F'
                         },
-                        Archived: {
+                        [STATUS_ARCHIVED]: {
                           background: '#AFAFAF'
                         }
                       };
