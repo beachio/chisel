@@ -76,7 +76,8 @@ class _PayElement extends Component {
           </div>
         }
         <div styleName="button-wrapper">
-          <ButtonControl type="submit"
+          <ButtonControl color= "purple"
+                         type="submit"
                          value={payPlan ? "Subscribe" : "Add method"} />
         </div>
       </form>

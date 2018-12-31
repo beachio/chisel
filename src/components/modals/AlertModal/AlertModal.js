@@ -16,24 +16,24 @@ export default class AlertModal extends Component {
   state = {
     confirmString: null
   };
-  
+
   active = false;
   type = ALERT_TYPE_ALERT;
   confirmString = '';
   focusElm = null;
   focusBtn = null;
-  
-  
+
+
   constructor(props) {
     super(props);
-    
+
     this.confirmString = props.params.confirmString;
   }
-  
+
   componentDidMount() {
     this.active = true;
     document.addEventListener('keydown', this.onKeyDown);
-  
+
     if (this.focusElm)
       setTimeout(() => this.focusElm.focus(), 2);
     else if (this.focusBtn)
@@ -48,24 +48,24 @@ export default class AlertModal extends Component {
     if (!event)
       event = window.event;
     event.stopPropagation();
-    
+
     //Enter or Esc pressed
     if (event.keyCode == 13)
       setTimeout(this.onConfirm, 1);
     else if (event.keyCode == 27)
       setTimeout(this.close, 1);
   };
-  
+
   onChangeString = event => {
     let confirmString = event.target.value;
-    
+
     this.setState({confirmString});
   };
-  
+
   onConfirm = () => {
     if (!this.active)
       return;
-    
+
     if (this.type == ALERT_TYPE_CONFIRM) {
       if (this.confirmString == this.state.confirmString) {
         this.props.params.onConfirm();
@@ -118,7 +118,7 @@ export default class AlertModal extends Component {
             {
               this.type == ALERT_TYPE_ALERT &&
                 <div styleName="button">
-                  <ButtonControl color="green"
+                  <ButtonControl color="purple"
                                  value={btnOKText}
                                  DOMRef={btn => this.focusBtn = btn}
                                  onClick={this.close} />

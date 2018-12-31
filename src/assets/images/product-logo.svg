@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="174px" height="174px" viewBox="0 0 174 174" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Product Logo</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="62" cy="62" r="62"></circle>
+        <filter x="-35.1%" y="-27.8%" width="170.2%" height="170.2%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="9" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="13" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Authentication" transform="translate(-1038.000000, -302.000000)">
+            <g id="Login-Window" transform="translate(875.000000, 318.000000)">
+                <g id="Product-Logo" transform="translate(188.000000, 0.000000)">
+                    <g id="Product-Logo-Background" fill-rule="nonzero">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill-opacity="0.95" fill="#FFFFFF" xlink:href="#path-1"></use>
+                    </g>
+                    <circle fill="#8B5FBF" cx="62" cy="62" r="60"></circle>
+                    <path d="M80.2229759,54.2968614 L72.0411655,55.2130537 C70.7627576,50.1420358 66.9062272,47.6065268 62.2613453,47.6065268 C55.9758399,47.6065268 51.4161852,52.2940224 51.4161852,62.4786717 C51.4161852,72.6420143 55.9758399,77.2229759 62.2613453,77.2229759 C66.9062272,77.2229759 70.6562236,74.7300805 71.9346315,69.7869034 L80.1803623,70.7030957 C78.0283757,79.7158712 70.9971324,84.8295027 62.2613453,84.8295027 C51.1605036,84.8295027 43,76.5198515 43,62.4786717 C43,48.3735716 51.1605036,40 62.2613453,40 C70.9971324,40 78.0922961,45.1775519 80.2229759,54.2968614 Z" id="C" fill="#FFFFFF"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

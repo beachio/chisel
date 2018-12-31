@@ -298,28 +298,33 @@ export default class ContentEdit extends Component {
         {isEditable &&
           <div styleName="buttons-wrapper">
             <div styleName="button-publish">
-              <ButtonControl value="Delete"
+              <ButtonControl color="red"
+                            value="Delete"
                             disabled={this.item.status == STATUS_PUBLISHED || this.item.status == STATUS_UPDATED}
                             onClick={this.onDelete}/>
             </div>
             <div styleName="button-publish">
-              <ButtonControl value="Discard changes"
+              <ButtonControl color="black"
+                             value="Discard changes"
                              disabled={this.item.status != STATUS_UPDATED && !this.state.dirty}
                              onClick={this.onDiscard}/>
             </div>
             {this.item.status == STATUS_ARCHIVED ?
               <div styleName="button-publish">
-                <ButtonControl value="Restore from archive"
+                <ButtonControl color="black"
+                               value="Restore from archive"
                                onClick={this.onRestore}/>
               </div>
             :
               <div styleName="button-publish">
-                <ButtonControl value="Archive"
+                <ButtonControl color="black"
+                               value="Archive"
                                onClick={this.onArchive}/>
               </div>
             }
-            <div styleName="button-publish">
-              <ButtonControl value="Publish"
+            <div styleName="button-publish button-last">
+              <ButtonControl color="purple"
+                             value="Publish"
                              disabled={this.item.status == STATUS_PUBLISHED || this.item.status == STATUS_ARCHIVED || (this.state.errors && !this.state.dirty)}
                              onClick={this.onPublish}/>
             </div>

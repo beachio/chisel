@@ -3,6 +3,8 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 import {Helmet} from "react-helmet";
+import InlineSVG from 'svg-inline-react';
+import CheckboxControl from 'components/elements/CheckboxControl/CheckboxControl';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {login, register, restorePassword, resendVerEmail, resetStatus,
@@ -175,27 +177,42 @@ export class Sign extends Component  {
     });
   }
 
+
   render() {
-    this.elmEmail = <input styleName="input"
-                           type="text"
-                           autoFocus
-                           value={this.state.email}
-                           placeholder="Enter email"
-                           onChange={this.onEmailChange} />;
 
-    this.elmPassword = <input styleName="input"
-                              type="password"
-                              value={this.state.password}
-                              placeholder="Enter password"
-                              onChange={this.onPasswordChange} />;
+    this.elmEmail = <div styleName="input-wrapper">
+                      Email
+                      <input styleName="input"
+                             type="text"
+                             autoFocus
+                             value={this.state.email}
+                             onChange={this.onEmailChange} />
+                    </div>;
 
-    this.elmPasswordConfirm = <input styleName="input"
-                                     type="password"
-                                     value={this.state.passwordConfirm}
-                                     placeholder="Confirm password"
-                                     onChange={this.onPasswordConfirmChange} />;
+    this.elmPassword = <div styleName="input-wrapper">
+                          Password
+                          <input styleName="input"
+                                 type="password"
+                                 value={this.state.password}
+                                 onChange={this.onPasswordChange} />
+                        </div>
+    this.elmPasswordConfirm = <div styleName="input-wrapper">
+                                  Confirm Password
+                                  <input styleName="input"
+                                         type="password"
+                                         value={this.state.passwordConfirm}
+                                         onChange={this.onPasswordConfirmChange} />
+                              </div>
+
+    this.elmCheckbox = <div styleName="input-wrapper">
+                          <CheckboxControl title="Remember Me"
+                                            />
+                       </div>
 
     let content;
+    let bottomContent;
+    let title;
+    let icon;
 
     switch (this.state.mode) {
 
@@ -204,12 +221,18 @@ export class Sign extends Component  {
           <form styleName="form" onSubmit={this.onLogin}>
             {this.elmEmail}
             {this.elmPassword}
+            <div styleName="checkbox-wrapper">
+              {this.elmCheckbox}
+              <div styleName="forgot" onClick={() => this.setMode(MODE_FORGOT)}>
+                Forgot password?
+              </div>
+            </div>
 
             <div styleName="button">
-              <ButtonControl color="green"
+              <ButtonControl color="purple"
                              type="submit"
                              disabled={!this.getLoginAvail()}
-                             value="Log in" />
+                             value="Login" />
             </div>
 
             <div styleName="errors">
@@ -218,15 +241,32 @@ export class Sign extends Component  {
                   <div styleName="error">Wrong email or password!</div>
               }
             </div>
-
-            <div styleName="forgot" onClick={() => this.setMode(MODE_FORGOT)}>
-              Forgot password?
-            </div>
-            <div styleName="forgot" onClick={() => this.setMode(MODE_REG)}>
-              Registration
-            </div>
           </form>
         );
+        bottomContent = (
+          <div styleName="bottom-content">
+              No account? No problem!
+            <div styleName="button-wrapper">
+              <ButtonControl color="black"
+                type="submit"
+                value="Sign Up"
+                onClick={() => this.setMode(MODE_REG)}/>
+            </div>
+          </div>
+        )
+
+        title = (
+          <div styleName="title">
+              Welcome to Chisel <br />
+              A simple powerful headless CMS
+            </div>
+        );
+
+        icon = (
+          <InlineSVG
+            src={require("assets/images/product-logo.svg")}
+          />
+        )
         break;
 
       case MODE_REG:
@@ -249,12 +289,39 @@ export class Sign extends Component  {
                   <div styleName="error">This email is already in use!</div>
               }
             </div>
-
-            <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
-              Log in
-            </div>
           </form>
         );
+
+        bottomContent = (
+          <div styleName="bottom-content">
+            <div styleName="reg-info">
+              By clicking “Create Account”, you agree to our <br/>
+              <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+            </div>
+            <div styleName="reg-text">
+              Already have an account?
+            </div>
+            <div styleName="button-wrapper">
+              <ButtonControl color="black"
+                type="submit"
+                value="Log in"
+                onClick={() => this.setMode(MODE_LOGIN)}/>
+            </div>
+          </div>
+        )
+
+        title = (
+          <div styleName="title">
+            Create your new account <br/>
+            and get started with Chisel today.
+          </div>
+        );
+
+        icon = (
+          <InlineSVG
+            src={require("assets/images/product-logo-b.svg")}
+          />
+        )
         break;
 
       case MODE_REG_MAIL:
@@ -294,7 +361,7 @@ export class Sign extends Component  {
         content = (
           <form styleName="form" onSubmit={this.onRestore}>
             <div styleName="description">
-              Please, type your email, and we will send you a link to reset your password.
+              Enter your email address and we will send you a a link to reset your password.
             </div>
             {this.elmEmail}
             <div styleName="button">
@@ -347,16 +414,22 @@ export class Sign extends Component  {
     }
 
     return (
-      <div className='container'>
+      <div className='container registration-container'>
         <Helmet>
           <title>Sign in / Sign up - Chisel</title>
         </Helmet>
+        <div styleName="image">
+          <img src={require("assets/images/chisel_login_illustration.png")} />
+        </div>
         <div styleName="Sign">
-          <div styleName="logo">
-            <img src={require("assets/images/chisel-logo.png")} />
+          <div styleName="Sign-container">
+            <div styleName="logo">
+              {icon}
+            </div>
+            {title || 'Welcome'}
+            {content}
           </div>
-          <div styleName="title">Welcome to Chisel</div>
-          {content}
+          {bottomContent}
         </div>
       </div>
     );

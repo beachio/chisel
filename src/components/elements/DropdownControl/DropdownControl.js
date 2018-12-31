@@ -21,23 +21,23 @@ export default class DropdownControl extends Component {
 
   constructor(props) {
     super(props);
-    
+
     const {suggestionsList, suggest, current, disabled} = props;
     this.onSuggest = suggest;
     if (suggestionsList)
       this.suggestionsList = suggestionsList;
 
     this.state.disabled = disabled;
-  
+
     if (this.suggestionsList.indexOf(current) != -1 || current === undefined)
       this.state.suggestionValue = current;
   }
 
   componentWillReceiveProps(nextProps) {
     const {suggestionsList, current, disabled} = nextProps;
-    
+
     this.suggestionsList = suggestionsList;
-  
+
     if (suggestionsList.indexOf(current) != -1 || current === undefined)
       this.setState({suggestionValue: current, disabled});
     else
@@ -65,8 +65,8 @@ export default class DropdownControl extends Component {
   };
 
   render() {
-    const {label, type} = this.props;
-  
+    const {label, type, titled} = this.props;
+
     let value = this.state.suggestionValue;
     if (value == '')
       value = '(empty)';
@@ -77,9 +77,10 @@ export default class DropdownControl extends Component {
       return <InputControl label={label}
                            icon="lock"
                            value={value}
+                           titled
                            dropdown={true}
                            readOnly={true} />;
-      
+
     const wrapperClasses = classNames({
       'input-wrapper type-wrapper': true,
       'dropdown-big': type === 'big'
@@ -88,7 +89,7 @@ export default class DropdownControl extends Component {
     const inputClasses = classNames({
       'input': true,
       'suggestions-visible': this.state.suggestionsVisibility,
-      'empty': !this.state.suggestionValue
+      'empty': !this.state.suggestionValue,
     });
 
     const arrowClasses = classNames({
@@ -125,6 +126,7 @@ export default class DropdownControl extends Component {
           <input styleName={inputClasses}
                  value={value}
                  onClick={this.onSuggestionInputClick}
+                 titled
                  readOnly />
           <div styleName="suggestions">
             {suggestions}

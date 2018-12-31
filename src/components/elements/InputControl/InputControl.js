@@ -10,19 +10,19 @@ import styles from './InputControl.sss';
 export default class InputControl extends Component {
   render() {
     let {label, type, value, placeholder, onChange, readOnly, autoFocus, onKeyDown, onBlur, DOMRef, icon,
-      onIconClick, inputType, dropdown} = this.props;
-    
+      onIconClick, inputType, dropdown, titled} = this.props;
+
     if (readOnly || !onChange) {
       readOnly = true;
       onChange = null;
     }
-    
+
     if (value == undefined || value == null)
       value = ``;
-  
+
     if (!inputType)
       inputType = `text`;
-    
+
     let inputStyles = 'input';
     if (type === 'big')
       inputStyles = 'input-big';
@@ -30,6 +30,9 @@ export default class InputControl extends Component {
       inputStyles += ' input-readOnly';
     if (dropdown)
       inputStyles += ' input-disabled';
+    if (titled)
+      inputStyles += ' input-titled';
+
 
     let iconEl;
     if (icon)
@@ -37,7 +40,7 @@ export default class InputControl extends Component {
         <div onClick={onIconClick} styleName={'icon ' + icon}>
           <IconsComponent icon={icon} />
         </div>);
-  
+
     return (
       <div styleName="InputControl">
         <label styleName="label"> {label} </label>
@@ -53,6 +56,7 @@ export default class InputControl extends Component {
                  onBlur={onBlur}
                  onKeyDown={onKeyDown}
                  readOnly={readOnly}
+                 titled={titled}
                  ref={DOMRef} />
         </div>
       </div>

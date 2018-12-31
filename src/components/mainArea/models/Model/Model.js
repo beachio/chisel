@@ -41,10 +41,6 @@ const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemove
         }
         {isEditable &&
           <div className={styles.controls}>
-            <div className={styles.controlIcon}>
-              <InlineSVG className={styles.edit}
-                        src={require("assets/images/icon-edit.svg")}/>
-            </div>
             <div className={styles.controlIcon} onClick={event => onRemoveClick(event, field)}>
               <InlineSVG className={styles.cross}
                         src={require("assets/images/icon-delete.svg")}/>
@@ -78,7 +74,7 @@ export default class Model extends Component {
     fieldName: "",
     jsonVisibility: false
   };
-  
+
   model = null;
   activeInput = null;
   returnFocus = false;
@@ -86,7 +82,7 @@ export default class Model extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.model = props.model;
     this.state.fields = props.model.fields;
   }
@@ -97,7 +93,7 @@ export default class Model extends Component {
       if (this.titleActive) {
         this.titleActive = false;
         this.controlTitle.onEditClick();
-        
+
       } else if (this.activeInput && this.returnFocus) {
         this.returnFocus = false;
         setTimeout(() => this.activeInput.focus(), 1);
@@ -131,9 +127,9 @@ export default class Model extends Component {
 
     if (!this.state.fieldName)
       return;
-  
+
     this.returnFocus = true;
-    
+
     const name = removeOddSpaces(this.state.fieldName);
     let error = checkFieldName(name);
     if (error) {
@@ -141,7 +137,7 @@ export default class Model extends Component {
       showAlert(getAlertForNameError(error));
       return;
     }
-  
+
     let field = new ModelFieldData();
     field.model = this.model;
     field.name = name;
@@ -179,7 +175,7 @@ export default class Model extends Component {
   onFieldClick = field => {
     if (!this.props.isEditable)
       return;
-  
+
     this.returnFocus = true;
     this.props.showModal(MODAL_TYPE_FIELD, field);
   };
@@ -193,12 +189,12 @@ export default class Model extends Component {
   updateModelName = (name, callback, silent) => {
     if (name == this.model.name)
       return;
-      
+
     let error = checkModelName(name);
     if (!error) {
       this.model.name = name;
       this.props.updateModel(this.model);
-      
+
     } else if (error != NAME_ERROR_OTHER) {
       if (!silent) {
         this.returnFocus = true;
@@ -213,7 +209,7 @@ export default class Model extends Component {
   updateModelDescription = description => {
     if (description == this.model.description)
       return;
-  
+
     this.model.description = description;
     this.props.updateModel(this.model);
   };
@@ -238,7 +234,7 @@ export default class Model extends Component {
     let content;
     if (this.state.jsonVisibility) {
       content = <JSONView model={this.model} />;
-      
+
     } else {
       content = (
         <div styleName="model-wrapper">
@@ -253,20 +249,19 @@ export default class Model extends Component {
           </div>
           {isEditable &&
             <div styleName="input-wrapper">
-              <div styleName="input-title">
-                Add a New Content Type
-              </div>
               <InputControl placeholder=""
+                            label="Add a Field"
                             value={this.state.fieldName}
                             onKeyDown={this.onAddKeyDown}
                             onChange={this.onFieldNameChange}
                             DOMRef={c => this.activeInput = c}
                             icon="plus"
+                            titled
                             autoFocus
                             onIconClick={this.onAddField} />
             </div>
             }
-        </div> 
+        </div>
       );
     }
 
@@ -289,7 +284,10 @@ export default class Model extends Component {
     return (
       <ContainerComponent hasTitle2={true}
                           titles={titles}
-                          title={`Models${this.model.name ? ` / ${this.model.name}` : ''}`}>
+                          title={`Models${this.model.name ? ` / ${this.model.name}` : ''}`}
+                          onClickRlink={this.onJSONClick}
+                          rLinkTitle={this.state.jsonVisibility ? 'Fields' : 'JSON'}
+                          onClickBack={this.onClickBack}>
         {content}
       </ContainerComponent>
     );

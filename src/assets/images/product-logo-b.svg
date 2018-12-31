@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="174px" height="174px" viewBox="0 0 174 174" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Product Logo</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="62" cy="62" r="62"></circle>
+        <filter x="-35.1%" y="-27.8%" width="170.2%" height="170.2%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="9" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="13" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Register" transform="translate(-1038.000000, -285.000000)">
+            <g id="Login-Window" transform="translate(875.000000, 301.000000)">
+                <g id="Product-Logo" transform="translate(188.000000, 0.000000)">
+                    <g id="Product-Logo-Background" fill-rule="nonzero">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill-opacity="0.95" fill="#FFFFFF" xlink:href="#path-1"></use>
+                    </g>
+                    <circle fill="#8B5FBF" cx="62" cy="62" r="60"></circle>
+                    <path d="M63.2158927,83.636322 L46,83.636322 L46,40 L62.022712,40 C72.1221342,40 76.9587773,45.0284043 76.9587773,51.8252728 C76.9587773,56.9175975 74.1249732,59.8579356 69.4800912,60.9445823 L69.4800912,61.3067979 C74.2954276,61.8607746 78.0880376,65.8451458 78.0880376,71.8749696 C78.0880376,78.7783721 73.1235537,83.636322 63.2158927,83.636322 Z M54.4161852,47.0738569 L54.4161852,58.4729937 L61.3835081,58.4729937 C66.1562308,58.4729937 68.6917397,56.4914615 68.6917397,52.7414651 C68.6917397,49.7158998 67.0085027,47.0738569 61.8309508,47.0738569 L54.4161852,47.0738569 Z M69.8636136,70.9374705 C69.8636136,67.507076 67.6263998,64.5880447 63.0241315,64.5880447 L54.4161852,64.5880447 L54.4161852,76.5624651 L62.7045295,76.5624651 C67.7968542,76.5624651 69.8636136,74.3252514 69.8636136,70.9374705 Z" id="B" fill="#FFFFFF"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

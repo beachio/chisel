@@ -48,10 +48,11 @@
     padding: 16px
 
     z-index: 5
+    cursor: pointer
 
     &:nth-child(2n)
       background: #FCFCFC
-  
+
     &:hover
       .remove
         opacity: 1
@@ -60,6 +61,7 @@
       margin-right: 10px
       height: 20px
       width: 20px
+      min-width: 20px
       border-radius: 100%
 
     .type
@@ -77,9 +79,10 @@
       text-align: left
 
     .name
-      max-width: 300px
+      min-width: 450px
+      max-width: 600px
       width: 100%
-      
+
       &.untitled
         font-weight: 400
 
@@ -90,11 +93,12 @@
 
     .updated
       flex: 0 1 auto
+      margin-left: 10%
 
 .items
   background: #ffffff
   border-radius: 20px
-  box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.05)
+  box-shadow: 0 1px 0 0 rgba(0,0,0,0.1), 0 1px 10px 0 rgba(0,0,0,0.05)
   overflow: hidden
 
   margin-left: 40px

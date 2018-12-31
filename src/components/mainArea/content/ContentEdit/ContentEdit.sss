@@ -5,9 +5,10 @@
 
   width: 100%
 
-.content-name 
+.content-name
   font-size: 15px
   color: #2C2C30
+  font-weight: 700
 
 .content-header
   display: flex
@@ -152,9 +153,13 @@
   margin-top: 50px
   display: flex
   flex-flow: row nowrap
+  width: 100%
 
   .button-publish
     margin-right: 15px
+
+  .button-last
+    margin-left: auto
 
 .loader-wrapper
   margin-bottom: 20px
@@ -315,12 +320,13 @@
     //padding-left: 57px
 
 .wysiwig
-  border-bottom: 1px dashed #CCCCCC
   max-height: 250px
   overflow: scroll
-
-  &:focus
-    border-bottom: 1px #5CA6DC solid
+  background: #FFFFFF
+  border: 1px solid rgba(0,0,0,0.05)
+  box-shadow: inset 0 1px 5px 0 rgba(0,0,0,0.05)
+  border-radius: 20px
+  padding: 8px 16px
 
 .markdown
   height: 250px
@@ -344,4 +350,3 @@
 
   .dropdown
     flex-grow: 1
-

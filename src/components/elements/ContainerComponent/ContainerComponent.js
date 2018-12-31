@@ -9,7 +9,7 @@ import styles from './ContainerComponent.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class ContainerComponent extends Component {
   render() {
-    const {haveTitle2, title, titles, children, onClickBack, onClickRLink, rLinkTitle, backgroundOffset, showLoader} = this.props;
+    const {haveTitle2, title, titles, children, onClickBack, onClickRlink, rLinkTitle, backgroundOffset, showLoader} = this.props;
 
     let headerStyles = 'header';
     if (haveTitle2)
@@ -22,7 +22,6 @@ export default class ContainerComponent extends Component {
     let backStyle = {};
     if (backgroundOffset)
       backStyle = {height: `calc(100% - ${backgroundOffset}px)`};
-
     return (
       <div styleName='ContainerComponent'>
         {showLoader &&
@@ -40,8 +39,8 @@ export default class ContainerComponent extends Component {
           }
           {titlesCmp}
           {
-            rLinkTitle && onClickRLink &&
-              <div styleName="json-fields" onClick={onClickRLink}>
+            rLinkTitle && onClickRlink &&
+              <div styleName="json-fields" onClick={onClickRlink}>
                 {rLinkTitle}
               </div>
           }

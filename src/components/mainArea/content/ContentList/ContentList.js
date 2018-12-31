@@ -34,7 +34,7 @@ export default class ContentList extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state.items = props.items;
     this.state.currentModel = props.models[0];
   }
@@ -62,7 +62,7 @@ export default class ContentList extends Component {
   onNewKeyDown = event => {
     if (this.props.alertShowing)
       return;
-    
+
     //Enter pressed
     if (event.keyCode == 13) {
       this.onAddItem();
@@ -76,7 +76,7 @@ export default class ContentList extends Component {
     const searchText = event.target.value;
     this.setState({searchText});
   };
-  
+
   onSearchClear = () => {
     this.setState({searchText: ''});
     this.searchInput.focus();
@@ -94,13 +94,13 @@ export default class ContentList extends Component {
   onAddItem = event => {
     if (event)
       event.preventDefault();
-  
+
     this.returnFocus = true;
 
     let item = new ContentItemData();
     item.model = this.state.currentModel;
     item.title = this.state.itemTitle;
-  
+
     let titleField = this.state.currentModel.getTitle();
     if (titleField && titleField.isUnique) {
       if (checkUniqueFieldValue(titleField, item)) {
@@ -111,7 +111,7 @@ export default class ContentList extends Component {
         return;
       }
     }
-    
+
     this.props.addItem(item);
     this.setState({itemTitle: ""});
   };
@@ -128,10 +128,10 @@ export default class ContentList extends Component {
   onStatusClick = status => {
     this.props.filterStatus(status);
   };
-  
+
   onRemoveClick = (event, item) => {
     event.stopPropagation();
-    
+
     const {showAlert, deleteItem} = this.props;
     const title = item.title ? item.title : 'content item';
 
@@ -140,14 +140,14 @@ export default class ContentList extends Component {
       params = {
         type: ALERT_TYPE_CONFIRM,
         title: `Deleting <strong>${title}</strong>`,
-        description: "Are you sure?",
+        description: "Are you sure that you'd like to delete this?",
         onConfirm: () => deleteItem(item)
       };
     else
       params = {
         type: ALERT_TYPE_ALERT,
         title: `Deleting <strong>${title}</strong>`,
-        description: "Please, archive item before delete it."
+        description: "Please archive the item before deleting it"
       };
     showAlert(params);
     this.returnFocus = true;
@@ -155,7 +155,7 @@ export default class ContentList extends Component {
 
   render() {
     const {isEditable, models, filteredModels, filteredStatuses} = this.props;
-  
+
     const eyeDisabled = <img styleName="eye" src={require("./eye-gray.png")} />;
     const eyeEnabled = <img styleName="eye eye-active" src={require("./eye.png")} />;
 
@@ -212,7 +212,7 @@ export default class ContentList extends Component {
                     eye = eyeEnabled;
                     styleName = "filters-type";
                   }
-      
+
                   return(
                     <div styleName={styleName} key={status} onClick={() => this.onStatusClick(status)}>
                       {status}
@@ -223,7 +223,7 @@ export default class ContentList extends Component {
               }
             </div>
           </div>
-          
+
           <div styleName="list-wrapper">
             <div styleName="list">
               <div styleName="inputs-wrapper search">
@@ -247,11 +247,11 @@ export default class ContentList extends Component {
                           leaveAnimation="accordionVertical"
                           maintainContainerHeight
                           easing="ease-out">
-    
+
                   {visibleItems
                     .map(item => {
                       const title = item.draft ? item.draft.title : item.title;
-                      
+
                       let updatedDate = item.draft ? item.draft.origin.updatedAt : item.origin.updatedAt;
                       if (!updatedDate)
                         updatedDate = new Date();
@@ -327,7 +327,7 @@ export default class ContentList extends Component {
                 </div>
               }
             </div>
-            
+
           </div>
         </div>
       </ContainerComponent>
