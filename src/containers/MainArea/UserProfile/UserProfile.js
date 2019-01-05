@@ -286,6 +286,7 @@ export class UserProfile extends Component  {
                   <div styleName="field-title">First Name</div>
                   <div styleName="input-wrapper">
                     <InputControl type="big"
+                                  titled
                                   value={this.state.firstName}
                                   onChange={this.onChangeFirstName} />
                   </div>
@@ -294,6 +295,7 @@ export class UserProfile extends Component  {
                   <div styleName="field-title">Last Name</div>
                   <div styleName="input-wrapper">
                     <InputControl type="big"
+                                  titled
                                   value={this.state.lastName}
                                   onChange={this.onChangeLastName} />
                 </div>
@@ -302,6 +304,7 @@ export class UserProfile extends Component  {
               <div styleName="buttons-wrapper">
                 <ButtonControl color="purple"
                                type="submit"
+                               titled
                                disabled={!this.state.dirtyData || this.state.errorData}
                                value="Update personal data"/>
               </div>
@@ -320,6 +323,7 @@ export class UserProfile extends Component  {
                 <div styleName="input-wrapper">
                   <InputControl type="big"
                                 value={this.state.emailNew}
+                                titled
                                 onChange={this.onChangeEmail} />
                 </div>
               </div>
@@ -351,6 +355,7 @@ export class UserProfile extends Component  {
                 <div styleName="input-wrapper">
                   <InputControl type="big"
                                 inputType="password"
+                                titled
                                 value={this.state.passwordOld}
                                 onChange={this.onChangePasswordOld} />
                 </div>
@@ -360,6 +365,7 @@ export class UserProfile extends Component  {
                 <div styleName="input-wrapper">
                   <InputControl type="big"
                                 inputType="password"
+                                titled
                                 value={this.state.password}
                                 onChange={this.onChangePassword} />
                 </div>
@@ -369,6 +375,7 @@ export class UserProfile extends Component  {
                 <div styleName="input-wrapper">
                   <InputControl type="big"
                                 inputType="password"
+                                titled
                                 value={this.state.passwordConfirm}
                                 onChange={this.onChangePasswordConfirm} />
                 </div>

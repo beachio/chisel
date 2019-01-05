@@ -35,14 +35,10 @@ export default class User extends Component {
           <div styleName="profile">
             <div styleName="avatar-name">{name}</div>
 
-            <Link
-              activeClassName={styles.activeBla}
-              to={`/${URL_USERSPACE}/${URL_PROFILE}/`}
-            >
+            
               <div styleName="avatar">
                 <Gravatar email={userData.email} styleName="gravatar"/>
               </div>
-            </Link>
           </div>
 
           <div styleName="arrow">
@@ -53,9 +49,18 @@ export default class User extends Component {
         {
           this.state.isAccountOpened && 
             <div styleName="submenu">
+              <Link
+                  activeClassName={styles.activeBla}
+                  to={`/${URL_USERSPACE}/${URL_PROFILE}/`}
+                >
+                <div styleName="logout">
+                  <InlineSVG styleName="logout-icon" src={require("./avatar.svg")} />
+                  Profile
+                </div>
+              </Link>
               <div styleName="logout" onClick={logoutHandler}>
-                Log out
                 <InlineSVG styleName="logout-icon" src={require("./logout.svg")} />
+                Log out
               </div>
             </div>
         }
