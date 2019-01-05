@@ -371,7 +371,7 @@ export default class FieldModal extends Component {
         content = (
           <CSSTransition
             key={TAB_SETTINGS}
-            timeout={500}
+            timeout={300}
             classNames="fade"
           >
             <div>
@@ -498,7 +498,7 @@ export default class FieldModal extends Component {
         content = (
           <CSSTransition
             key={TAB_APPEARANCE}
-            timeout={500}
+            timeout={300}
             classNames="fade"
           >
             <div>
@@ -590,7 +590,7 @@ export default class FieldModal extends Component {
         content = (
           <CSSTransition
             key={TAB_VALIDATIONS}
-            timeout={500}
+            timeout={300}
             classNames="fade"
           >
 
