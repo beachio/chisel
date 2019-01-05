@@ -8,12 +8,12 @@ export let config = {
   RESTkey: `AMMaWJMu4u6hSANZfbBFZHLhU83DWOXHXPVnPHJE`,
 
   // Dev env
-  // serverURL: "https://chisel-parse-server.herokuapp.com/parse",
-  // appId: 'SampleAppId',
+  serverURL: "https://chisel-parse-server.herokuapp.com/parse",
+  appId: 'SampleAppId',
 
   // Prod env
-  serverURL: "http://dockerhost.forge-parse-server.c66.me:99/parse",
-  appId: "7d52447901ab6b8b91e3f2e846256184",
+  // serverURL: "http://dockerhost.forge-parse-server.c66.me:99/parse",
+  // appId: "7d52447901ab6b8b91e3f2e846256184",
 };
 
 export const FILE_SIZE_MAX = 10 * 1024 * 1024;

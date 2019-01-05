@@ -55,10 +55,12 @@ export default class DynamicListComponent extends Component {
     let valuesLeft = values.slice(0, i + 1);
     let valuesRight = values.slice(i + 1);
     values = valuesLeft.concat('', valuesRight);
-    this.setState(
-      {values},
-      () => this.inputs[i + 1].focus()
-    );
+
+    // this.setState(
+    //   {values},
+    //   () => this.inputs[i + 1].focus()
+    // );
+
     this.props.onChange(values);
   };
   
@@ -88,7 +90,7 @@ export default class DynamicListComponent extends Component {
   }
   
   render() {
-    const {disableEmpty, readOnly, numeric, numericInt} = this.props;
+    const {disableEmpty, readOnly, numeric, numericInt, titled} = this.props;
     
     let values = disableEmpty ? [''] : [];
     if (this.state.values.length)
@@ -106,6 +108,7 @@ export default class DynamicListComponent extends Component {
                                       isInt={numericInt}
                                       value={values[i]}
                                       readOnly={readOnly}
+                                      titled={titled}
                                       onChange={v => this.onChange(v, i)}
                                       DOMRef={inp => this.inputs[i] = inp}
                                       onKeyDown={e => this.onKeyDown(e, i)}/>;
@@ -113,6 +116,7 @@ export default class DynamicListComponent extends Component {
           input = <InputControl type="big"
                                 value={values[i]}
                                 readOnly={readOnly}
+                                titled={titled}
                                 DOMRef={inp => this.inputs[i] = inp}
                                 onChange={e => this.onChange(e.target.value, i)}
                                 onKeyDown={e => this.onKeyDown(e, i)}/>;

@@ -20,6 +20,8 @@ import * as ftps from 'models/ModelData';
 
 import styles from './FieldModal.sss';
 
+import CSSTransition from 'react-transition-group/CSSTransition';
+
 
 const TAB_SETTINGS = 'TAB_SETTINGS';
 const TAB_APPEARANCE = 'TAB_APPEARANCE';
@@ -612,7 +614,12 @@ export default class FieldModal extends Component {
           </div>
           <div styleName="content">
             <form>
-              {content}
+              <CSSTransition
+                classNames="popupTabContent"
+                timeout={500}
+              >
+                {content}
+              </CSSTransition>
               <div styleName="input-wrapper buttons-wrapper">
                 <div styleName="buttons-inner">
                   <ButtonControl color="black"

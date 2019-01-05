@@ -236,10 +236,12 @@ export default class ContentString extends ContentBase {
             if (this.field.isList) {
               inner = <DynamicListComponent values={value}
                                             onChange={this.onChangeList}
+                                            titled={this.field.name ? true : false}
                                             readOnly={!this.state.isEditable} />;
             } else {
               inner = <InputControl type="big"
                                     value={value}
+                                    titled={this.field.name ? true : false}
                                     readOnly={!this.state.isEditable}
                                     onChange={this.onChange} />;
             }
@@ -255,6 +257,7 @@ export default class ContentString extends ContentBase {
               <div styleName="input-wrapper">
                 <InputControl type="big"
                               value={value}
+                              titled={this.field.name ? true : false}
                               readOnly={!this.state.isEditable}
                               onChange={this.onChange} />
               </div>
@@ -266,6 +269,7 @@ export default class ContentString extends ContentBase {
                 <InputControl type="big"
                               value={value}
                               readOnly={!this.state.isEditable}
+                              titled={this.field.name ? true : false}
                               onChange={this.onChange} />
               </div>
             );
@@ -276,6 +280,7 @@ export default class ContentString extends ContentBase {
                 <div styleName="dropdown">
                   <DropdownControl disabled={!this.state.isEditable}
                                    suggestionsList={this.field.validValues}
+                                   titled={this.field.name ? true : false}
                                    suggest={_v => this.onChangeDropdown(_v, i)}
                                    current={v}/>
                 </div>

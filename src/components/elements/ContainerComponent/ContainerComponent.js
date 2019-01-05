@@ -18,10 +18,11 @@ export default class ContainerComponent extends Component {
     let titlesCmp = titles;
     if (title)
       titlesCmp = <div styleName="title">{title}</div>;
-
     let backStyle = {};
     if (backgroundOffset)
       backStyle = {height: `calc(100% - ${backgroundOffset}px)`};
+    
+    
     return (
       <div styleName='ContainerComponent'>
         {showLoader &&
@@ -31,12 +32,6 @@ export default class ContainerComponent extends Component {
         }
         {/* <div styleName="background" style={backStyle}></div> */}
         <div styleName={headerStyles}>
-          {
-            onClickBack &&
-              <div styleName='back' onClick={onClickBack}>
-                Back
-              </div>
-          }
           {titlesCmp}
           {
             rLinkTitle && onClickRlink &&

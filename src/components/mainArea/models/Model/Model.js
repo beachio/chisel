@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
+import { browserHistory } from 'react-router';
 
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
@@ -14,7 +15,6 @@ import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal
 import {ModelFieldData} from 'models/ModelData';
 
 import styles from './Model.sss';
-
 
 const DragHandle = SortableHandle(({color}) =>
   (<div className={styles.listItemColor} style={{background: color}}></div>)
@@ -186,6 +186,19 @@ export default class Model extends Component {
     });
   };
 
+  onClickBack = () => {
+    browserHistory.goBack()
+  }
+
+  renderTitle() {
+    if (this.model.name) {
+      return (
+        <span><span styleName="back-link" onClick={this.onClickBack}>Models</span> / {this.model.name}</span>
+      )
+    }
+    else return 'Modeles'
+  }
+
   updateModelName = (name, callback, silent) => {
     if (name == this.model.name)
       return;
@@ -284,7 +297,7 @@ export default class Model extends Component {
     return (
       <ContainerComponent hasTitle2={true}
                           titles={titles}
-                          title={`Models${this.model.name ? ` / ${this.model.name}` : ''}`}
+                          title={this.renderTitle()}
                           onClickRlink={this.onJSONClick}
                           rLinkTitle={this.state.jsonVisibility ? 'Fields' : 'JSON'}
                           onClickBack={this.onClickBack}>

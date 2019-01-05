@@ -197,36 +197,40 @@ export default class Settings extends Component {
       <ContainerComponent title={`${this.state.name} settings`}>
         <form styleName="content" onSubmit={this.onSave}>
           <div styleName="field">
-            <div styleName="field-title">Site Name</div>
             <div styleName="input-wrapper">
               <InputControl type="big"
                             value={this.state.name}
+                            label="Site Name"
+                            titled
                             readOnly={!isEditable}
                             onChange={this.onChangeName} />
             </div>
           </div>
           <div styleName="field">
-            <div styleName="field-title">Site Domain URL</div>
             <div styleName="input-wrapper">
               <InputControl type="big"
                             value={this.state.domain}
+                            label="Site Domain URL"
+                            titled
                             readOnly={!isEditable}
                             onChange={this.onChangeDomain} />
             </div>
           </div>
           <div styleName="field">
-            <div styleName="field-title">Webhook URL</div>
             <div styleName="input-wrapper">
               <InputControl type="big"
                             value={this.state.webhook}
+                            titled
+                            label="Webhook URL"
                             readOnly={!isEditable}
                             onChange={this.onChangeWebhook} />
             </div>
           </div>
           <div styleName="field">
-            <div styleName="field-title">Site ID</div>
             <div styleName="input-wrapper">
               <InputControl type="big"
+                            titled
+                            label="Site ID"
                             value={this.site.origin.id}
                             readOnly={true} />
             </div>

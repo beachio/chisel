@@ -152,8 +152,8 @@ export default class ContentNumber extends ContentBase {
                             onChange={this.onChangeRating}
                             size={32}
                             edit={this.state.isEditable}
-                            color1={'#F5F5F5'}
-                            color2={'#5CA6DC'} />
+                            color1={'#87878d'}
+                            color2={'#8a5ebe'} />
                 {this.state.isEditable &&
                   <div styleName="clear"
                        onClick={() => this.setValue(undefined)}>
