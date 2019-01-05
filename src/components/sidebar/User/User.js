@@ -31,7 +31,7 @@ export default class User extends Component {
 
     return (
       <div styleName="wrapper">
-        <div styleName="user" onClick={this.toggleAccountMenu}>
+        <div styleName={`user ${this.state.isAccountOpened ? 'user-active' : ''}`} onClick={this.toggleAccountMenu}>
           <div styleName="profile">
             <div styleName="avatar-name">{name}</div>
 

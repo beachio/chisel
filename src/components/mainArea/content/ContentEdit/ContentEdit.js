@@ -15,6 +15,7 @@ import ContentBoolean from './elements/ContentBoolean';
 import ContentDate from './elements/ContentDate';
 import ContentReference from './elements/ContentReference';
 import ContentMedia from './elements/ContentMedia';
+import { browserHistory } from 'react-router';
 
 import styles from './ContentEdit.sss';
 
@@ -89,6 +90,19 @@ export default class ContentEdit extends Component {
   saveItem() {
     this.props.updateItem(this.item);
   }
+
+  goBack() {
+    browserHistory.goBack()
+  }
+
+  renderTitle = () => {
+    return (
+      <span>
+        <span styleName="back-link" onClick={this.goBack}>Content</span>
+        <span> / {this.state.title || 'Untitled'}</span>
+      </span>
+    )
+  };
 
   onClose = () => {
     this.props.onClose();
@@ -352,7 +366,7 @@ export default class ContentEdit extends Component {
 
     return (
       <ContainerComponent hasTitle2={true}
-                          title={this.state.title}
+                          title={this.renderTitle()}
                           >
         {content}
       </ContainerComponent>

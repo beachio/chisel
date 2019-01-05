@@ -252,7 +252,13 @@ export default class Model extends Component {
       content = (
         <div styleName="model-wrapper">
           <div styleName="list">
-            <div styleName="head">Name</div>
+            <div styleName="head">
+              <div styleName="listItemText">
+                <div styleName="listItemName">Name</div>
+                <div styleName="listItemType">Type</div>
+              </div>
+            </div>
+
             <SortableList onSortEnd={this.onSortEnd}
                           useDragHandle={true}
                           fields={this.state.fields}

@@ -171,7 +171,6 @@ export default class ContentList extends Component {
           const title = item.draft ? item.draft.title : item.title;
           return title && title.toLowerCase().indexOf(sText.toLowerCase()) != -1;
         });
-
     return (
       <ContainerComponent title="Content">
         <div styleName="content-wrapper">
