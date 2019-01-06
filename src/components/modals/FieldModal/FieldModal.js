@@ -99,6 +99,10 @@ export default class FieldModal extends Component {
     this.active = true;
     document.addEventListener('keydown', this.onKeyDown);
 
+    if (this.initialTab) {
+      this.calcCaretPos(this.initialTab)
+    }
+
     if (this.focusElm)
       setTimeout(() => this.focusElm.focus(), 2);
   }
@@ -356,6 +360,24 @@ export default class FieldModal extends Component {
     this.setState({validValues});
   };
 
+  tabClickHandler = (e, tab) => {
+    this.setState({tab})
+    this.calcCaretPos(e.target)
+  }
+
+  calcCaretPos = (input) => {
+    const caret = this.caretRef
+    console.log('calc caret pos', input, caret)
+
+    if (input && caret) {
+      const l = input.offsetLeft
+      const w = input.offsetWidth
+      caret.style = `opacity: 1; transform: translateX(${l}px); width: ${w}px;`
+    }
+    else {
+      caret.style = 'opacity: 0'
+    }
+  }
 
   render() {
     let headName = this.state.name.length ? this.state.name : '?';
@@ -369,64 +391,58 @@ export default class FieldModal extends Component {
         tabSettStyle += ' active';
 
         content = (
-          <CSSTransition
-            key={TAB_SETTINGS}
-            timeout={300}
-            classNames="fade"
-          >
-            <div>
-              <div styleName="input-wrapper">
-                <InputControl label="Title"
-                              placeholder="Main Title"
-                              DOMRef={inp => this.focusElm = inp}
-                              onChange={this.onChangeName}
-                              titled
-                              value={this.state.name} />
-              </div>
-
-              {this.state.errorName &&
-                <div styleName="error-same-name">This name is already in use.</div>
-              }
-
-              <div styleName="input-wrapper">
-                <InputControl label="Field ID"
-                              icon="lock"
-                              value={this.state.nameId}
-                              titled
-                              readOnly={true} />
-              </div>
-
-              <div styleName="input-wrapper">
-                <DropdownControl label="Type"
-                                disabled={this.updating || this.state.isTitle}
-                                suggestionsList={this.typeList}
-                                suggest={this.onChangeType}
-                                titled
-                                current={this.state.type} />
-              </div>
-
-              <div styleName="input-wrapper">
-                <SwitchControl label="List (keeping multiple values instead of one)"
-                              checked={this.state.isList}
-                              onChange={this.onChangeIsList}
-                              disabled={!canBeList(this.state) || this.updating} />
-              </div>
-
-              <div styleName="input-wrapper">
-                <SwitchControl label="Entry Title"
-                              checked={this.state.isTitle}
-                              onChange={this.onChangeIsTitle}
-                              disabled={!canBeTitle(this.state)} />
-              </div>
-
-              <div styleName="input-wrapper">
-                <SwitchControl label="Disabled"
-                              checked={this.state.isDisabled}
-                              onChange={this.onChangeIsDisabled}
-                              disabled={this.state.isTitle} />
-              </div>
+          <div>
+            <div styleName="input-wrapper">
+              <InputControl label="Title"
+                            placeholder="Main Title"
+                            DOMRef={inp => this.focusElm = inp}
+                            onChange={this.onChangeName}
+                            titled
+                            value={this.state.name} />
             </div>
-          </CSSTransition>
+
+            {this.state.errorName &&
+              <div styleName="error-same-name">This name is already in use.</div>
+            }
+
+            <div styleName="input-wrapper">
+              <InputControl label="Field ID"
+                            icon="lock"
+                            value={this.state.nameId}
+                            titled
+                            readOnly={true} />
+            </div>
+
+            <div styleName="input-wrapper">
+              <DropdownControl label="Type"
+                              disabled={this.updating || this.state.isTitle}
+                              suggestionsList={this.typeList}
+                              suggest={this.onChangeType}
+                              titled
+                              current={this.state.type} />
+            </div>
+
+            <div styleName="input-wrapper">
+              <SwitchControl label="List (keeping multiple values instead of one)"
+                            checked={this.state.isList}
+                            onChange={this.onChangeIsList}
+                            disabled={!canBeList(this.state) || this.updating} />
+            </div>
+
+            <div styleName="input-wrapper">
+              <SwitchControl label="Entry Title"
+                            checked={this.state.isTitle}
+                            onChange={this.onChangeIsTitle}
+                            disabled={!canBeTitle(this.state)} />
+            </div>
+
+            <div styleName="input-wrapper">
+              <SwitchControl label="Disabled"
+                            checked={this.state.isDisabled}
+                            onChange={this.onChangeIsDisabled}
+                            disabled={this.state.isTitle} />
+            </div>
+          </div>
         );
 
         break;
@@ -496,22 +512,16 @@ export default class FieldModal extends Component {
         }
 
         content = (
-          <CSSTransition
-            key={TAB_APPEARANCE}
-            timeout={300}
-            classNames="fade"
-          >
-            <div>
-              <div styleName="input-wrapper">
-                <DropdownControl label="Appearance"
-                                disabled={this.state.isTitle}
-                                suggestionsList={this.state.appList}
-                                suggest={this.onChangeAppearance}
-                                current={this.state.appearance} />
-              </div>
-              {inner}
+          <div>
+            <div styleName="input-wrapper">
+              <DropdownControl label="Appearance"
+                              disabled={this.state.isTitle}
+                              suggestionsList={this.state.appList}
+                              suggest={this.onChangeAppearance}
+                              current={this.state.appearance} />
             </div>
-          </CSSTransition>
+            {inner}
+          </div>
           
         );
 
@@ -588,33 +598,26 @@ export default class FieldModal extends Component {
         }
 
         content = (
-          <CSSTransition
-            key={TAB_VALIDATIONS}
-            timeout={300}
-            classNames="fade"
-          >
-
-            <div>
+          <div>
+            <div styleName="input-wrapper">
+              <div styleName="switch">
+                <CheckboxControl title="Required"
+                                checked={this.state.isRequired}
+                                onChange={this.onChangeIsRequired}
+                                disabled={this.state.isTitle} />
+              </div>
+            </div>
+            {canBeUnique(this.state) &&
               <div styleName="input-wrapper">
                 <div styleName="switch">
-                  <CheckboxControl title="Required"
-                                  checked={this.state.isRequired}
-                                  onChange={this.onChangeIsRequired}
-                                  disabled={this.state.isTitle} />
+                  <CheckboxControl title="Unique value"
+                                  checked={this.state.isUnique}
+                                  onChange={this.onChangeIsUnique} />
                 </div>
               </div>
-              {canBeUnique(this.state) &&
-                <div styleName="input-wrapper">
-                  <div styleName="switch">
-                    <CheckboxControl title="Unique value"
-                                    checked={this.state.isUnique}
-                                    onChange={this.onChangeIsUnique} />
-                  </div>
-                </div>
-              }
-              {validations}
-            </div>
-          </CSSTransition>
+            }
+            {validations}
+          </div>
           
         );
 
@@ -629,17 +632,17 @@ export default class FieldModal extends Component {
             <div styleName="titles">
               <div styleName="title">{headName}</div>
             </div>
-            <div styleName="tabs">
-              <div styleName={tabSettStyle}   onClick={() => this.setState({tab: TAB_SETTINGS})}    >General</div>
-              <div styleName={tabAppStyle}    onClick={() => this.setState({tab: TAB_APPEARANCE})}  >Appearance</div>
-              <div styleName={tabValidStyle}  onClick={() => this.setState({tab: TAB_VALIDATIONS})} >Validations</div>
+            <div styleName="tabs" ref={el => {this.menuRef = el}}>
+              <div styleName={tabSettStyle} ref={el => {this.initialTab = el}}   onClick={(e) => this.tabClickHandler(e, TAB_SETTINGS)}    >General</div>
+              <div styleName={tabAppStyle}    onClick={(e) => this.tabClickHandler(e, TAB_APPEARANCE)}  >Appearance</div>
+              <div styleName={tabValidStyle}  onClick={(e) => this.tabClickHandler(e, TAB_VALIDATIONS)} >Validations</div>
+
+              <div styleName="caret" ref={el => { this.caretRef = el }} />
             </div>
           </div>
           <div styleName="content">
             <form>
-            <TransitionGroup className="modal-content">
               {content}
-            </TransitionGroup>
               <div styleName="input-wrapper buttons-wrapper">
                 <div styleName="buttons-inner">
                   <ButtonControl color="black"
