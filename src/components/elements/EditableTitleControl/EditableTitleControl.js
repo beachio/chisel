@@ -51,7 +51,7 @@ export default class EditableTitleControl extends Component {
     this.testTextElm = document.createElement('div');
     const style = {
       fontSize: this.props.isSmall ? '12px' : '20px',
-      fontFamily: "'Open Sans', sans-serif",
+      fontFamily: "'Inter-UI', sans-serif",
       opacity: '.01',
       position: 'absolute',
       top: 0,
