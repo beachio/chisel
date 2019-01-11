@@ -112,10 +112,11 @@ export default class Model extends Component {
   onAddKeyDown = event => {
     if (this.props.modalShowing || this.props.alertShowing)
       return;
+
     //Enter pressed
     if (event.keyCode == 13) {
       this.onAddField();
-      //Esc pressed
+    //Esc pressed
     } else if (event.keyCode == 27) {
       this.setState({fieldName: ""});
     }
@@ -186,17 +187,13 @@ export default class Model extends Component {
     });
   };
 
-  onClickBack = () => {
-    browserHistory.goBack()
-  }
-
   renderTitle() {
-    if (this.model.name) {
+    if (this.model.name)
       return (
-        <span><span styleName="back-link" onClick={this.onClickBack}>Models</span> / {this.model.name}</span>
-      )
-    }
-    else return 'Modeles'
+        <span><span styleName="back-link" onClick={browserHistory.goBack}>Models</span> / {this.model.name}</span>
+      );
+
+    return 'Models';
   }
 
   updateModelName = (name, callback, silent) => {
@@ -305,8 +302,7 @@ export default class Model extends Component {
                           titles={titles}
                           title={this.renderTitle()}
                           onClickRlink={this.onJSONClick}
-                          rLinkTitle={this.state.jsonVisibility ? 'Fields' : 'JSON'}
-                          onClickBack={this.onClickBack}>
+                          rLinkTitle={this.state.jsonVisibility ? 'Fields' : 'JSON'}>
         {content}
       </ContainerComponent>
     );

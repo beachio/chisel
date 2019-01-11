@@ -9,7 +9,7 @@ import styles from './ContainerComponent.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class ContainerComponent extends Component {
   render() {
-    const {haveTitle2, title, titles, children, onClickBack, onClickRlink, rLinkTitle, backgroundOffset, showLoader} = this.props;
+    const {haveTitle2, title, titles, children, onClickRlink, rLinkTitle, showLoader} = this.props;
 
     let headerStyles = 'header';
     if (haveTitle2)
@@ -18,10 +18,6 @@ export default class ContainerComponent extends Component {
     let titlesCmp = titles;
     if (title)
       titlesCmp = <div styleName="title">{title}</div>;
-    let backStyle = {};
-    if (backgroundOffset)
-      backStyle = {height: `calc(100% - ${backgroundOffset}px)`};
-    
     
     return (
       <div styleName='ContainerComponent'>
@@ -30,7 +26,6 @@ export default class ContainerComponent extends Component {
             <LoaderComponent/>
           </div>
         }
-        {/* <div styleName="background" style={backStyle}></div> */}
         <div styleName={headerStyles}>
           {titlesCmp}
           {(rLinkTitle && onClickRlink) &&

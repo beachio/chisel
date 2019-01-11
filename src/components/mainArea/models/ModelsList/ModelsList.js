@@ -118,7 +118,7 @@ export default class ModelsList extends Component {
     const {isEditable} = this.props;
 
     return (
-      <ContainerComponent title='Models' backgroundOffset={110}>
+      <ContainerComponent title='Models'>
         <div styleName="content">
           <div styleName="list">
             <FlipMove duration={250}
