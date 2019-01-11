@@ -179,7 +179,6 @@ export default class SiteCreationModal extends Component {
               <div styleName="buttons-inner">
                 <ButtonControl color="purple"
                                value="Create"
-                               //disabled={!this.state.template}
                                onClick={this.onCreate} />
               </div>
               <div styleName="buttons-inner">
