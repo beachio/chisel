@@ -77,7 +77,7 @@ export default class DropdownControl extends Component {
       return <InputControl label={label}
                            icon="lock"
                            value={value}
-                           titled
+                           titled={titled}
                            dropdown={true}
                            readOnly={true} />;
 
@@ -90,6 +90,7 @@ export default class DropdownControl extends Component {
       'input': true,
       'suggestions-visible': this.state.suggestionsVisibility,
       'empty': !this.state.suggestionValue,
+      'input-titled': titled
     });
 
     const arrowClasses = classNames({
