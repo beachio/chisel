@@ -99,9 +99,8 @@ export default class FieldModal extends Component {
     this.active = true;
     document.addEventListener('keydown', this.onKeyDown);
 
-    if (this.initialTab) {
-      this.calcCaretPos(this.initialTab)
-    }
+    if (this.initialTab)
+      this.calcCaretPos(this.initialTab);
 
     if (this.focusElm)
       setTimeout(() => this.focusElm.focus(), 2);
@@ -361,23 +360,22 @@ export default class FieldModal extends Component {
   };
 
   tabClickHandler = (e, tab) => {
-    this.setState({tab})
-    this.calcCaretPos(e.target)
-  }
+    this.setState({tab});
+    this.calcCaretPos(e.target);
+  };
 
-  calcCaretPos = (input) => {
-    const caret = this.caretRef
-    console.log('calc caret pos', input, caret)
+  calcCaretPos = input => {
+    const caret = this.caretRef;
+    console.log('calc caret pos', input, caret);
 
     if (input && caret) {
-      const l = input.offsetLeft
-      const w = input.offsetWidth
-      caret.style = `opacity: 1; transform: translateX(${l}px); width: ${w}px;`
+      const l = input.offsetLeft;
+      const w = input.offsetWidth;
+      caret.style = `opacity: 1; transform: translateX(${l}px); width: ${w}px;`;
+    } else {
+      caret.style = 'opacity: 0';
     }
-    else {
-      caret.style = 'opacity: 0'
-    }
-  }
+  };
 
   render() {
     let headName = this.state.name.length ? this.state.name : '?';

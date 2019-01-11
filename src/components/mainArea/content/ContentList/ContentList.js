@@ -257,18 +257,10 @@ export default class ContentList extends Component {
                       const updatedStr = getRelativeTime(updatedDate);
 
                       const colorStyle = {
-                        [STATUS_DRAFT]: {
-                          background: '#dcc191'
-                        },
-                        [STATUS_PUBLISHED]: {
-                          background: '#297AD6'
-                        },
-                        [STATUS_UPDATED]: {
-                          background: '#B1560F'
-                        },
-                        [STATUS_ARCHIVED]: {
-                          background: '#AFAFAF'
-                        }
+                        [STATUS_DRAFT]:     {background: '#DCC191'},
+                        [STATUS_PUBLISHED]: {background: '#297AD6'},
+                        [STATUS_UPDATED]:   {background: '#B1560F'},
+                        [STATUS_ARCHIVED]:  {background: '#AFAFAF'}
                       };
                       const key = item.origin && item.origin.id  ?  item.origin.id  :  Math.random();
                       return(
@@ -279,17 +271,15 @@ export default class ContentList extends Component {
                         >
                           <div styleName="colorLabel" style={colorStyle[item.status]}></div>
                           <div styleName="type">
-                            {
-                              title ?
-                                <div styleName="name">{title}</div>
-                              :
-                                <div styleName="name untitled">Untitled</div>
+                            {title ?
+                              <div styleName="name">{title}</div>
+                            :
+                              <div styleName="name untitled">Untitled</div>
                             }
                             <div styleName="description">{item.model.name}</div>
                           </div>
                           <div styleName="updated">{updatedStr}</div>
-                          {
-                            isEditable &&
+                          {isEditable &&
                             <div styleName="controls">
                               <div styleName="control-icon edit">
                                 <InlineSVG styleName="cross"

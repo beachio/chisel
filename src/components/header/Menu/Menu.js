@@ -10,41 +10,32 @@ import styles, {activeItem} from './Menu.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class Menu extends Component  {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isSidebarOpened: true
-    };
-  }
+  state = {
+    isSidebarOpened: true
+  };
 
   calcCaretPos = () => {
-    const input = this.menuRef.getElementsByClassName('header-link-active')[0]
-    const caret = this.caretRef
+    const input = this.menuRef.getElementsByClassName('header-link-active')[0];
+    const caret = this.caretRef;
     
     if (input && caret) {
-      const l = input.offsetLeft
-      const w = input.offsetWidth
-      caret.style = `opacity: 1; transform: translateX(${l}px); width: ${w}px;`
+      const l = input.offsetLeft;
+      const w = input.offsetWidth;
+      caret.style = `opacity: 1; transform: translateX(${l}px); width: ${w}px;`;
+    } else {
+      caret.style = 'opacity: 0';
     }
-    else {
-      caret.style = 'opacity: 0'
-    }
-  }
+  };
 
   componentDidMount() {
-    this.calcCaretPos()
+    this.calcCaretPos();
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.isSidebarOpened !== this.props.isSidebarOpened) {
-      setTimeout(this.calcCaretPos, 200)
-    }
-    else {
-      this.calcCaretPos()
-    }
-    
+    if (prevProps.isSidebarOpened !== this.props.isSidebarOpened)
+      setTimeout(this.calcCaretPos, 200);
+    else
+      this.calcCaretPos();
   }
 
   render() {
@@ -96,7 +87,7 @@ export default class Menu extends Component  {
           </div>
         </Link>
 
-        <div styleName="caret" ref={el => { this.caretRef = el}}/>
+        <div styleName="caret" ref={el => this.caretRef = el} />
       </div>
     );
   }

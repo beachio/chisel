@@ -7,8 +7,7 @@ export const CLOSE_ALERT      = 'app/nav/CLOSE_ALERT';
 export const SHOW_MODAL       = 'app/nav/SHOW_MODAL';
 export const CLOSE_MODAL      = 'app/nav/CLOSE_MODAL';
 export const SET_CURRENT_PAGE = 'app/nav/SET_CURRENT_PAGE';
-
-export const TOGGLE_SIDEBAR   = 'app/nav/TOGGLE_SIDEBAR'
+export const TOGGLE_SIDEBAR   = 'app/nav/TOGGLE_SIDEBAR';
 
 export const PAGE_NO_SITES        = 'app/nav/pages/PAGE_NO_SITES';
 export const PAGE_MODELS          = 'app/nav/pages/PAGE_MODELS';
@@ -56,13 +55,13 @@ export const URLS_EMAIL = [URL_EMAIL_VERIFY, URL_PASSWORD_SET, URL_PASSWORD_SUCC
 export function toggleSidebar() {
   return {
     type: TOGGLE_SIDEBAR
-  }
+  };
 }
 
 export function initEnd() {
   return {
     type: INIT_END
-  }
+  };
 }
 
 export function showAlert(params) {

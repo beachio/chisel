@@ -6,10 +6,8 @@ import InlineSVG from 'svg-inline-react';
 
 import Menu from 'components/header/Menu/Menu';
 import User from 'components/sidebar/User/User';
-
 import {logout} from 'ducks/user';
-
-import { toggleSidebar } from 'ducks/nav'
+import {toggleSidebar} from 'ducks/nav';
 
 import styles from './Header.sss';
 

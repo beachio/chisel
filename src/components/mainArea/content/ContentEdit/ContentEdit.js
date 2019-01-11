@@ -92,7 +92,7 @@ export default class ContentEdit extends Component {
   }
 
   goBack() {
-    browserHistory.goBack()
+    browserHistory.goBack();
   }
 
   renderTitle = () => {
@@ -101,7 +101,7 @@ export default class ContentEdit extends Component {
         <span styleName="back-link" onClick={this.goBack}>Content</span>
         <span> / {this.state.title || 'Untitled'}</span>
       </span>
-    )
+    );
   };
 
   onClose = () => {
@@ -366,8 +366,7 @@ export default class ContentEdit extends Component {
 
     return (
       <ContainerComponent hasTitle2={true}
-                          title={this.renderTitle()}
-                          >
+                          title={this.renderTitle()}>
         {content}
       </ContainerComponent>
     );

@@ -51,14 +51,14 @@ export function addSource(source, isDefault) {
     type: ADD_SOURCE,
     source,
     isDefault
-  }
+  };
 }
 
 export function removeSource(source) {
   return {
     type: REMOVE_SOURCE,
     source
-  }
+  };
 }
 
 export function updateSubscription(subscription, payPlan) {
@@ -66,14 +66,14 @@ export function updateSubscription(subscription, payPlan) {
     type: UPDATE_SUBSCRIPTION,
     subscription,
     payPlan
-  }
+  };
 }
 
 export function updateDefaultSource(sourceId) {
   return {
     type: UPDATE_DEFAULT_SOURCE,
     sourceId
-  }
+  };
 }
 
 

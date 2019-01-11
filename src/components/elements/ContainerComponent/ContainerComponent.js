@@ -33,11 +33,10 @@ export default class ContainerComponent extends Component {
         {/* <div styleName="background" style={backStyle}></div> */}
         <div styleName={headerStyles}>
           {titlesCmp}
-          {
-            rLinkTitle && onClickRlink &&
-              <div styleName="json-fields" onClick={onClickRlink}>
-                {rLinkTitle}
-              </div>
+          {(rLinkTitle && onClickRlink) &&
+            <div styleName="json-fields" onClick={onClickRlink}>
+              {rLinkTitle}
+            </div>
           }
         </div>
         <div styleName='content'>

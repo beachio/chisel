@@ -179,40 +179,41 @@ export class Sign extends Component  {
 
 
   render() {
+    this.elmEmail =
+      <div styleName="input-wrapper">
+        Email
+        <input styleName="input"
+               type="text"
+               autoFocus
+               value={this.state.email}
+               onChange={this.onEmailChange} />
+      </div>;
 
-    this.elmEmail = <div styleName="input-wrapper">
-                      Email
-                      <input styleName="input"
-                             type="text"
-                             autoFocus
-                             value={this.state.email}
-                             onChange={this.onEmailChange} />
-                    </div>;
+    this.elmPassword =
+      <div styleName="input-wrapper">
+        Password
+        <input styleName="input"
+               type="password"
+               value={this.state.password}
+               onChange={this.onPasswordChange} />
+      </div>;
 
-    this.elmPassword = <div styleName="input-wrapper">
-                          Password
-                          <input styleName="input"
-                                 type="password"
-                                 value={this.state.password}
-                                 onChange={this.onPasswordChange} />
-                        </div>
-    this.elmPasswordConfirm = <div styleName="input-wrapper">
-                                  Confirm Password
-                                  <input styleName="input"
-                                         type="password"
-                                         value={this.state.passwordConfirm}
-                                         onChange={this.onPasswordConfirmChange} />
-                              </div>
+    this.elmPasswordConfirm =
+      <div styleName="input-wrapper">
+        Confirm Password
+        <input styleName="input"
+               type="password"
+               value={this.state.passwordConfirm}
+               onChange={this.onPasswordConfirmChange} />
+      </div>;
 
-    this.elmCheckbox = <div styleName="input-wrapper">
-                          <CheckboxControl title="Remember Me"
-                                            />
-                       </div>
+    this.elmCheckbox =
+      <div styleName="input-wrapper">
+        <CheckboxControl title="Remember Me" />
+      </div>;
 
-    let content;
-    let bottomContent;
-    let title;
-    let icon;
+
+    let content, bottomContent, title, icon;
 
     switch (this.state.mode) {
 
@@ -243,6 +244,7 @@ export class Sign extends Component  {
             </div>
           </form>
         );
+
         bottomContent = (
           <div styleName="bottom-content">
               No account? No problem!
@@ -253,7 +255,7 @@ export class Sign extends Component  {
                 onClick={() => this.setMode(MODE_REG)}/>
             </div>
           </div>
-        )
+        );
 
         title = (
           <div styleName="title">
@@ -266,7 +268,8 @@ export class Sign extends Component  {
           <InlineSVG
             src={require("assets/images/product-logo.svg")}
           />
-        )
+        );
+
         break;
 
       case MODE_REG:
@@ -308,7 +311,7 @@ export class Sign extends Component  {
                 onClick={() => this.setMode(MODE_LOGIN)}/>
             </div>
           </div>
-        )
+        );
 
         title = (
           <div styleName="title">
@@ -321,7 +324,8 @@ export class Sign extends Component  {
           <InlineSVG
             src={require("assets/images/product-logo-b.svg")}
           />
-        )
+        );
+
         break;
 
       case MODE_REG_MAIL:
