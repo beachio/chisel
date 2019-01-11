@@ -1126,7 +1126,11 @@ template {
 
   box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.05);
 
-  transition: all 0.2s;
+  transition: -webkit-transform 0.2s;
+
+  transition: transform 0.2s;
+
+  transition: transform 0.2s, -webkit-transform 0.2s;
 }
 
   .ButtonControl---ButtonControl-red---3RZN3 {
@@ -1167,7 +1171,8 @@ template {
 
 .ButtonControl---ButtonControl---W6bNo:active {
   box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 15px 0 rgba(0,0,0,0.05);
-  tranform: translateY(-1px);
+  -webkit-transform: translateY(-1px);
+  transform: translateY(-1px);
 }
 
 .ButtonControl---ButtonControl-disabled---3attr {
@@ -1181,6 +1186,151 @@ template {
 
 .ButtonControl---ButtonControl---W6bNo .ButtonControl---loader-wrapper---2IRaM {
     margin-left: 15px;
+}
+.SiteCreationModal---modal---2QI4J {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+
+  z-index: 80;
+
+  overflow-y: scroll;
+
+  background: rgba(0, 0, 0, 0.5);
+}
+
+  .SiteCreationModal---modal-header---1tQx5 {
+    border-bottom: 1px solid #E5E5E5;
+
+    padding: 4px 0;
+    width: 100%;
+
+    -js-display: flex;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+  .SiteCreationModal---modal-header---1tQx5 .SiteCreationModal---title---1ZJE8 {
+      font-size: 20px;
+      color: #666666;
+      letter-spacing: 0.83px;
+      margin-top: 15px;
+      margin-bottom: 15px;
+}
+
+  .SiteCreationModal---modal-inner---XAmHj {
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+    background: #F9F9F9;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.10);
+    border-radius: 5px;
+
+    margin: 30px 0;
+
+    width: 70%;
+    -js-display: flex;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+  .SiteCreationModal---modal---2QI4J .SiteCreationModal---content---3kK6Q {
+    width: 100%;
+    padding: 32px 10%;
+}
+
+  .SiteCreationModal---modal---2QI4J .SiteCreationModal---input-wrapper---1WHnv {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+  .SiteCreationModal---modal---2QI4J .SiteCreationModal---buttons-wrapper---bB_6d {
+    -js-display: flex;
+    display: flex;
+    flex-flow: row nowrap;
+    margin-top: 80px;
+    justify-content: center;
+}
+
+  .SiteCreationModal---modal---2QI4J .SiteCreationModal---buttons-inner---3Kupf:first-child {
+    margin-right: 25px;
+}
+
+  .SiteCreationModal---modal---2QI4J .SiteCreationModal---error-same-name---3Dbqp {
+    color: #DD5555;
+}
+
+  .SiteCreationModal---modal---2QI4J .SiteCreationModal---label---2oTT2 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #666666;
+    padding-bottom: 6px;
+    padding-left: 2px;
+    cursor: default;
+}
+
+
+
+.SiteCreationModal---TemplateControl---2Pt-u {
+  width: 100%;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+
+
+.SiteCreationModal---TemplateControl---2Pt-u .SiteCreationModal---template-content---2-ydl {
+    width: 100%;
+    border: 2px solid rgba(0, 0, 0, 0);
+    border-radius: 5px;
+    -js-display: flex;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+}
+
+
+
+.SiteCreationModal---TemplateControl---2Pt-u .SiteCreationModal---template-content---2-ydl .SiteCreationModal---icon---1rWiX,
+    .SiteCreationModal---TemplateControl---2Pt-u .SiteCreationModal---template-content---2-ydl .SiteCreationModal---icon-img---2wMq9 {
+      width: 80px;
+      height: 80px;
+      margin-right: 25px;
+}
+
+
+
+.SiteCreationModal---TemplateControl---2Pt-u .SiteCreationModal---template-content---2-ydl .SiteCreationModal---text---3vrgc {
+      flex-grow: 1;
+}
+
+
+
+.SiteCreationModal---TemplateControl---2Pt-u .SiteCreationModal---template-content---2-ydl .SiteCreationModal---text---3vrgc .SiteCreationModal---title---1ZJE8 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #666666;
+        margin-bottom: 10px;
+}
+
+
+
+.SiteCreationModal---TemplateControl---2Pt-u .SiteCreationModal---template-content---2-ydl .SiteCreationModal---text---3vrgc .SiteCreationModal---description---3rGL0 {
+        font-size: 13px;
+        color: #999999;
+}
+
+
+
+.SiteCreationModal---TemplateControl---2Pt-u .SiteCreationModal---checked---1m8rh {
+    border-color: #8B5FBF;
 }
 .InputControl---InputControl---BkKKu {
   width: 100%;
@@ -1387,151 +1537,6 @@ template {
 
 .SwitchControl---disabled---3ycZR .SwitchControl---checkbox---1XUYp:checked + .SwitchControl---label---2ddtD:before {
     background-image: linear-gradient(-180deg, #ddc0ff 0%, #cba3ff 100%)
-}
-.SiteCreationModal---modal---2QI4J {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-
-  z-index: 80;
-
-  overflow-y: scroll;
-
-  background: rgba(0, 0, 0, 0.5);
-}
-
-  .SiteCreationModal---modal-header---1tQx5 {
-    border-bottom: 1px solid #E5E5E5;
-
-    padding: 4px 0;
-    width: 100%;
-
-    -js-display: flex;
-
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-}
-
-  .SiteCreationModal---modal-header---1tQx5 .SiteCreationModal---title---1ZJE8 {
-      font-size: 20px;
-      color: #666666;
-      letter-spacing: 0.83px;
-      margin-top: 15px;
-      margin-bottom: 15px;
-}
-
-  .SiteCreationModal---modal-inner---XAmHj {
-    position: absolute;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-            transform: translateX(-50%);
-    background: #F9F9F9;
-    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.10);
-    border-radius: 5px;
-
-    margin: 30px 0;
-
-    width: 70%;
-    -js-display: flex;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-}
-
-  .SiteCreationModal---modal---2QI4J .SiteCreationModal---content---3kK6Q {
-    width: 100%;
-    padding: 32px 10%;
-}
-
-  .SiteCreationModal---modal---2QI4J .SiteCreationModal---input-wrapper---1WHnv {
-    width: 100%;
-    margin-bottom: 30px;
-}
-
-  .SiteCreationModal---modal---2QI4J .SiteCreationModal---buttons-wrapper---bB_6d {
-    -js-display: flex;
-    display: flex;
-    flex-flow: row nowrap;
-    margin-top: 80px;
-    justify-content: center;
-}
-
-  .SiteCreationModal---modal---2QI4J .SiteCreationModal---buttons-inner---3Kupf:first-child {
-    margin-right: 25px;
-}
-
-  .SiteCreationModal---modal---2QI4J .SiteCreationModal---error-same-name---3Dbqp {
-    color: #DD5555;
-}
-
-  .SiteCreationModal---modal---2QI4J .SiteCreationModal---label---2oTT2 {
-    font-size: 13px;
-    font-weight: 600;
-    color: #666666;
-    padding-bottom: 6px;
-    padding-left: 2px;
-    cursor: default;
-}
-
-
-
-.SiteCreationModal---TemplateControl---2Pt-u {
-  width: 100%;
-  cursor: pointer;
-  margin-bottom: 5px;
-}
-
-
-
-.SiteCreationModal---TemplateControl---2Pt-u .SiteCreationModal---template-content---2-ydl {
-    width: 100%;
-    border: 2px solid rgba(0, 0, 0, 0);
-    border-radius: 5px;
-    -js-display: flex;
-    display: flex;
-    align-items: center;
-    padding: 15px;
-}
-
-
-
-.SiteCreationModal---TemplateControl---2Pt-u .SiteCreationModal---template-content---2-ydl .SiteCreationModal---icon---1rWiX,
-    .SiteCreationModal---TemplateControl---2Pt-u .SiteCreationModal---template-content---2-ydl .SiteCreationModal---icon-img---2wMq9 {
-      width: 80px;
-      height: 80px;
-      margin-right: 25px;
-}
-
-
-
-.SiteCreationModal---TemplateControl---2Pt-u .SiteCreationModal---template-content---2-ydl .SiteCreationModal---text---3vrgc {
-      flex-grow: 1;
-}
-
-
-
-.SiteCreationModal---TemplateControl---2Pt-u .SiteCreationModal---template-content---2-ydl .SiteCreationModal---text---3vrgc .SiteCreationModal---title---1ZJE8 {
-        font-size: 18px;
-        font-weight: 600;
-        color: #666666;
-        margin-bottom: 10px;
-}
-
-
-
-.SiteCreationModal---TemplateControl---2Pt-u .SiteCreationModal---template-content---2-ydl .SiteCreationModal---text---3vrgc .SiteCreationModal---description---3rGL0 {
-        font-size: 13px;
-        color: #999999;
-}
-
-
-
-.SiteCreationModal---TemplateControl---2Pt-u .SiteCreationModal---checked---1m8rh {
-    border-color: #8B5FBF;
 }
 .CheckboxControl---CheckboxControl---kLRku {
   -js-display: flex;
@@ -3127,16 +3132,6 @@ template {
     align-items: center;
 }
 
-  .ContainerComponent---ContainerComponent---1CFy1 .ContainerComponent---background---3B6aF {
-    position: absolute;
-    z-index: -10;
-    height: 100%;
-    width: 100%;
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0px 2px 4px 0px rgba(230,230,230,1);
-}
-
   .ContainerComponent---ContainerComponent---1CFy1 .ContainerComponent---header---2EiPy {
     position: relative;
 
@@ -3653,65 +3648,6 @@ template {
   font-size: 13px;
   color: #5a5a5a
 }
-.RadioControl---RadioControl---2CV5C {
-  margin-right: 26px;
-}
-
-  .RadioControl---RadioControl---2CV5C .RadioControl---input---1rPxe {
-    display: none;
-}
-
-  .RadioControl---RadioControl---2CV5C .RadioControl---label---1Ow73 {
-    cursor: pointer;
-    position: relative;
-    padding-left: 30px;
-
-    font-weight: 600;
-    font-size: 13px;
-    color: #999999;
-    letter-spacing: 0.5px;
-}
-
-  .RadioControl---RadioControl---2CV5C .RadioControl---label---1Ow73:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    background: #fff;
-    border: 1px solid #979797;
-}
-
-  .RadioControl---RadioControl---2CV5C .RadioControl---input---1rPxe:checked + .RadioControl---label---1Ow73:before {
-    height: 12px;
-    width: 12px;
-    border: 5px solid #8a5ebe;
-}
-
-  .RadioControl---RadioControl---2CV5C .RadioControl---input---1rPxe + .RadioControl---label---1Ow73:before,
-  .RadioControl---RadioControl---2CV5C .RadioControl---input---1rPxe:checked + .RadioControl---label---1Ow73:before {
-    transition: background 0.1s ease;
-}
-
-
-.RadioControl---disabled---3dODh .RadioControl---label---1Ow73 {
-    color: #bbbbbb;
-}
-
-
-.RadioControl---disabled---3dODh .RadioControl---input---1rPxe:not(checked) + .RadioControl---label---1Ow73:before {
-    border: 1px solid #bbbbbb;
-}
-
-
-.RadioControl---disabled---3dODh .RadioControl---input---1rPxe:checked + .RadioControl---label---1Ow73:before {
-    border: 5px solid #bbbbbb;
-}
-
 .UserProfile---content---3Z7XE {
   -js-display: flex;
   display: flex;
@@ -3804,7 +3740,66 @@ template {
 .UserProfile---name-wrapper---lK6XU .UserProfile---field---FB0xi {
     width: 49%;
 }
-.PayCard---card---22Jc8 {
+.RadioControl---RadioControl---2CV5C {
+  margin-right: 26px;
+}
+
+  .RadioControl---RadioControl---2CV5C .RadioControl---input---1rPxe {
+    display: none;
+}
+
+  .RadioControl---RadioControl---2CV5C .RadioControl---label---1Ow73 {
+    cursor: pointer;
+    position: relative;
+    padding-left: 30px;
+
+    font-weight: 600;
+    font-size: 13px;
+    color: #999999;
+    letter-spacing: 0.5px;
+}
+
+  .RadioControl---RadioControl---2CV5C .RadioControl---label---1Ow73:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #979797;
+}
+
+  .RadioControl---RadioControl---2CV5C .RadioControl---input---1rPxe:checked + .RadioControl---label---1Ow73:before {
+    height: 12px;
+    width: 12px;
+    border: 5px solid #8a5ebe;
+}
+
+  .RadioControl---RadioControl---2CV5C .RadioControl---input---1rPxe + .RadioControl---label---1Ow73:before,
+  .RadioControl---RadioControl---2CV5C .RadioControl---input---1rPxe:checked + .RadioControl---label---1Ow73:before {
+    transition: background 0.1s ease;
+}
+
+
+.RadioControl---disabled---3dODh .RadioControl---label---1Ow73 {
+    color: #bbbbbb;
+}
+
+
+.RadioControl---disabled---3dODh .RadioControl---input---1rPxe:not(checked) + .RadioControl---label---1Ow73:before {
+    border: 1px solid #bbbbbb;
+}
+
+
+.RadioControl---disabled---3dODh .RadioControl---input---1rPxe:checked + .RadioControl---label---1Ow73:before {
+    border: 5px solid #bbbbbb;
+}
+
+.PayPlans---PlanControl---12QlI {
   overflow: hidden;
   -js-display: flex;
   display: flex;
@@ -3821,109 +3816,60 @@ template {
   border-top-left-radius: 8px;
 }
 
-.PayCard---card-title---ETZ5s {
-  padding-top: 24px;
-  margin-bottom: 42px;
+  .PayPlans---PlanControl---12QlI .PayPlans---title---wfG6R {
+    padding-top: 24px;
+    margin-bottom: 42px;
 
-  font-size: 24px;
-  color: #2C2C30;
-  font-weight: 700;
-  text-align: center;
-}
-
-.PayCard---card-cost---2rmw7 {
-  margin-bottom: 24px;
-
-  font-size: 60px;
-  color: #2C2C30;
-  text-align: center;
-}
-
-.PayCard---card-cost---2rmw7 span {
     font-size: 24px;
-    color: #A4A4AE;
+    color: #2C2C30;
+    font-weight: 700;
+    text-align: center;
 }
 
-.PayCard---card-sites---zlkiq {
-  margin-bottom: 16px;
-  font-size: 20px;
-  color: #2C2C30;
+  .PayPlans---PlanControl---12QlI .PayPlans---cost---1E1jN {
+    margin-bottom: 24px;
+
+    font-size: 60px;
+    color: #2C2C30;
+    text-align: center;
 }
 
-.PayCard---card-number---2enrC {
-  margin-bottom: 42px;
-  font-size: 26px;
-  color: #2C2C30;
-  font-weight: 700;
+  .PayPlans---PlanControl---12QlI .PayPlans---cost---1E1jN span {
+      font-size: 24px;
+      color: #A4A4AE;
 }
 
-.PayCard---card-button---2Re7w {
-  width: 100%;
-  padding: 20px 0;
-  font-size: 16px;
-  color: #FFFFFF;
-  text-align: center;
-
-  cursor: pointer;
+  .PayPlans---PlanControl---12QlI .PayPlans---sites-title---2lREi {
+    margin-bottom: 16px;
+    font-size: 20px;
+    color: #2C2C30;
 }
 
-.PayCard---downgrade---9ypLt {
-  background: #A4A4AE;
+  .PayPlans---PlanControl---12QlI .PayPlans---sites-number---2B5GO {
+    margin-bottom: 42px;
+    font-size: 26px;
+    color: #2C2C30;
+    font-weight: 700;
 }
 
-.PayCard---upgrade---Psdwh {
-  background: #8B5FBF;
-}.PayPlans---PlanControl---12QlI {
-  cursor: pointer;
-  margin-bottom: 5px;
-}
-
-  .PayPlans---PlanControl---12QlI .PayPlans---plan-content---2MxgH {
+  .PayPlans---PlanControl---12QlI .PayPlans---button---3-_mz {
     width: 100%;
-    border: 2px solid #6D9EE1;
-    border-radius: 5px;
-    -js-display: flex;
-    display: flex;
-    align-items: center;
-    padding: 15px;
+    padding: 20px 0;
+    font-size: 16px;
+    color: #2C2C30;
+    text-align: center;
+
+    cursor: pointer;
 }
 
-  .PayPlans---PlanControl---12QlI .PayPlans---plan-content---2MxgH .PayPlans---text---21QWr {
-      flex-grow: 1;
-      text-align: center;
+  .PayPlans---PlanControl---12QlI .PayPlans---downgrade---2BN1C {
+    color: #FFFFFF;
+    background: #A4A4AE;
 }
 
-  .PayPlans---PlanControl---12QlI .PayPlans---plan-content---2MxgH .PayPlans---text---21QWr .PayPlans---title---wfG6R {
-        font-size: 18px;
-        font-weight: 600;
-        color: #666666;
-        margin-bottom: 20px;
-}
-
-  .PayPlans---PlanControl---12QlI .PayPlans---plan-content---2MxgH .PayPlans---text---21QWr .PayPlans---description---1VcAu {
-        font-size: 13px;
-        color: #666666;
-        margin-bottom: 10px;
-}
-
-  .PayPlans---PlanControl---12QlI .PayPlans---current---1XDKf {
-    border-color: #dddddd;
-}
-
-  .PayPlans---PlanControl---12QlI .PayPlans---change---1wBl2 {
-    font-size: 15px;
-    font-weight: 600;
-    color: #666666;
-    margin-top: 30px;
-    margin-bottom: 10px;
-}
-
-  .PayPlans---PlanControl---12QlI .PayPlans---buttons-wrapper---3M0lg {
-    width: 100%;
-    margin-top: 30px;
-    -js-display: flex;
-    display: flex;
-    justify-content: center;
+  .PayPlans---PlanControl---12QlI .PayPlans---upgrade---1mehv {
+    color: #FFFFFF;
+    background: #8B5FBF;
 }
 
 
