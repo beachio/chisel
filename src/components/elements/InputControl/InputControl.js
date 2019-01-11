@@ -48,7 +48,6 @@ export default class InputControl extends Component {
           {iconEl}
           <input type={inputType}
                  styleName={inputStyles}
-                 icon={icon}
                  value={value}
                  autoFocus={autoFocus}
                  placeholder={placeholder}
@@ -56,7 +55,6 @@ export default class InputControl extends Component {
                  onBlur={onBlur}
                  onKeyDown={onKeyDown}
                  readOnly={readOnly}
-                 titled={titled}
                  ref={DOMRef} />
         </div>
       </div>
