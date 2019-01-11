@@ -20,10 +20,6 @@ import * as ftps from 'models/ModelData';
 
 import styles from './FieldModal.sss';
 
-import {
-  CSSTransition,
-  TransitionGroup,
-} from 'react-transition-group';
 
 const TAB_SETTINGS = 'TAB_SETTINGS';
 const TAB_APPEARANCE = 'TAB_APPEARANCE';
@@ -61,7 +57,8 @@ export default class FieldModal extends Component {
   models = null;
   validValuesList = null;
   focusElm = null;
-
+  initialTabRef = null;
+  caretRef = null;
 
 
   constructor(props) {
@@ -99,8 +96,8 @@ export default class FieldModal extends Component {
     this.active = true;
     document.addEventListener('keydown', this.onKeyDown);
 
-    if (this.initialTab)
-      this.calcCaretPos(this.initialTab);
+    if (this.initialTabRef)
+      this.calcCaretPos(this.initialTabRef);
 
     if (this.focusElm)
       setTimeout(() => this.focusElm.focus(), 2);
@@ -359,7 +356,7 @@ export default class FieldModal extends Component {
     this.setState({validValues});
   };
 
-  tabClickHandler = (e, tab) => {
+  onClickTab = (e, tab) => {
     this.setState({tab});
     this.calcCaretPos(e.target);
   };
@@ -630,12 +627,16 @@ export default class FieldModal extends Component {
             <div styleName="titles">
               <div styleName="title">{headName}</div>
             </div>
-            <div styleName="tabs" ref={el => {this.menuRef = el}}>
-              <div styleName={tabSettStyle} ref={el => {this.initialTab = el}}   onClick={(e) => this.tabClickHandler(e, TAB_SETTINGS)}    >General</div>
-              <div styleName={tabAppStyle}    onClick={(e) => this.tabClickHandler(e, TAB_APPEARANCE)}  >Appearance</div>
-              <div styleName={tabValidStyle}  onClick={(e) => this.tabClickHandler(e, TAB_VALIDATIONS)} >Validations</div>
+            <div styleName="tabs">
+              <div styleName={tabSettStyle}
+                   ref={el => this.initialTabRef = el}
+                   onClick={e => this.onClickTab(e, TAB_SETTINGS)}>General</div>
+              <div styleName={tabAppStyle}
+                   onClick={e => this.onClickTab(e, TAB_APPEARANCE)}>Appearance</div>
+              <div styleName={tabValidStyle}
+                   onClick={e => this.onClickTab(e, TAB_VALIDATIONS)}>Validations</div>
 
-              <div styleName="caret" ref={el => { this.caretRef = el }} />
+              <div styleName="caret" ref={el => {this.caretRef = el}} />
             </div>
           </div>
           <div styleName="content">
