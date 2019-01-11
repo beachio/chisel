@@ -1,46 +1,65 @@
 .PlanControl
-  cursor: pointer
-  margin-bottom: 5px
+  overflow: hidden
+  display: flex
+  flex-flow: column nowrap
+  align-items: center
+  max-width: 300px
+  width: 100%
+  font-family: 'Inter-UI'
+  font-weight: 500
 
-  .plan-content
+  background: #FFFFFF
+  box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.05)
+  border-radius: 20px
+  border-top-left-radius: 8px
+
+  .title
+    padding-top: 24px
+    margin-bottom: 42px
+
+    font-size: 24px
+    color: #2C2C30
+    font-weight: 700
+    text-align: center
+
+  .cost
+    margin-bottom: 24px
+
+    font-size: 60px
+    color: #2C2C30
+    text-align: center
+
+    span
+      font-size: 24px
+      color: #A4A4AE
+
+  .sites-title
+    margin-bottom: 16px
+    font-size: 20px
+    color: #2C2C30
+
+  .sites-number
+    margin-bottom: 42px
+    font-size: 26px
+    color: #2C2C30
+    font-weight: 700
+
+  .button
     width: 100%
-    border: 2px solid #6D9EE1
-    border-radius: 5px
-    display: flex
-    align-items: center
-    padding: 15px
+    padding: 20px 0
+    font-size: 16px
+    color: #2C2C30
+    text-align: center
 
-    .text
-      flex-grow: 1
-      text-align: center
+    cursor: pointer
 
-      .title
-        font-size: 18px
-        font-weight: 600
-        color: #666666
-        margin-bottom: 20px
+  .downgrade
+    color: #FFFFFF
+    background: #A4A4AE
 
-      .description
-        font-size: 13px
-        color: #666666
-        margin-bottom: 10px
-
-
-  .current
-    border-color: #dddddd
-
-  .change
-    font-size: 15px
-    font-weight: 600
-    color: #666666
-    margin-top: 30px
-    margin-bottom: 10px
-
-  .buttons-wrapper
-    width: 100%
-    margin-top: 30px
-    display: flex
-    justify-content: center
+  .upgrade
+    color: #FFFFFF
+    background: #8B5FBF
 
 
 .content

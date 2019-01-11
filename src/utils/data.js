@@ -325,7 +325,7 @@ export function getPayPlan(id) {
 export function isPayPlanTop(plan) {
   const plans = store.getState().pay.payPlans;
   for (let plan1 of plans) {
-    if (plan1.isGreater(plan))
+    if (plan1.greaterThan(plan))
       return false;
   }
   return true;

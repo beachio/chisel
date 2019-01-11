@@ -8,9 +8,6 @@ import {Parse} from "parse";
 
 import {send} from "utils/server";
 import ContainerComponent from "components/elements/ContainerComponent/ContainerComponent";
-import ButtonControl from "components/elements/ButtonControl/ButtonControl";
-import PayCard from "components/elements/PayCard/PayCard";
-
 import {changePayPlan} from "ducks/user";
 import {URL_PAYMENT_METHODS, URL_USERSPACE, showAlert} from "ducks/nav";
 import {updateSubscription} from 'ducks/pay';
@@ -22,93 +19,43 @@ import styles from './PayPlans.sss';
 @CSSModules(styles, {allowMultiple: true})
 export class PlanControl extends Component {
   render() {
-    const {onClick, payPlan, current} = this.props;
+    const {onClick, payPlan, payPlanUser, isYearly} = this.props;
     
-    let style = 'plan-content';
-    let changeElm;
+    let btnStyle = '';
+    let btnText;
     
-    if (current) {
-      changeElm = "It's your current plan";
-      style += ' current';
-      
-    } 
-    else if (payPlan.priceMonthly) {
-      changeElm = [
-        <div styleName="buttons-wrapper" key="monthly">
-          <ButtonControl color="green"
-                         value="Buy monthly"
-                         onClick={() => onClick()} />
-        </div>,
-        <div styleName="buttons-wrapper" key="yearly">
-          <ButtonControl color="green"
-                         value="Buy yearly"
-                         onClick={() => onClick(true)} />
-        </div>];
+    if (payPlanUser == payPlan) {
+      btnText = "It's your current plan";
+
+    } else if (payPlan.greaterThan(payPlanUser)) {
+      btnText = "Upgrade";
+      btnStyle = 'upgrade';
       
     } else {
-       changeElm =
-         <div styleName="buttons-wrapper">
-          <ButtonControl color="green"
-                         value="Go free"
-                         onClick={() => onClick()} />
-         </div>;
+      btnText = "Downgrade";
+      btnStyle = 'downgrade';
     }
     
     return (
       <div styleName="PlanControl">
-        <div styleName={style}>
-          <div styleName="text">
-            <div styleName="title">{payPlan.name}</div>
-            <div styleName="description">Maximum sites: {payPlan.limitSites ? payPlan.limitSites : 'unlimited'}</div>
-            
-            {!!payPlan.priceMonthly ? [
-              <div styleName="description" key="monthly">Price (monthly): ${payPlan.priceMonthly}</div>,
-              <div styleName="description" key="yearly" >Price (yearly): ${payPlan.priceYearly}</div>]
-            :
-              <div styleName="description">Price: free</div>
-            }
-  
-            <div styleName="change">
-              {changeElm}
-            </div>
+        <div styleName="title">{payPlan.name}</div>
+
+        {!!payPlan.priceMonthly ?
+          <div styleName="cost">
+            ${isYearly ? payPlan.priceYearly : payPlan.priceMonthly}<span>{isYearly ? '/year' : '/month'}</span>
           </div>
+        :
+          <div styleName="cost">Free</div>
+        }
+
+        <div styleName="sites-title">Sites</div>
+        <div styleName="sites-number">{payPlan.limitSites ? payPlan.limitSites : 'unlimited'}</div>
+
+        <div styleName={`button ${btnStyle}`} onClick={onClick}>
+          {btnText}
         </div>
       </div>
     );
-  }
-}
-
-@CSSModules(styles, {allowMultiple: true})
-export class NewPlanControl extends Component {
-  render() {
-    return (
-      [
-        <PayCard
-          key={1}
-          title="Starter"
-          cost="0"
-          sites="1"
-          type="downgrade"
-          buttonText="Current Plan"
-        />,
-        <PayCard
-          key={2}
-          title="Lite"
-          cost="10"
-          sites="10"
-          type="upgrade"
-          buttonText="Upgrade"
-        />,
-        <PayCard
-          key={3}
-          title="Lite"
-          cost="50"
-          sites="Unlimited"
-          type="upgrade"
-          buttonText="Upgrade"
-        />
-      ]
-    )
   }
 }
 
@@ -116,30 +63,28 @@ export class NewPlanControl extends Component {
 @CSSModules(styles, {allowMultiple: true})
 export class PayPlans extends Component {
   state = {
-    period: 'monthly'
-  }
+    isYearly: false
+  };
 
   onChangePeriod = () => {
-    this.state.period === 'monthly' ?
-      this.setState({period: 'yearly'}) :
-      this.setState({period: 'monthly'})
-  }
+    this.setState({isYearly: !this.state.isYearly});
+  };
 
-  onUpdatePayPlan = (payPlan, isYearly = false) => {
+  onUpdatePayPlan = (payPlan) => {
     const {stripeData} = this.props.pay;
     const payPlanUser = this.props.user.userData.payPlan;
     
     if (!stripeData.sources || !stripeData.sources.length) {
       let URL = `/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`;
       if (payPlan)
-        URL += `?plan=${payPlan.origin.id}&yearly=${isYearly}`;
+        URL += `?plan=${payPlan.origin.id}&yearly=${this.state.isYearly}`;
       browserHistory.push(URL);
     
     } else {
       const {showAlert} = this.props.navActions;
       
       let description = `You are going to upgrade your payment plan. Are you sure?`;
-      if (payPlanUser.isGreater(payPlan))
+      if (payPlanUser.greaterThan(payPlan))
         description = `You are going to reduce your payment plan. Are you sure? <br/>(Your rest of the money will be used in next payments.)`;
       
       showAlert({
@@ -155,7 +100,7 @@ export class PayPlans extends Component {
             const subscription = await send(
               Parse.Cloud.run('paySubscription', {
                 planId: payPlan.origin.id,
-                isYearly
+                isYearly: this.state.isYearly
               })
             );
             updateSubscription(subscription, payPlan);
@@ -194,11 +139,12 @@ export class PayPlans extends Component {
         <div styleName="content">
           <div styleName="head">
             <div styleName="label">
-              Current Plan: <span> Starter </span>
+              Current Plan: <span>{payPlanUser.name}</span>
             </div>
 
-            <div styleName={`period ${this.state.period}`} onClick={() => this.onChangePeriod() }>
-              <div htmlFor="check" styleName="monthly">
+            <div styleName={`period ${this.state.isYearly ? 'yearly' : 'monthly'}`}
+                 onClick={this.onChangePeriod}>
+              <div styleName="monthly">
                 Monthly
               </div> 
               <div styleName="checkbox-wrapper">
@@ -210,15 +156,13 @@ export class PayPlans extends Component {
             </div>
           </div>
           <div styleName="plans">
-            {/* {payPlans.map(payPlan =>
+            {payPlans.map(payPlan =>
               <PlanControl payPlan={payPlan}
                            key={payPlan.origin ? payPlan.origin.id : 1}
-                           current={payPlan == payPlanUser}
-                           onClick={isYearly => this.onUpdatePayPlan(payPlan, isYearly)} />)
-            } */}
-
-            {/* static */}
-            <NewPlanControl />
+                           payPlanUser={payPlanUser}
+                           isYearly={this.state.isYearly}
+                           onClick={() => this.onUpdatePayPlan(payPlan)} />)
+            }
           </div>
         </div>
         
