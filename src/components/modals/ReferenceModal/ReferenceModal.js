@@ -59,20 +59,19 @@ export default class ReferenceModal extends Component {
     event.stopPropagation();
     
     //Enter or Esc pressed
-    if (event.keyCode == 13)
+    if (event.keyCode == 13) {
       setTimeout(this.onChoose, 1);
-  //  else if (event.keyCode == 27)
-    //  setTimeout(this.close, 1);
+    } else if (event.keyCode == 27) {
+      if (this.state.searchText)
+        this.setState({searchText: ``});
+      else
+        setTimeout(this.close, 1);
+    }
   };
   
   onSearch = (event) => {
     const searchText = event.target.value;
-  
-    //if there is no selected item in search results, reset selected item
-    //if (this.state.selectedItem && !this.searchMatch(searchText, this.state.selectedItem.title))
-      this.setState({searchText, selectedItems: []});
-    //else
-      //this.setState({searchText});
+    this.setState({searchText, selectedItems: []});
   };
   
   searchMatch(target) {
@@ -95,14 +94,6 @@ export default class ReferenceModal extends Component {
     } else {
       this.setState({selectedItems: [item]});
     }
-  };
-
-  onSearchKeyDown = event => {
-    event.stopPropagation();
-
-    //Esc pressed
-    if (event.keyCode == 27)
-      this.setState({searchText: ``});
   };
   
   onSearchClear = () => {
@@ -138,7 +129,6 @@ export default class ReferenceModal extends Component {
                             onIconClick={this.state.searchText ? this.onSearchClear : null}
                             value={this.state.searchText}
                             DOMRef={inp => this.focusElm = inp}
-                            onKeyDown={this.onSearchKeyDown}
                             onChange={this.onSearch} />
             </div>
 

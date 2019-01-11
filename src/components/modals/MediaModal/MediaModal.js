@@ -54,26 +54,27 @@ export default class MediaModal extends Component {
     event.stopPropagation();
     
     //Enter or Esc pressed
-    if (event.keyCode == 13)
+    if (event.keyCode == 13) {
       setTimeout(this.onChoose, 1);
-  //  else if (event.keyCode == 27)
-    //  setTimeout(this.close, 1);
+    } else if (event.keyCode == 27) {
+      if (this.state.searchText)
+        this.setState({searchText: ``});
+      else
+        setTimeout(this.close, 1);
+    }
   };
   
   onSearch = (event) => {
     let searchText = event.target.value;
-    
-    //if there is no selected item in search results, reset selected item
-    //if (this.state.selectedItem && !this.searchMatch(searchText, this.state.selectedItem.name))
-      this.setState({searchText, selectedItems: []});
-    //else
-      //this.setState({searchText});
+    this.setState({searchText, selectedItems: []});
   };
   
-  searchMatch(search, target) {
-    if (!search)
+  searchMatch(target) {
+    if (!this.state.searchText)
       return true;
-    return target.toLowerCase().indexOf(search.toLowerCase()) != -1;
+
+    const text = this.state.searchText.toLowerCase();
+    return target.toLowerCase().indexOf(text) != -1;
   }
 
   onSelect = (item) => {
@@ -88,14 +89,6 @@ export default class MediaModal extends Component {
     } else {
       this.setState({selectedItems: [item]});
     }
-  };
-
-  onSearchKeyDown = event => {
-    event.stopPropagation();
-
-    //Esc pressed
-    if (event.keyCode == 27)
-      this.setState({searchText: ``});
   };
   
   onSearchClear = () => {
@@ -164,7 +157,6 @@ export default class MediaModal extends Component {
                             value={this.state.searchText}
                             icon={this.state.searchText ? "cross" : "search"}
                             onIconClick={this.state.searchText ? this.onSearchClear : null}
-                            onKeyDown={this.onSearchKeyDown}
                             onChange={this.onSearch} />
             </div>
 
@@ -174,7 +166,7 @@ export default class MediaModal extends Component {
                   .filter(item => !item.assigned)
                   .filter(this.filterSize)
                   .filter(this.filterType)
-                  .filter(item => this.searchMatch(this.state.searchText, item.name))
+                  .filter(item => this.searchMatch(item.name))
                   .map(item => {
                     let itemStyle = "media-item";
                     if (this.state.selectedItems.indexOf(item) != -1)
