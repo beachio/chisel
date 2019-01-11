@@ -126,7 +126,6 @@ export default class DropdownControl extends Component {
           <input styleName={inputClasses}
                  value={value}
                  onClick={this.onSuggestionInputClick}
-                 titled
                  readOnly />
           <div styleName="suggestions">
             {suggestions}
