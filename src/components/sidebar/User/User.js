@@ -21,7 +21,7 @@ export default class User extends Component {
 
   closeAccountMenu = () => {
     if (this.state.isAccountOpened)
-      setTimeout(() => this.setState({isAccountOpened: false}), 100);
+      setTimeout(() => this.setState({isAccountOpened: false}), 200);
   };
 
   render() {
