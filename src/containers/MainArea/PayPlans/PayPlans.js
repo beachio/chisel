@@ -8,7 +8,7 @@ import {Parse} from "parse";
 
 import {send} from "utils/server";
 import ContainerComponent from "components/elements/ContainerComponent/ContainerComponent";
-import {changePayPlan} from "ducks/user";
+import {changePayPlan, checkPayPlan} from "ducks/user";
 import {URL_PAYMENT_METHODS, URL_USERSPACE, showAlert} from "ducks/nav";
 import {updateSubscription} from 'ducks/pay';
 import {ALERT_TYPE_ALERT, ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
@@ -19,15 +19,15 @@ import styles from './PayPlans.sss';
 @CSSModules(styles, {allowMultiple: true})
 export class PlanControl extends Component {
   render() {
-    const {onClick, payPlan, payPlanUser, isYearly} = this.props;
+    const {onClick, payPlan, payPlanUser, isYearly, cancelSub} = this.props;
     
     let btnStyle = '';
     let btnText;
-    
-    if (payPlanUser == payPlan) {
+
+    if (!cancelSub && payPlanUser == payPlan  ||  cancelSub && payPlan.isFree) {
       btnText = "It's your current plan";
 
-    } else if (payPlan.greaterThan(payPlanUser)) {
+    } else if (payPlan.greaterThan(payPlanUser)  ||  cancelSub) {
       btnText = "Upgrade";
       btnStyle = 'upgrade';
       
@@ -40,12 +40,12 @@ export class PlanControl extends Component {
       <div styleName="PlanControl">
         <div styleName="title">{payPlan.name}</div>
 
-        {!!payPlan.priceMonthly ?
+        {payPlan.isFree ?
+          <div styleName="cost">Free</div>
+        :
           <div styleName="cost">
             ${isYearly ? payPlan.priceYearly : payPlan.priceMonthly}<span>{isYearly ? '/year' : '/month'}</span>
           </div>
-        :
-          <div styleName="cost">Free</div>
         }
 
         <div styleName="sites-title">Sites</div>
@@ -84,9 +84,13 @@ export class PayPlans extends Component {
       const {showAlert} = this.props.navActions;
       
       let description = `You are going to upgrade your payment plan. Are you sure?`;
-      if (payPlanUser.greaterThan(payPlan))
-        description = `You are going to reduce your payment plan. Are you sure? <br/>(Your rest of the money will be used in next payments.)`;
-      
+      if (payPlanUser.greaterThan(payPlan)) {
+        if (payPlan.isFree)
+          description = `You are going to reduce your payment plan. Are you sure? <br/>(Your current subscription will change in the end of the payment period.)`;
+        else
+          description = `You are going to reduce your payment plan. Are you sure? <br/>(Your rest of the money will be used in next payments.)`;
+      }
+
       showAlert({
         type: ALERT_TYPE_CONFIRM,
         title: `Changing subscription`,
@@ -95,20 +99,24 @@ export class PayPlans extends Component {
           this.setState({pending: true});
           
           const {updateSubscription} = this.props.payActions;
-  
-          if (payPlan.priceMonthly) {
-            const subscription = await send(
+          const {checkPayPlan} = this.props.userActions;
+
+          let subscription;
+          if (payPlan.isFree) {
+            subscription = await send(
+              Parse.Cloud.run('cancelSubscription')
+            );
+            updateSubscription(subscription, payPlan);
+            checkPayPlan();
+
+          } else {
+            subscription = await send(
               Parse.Cloud.run('paySubscription', {
                 planId: payPlan.origin.id,
                 isYearly: this.state.isYearly
               })
             );
             updateSubscription(subscription, payPlan);
-          } else {
-            await send(
-              Parse.Cloud.run('cancelSubscription')
-            );
-            updateSubscription(null, payPlan);
           }
   
           this.setState({pending: false});
@@ -125,8 +133,10 @@ export class PayPlans extends Component {
   };
   
   render() {
-    const {payPlans} = this.props.pay;
+    const {payPlans, stripeData} = this.props.pay;
     const payPlanUser = this.props.user.userData.payPlan;
+
+    const cancelSub = stripeData.subscription.cancel_at_period_end;
     
     return [
       <Helmet key="helmet">
@@ -160,6 +170,7 @@ export class PayPlans extends Component {
               <PlanControl payPlan={payPlan}
                            key={payPlan.origin ? payPlan.origin.id : 1}
                            payPlanUser={payPlanUser}
+                           cancelSub={cancelSub}
                            isYearly={this.state.isYearly}
                            onClick={() => this.onUpdatePayPlan(payPlan)} />)
             }
@@ -183,7 +194,7 @@ function mapDispatchToProps(dispatch) {
   return {
     navActions: bindActionCreators({showAlert}, dispatch),
     payActions: bindActionCreators({updateSubscription}, dispatch),
-    userActions: bindActionCreators({changePayPlan}, dispatch)
+    userActions: bindActionCreators({changePayPlan, checkPayPlan}, dispatch)
   };
 }
 

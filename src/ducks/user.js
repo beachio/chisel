@@ -3,8 +3,9 @@ import {Parse} from 'parse';
 
 import {UserData} from 'models/UserData';
 import {config} from 'utils/initialize';
+import {setTimeout64} from 'utils/common';
 import {send} from 'utils/server';
-import {INIT_END as INIT_END_pay, UPDATE_SUBSCRIPTION} from "ducks/pay";
+import {UPDATE_SUBSCRIPTION} from "ducks/pay";
 
 
 export const LOGIN_REQUEST      = 'app/user/LOGIN_REQUEST';
@@ -19,6 +20,7 @@ export const RESTORE_PASSWORD   = 'app/user/RESTORE_PASSWORD';
 export const RESEND_VERIF       = 'app/user/RESEND_VERIF';
 export const RESET_STATUS       = 'app/user/RESET_STATUS';
 export const CHANGE_PAY_PLAN    = 'app/user/CHANGE_PAY_PLAN';
+export const CHECK_PAY_PLAN     = 'app/user/CHECK_PAY_PLAN';
 
 export const ERROR_USER_EXISTS  = 'app/user/ERROR_USER_EXISTS';
 export const ERROR_WRONG_PASS   = 'app/user/ERROR_WRONG_PASS';
@@ -249,6 +251,47 @@ export function changePayPlan(payPlan) {
   };
 }
 
+export function checkPayPlan() {
+  const payPlans = store.getState().pay.payPlans;
+  let payPlanFree;
+  for (let payPlan of payPlans) {
+    if (payPlan.isFree)
+      payPlanFree = payPlan;
+  }
+
+  const userData = store.getState().user.userData;
+  const userPayPlan_o = userData.origin.get('payPlan');
+
+  if (userPayPlan_o) {
+    const subscription = store.getState().pay.stripeData.subscription;
+    // if canceled subscription is over, we reset user pay plan to Free
+    if (!subscription && payPlanFree && userPayPlan_o != payPlanFree.origin) {
+      userData.payPlan = payPlanFree;
+      userData.updateOrigin();
+      send(userData.origin.save());
+
+    } else {
+      for (let payPlan of payPlans) {
+        if (userPayPlan_o.id == payPlan.origin.id)
+          userData.payPlan = payPlan;
+      }
+
+      // if there will be canceling subscription, we create timer to reset user pay plan to Free
+      if (subscription.cancel_at_period_end)
+        setTimeout64(
+          () => store.dispatch(changePayPlan(payPlanFree)),
+          subscription.current_period_end * 1000 - Date.now());
+    }
+  } else {
+    userData.payPlan = payPlanFree;
+  }
+
+  return {
+    type: CHECK_PAY_PLAN,
+    userData
+  };
+}
+
 const initialState = {
   localStorageReady: false,
 
@@ -308,19 +351,10 @@ export default function userReducer(state = initialState, action) {
         pending: false
       };
 
-    case INIT_END_pay:
-      const userPayPlan = userData.origin.get('payPlan');
-      for (let payPlan of action.payPlans) {
-        if (userPayPlan && userPayPlan.id == payPlan.origin.id ||
-           !userPayPlan && payPlan.isDefault) {
-          userData.payPlan = payPlan;
-          break;
-        }
-      }
-      
+    case CHECK_PAY_PLAN:
       return {
         ...state,
-        userData
+        userData: action.userData
       };
       
     case UPDATE_SUBSCRIPTION:

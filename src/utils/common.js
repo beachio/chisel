@@ -235,3 +235,11 @@ export function checkFileType(type) {
   
   return TYPE_OTHER;
 }
+
+
+export function setTimeout64(func, delay) {
+  if (delay > 0x7FFFFFFF) //setTimeout limit is MAX_INT32=(2^31-1)
+    setTimeout(() => setTimeout64(func, delay - 0x7FFFFFFF), 0x7FFFFFFF);
+  else
+    setTimeout(func, delay);
+}

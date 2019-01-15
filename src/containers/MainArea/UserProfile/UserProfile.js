@@ -266,10 +266,12 @@ export class UserProfile extends Component  {
   };
   
   render() {
-    let dateSubEnd;
+    let dateSubEnd, cancelSub;
     const {subscription} = this.props.pay.stripeData;
-    if (subscription)
+    if (subscription) {
       dateSubEnd = getTextDate(new Date(subscription.current_period_end * 1000));
+      cancelSub = subscription.cancel_at_period_end;
+    }
     
     return [
         <Helmet key="helmet">
@@ -397,14 +399,18 @@ export class UserProfile extends Component  {
             <div styleName="section">
               <div styleName="section-header">Pay plan</div>
               <div styleName="field">
-                <div styleName="field-title">Your pay plan:</div>
+                <div styleName="field-title">Your current pay plan:</div>
                 <div styleName="field-value">{this.userData.payPlan.name}</div>
               </div>
-              {!!subscription &&
+              {!!subscription && (
                 <div styleName="field">
-                  <div styleName="field-title">Next payment:</div>
+                  {cancelSub ?
+                    <div styleName="field-title">Your pay plan will change to <b>Free</b> at:</div>
+                  :
+                    <div styleName="field-title">Next payment:</div>
+                  }
                   <div styleName="field-value">{dateSubEnd}</div>
-                </div>
+                </div>)
               }
               <div styleName="buttons-wrapper">
                 <ButtonControl color="purple"

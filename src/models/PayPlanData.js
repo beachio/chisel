@@ -13,7 +13,7 @@ export class PayPlanData {
   StripeIdMonthly = '';
   StripeIdYearly = '';
   
-  isDefault = true;
+  isFree = true;
   
   
   setOrigin(origin) {
@@ -26,7 +26,7 @@ export class PayPlanData {
     if (origin.get('StripeIdMonthly'))  this.StripeIdMonthly  = origin.get('StripeIdMonthly');
     if (origin.get('StripeIdYearly'))   this.StripeIdYearly   = origin.get('StripeIdYearly');
     
-    this.isDefault = !this.priceMonthly && !this.priceYearly;
+    this.isFree = !this.priceMonthly && !this.priceYearly;
     
     return this;
   }
