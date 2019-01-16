@@ -29,7 +29,7 @@ export default class AlertModal extends Component {
 
     this.confirmString = props.params.confirmString;
     if (props.params.type)
-      this.type = props.type;
+      this.type = props.params.type;
   }
 
   componentDidMount() {
