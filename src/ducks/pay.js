@@ -37,11 +37,13 @@ export function init() {
       payPlans = [new PayPlanData()];
     
     const stripeData = await requestStripeData();
-    
+    const unpaidSub = stripeData.subscription && stripeData.subscription.status == 'past_due';
+
     dispatch({
       type: INIT_END,
       payPlans,
-      stripeData
+      stripeData,
+      unpaidSub
     });
   };
 }

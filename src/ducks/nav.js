@@ -1,4 +1,9 @@
+import {browserHistory} from "react-router";
+
+
 import {LOGOUT} from 'ducks/user';
+import {INIT_END as INIT_END_pay} from "./pay";
+import {ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 
 
 export const INIT_END         = 'app/nav/INIT_END';
@@ -8,6 +13,7 @@ export const SHOW_MODAL       = 'app/nav/SHOW_MODAL';
 export const CLOSE_MODAL      = 'app/nav/CLOSE_MODAL';
 export const SET_CURRENT_PAGE = 'app/nav/SET_CURRENT_PAGE';
 export const TOGGLE_SIDEBAR   = 'app/nav/TOGGLE_SIDEBAR';
+
 
 export const PAGE_NO_SITES        = 'app/nav/pages/PAGE_NO_SITES';
 export const PAGE_MODELS          = 'app/nav/pages/PAGE_MODELS';
@@ -108,15 +114,39 @@ const initialState = {
 
   modalShowing: false,
   modalType: null,
-  modalParams: null
+  modalParams: null,
+
+  showUnpaidSub: false
 };
 
 export default function navReducer(state = initialState, action) {
   switch (action.type) {
-    case INIT_END:
+    case INIT_END_pay:
       return {
         ...state,
-        initEnded: true
+        showUnpaidSub: action.unpaidSub
+      };
+
+    case INIT_END:
+      let alertShowing = false;
+      let alertParams = null;
+      if (state.showUnpaidSub) {
+        alertShowing = true;
+        alertParams = {
+          type: ALERT_TYPE_CONFIRM,
+          title: `Failed payment`,
+          description: `We can't withdraw money for next payment period. Please, update your payment methods.`,
+          confirmLabel: 'Update payment methods',
+          cancelLabel: 'Close',
+          onConfirm: () => browserHistory.push(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`)
+        };
+      }
+
+      return {
+        ...state,
+        initEnded: true,
+        alertShowing,
+        alertParams
       };
 
     case TOGGLE_SIDEBAR:
