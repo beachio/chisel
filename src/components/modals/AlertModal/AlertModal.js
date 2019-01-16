@@ -28,6 +28,8 @@ export default class AlertModal extends Component {
     super(props);
 
     this.confirmString = props.params.confirmString;
+    if (props.params.type)
+      this.type = props.type;
   }
 
   componentDidMount() {
@@ -85,15 +87,10 @@ export default class AlertModal extends Component {
   };
 
   render() {
-    const {title, description, type, btnText, confirmLabel, cancelLabel} = this.props.params;
+    const {title, description, confirmLabel, cancelLabel} = this.props.params;
 
-    if (type)
-      this.type = type;
-
-    let btnOKText = btnText || 'OK';
-
-    let titleHTML = {__html: title || ''};
-    let descriptionHTML = {__html: description || ''};
+    const titleHTML = {__html: title || ''};
+    const descriptionHTML = {__html: description || ''};
 
     return (
       <div styleName="Modal" onClick={this.close}>
@@ -107,39 +104,36 @@ export default class AlertModal extends Component {
           <div styleName="content">
             <div styleName="description" dangerouslySetInnerHTML={descriptionHTML}>
             </div>
-            {
-              this.confirmString &&
-                <div styleName="input-wrapper">
-                  <InputControl onChange={this.onChangeString}
-                                DOMRef={inp => this.focusElm = inp}
-                                value={this.state.confirmString} />
-                </div>
+            {this.confirmString &&
+              <div styleName="input-wrapper">
+                <InputControl onChange={this.onChangeString}
+                              DOMRef={inp => this.focusElm = inp}
+                              value={this.state.confirmString} />
+              </div>
             }
-            {
-              this.type == ALERT_TYPE_ALERT &&
-                <div styleName="button">
-                  <ButtonControl color="purple"
-                                 value={btnOKText}
+            {this.type == ALERT_TYPE_ALERT &&
+              <div styleName="button">
+                <ButtonControl color="purple"
+                               value={confirmLabel ? confirmLabel : "OK"}
+                               DOMRef={btn => this.focusBtn = btn}
+                               onClick={this.close} />
+              </div>
+            }
+            {this.type == ALERT_TYPE_CONFIRM &&
+              <div styleName="buttons-wrapper">
+                <div styleName="buttons-inner">
+                  <ButtonControl color="red"
+                                 value={confirmLabel ? confirmLabel : "Yes"}
+                                 disabled={this.confirmString != this.state.confirmString}
                                  DOMRef={btn => this.focusBtn = btn}
+                                 onClick={this.onConfirm} />
+                </div>
+                <div styleName="buttons-inner">
+                  <ButtonControl color="gray"
+                                 value={cancelLabel ? cancelLabel : "No"}
                                  onClick={this.close} />
                 </div>
-            }
-            {
-              this.type == ALERT_TYPE_CONFIRM &&
-                <div styleName="buttons-wrapper">
-                  <div styleName="buttons-inner">
-                    <ButtonControl color="red"
-                                   value={confirmLabel ? confirmLabel : "Yes"}
-                                   disabled={this.confirmString != this.state.confirmString}
-                                   DOMRef={btn => this.focusBtn = btn}
-                                   onClick={this.onConfirm} />
-                  </div>
-                  <div styleName="buttons-inner">
-                    <ButtonControl color="gray"
-                                   value={cancelLabel ? cancelLabel : "No"}
-                                   onClick={this.close} />
-                  </div>
-                </div>
+              </div>
             }
           </div>
 

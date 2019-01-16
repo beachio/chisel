@@ -54,7 +54,7 @@ class App extends React.Component {
           type: ALERT_TYPE_ALERT,
           title: `Service problem`,
           description: "There are problems with our service or internet connection. You should try later.",
-          btnText: 'Reload page'
+          confirmLabel: 'Reload page'
         };
         return <AlertModal params={params}
                            onClose={() => window.location = '/'}/>;
