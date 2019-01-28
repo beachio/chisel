@@ -114,8 +114,7 @@ export default class DropdownControl extends Component {
                  onClick={this.onInputClick}
                  readOnly />
           <div styleName="suggestions">
-            {this.list.map(item => {
-              const key = this.list.indexOf(item);
+            {this.list.map((item, key) => {
               const styleName = classNames({
                 'suggestion': true,
                 'empty': !item
