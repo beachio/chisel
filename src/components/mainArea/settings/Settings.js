@@ -27,7 +27,8 @@ export default class Settings extends Component {
     webhook: '',
     dirty: false,
     error: null,
-    icon: null
+    icon: null,
+    errorFile: null
   };
   
   site = null;
@@ -66,27 +67,26 @@ export default class Settings extends Component {
     this.setState({webhook, dirty: true, error: null});
   };
 
-  onChangeIcon = event => {
-    let file = event.target.files[0];
+  onChangeIcon = async event => {
+    const file = event.target.files[0];
     if (!file)
       return;
 
     if (file.type.slice(0, 6) != `image/`) {
-      let error = `You should upload an image`;
-      this.setState({error});
+      this.setState({errorFile: `You should upload an image!`});
       return;
     }
 
     if (file.size > 1024 * 1024) {
-      let error = `Your file's size exceeds a limit of 1 MB.`;
-      this.setState({error});
+      this.setState({errorFile: `Your file's size exceeds a limit of 1 MB!`});
       return;
     }
 
-    let parseFile = new Parse.File(filterSpecials(file.name), file, file.type);
-    parseFile.save().then(() => {
-      this.setState({dirty: true, icon: parseFile});
-    });
+    this.setState({errorFile: null});
+
+    const parseFile = new Parse.File(filterSpecials(file.name), file, file.type);
+    await parseFile.save();
+    this.setState({dirty: true, icon: parseFile});
   };
 
   validate() {
@@ -183,6 +183,11 @@ export default class Settings extends Component {
                    onChange={this.onChangeIcon} />
           </div>
         </div>
+        {this.state.errorFile &&
+          <div styleName="field-error">
+            {this.state.errorFile}
+          </div>
+        }
       </div>
     );
   }
