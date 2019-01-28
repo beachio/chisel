@@ -65,7 +65,7 @@ export default class DropdownControl extends Component {
   };
 
   render() {
-    const {label, type, titled} = this.props;
+    const {label, type, titled, inline} = this.props;
 
     let {value} = this.state;
     if (value == '')
@@ -82,7 +82,8 @@ export default class DropdownControl extends Component {
                            readOnly={true} />;
 
     const wrapperClasses = classNames({
-      'input-wrapper type-wrapper': true,
+      'dropdown': true,
+      'dropdown-inline': !!inline,
       'dropdown-big': type === 'big'
     });
 
