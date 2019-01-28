@@ -49,6 +49,17 @@ export class UserData {
       )
       .replace(/%/g, `_`);
   }
+
+  get fullName () {
+    if (this.firstName) {
+      if (this.lastName)
+        return this.firstName + ' ' + this.lastName;
+      return this.firstName;
+    }
+    if (this.lastName)
+      return this.lastName;
+    return null;
+  }
 }
 
 export const ROLE_OWNER     = "OWNER";
