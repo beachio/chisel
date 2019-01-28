@@ -246,7 +246,7 @@ export default class ContentList extends Component {
                           easing="ease-out">
 
                   {visibleItems
-                    .map(item => {
+                    .map((item, key) => {
                       const title = item.draft ? item.draft.title : item.title;
 
                       let updatedDate = item.draft ? item.draft.origin.updatedAt : item.origin.updatedAt;
@@ -260,13 +260,11 @@ export default class ContentList extends Component {
                         [STATUS_UPDATED]:   {background: '#B1560F'},
                         [STATUS_ARCHIVED]:  {background: '#AFAFAF'}
                       };
-                      const key = item.origin && item.origin.id  ?  item.origin.id  :  Math.random();
+
                       return(
-                        <div 
-                          styleName={`list-item`}
-                          key={key}
-                          onClick={() => this.onItemClick(item)}
-                        >
+                        <div styleName={`list-item`}
+                             key={key}
+                             onClick={() => this.onItemClick(item)}>
                           <div styleName="colorLabel" style={colorStyle[item.status]}></div>
                           <div styleName="type">
                             {title ?
