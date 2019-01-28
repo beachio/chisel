@@ -13,11 +13,15 @@ export default class ContainerComponent extends Component {
 
     let headerStyles = 'header';
     if (haveTitle2)
-      headerStyles = 'header header-double';
+      headerStyles += ' header-double';
   
     let titlesCmp = titles;
     if (title)
       titlesCmp = <div styleName="title">{title}</div>;
+
+    let contentStyles = 'content';
+    if (showLoader)
+      contentStyles += ' loader-active';
     
     return (
       <div styleName='ContainerComponent'>
@@ -34,7 +38,7 @@ export default class ContainerComponent extends Component {
             </div>
           }
         </div>
-        <div styleName='content'>
+        <div styleName={contentStyles}>
           {children}
         </div>
       </div>
