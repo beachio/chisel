@@ -25,23 +25,21 @@ export class EmailVerify extends Component  {
   
   render() {
     return (
-      <div className='container'>
+      <div styleName="EmailVerify">
         <Helmet>
           <title>Verifying email - Chisel</title>
         </Helmet>
-        <div styleName="EmailVerify">
-          <div styleName="logo">
-            <img src={require("assets/images/chisel-logo.png")} />
-          </div>
-          <div styleName="title">Your email was verified successfully.</div>
-          <form styleName="form" onSubmit={this.onLogin}>
-            <div styleName="button">
-              <ButtonControl color="green"
-                             type="submit"
-                             value="Log in" />
-            </div>
-          </form>
+        <div styleName="logo">
+          <img src={require("assets/images/chisel-logo.png")} />
         </div>
+        <div styleName="title">Your email was verified successfully.</div>
+        <form styleName="form" onSubmit={this.onLogin}>
+          <div styleName="button">
+            <ButtonControl color="green"
+                           type="submit"
+                           value="Log in" />
+          </div>
+        </form>
       </div>
     );
   }

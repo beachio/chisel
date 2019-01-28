@@ -418,15 +418,15 @@ export class Sign extends Component  {
     }
 
     return (
-      <div className='container registration-container'>
+      <div styleName="Sign">
         <Helmet>
           <title>Sign in / Sign up - Chisel</title>
         </Helmet>
         <div styleName="image">
           <img src={require("assets/images/chisel_login_illustration.png")} />
         </div>
-        <div styleName="Sign">
-          <div styleName="Sign-container">
+        <div styleName="content">
+          <div styleName="inner">
             <div styleName="logo">
               {icon}
             </div>

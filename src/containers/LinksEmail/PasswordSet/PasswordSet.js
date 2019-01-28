@@ -147,18 +147,15 @@ export class PasswordSet extends Component  {
     
     
     return (
-      <div className='container'>
+      <div styleName="PasswordSet">
         <Helmet>
           <title>Changing password - Chisel</title>
         </Helmet>
-        
-        <div styleName="PasswordSet">
-          <div styleName="logo">
-            <img src={require("assets/images/chisel-logo.png")} />
-          </div>
-          <div styleName="title">{title}</div>
-          {content}
+        <div styleName="logo">
+          <img src={require("assets/images/chisel-logo.png")} />
         </div>
+        <div styleName="title">{title}</div>
+        {content}
       </div>
     );
   }

@@ -25,23 +25,21 @@ export class InvalidLink extends Component  {
   
   render() {
     return (
-      <div className='container'>
+      <div styleName='InvalidLink'>
         <Helmet>
           <title>Invalid link - Chisel</title>
         </Helmet>
-        <div styleName="InvalidLink">
-          <div styleName="logo">
-            <img src={require("assets/images/chisel-logo.png")} />
-          </div>
-          <div styleName="title">The link is invalid.</div>
-          <form styleName="form" onSubmit={this.onLogin}>
-            <div styleName="button">
-              <ButtonControl color="green"
-                             type="submit"
-                             value="Goto home" />
-            </div>
-          </form>
+        <div styleName="logo">
+          <img src={require("assets/images/chisel-logo.png")} />
         </div>
+        <div styleName="title">The link is invalid.</div>
+        <form styleName="form" onSubmit={this.onLogin}>
+          <div styleName="button">
+            <ButtonControl color="green"
+                           type="submit"
+                           value="Goto home" />
+          </div>
+        </form>
       </div>
     );
   }

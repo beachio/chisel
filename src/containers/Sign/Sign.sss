@@ -1,5 +1,23 @@
 .Sign
   position: relative
+  width: 100%
+  height: 100%
+  max-width: 100%
+  min-height: 100vh
+  margin: 0 auto
+  padding: 15vh 30px 50px 0
+  overflow: auto
+
+  display: flex
+  flex-flow: row nowrap
+  justify-content: flex-start
+  align-items: flex-start
+
+  font-family: 'Inter-UI', sans-serif
+  text-align: left
+
+.content
+  position: relative
   display: flex
   flex-flow: column nowrap
   justify-content: center
@@ -10,7 +28,7 @@
   margin-right: calc(15% - 100px)
 
 
-  &-container 
+  .inner
     position: relative
     width: 100%
     padding: 96px 50px 42px
@@ -20,25 +38,24 @@
     border-radius: 20px
     border-top-left-radius: 10px
 
-  .logo
-    position: absolute
-    left: 50%
-    top: -81px
-    transform: translateX(-50%)
+    .logo
+      position: absolute
+      left: 50%
+      top: -81px
+      transform: translateX(-50%)
 
-    width: 179px
-    height: 179px
-    text-align: center
-  
-    img
-      height: 35px
+      width: 179px
+      height: 179px
+      text-align: center
+
+      img
+        height: 35px
   
   .title
     font-size: 18px
     color: #2C2C30
     text-align: center
     line-height: 28px
-    text-align: center
     
   .form
     margin-top: 30px
@@ -118,6 +135,7 @@
   left: 0
   top: 0
   width: 45%
+
   img
     display: block
     width: 100%
@@ -154,5 +172,3 @@
   font-size: 14px
   color: #2C2C30
   text-align: center
-
-
