@@ -25,7 +25,9 @@ import styles from './PaymentMethods.sss';
 @CSSModules(styles, {allowMultiple: true})
 class _PayElement extends Component {
   state = {
-    defaultMethod: true
+    defaultMethod: true,
+    error: null,
+    complete: false
   };
   
   submit = async (e) => {
@@ -41,6 +43,14 @@ class _PayElement extends Component {
   onDefaultMethodCheck = checked => {
     this.setState({defaultMethod: checked});
   };
+
+  onChange = change => {
+    this.setState({complete: change.complete});
+    if (change.error)
+      this.setState({error: change.error.message});
+    else
+      this.setState({error: null});
+  };
   
   render() {
     const style = {
@@ -54,7 +64,7 @@ class _PayElement extends Component {
         }
       },
       invalid: {
-        color: '#9e2146',
+        color: '#9e2146'
       }
     };
     
@@ -65,7 +75,7 @@ class _PayElement extends Component {
         <label styleName="label">
           Card details
           <div styleName="card-wrapper">
-            <CardElement style={style} />
+            <CardElement style={style} onChange={this.onChange} />
           </div>
         </label>
         {canBeDefault &&
@@ -78,8 +88,12 @@ class _PayElement extends Component {
         <div styleName="button-wrapper">
           <ButtonControl color="purple"
                          type="submit"
+                         disabled={!this.state.complete}
                          value={payPlan ? "Subscribe" : "Add method"} />
         </div>
+        {this.state.error &&
+          <div styleName="error">{this.state.error}</div>
+        }
       </form>
     );
   }
@@ -119,43 +133,61 @@ class PaymentMethods extends Component {
     const {updateUser} = this.props.userActions;
     const {addSource, updateSubscription, updateDefaultSource} = this.props.payActions;
     const {showAlert} = this.props.navActions;
-    
+
+    let StripeId;
+
     try {
       this.setState({pending: true});
-      const StripeId = await send(
+      StripeId = await send(
         Parse.Cloud.run('savePaymentSource', {tokenId: token.id, asDefault})
       );
-      if (StripeId) {
-        userData.StripeId = StripeId;
-        updateUser(userData);
-      }
-      addSource(token.card);
-      if (asDefault)
-        updateDefaultSource(token.card.id);
-      
-      if (this.payPlan) {
-        const subscription = await send(
-          Parse.Cloud.run('paySubscription', {
-            planId: this.payPlan.origin.id,
-            isYearly: this.isYearly
-          })
-        );
-        updateSubscription(subscription, this.payPlan);
-  
-        showAlert({
-          type: ALERT_TYPE_ALERT,
-          title: "Payment complete",
-          description: `You are successfully subscribed to ${this.payPlan.name}.`,
-          callback: () => browserHistory.push(`/${URL_USERSPACE}`)
-        });
-        
-      } else {
-        this.setState({method: token.card});
-      }
-    
     } catch (e) {
-      console.log(e);
-      
+      showAlert({
+        type: ALERT_TYPE_ALERT,
+        title: "Payment method data error",
+        description: `Please, check your payment data.`
+      });
+      this.setState({pending: false});
+      return;
+    }
+
+    if (StripeId) {
+      userData.StripeId = StripeId;
+      updateUser(userData);
+    }
+    addSource(token.card);
+    if (asDefault)
+      updateDefaultSource(token.card.id);
+
+
+    if (!this.payPlan) {
+      this.setState({method: token.card, pending: false});
+      return;
+    }
+
+    try {
+      const subscription = await send(
+        Parse.Cloud.run('paySubscription', {
+          planId: this.payPlan.origin.id,
+          isYearly: this.isYearly
+        })
+      );
+      updateSubscription(subscription, this.payPlan);
+
+      showAlert({
+        type: ALERT_TYPE_ALERT,
+        title: "Payment complete",
+        description: `You are successfully subscribed to ${this.payPlan.name}.`,
+        callback: () => browserHistory.push(`/${URL_USERSPACE}`)
+      });
+
+    } catch (e) {
+      showAlert({
+        type: ALERT_TYPE_ALERT,
+        title: "Payment isn't complete",
+        description: `We can't use your payment method to charge subscription. Please, check it`
+      });
+
     } finally {
       this.setState({pending: false});
     }
