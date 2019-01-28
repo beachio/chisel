@@ -40,9 +40,12 @@ export default class ContentReference extends ContentBase {
       return baseError;
   
     let value = this.state.value;
-    if (!value || !value.length)
+    if (!value || !value.length) {
+      if (this.field.isRequired)
+        return 'This field is required!';
       return;
-    
+    }
+
     for (let item of value) {
       const exist = checkContentExistense(item);
       if (!exist)
@@ -102,10 +105,10 @@ export default class ContentReference extends ContentBase {
       return;
     
     let refers = this.state.value;
-    if (item)
+    if (this.field.isList)
       refers.splice(refers.indexOf(item), 1);
     else
-      refers.splice(0, refers.length);
+      refers = undefined;
     this.setValue(refers, true);
   };
   
