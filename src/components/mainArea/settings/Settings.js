@@ -54,18 +54,15 @@ export default class Settings extends Component {
     });
   }
 
-  onChangeName = event => {
-    let name = event.target.value;
+  onChangeName = name => {
     this.setState({name, dirty: true, error: null});
   };
 
-  onChangeDomain = event => {
-    let domain = event.target.value;
+  onChangeDomain = domain => {
     this.setState({domain, dirty: true, error: null});
   };
 
-  onChangeWebhook = event => {
-    let webhook = event.target.value;
+  onChangeWebhook = webhook => {
     this.setState({webhook, dirty: true, error: null});
   };
 

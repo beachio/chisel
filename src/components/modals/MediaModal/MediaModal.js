@@ -64,8 +64,7 @@ export default class MediaModal extends Component {
     }
   };
   
-  onSearch = (event) => {
-    let searchText = event.target.value;
+  onSearch = searchText => {
     this.setState({searchText, selectedItems: []});
   };
   

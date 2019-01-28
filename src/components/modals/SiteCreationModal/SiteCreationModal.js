@@ -109,8 +109,7 @@ export default class SiteCreationModal extends Component {
       setTimeout(this.close, 1);
   };
 
-  onChangeName = event => {
-    const name = event.target.value;
+  onChangeName = name => {
     this.setState({name, errorName: null});
   };
 

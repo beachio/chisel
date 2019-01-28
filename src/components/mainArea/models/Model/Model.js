@@ -104,8 +104,7 @@ export default class Model extends Component {
     this.setState({fields: nextProps.model.fields});
   }
 
-  onFieldNameChange = event => {
-    let name = event.target.value;
+  onFieldNameChange = name => {
     this.setState({fieldName: name});
   };
 

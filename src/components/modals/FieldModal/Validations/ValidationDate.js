@@ -129,8 +129,7 @@ export default class ValidationDate extends Component {
       }}, this.update);
   };
   
-  onRangeErrorMsg = event => {
-    const {value} = event.target;
+  onRangeErrorMsg = value => {
     this.setState({rangeDate: {
         ...this.state.rangeDate,
         errorMsg: value

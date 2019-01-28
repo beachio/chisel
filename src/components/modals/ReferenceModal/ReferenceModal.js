@@ -69,8 +69,7 @@ export default class ReferenceModal extends Component {
     }
   };
   
-  onSearch = (event) => {
-    const searchText = event.target.value;
+  onSearch = searchText => {
     this.setState({searchText, selectedItems: []});
   };
   

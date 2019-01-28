@@ -210,18 +210,15 @@ export class UserProfile extends Component  {
     return true;
   }
   
-  onChangeFirstName = event => {
-    let firstName = event.target.value;
+  onChangeFirstName = firstName => {
     this.setState({firstName, dirtyData: true, errorData: null});
   };
   
-  onChangeLastName = event => {
-    let lastName = event.target.value;
+  onChangeLastName = lastName => {
     this.setState({lastName, dirtyData: true, errorData: null});
   };
   
-  onChangeEmail = event => {
-    let emailNew = event.target.value;
+  onChangeEmail = emailNew => {
     this.setState({
       emailNew,
       dirtyEmail: emailNew != this.userData.emailNew,
@@ -229,26 +226,22 @@ export class UserProfile extends Component  {
     });
   };
   
-  onChangePasswordOld = event => {
-    let passwordOld = event.target.value;
-    let dirtyPassword = !!passwordOld || !!this.state.password || !!this.state.passwordConfirm;
+  onChangePasswordOld = passwordOld => {
+    const dirtyPassword = !!passwordOld || !!this.state.password || !!this.state.passwordConfirm;
     this.setState({passwordOld, dirtyPassword, errorPassword: null});
   };
   
-  onChangePassword = event => {
-    let password = event.target.value;
-    let dirtyPassword = !!password || !!this.state.passwordOld || !!this.state.passwordConfirm;
+  onChangePassword = password => {
+    const dirtyPassword = !!password || !!this.state.passwordOld || !!this.state.passwordConfirm;
     this.setState({password, dirtyPassword, errorPassword: null});
   };
   
-  onChangePasswordConfirm = event => {
-    let passwordConfirm = event.target.value;
-    let dirtyPassword = !!passwordConfirm || !!this.state.passwordOld || !!this.state.password;
+  onChangePasswordConfirm = passwordConfirm => {
+    const dirtyPassword = !!passwordConfirm || !!this.state.passwordOld || !!this.state.password;
     this.setState({passwordConfirm, dirtyPassword, errorPassword: null});
   };
   
-  onChangeServerURL = event => {
-    let serverURL = event.target.value;
+  onChangeServerURL = serverURL => {
     this.setState({serverURL, dirtyServer: true, errorServer: null});
   };
   

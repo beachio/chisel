@@ -76,8 +76,7 @@ export default class ValidationNumber extends Component {
     }}, this.update);
   };
   
-  onRangeErrorMsg = event => {
-    const {value} = event.target;
+  onRangeErrorMsg = value => {
     this.setState({range: {
         ...this.state.range,
         errorMsg: value

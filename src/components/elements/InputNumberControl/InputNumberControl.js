@@ -48,8 +48,7 @@ export default class InputNumberControl extends Component {
     return num;
   }
   
-  onChange = event => {
-    let {value} = event.target;
+  onChange = value => {
     value = value.replace(/[^\d\.,]/g, '');
     value = value.replace(/,/g, '.');
     this.setState({value});

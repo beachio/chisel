@@ -45,8 +45,7 @@ export default class Sharing extends Component {
       });
   }
 
-  onInputChange = event => {
-    const input = event.target.value;
+  onInputChange = input => {
     this.setState({input});
   };
 

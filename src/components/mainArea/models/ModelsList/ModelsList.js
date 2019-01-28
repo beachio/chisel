@@ -52,8 +52,7 @@ export default class ModelsList extends Component {
     this.animate = true;
   }
 
-  onModelNameChange = event => {
-    let name = event.target.value;
+  onModelNameChange = name => {
     this.setState({modelName: name});
   };
 

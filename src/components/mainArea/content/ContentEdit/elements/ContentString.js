@@ -137,8 +137,7 @@ export default class ContentString extends ContentBase {
     return null;
   }
   
-  onChange = event => {
-    let value = event.target.value;
+  onChange = value => {
     this.setValue(value);
     if (this.field.isTitle)
       this.props.updateItemTitle(value);

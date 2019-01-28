@@ -118,7 +118,7 @@ export default class DynamicListComponent extends Component {
                                 readOnly={readOnly}
                                 titled={titled}
                                 DOMRef={inp => this.inputs[i] = inp}
-                                onChange={e => this.onChange(e.target.value, i)}
+                                onChange={v => this.onChange(v, i)}
                                 onKeyDown={e => this.onKeyDown(e, i)}/>;
         
         elements.push(

@@ -58,9 +58,7 @@ export default class AlertModal extends Component {
       setTimeout(this.close, 1);
   };
 
-  onChangeString = event => {
-    let confirmString = event.target.value;
-
+  onChangeString = confirmString => {
     this.setState({confirmString});
   };
 

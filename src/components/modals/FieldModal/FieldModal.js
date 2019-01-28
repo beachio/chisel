@@ -123,8 +123,7 @@ export default class FieldModal extends Component {
       setTimeout(this.close, 1);
   };
 
-  onChangeName = event => {
-    let name = event.target.value;
+  onChangeName = name => {
     let nameId = this.state.nameId;
     if (!this.updating)
       nameId = getNameId(name, this.field.model.fields);
@@ -140,13 +139,11 @@ export default class FieldModal extends Component {
     }, this.checkControls);
   };
 
-  onChangeBoolTextYes = event => {
-    const boolTextYes = event.target.value;
+  onChangeBoolTextYes = boolTextYes => {
     this.setState({boolTextYes});
   };
 
-  onChangeBoolTextNo = event => {
-    const boolTextNo = event.target.value;
+  onChangeBoolTextNo = boolTextNo => {
     this.setState({boolTextNo});
   };
 

@@ -82,8 +82,7 @@ export default class ValidationString extends Component {
     }}, this.update);
   };
   
-  onRangeErrorMsg = event => {
-    const {value} = event.target;
+  onRangeErrorMsg = value => {
     this.setState({range: {
         ...this.state.range,
         errorMsg: value
@@ -97,24 +96,21 @@ export default class ValidationString extends Component {
       }}, this.update);
   };
   
-  onPatternPattern = event => {
-    const {value} = event.target;
+  onPatternPattern = value => {
     this.setState({pattern: {
         ...this.state.pattern,
         pattern: value
       }}, this.update);
   };
   
-  onPatternFlags = event => {
-    const {value} = event.target;
+  onPatternFlags = value => {
     this.setState({pattern: {
         ...this.state.pattern,
         flags: value
       }}, this.update);
   };
   
-  onPatternErrorMsg = event => {
-    const {value} = event.target;
+  onPatternErrorMsg = value => {
     this.setState({pattern: {
         ...this.state.pattern,
         errorMsg: value

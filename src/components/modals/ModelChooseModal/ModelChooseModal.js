@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
-import InputControl from 'components/elements/InputControl/InputControl';
 
 import styles from './ModelChooseModal.sss';
 

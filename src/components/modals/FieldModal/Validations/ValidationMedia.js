@@ -127,8 +127,7 @@ export default class ValidationMedia extends Component {
       }}, this.update);
   };
   
-  onSizeErrorMsg = event => {
-    const {value} = event.target;
+  onSizeErrorMsg = value => {
     this.setState({fileSize: {
         ...this.state.fileSize,
         errorMsg: value
@@ -143,8 +142,7 @@ export default class ValidationMedia extends Component {
       }}, this.update);
   };
   
-  onTypesErrorMsg = event => {
-    const {value} = event.target;
+  onTypesErrorMsg = value => {
     this.setState({fileTypes: {
         ...this.state.fileTypes,
         errorMsg: value

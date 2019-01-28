@@ -42,8 +42,7 @@ export default class ValidationReference extends Component {
       }}, this.update);
   };
   
-  onModelsErrorMsg = event => {
-    const {value} = event.target;
+  onModelsErrorMsg = value => {
     this.setState({models: {
         ...this.state.models,
         errorMsg: value

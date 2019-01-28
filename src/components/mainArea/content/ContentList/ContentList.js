@@ -54,8 +54,7 @@ export default class ContentList extends Component {
     this.setState({currentModel: model});
   };
 
-  onItemTitleChange = event => {
-    let title = event.target.value;
+  onItemTitleChange = title => {
     this.setState({itemTitle: title});
   };
 
@@ -72,8 +71,7 @@ export default class ContentList extends Component {
     }
   };
 
-  onSearch = event => {
-    const searchText = event.target.value;
+  onSearch = searchText => {
     this.setState({searchText});
   };
 
