@@ -11,6 +11,8 @@ import ButtonControl from "components/elements/ButtonControl/ButtonControl";
 import CheckboxControl from "components/elements/CheckboxControl/CheckboxControl";
 import IconsComponent from 'components/elements/IconsComponent/IconsComponent';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
+import InputControl from "components/elements/InputControl/InputControl";
+import DropdownControl from "components/elements/DropdownControl/DropdownControl";
 import {ALERT_TYPE_ALERT, ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 import {send} from 'utils/server';
 import {update as updateUser} from "ducks/user";
@@ -22,21 +24,84 @@ import {getPayPlan, getPayMethod} from "utils/data";
 import styles from './PaymentMethods.sss';
 
 
+const countries = {
+  "Australia": "AU",
+  "Austria": "AT",
+  "Belgium": "BE",
+  "Brazil": "BR",
+  "Canada": "CA",
+  "China": "CN",
+  "Denmark": "DK",
+  "Finland": "FI",
+  "France": "FR",
+  "Germany": "DE",
+  "Hong Kong": "HK",
+  "Ireland": "IE",
+  "Italy": "IT",
+  "Japan": "JP",
+  "Luxembourg": "LU",
+  "Mexico": "MX",
+  "Netherlands": "NL",
+  "New Zealand": "NZ",
+  "Norway": "NO",
+  "Portugal": "PT",
+  "Singapore": "SG",
+  "Spain": "ES",
+  "Sweden": "SE",
+  "Switzerland": "CH",
+  "United Kingdom": "GB",
+  "United States": "US"
+};
+
+
 @CSSModules(styles, {allowMultiple: true})
 class _PayElement extends Component {
   state = {
+    name: '',
+    address: '',
+    city: '',
+    state: '',
+    zip: '',
+    country: 'United States',
+
     defaultMethod: true,
+    errorRequired: false,
     error: null,
     complete: false
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state.name = props.userName;
+  }
   
-  submit = async (e) => {
+  submit = async e => {
     e.preventDefault();
     
+    if (!this.state.complete)
+      return;
+
+    if (!this.state.name ||
+        !this.state.address ||
+        !this.state.city ||
+        (!this.state.state && this.country == "United States") ||
+        !this.state.zip) {
+      this.setState({errorRequired: true});
+      return;
+    }
+
     const {onStart, onComplete} = this.props;
     
     onStart();
-    const {token} = await this.props.stripe.createToken({name: "Card 1"});
+    const {token} = await this.props.stripe.createToken({
+      name:           this.state.name,
+      address_line1:  this.state.address,
+      address_city:   this.state.city,
+      address_state:  this.state.state,
+      address_zip:    this.state.zip,
+      address_country:countries[this.state.country]
+    });
     onComplete(token, this.state.defaultMethod);
   };
   
@@ -44,7 +109,31 @@ class _PayElement extends Component {
     this.setState({defaultMethod: checked});
   };
 
-  onChange = change => {
+  onChangeName = name => {
+    this.setState({name, errorRequired: false});
+  };
+
+  onChangeAddress = address => {
+    this.setState({address, errorRequired: false});
+  };
+
+  onChangeCity = city => {
+    this.setState({city, errorRequired: false});
+  };
+
+  onChangeState = state => {
+    this.setState({state, errorRequired: false});
+  };
+
+  onChangeZip = zip => {
+    this.setState({zip, errorRequired: false});
+  };
+
+  onChangeCountry = country => {
+    this.setState({country, errorRequired: false});
+  };
+
+  onChangeCard = change => {
     this.setState({complete: change.complete});
     if (change.error)
       this.setState({error: change.error.message});
@@ -71,12 +160,54 @@ class _PayElement extends Component {
     
     return (
       <form onSubmit={this.submit} styleName="form">
-        <label styleName="label">
+        <section styleName="section">
+          Billing address
+          <div styleName="input-wrapper">
+            <InputControl placeholder="Name"
+                          autoFocus
+                          value={this.state.name}
+                          onChange={this.onChangeName} />
+          </div>
+          <div styleName="input-wrapper">
+            <InputControl placeholder="Address"
+                          value={this.state.address}
+                          onChange={this.onChangeAddress} />
+          </div>
+          <div styleName="inputs-inline">
+            <div styleName="input-wrapper">
+              <InputControl placeholder="City"
+                            value={this.state.city}
+                            onChange={this.onChangeCity} />
+            </div>
+            {this.state.country == "United States" &&
+              <div styleName="input-wrapper input-state">
+                <InputControl placeholder="State"
+                              value={this.state.state}
+                              onChange={this.onChangeState}/>
+              </div>
+            }
+            <div styleName="input-wrapper input-zip">
+              <InputControl placeholder={this.state.country == "United States" ? "ZIP" : "Postal code"}
+                            value={this.state.zip}
+                            onChange={this.onChangeZip} />
+            </div>
+          </div>
+          <div styleName="input-wrapper">
+            <DropdownControl label="Country"
+                             inline
+                             current={this.state.country}
+                             list={Object.keys(countries)}
+                             onSuggest={this.onChangeCountry} />
+          </div>
+        </section>
+
+        <section styleName="section">
           Card details
           <div styleName="card-wrapper">
-            <CardElement style={style} onChange={this.onChange} />
+            <CardElement style={style} onChange={this.onChangeCard} hidePostalCode />
           </div>
-        </label>
+        </section>
+
         {canBeDefault &&
           <div styleName="checkbox-wrapper">
             <CheckboxControl title="Use the payment method as a default"
@@ -87,11 +218,14 @@ class _PayElement extends Component {
         <div styleName="button-wrapper">
           <ButtonControl color="purple"
                          type="submit"
-                         disabled={!this.state.complete}
+                         disabled={!this.state.complete || this.state.errorRequired}
                          value={payPlan ? "Subscribe" : "Add method"} />
         </div>
         {this.state.error &&
           <div styleName="error">{this.state.error}</div>
+        }
+        {this.state.errorRequired &&
+          <div styleName="error">All fields are required to fill!</div>
         }
       </form>
     );
@@ -324,9 +458,6 @@ class PaymentMethods extends Component {
                           showLoader={this.state.pending} >
         <div styleName="content">
           <div styleName="side">
-            <div styleName="title">
-              Payment Methods
-            </div>
             {methods &&
               methods.map(method => {
                 let style = "method";
@@ -388,6 +519,7 @@ class PaymentMethods extends Component {
                   <PayElement onStart={() => this.setState({pending: true})}
                               onComplete={this.onNewSourceSubscribe}
                               payPlan={this.payPlan}
+                              userName={this.props.user.userData.fullName}
                               canBeDefault={!!methods && !!methods.length} />
                 </Elements>
 

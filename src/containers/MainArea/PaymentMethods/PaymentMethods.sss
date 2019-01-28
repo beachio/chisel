@@ -1,18 +1,13 @@
 .content
   width: 100%
+  margin-top: 30px
   display: flex
   flex-flow: row nowrap
   justify-content: space-between
 
   .side
     flex: 0 0 270px
-    padding-right: 20px
-    padding-left: 20px
-
-    .title
-      font-size: 14px
-      color: #2C2C30
-      padding-bottom: 15px
+    padding-right: 40px
 
     .method
       display: flex
@@ -23,6 +18,7 @@
       padding-bottom: 10px
       padding-top: 10px
       padding-right: 11px
+      margin-bottom: 10px
       border-radius: 20px
 
       background: #FFFFFF
@@ -46,7 +42,7 @@
 
   .main
     flex: 1
-    padding-left: 20px
+    padding-left: 40px
 
     .payplan-info
       padding-bottom: 20px
@@ -67,6 +63,29 @@
 .form
   padding-bottom: 20px
 
+  .section
+    font-size: 16px
+    color: #2C2C30
+    margin-bottom: 50px
+
+  .inputs-inline
+    display: flex
+    max-width: 430px
+
+  .input-wrapper
+    max-width: 430px
+    margin-top: 15px
+    flex-grow: 1
+
+  .input-state
+    width: 80px
+    margin-left: 15px
+
+  .input-zip
+    max-width: 140px
+    margin-left: 15px
+    flex-grow: 0
+
   .card-wrapper
     margin-top: 15px
     max-width: 430px
@@ -80,13 +99,14 @@
     font-size: 14px
     color: #DD5555
 
+
 .label
-  font-size: 14px
+  font-size: 16px
   color: #2C2C30
   margin-bottom: 20px
 
 .checkbox-wrapper
-  margin-top: 30px
+  margin-bottom: 50px
   font-size: 13px
 
 .button-wrapper
