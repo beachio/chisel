@@ -136,7 +136,7 @@ export class PayPlans extends Component {
     const {payPlans, stripeData} = this.props.pay;
     const payPlanUser = this.props.user.userData.payPlan;
 
-    const cancelSub = stripeData.subscription.cancel_at_period_end;
+    const cancelSub = stripeData.subscription ? stripeData.subscription.cancel_at_period_end : false;
     
     return [
       <Helmet key="helmet">
