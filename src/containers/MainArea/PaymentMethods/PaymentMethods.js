@@ -57,7 +57,6 @@ class _PayElement extends Component {
       base: {
         fontSize: '14px',
         color: '#313133',
-        lineHeight: '24px',
         fontFamily: "Source Code Pro, monospace",
         '::placeholder': {
           color: '#999999',
@@ -141,26 +140,25 @@ class PaymentMethods extends Component {
       StripeId = await send(
         Parse.Cloud.run('savePaymentSource', {tokenId: token.id, asDefault})
       );
-    } catch (e) {
+    } catch (error) {
       showAlert({
         type: ALERT_TYPE_ALERT,
         title: "Payment method data error",
-        description: `Please, check your payment data.`
+        description: error.message
       });
       this.setState({pending: false});
       return;
     }
 
-    if (StripeId) {
-      userData.StripeId = StripeId;
-      updateUser(userData);
-    }
-    addSource(token.card);
-    if (asDefault)
-      updateDefaultSource(token.card.id);
-
-
     if (!this.payPlan) {
+      if (StripeId) {
+        userData.StripeId = StripeId;
+        updateUser(userData);
+      }
+      addSource(token.card);
+      if (asDefault)
+        updateDefaultSource(token.card.id);
+
       this.setState({method: token.card, pending: false});
       return;
     }
@@ -172,6 +170,15 @@ class PaymentMethods extends Component {
           isYearly: this.isYearly
         })
       );
+
+      if (StripeId) {
+        userData.StripeId = StripeId;
+        updateUser(userData);
+      }
+      addSource(token.card);
+      if (asDefault)
+        updateDefaultSource(token.card.id);
+
       updateSubscription(subscription, this.payPlan);
 
       showAlert({
@@ -181,11 +188,11 @@ class PaymentMethods extends Component {
         callback: () => browserHistory.push(`/${URL_USERSPACE}`)
       });
 
-    } catch (e) {
+    } catch (error) {
       showAlert({
         type: ALERT_TYPE_ALERT,
         title: "Payment isn't complete",
-        description: `We can't use your payment method to charge subscription. Please, check it`
+        description: error.message
       });
 
     } finally {
@@ -383,6 +390,7 @@ class PaymentMethods extends Component {
                               payPlan={this.payPlan}
                               canBeDefault={!!methods && !!methods.length} />
                 </Elements>
+
               </div>
             }
           </div>
