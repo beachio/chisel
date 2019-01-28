@@ -192,8 +192,8 @@ export default class ValidationMedia extends Component {
                 </div>
                 <div styleName="size-unit">
                   <DropdownControl disabled={!this.state.fileSize.active || !this.state.fileSize.minActive}
-                                   suggestionsList={DATA_UNITS}
-                                   suggest={this.onSizeMinUnit}
+                                   list={DATA_UNITS}
+                                   onSuggest={this.onSizeMinUnit}
                                    current={this.state.fileSize.minUnit}/>
                 </div>
         
@@ -211,8 +211,8 @@ export default class ValidationMedia extends Component {
                 </div>
                 <div styleName="size-unit">
                   <DropdownControl disabled={!this.state.fileSize.active || !this.state.fileSize.maxActive}
-                                   suggestionsList={DATA_UNITS}
-                                   suggest={this.onSizeMaxUnit}
+                                   list={DATA_UNITS}
+                                   onSuggest={this.onSizeMaxUnit}
                                    current={this.state.fileSize.maxUnit}/>
                 </div>
               </div>

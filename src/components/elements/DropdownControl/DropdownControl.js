@@ -11,63 +11,63 @@ import styles from './DropdownControl.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class DropdownControl extends Component {
   state = {
-    suggestionValue: '',
-    suggestionsVisibility: false,
+    value: '',
+    listVis: false,
     disabled: false
   };
-  suggestionsList = [];
+  list = [];
   onSuggest = null;
 
 
   constructor(props) {
     super(props);
 
-    const {suggestionsList, suggest, current, disabled} = props;
-    this.onSuggest = suggest;
-    if (suggestionsList)
-      this.suggestionsList = suggestionsList;
+    const {list, onSuggest, current, disabled} = props;
+    this.onSuggest = onSuggest;
+    if (list)
+      this.list = list;
 
     this.state.disabled = disabled;
 
-    if (this.suggestionsList.indexOf(current) != -1 || current === undefined)
-      this.state.suggestionValue = current;
+    if (this.list.indexOf(current) != -1 || current === undefined)
+      this.state.value = current;
   }
 
   componentWillReceiveProps(nextProps) {
-    const {suggestionsList, current, disabled} = nextProps;
+    const {list, current, disabled} = nextProps;
 
-    this.suggestionsList = suggestionsList;
+    this.list = list;
 
-    if (suggestionsList.indexOf(current) != -1 || current === undefined)
-      this.setState({suggestionValue: current, disabled});
+    if (list.indexOf(current) != -1 || current === undefined)
+      this.setState({value: current, disabled});
     else
-      this.setState({suggestionValue: '', disabled});
+      this.setState({value: '', disabled});
   }
 
   onSuggestionClick = item => {
     this.setState({
-      suggestionValue: item,
-      suggestionsVisibility: false
+      value: item,
+      listVis: false
     });
     this.onSuggest(item);
   };
 
-  onSuggestionInputClick = () => {
+  onInputClick = () => {
     this.setState({
-      suggestionsVisibility: !this.state.suggestionsVisibility
+      listVis: !this.state.listVis
     });
   };
 
-  onSuggestionBlur = () => {
+  onBlur = () => {
     this.setState({
-      suggestionsVisibility: false
+      listVis: false
     });
   };
 
   render() {
     const {label, type, titled} = this.props;
 
-    let value = this.state.suggestionValue;
+    let {value} = this.state;
     if (value == '')
       value = '(empty)';
     else if (!value)
@@ -88,29 +88,14 @@ export default class DropdownControl extends Component {
 
     const inputClasses = classNames({
       'input': true,
-      'suggestions-visible': this.state.suggestionsVisibility,
-      'empty': !this.state.suggestionValue,
+      'suggestions-visible': this.state.listVis,
+      'empty': !this.state.value,
       'input-titled': titled
     });
 
     const arrowClasses = classNames({
       'arrow-down': true,
-      'arrow-rotated': this.state.suggestionsVisibility
-    });
-
-    const suggestions = this.suggestionsList.map(suggestionsItem => {
-      const key = this.suggestionsList.indexOf(suggestionsItem);
-      const styleName = classNames({
-        'suggestion': true,
-        'empty': !suggestionsItem
-      });
-      return (
-        <div onMouseDown={() => this.onSuggestionClick(suggestionsItem)}
-             styleName={styleName}
-             key={key}>
-          {suggestionsItem ? suggestionsItem : '(empty)'}
-        </div>
-      );
+      'arrow-rotated': this.state.listVis
     });
 
     let icon = <InlineSVG styleName={arrowClasses} src={require("assets/images/icon-triangular-arrow.svg")} />;
@@ -118,7 +103,7 @@ export default class DropdownControl extends Component {
       icon = <InlineSVG styleName="arrows" src={require("assets/images/arrows.svg")} />;
 
     return (
-      <div styleName={wrapperClasses} onBlur={this.onSuggestionBlur}>
+      <div styleName={wrapperClasses} onBlur={this.onBlur}>
         {label &&
           <div styleName="label">{label}</div>
         }
@@ -126,10 +111,23 @@ export default class DropdownControl extends Component {
           {icon}
           <input styleName={inputClasses}
                  value={value}
-                 onClick={this.onSuggestionInputClick}
+                 onClick={this.onInputClick}
                  readOnly />
           <div styleName="suggestions">
-            {suggestions}
+            {this.list.map(item => {
+              const key = this.list.indexOf(item);
+              const styleName = classNames({
+                'suggestion': true,
+                'empty': !item
+              });
+              return (
+                <div onMouseDown={() => this.onSuggestionClick(item)}
+                     styleName={styleName}
+                     key={key}>
+                  {!!item ? item : '(empty)'}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

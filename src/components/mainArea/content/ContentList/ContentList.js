@@ -298,9 +298,9 @@ export default class ContentList extends Component {
               {isEditable &&
                 <div styleName="inputs-wrapper bottom-inputs" key="input!">
                   <div styleName="dropdown-wrapper">
-                    <DropdownControl suggestionsList={models.map(m => m.name)}
-                                    suggest={this.onChangeModel}
-                                    current={this.state.currentModel.name} />
+                    <DropdownControl list={models.map(m => m.name)}
+                                     onSuggest={this.onChangeModel}
+                                     current={this.state.currentModel.name} />
                   </div>
                   <div styleName="input-wrapper">
                     <InputControl placeholder="Create a new content item"

@@ -408,8 +408,8 @@ export default class FieldModal extends Component {
             <div styleName="input-wrapper">
               <DropdownControl label="Type"
                               disabled={this.updating || this.state.isTitle}
-                              suggestionsList={this.typeList}
-                              suggest={this.onChangeType}
+                              list={this.typeList}
+                              onSuggest={this.onChangeType}
                               titled
                               current={this.state.type} />
             </div>
@@ -508,8 +508,8 @@ export default class FieldModal extends Component {
             <div styleName="input-wrapper">
               <DropdownControl label="Appearance"
                               disabled={this.state.isTitle}
-                              suggestionsList={this.state.appList}
-                              suggest={this.onChangeAppearance}
+                              list={this.state.appList}
+                              onSuggest={this.onChangeAppearance}
                               current={this.state.appearance} />
             </div>
             {inner}

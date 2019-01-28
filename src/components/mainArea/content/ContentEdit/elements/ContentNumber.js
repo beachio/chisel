@@ -169,8 +169,8 @@ export default class ContentNumber extends ContentBase {
               <div styleName="dropdown-wrapper" key={i}>
                 <div styleName="dropdown">
                   <DropdownControl disabled={!this.state.isEditable}
-                                   suggestionsList={this.field.validValues}
-                                   suggest={_v => this.onChangeDropdown(_v, i)}
+                                   list={this.field.validValues}
+                                   onSuggest={_v => this.onChangeDropdown(_v, i)}
                                    current={v}/>
                 </div>
                 {this.state.isEditable &&
