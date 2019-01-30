@@ -35,6 +35,8 @@
       color: #2C2C30
       letter-spacing: 0.5px
       line-height: 30px
+      text-align: left
+      flex-grow: 1
       
       transition: color 0.2s ease
       will-change: color
@@ -61,8 +63,12 @@
   .buttons-wrapper
     margin-top: 20px
     display: flex
-    flex-flow: row nowrap
-    justify-content: flex-end
+    flex-flow: row-reverse nowrap
+    justify-content: space-between
+    align-items: center
+
+    .button
+      flex-shrink: 0
 
 .name-wrapper
   display: flex

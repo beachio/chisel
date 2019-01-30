@@ -297,17 +297,19 @@ export class UserProfile extends Component  {
               </div>
               </div>
               <div styleName="buttons-wrapper">
-                <ButtonControl color="purple"
-                               type="submit"
-                               titled
-                               disabled={!this.state.dirtyData || this.state.errorData}
-                               value="Update personal data"/>
-              </div>
-              <div styleName="field-success">
-                {this.state.successData}
-              </div>
-              <div styleName="field-error">
-                {this.state.errorData}
+                <div styleName="button">
+                  <ButtonControl color="purple"
+                                 type="submit"
+                                 titled
+                                 disabled={!this.state.dirtyData || this.state.errorData}
+                                 value="Update personal data"/>
+                </div>
+                {this.state.successData &&
+                  <div styleName="field-success">{this.state.successData}</div>
+                }
+                {this.state.errorData &&
+                  <div styleName="field-error">{this.state.errorData}</div>
+                }
               </div>
             </form>
 
@@ -323,11 +325,12 @@ export class UserProfile extends Component  {
                 </div>
               </div>
               <div styleName="buttons-wrapper">
-                <ButtonControl color="purple"
-                               type="submit"
-                               disabled={!this.state.dirtyEmail || this.state.errorEmail}
-                               value="Change email"/>
-              </div>
+                <div styleName="button">
+                  <ButtonControl color="purple"
+                                 type="submit"
+                                 disabled={!this.state.dirtyEmail || this.state.errorEmail}
+                                 value="Change email"/>
+                </div>
                 {this.state.successEmailState &&
                   <div styleName="field-success">
                     <div>
@@ -338,9 +341,11 @@ export class UserProfile extends Component  {
                     </div>
                   </div>
                 }
-              <div styleName="field-error">
-                {this.state.errorEmail}
+                {this.state.errorEmail &&
+                  <div styleName="field-error">{this.state.errorEmail}</div>
+                }
               </div>
+
             </form>
 
             <form styleName="section" onSubmit={this.onSavePassword}>
@@ -376,17 +381,20 @@ export class UserProfile extends Component  {
                 </div>
               </div>
               <div styleName="buttons-wrapper">
-                <ButtonControl color="purple"
-                               type="submit"
-                               disabled={!this.state.dirtyPassword || this.state.errorPassword}
-                               value="Set new password"/>
+                <div styleName="button">
+                  <ButtonControl color="purple"
+                                 type="submit"
+                                 disabled={!this.state.dirtyPassword || this.state.errorPassword}
+                                 value="Set new password"/>
+                </div>
+                {this.state.successPassword &&
+                  <div styleName="field-success">{this.state.successPassword}</div>
+                }
+                {this.state.errorPassword &&
+                  <div styleName="field-error">{this.state.errorPassword}</div>
+                }
               </div>
-              <div styleName="field-success">
-                {this.state.successPassword}
-              </div>
-              <div styleName="field-error">
-                {this.state.errorPassword}
-              </div>
+
             </form>
             
             <div styleName="section">
@@ -436,17 +444,20 @@ export class UserProfile extends Component  {
                 </div>
               </div>
               <div styleName="buttons-wrapper">
-                <ButtonControl color="purple"
-                               type="submit"
-                               disabled={!this.state.dirtyServer || this.state.errorServer}
-                               value="Update server data"/>
+                <div styleName="button">
+                  <ButtonControl color="purple"
+                                 type="submit"
+                                 disabled={!this.state.dirtyServer || this.state.errorServer}
+                                 value="Update server data"/>
+                </div>
+                {this.state.successServer &&
+                  <div styleName="field-success">{this.state.successServer}</div>
+                }
+                {this.state.errorServer &&
+                  <div styleName="field-error">{this.state.errorServer}</div>
+                }
               </div>
-              <div styleName="field-success">
-                {this.state.successServer}
-              </div>
-              <div styleName="field-error">
-                {this.state.errorServer}
-              </div>
+
             </form>
 
           </div>
