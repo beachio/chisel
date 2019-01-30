@@ -44,7 +44,6 @@
 
     .type
       flex: 1 1 auto
-      max-width: 300px
 
     .name,
     .description,
@@ -55,20 +54,19 @@
       letter-spacing: 0.5px
       text-align: left
 
-
     .description
       font-size: 11px
       letter-spacing: 0.46px
       margin-top: 3px
 
     .fields
-      flex: 0 0 auto
-      max-width: 240px
+      flex-shrink: 0
+      max-width: 110px
       width: 100%
 
     .updated
-      flex: 0 1 auto
-
+      width: 180px
+      flex-shrink: 0
 
   &-header
     border-bottom: 1px solid #e8e8e8
@@ -86,16 +84,10 @@
       font-size: 18px
 
     .name-head
-      max-width: 300px
-      width: 100%
-
-    .fields
       flex: 1 1 auto
-      max-width: 240px
-      width: 100%
 
     .updated
-      flex: 1 1 auto
+      width: 218px
 
 .input-wrapper
   margin-top: 20px
