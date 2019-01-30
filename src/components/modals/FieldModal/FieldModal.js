@@ -598,7 +598,7 @@ export default class FieldModal extends Component {
 
         content = (
           <div>
-            <div styleName="input-wrapper">
+            <div styleName="validation">
               <div styleName="switch">
                 <CheckboxControl title="Required"
                                 checked={this.state.isRequired}
@@ -607,7 +607,7 @@ export default class FieldModal extends Component {
               </div>
             </div>
             {canBeUnique(this.state) &&
-              <div styleName="input-wrapper">
+              <div styleName="validation">
                 <div styleName="switch">
                   <CheckboxControl title="Unique value"
                                   checked={this.state.isUnique}
