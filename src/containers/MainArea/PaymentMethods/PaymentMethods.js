@@ -55,7 +55,7 @@ const countries = {
 
 
 @CSSModules(styles, {allowMultiple: true})
-class _PayElement extends Component {
+class _PayCardElement extends Component {
   state = {
     name: '',
     address: '',
@@ -232,7 +232,7 @@ class _PayElement extends Component {
   }
 }
 
-export const PayElement = injectStripe(_PayElement);
+export const PayCardElement = injectStripe(_PayCardElement);
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -538,11 +538,11 @@ class PaymentMethods extends Component {
             :
               <div styleName="method-content">
                 <Elements>
-                  <PayElement onStart={() => this.setState({pending: true})}
-                              onComplete={this.onNewSourceSubscribe}
-                              payPlan={this.payPlan}
-                              userName={this.props.user.userData.fullName}
-                              canBeDefault={!!methods && !!methods.length} />
+                  <PayCardElement onStart={() => this.setState({pending: true})}
+                                  onComplete={this.onNewSourceSubscribe}
+                                  payPlan={this.payPlan}
+                                  userName={this.props.user.userData.fullName}
+                                  canBeDefault={!!methods && !!methods.length} />
                 </Elements>
 
               </div>
