@@ -260,6 +260,28 @@ class PaymentMethods extends Component {
     if (stripeData)
       this.state.method = getPayMethod(stripeData.defaultSource);
   }
+
+  /*
+  setupPaymentRequestButton = async () => {
+    this.paymentRequest = this.props.stripe.paymentRequest({
+      country: 'US',
+      currency: 'usd',
+      total: {
+        label: 'Demo total',
+        amount: 1000,
+      }
+    });
+
+    this.paymentRequest.on('token', async ({complete, token, ...data}) => {
+      await this.onNewSourceSubscribe(token, true);
+
+      complete('success');
+    });
+
+    const canMakePaymentRequest = !!(await this.paymentRequest.canMakePayment());
+    this.setState({canMakePaymentRequest});
+  };
+  */
   
   onNewSourceSubscribe = async (token, asDefault) => {
     const {userData} = this.props.user;
