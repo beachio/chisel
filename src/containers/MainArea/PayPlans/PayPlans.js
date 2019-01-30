@@ -99,7 +99,6 @@ export class PayPlans extends Component {
           this.setState({pending: true});
           
           const {updateSubscription} = this.props.payActions;
-          const {checkPayPlan} = this.props.userActions;
 
           let subscription;
           if (payPlan.isFree) {
@@ -107,7 +106,7 @@ export class PayPlans extends Component {
               Parse.Cloud.run('cancelSubscription')
             );
             updateSubscription(subscription, payPlan);
-            checkPayPlan();
+            this.props.userActions.checkPayPlan();
 
           } else {
             subscription = await send(
