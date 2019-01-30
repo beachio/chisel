@@ -1,4 +1,5 @@
 import {store} from 'index';
+import {SITE_ADDING_PROBLEM as SITE_ADDING_PROBLEM_models} from 'ducks/models';
 
 
 export const LOG_REQUEST    = 'app/serverStatus/LOG_REQUEST';
@@ -99,6 +100,7 @@ export default function serverStatusReducer(state = initialState, action) {
       };
 
     case SET_PROBLEM_B:
+    case SITE_ADDING_PROBLEM_models:
       return {
         ...state,
         requests: [],

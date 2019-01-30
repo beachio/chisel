@@ -12,6 +12,7 @@ import {getNameId, getRole} from 'utils/data';
 export const INIT_END                   = 'app/models/INIT_END';
 
 export const SITE_ADD                   = 'app/models/SITE_ADD';
+export const SITE_ADDING_PROBLEM        = 'app/models/SITE_ADDING_PROBLEM';
 export const SITE_UPDATE                = 'app/models/SITE_UPDATE';
 export const SITE_DELETE                = 'app/models/SITE_DELETE';
 export const COLLABORATION_ADD          = 'app/models/COLLABORATION_ADD';
@@ -240,60 +241,72 @@ export function setCurrentSite(currentSite) {
 }
 
 export function addSite(site, template = null) {
-  site.owner = store.getState().user.userData;
-  
-  let nameId = filterSpecials(site.name);
-  nameId = `${site.owner.emailFiltered}__${nameId}`;
-  nameId = getNameId(nameId, store.getState().models.sites);
-  site.nameId = nameId;
-  
-  site.updateOrigin();
-  site.origin.setACL(new Parse.ACL(site.owner.origin));
-  
-  if (template) {
-    for (let model of template.models) {
-      const newModel_o = model.origin.clone();
-      const newModel = new ModelData().setOrigin(newModel_o);
-      newModel.site = site;
-      newModel.setTableName();
-      site.models.push(newModel);
-      
-      for (let field of model.fields) {
-        const newField_o = field.origin.clone();
-        const newField = new ModelFieldData().setOrigin(newField_o);
-        newField.model = newModel;
-        newModel.fields.push(newField);
+  return dispatch => {
+    site.owner = store.getState().user.userData;
+
+    let nameId = filterSpecials(site.name);
+    nameId = `${site.owner.emailFiltered}__${nameId}`;
+    nameId = getNameId(nameId, store.getState().models.sites);
+    site.nameId = nameId;
+
+    site.updateOrigin();
+    site.origin.setACL(new Parse.ACL(site.owner.origin));
+
+    if (template) {
+      for (let model of template.models) {
+        const newModel_o = model.origin.clone();
+        const newModel = new ModelData().setOrigin(newModel_o);
+        newModel.site = site;
+        newModel.setTableName();
+        site.models.push(newModel);
+
+        for (let field of model.fields) {
+          const newField_o = field.origin.clone();
+          const newField = new ModelFieldData().setOrigin(newField_o);
+          newField.model = newModel;
+          newModel.fields.push(newField);
+        }
       }
-    }
-  
-    send(site.origin.save())
-      .then(() => {
-        const promises = [];
-        for (let model of site.models) {
-          model.updateOrigin();
-          promises.push(send(model.origin.save()));
-        }
-        return Promise.all(promises);
-      })
-      .then(() => {
-        const promises = [];
-        for (let model of site.models) {
-          for (let field of model.fields) {
-            field.updateOrigin();
-            promises.push(send(field.origin.save()));
+
+      send(site.origin.save())
+        .then(() => {
+          const promises = [];
+          for (let model of site.models) {
+            model.updateOrigin();
+            promises.push(send(model.origin.save()));
           }
-        }
-        return Promise.all(promises);
-      });
-  
-  } else {
-    send(site.origin.save());
+          return Promise.all(promises);
+        })
+        .then(() => {
+          const promises = [];
+          for (let model of site.models) {
+            for (let field of model.fields) {
+              field.updateOrigin();
+              promises.push(send(field.origin.save()));
+            }
+          }
+          return Promise.all(promises);
+        })
+        .catch(e => {
+          dispatch({
+            type: SITE_ADDING_PROBLEM
+          });
+        });
+
+    } else {
+      send(site.origin.save())
+        .catch(e => {
+          dispatch({
+            type: SITE_ADDING_PROBLEM
+          });
+        });
+    }
+
+    dispatch({
+      type: SITE_ADD,
+      site
+    });
   }
-  
-  return {
-    type: SITE_ADD,
-    site
-  };
 }
 
 export function updateSite(site) {
