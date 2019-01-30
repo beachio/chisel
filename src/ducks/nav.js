@@ -136,7 +136,7 @@ export default function navReducer(state = initialState, action) {
           type: ALERT_TYPE_CONFIRM,
           title: `Failed payment`,
           description: `We can't withdraw money for next payment period. Please, update your payment methods.`,
-          confirmLabel: 'Update payment methods',
+          confirmLabel: 'Open payment methods',
           cancelLabel: 'Close',
           onConfirm: () => browserHistory.push(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`)
         };
