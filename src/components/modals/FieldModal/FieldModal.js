@@ -12,7 +12,7 @@ import ValidationString from 'components/modals/FieldModal/Validations/Validatio
 import ValidationDate from 'components/modals/FieldModal/Validations/ValidationDate';
 import ValidationReference from 'components/modals/FieldModal/Validations/ValidationReference';
 import ValidationMedia from "components/modals/FieldModal/Validations/ValidationMedia";
-import {BYTES, convertDataUnits, removeOddSpaces} from "utils/common";
+import {BYTES, convertDataUnits, removeOddSpaces, throttle} from "utils/common";
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST} from 'utils/data';
 
 import {FIELD_TYPES, canBeList, canBeTitle, canBeUnique} from 'models/ModelData';
@@ -57,7 +57,8 @@ export default class FieldModal extends Component {
   models = null;
   validValuesList = null;
   focusElm = null;
-  initialTabRef = null;
+
+  tabRef = null;
   caretRef = null;
 
 
@@ -95,9 +96,9 @@ export default class FieldModal extends Component {
   componentDidMount() {
     this.active = true;
     document.addEventListener('keydown', this.onKeyDown);
+    window.addEventListener('resize', this.onResize);
 
-    if (this.initialTabRef)
-      this.calcCaretPos(this.initialTabRef);
+    this.calcCaretPos();
 
     if (this.focusElm)
       setTimeout(() => this.focusElm.focus(), 2);
@@ -105,7 +106,12 @@ export default class FieldModal extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onKeyDown);
+    window.removeEventListener('resize', this.onResize);
   }
+
+  onResize = () => {
+    throttle(this.calcCaretPos, 500)();
+  };
 
   onKeyDown = event => {
     if (this.validValuesList && this.validValuesList.isFocused())
@@ -355,19 +361,20 @@ export default class FieldModal extends Component {
 
   onClickTab = (e, tab) => {
     this.setState({tab});
-    this.calcCaretPos(e.target);
+    this.tabRef = e.target;
+    this.calcCaretPos();
   };
 
-  calcCaretPos = input => {
-    const caret = this.caretRef;
-    console.log('calc caret pos', input, caret);
+  calcCaretPos = () => {
+    if (!this.caretRef)
+      return;
 
-    if (input && caret) {
-      const l = input.offsetLeft;
-      const w = input.offsetWidth;
-      caret.style = `opacity: 1; transform: translateX(${l}px); width: ${w}px;`;
+    if (this.tabRef) {
+      const l = this.tabRef.offsetLeft;
+      const w = this.tabRef.offsetWidth;
+      this.caretRef.style = `opacity: 1; transform: translateX(${l}px); width: ${w}px;`;
     } else {
-      caret.style = 'opacity: 0';
+      this.caretRef.style = 'opacity: 0';
     }
   };
 
@@ -626,7 +633,7 @@ export default class FieldModal extends Component {
             </div>
             <div styleName="tabs">
               <div styleName={tabSettStyle}
-                   ref={el => this.initialTabRef = el}
+                   ref={el => {if (!this.tabRef) this.tabRef = el;}}
                    onClick={e => this.onClickTab(e, TAB_SETTINGS)}>General</div>
               <div styleName={tabAppStyle}
                    onClick={e => this.onClickTab(e, TAB_APPEARANCE)}>Appearance</div>
