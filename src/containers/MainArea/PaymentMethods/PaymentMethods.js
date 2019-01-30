@@ -243,6 +243,7 @@ class PaymentMethods extends Component {
     defaultMethod: true
   };
   
+  methods = [];
   payPlan = null;
   isYearly = false;
   
@@ -388,10 +389,15 @@ class PaymentMethods extends Component {
   onRemoveMethod = async () => {
     const {showAlert} = this.props.navActions;
     const {updateDefaultSource} = this.props.payActions;
+
+    let description = "Are you sure?";
+    if (this.methods.length <= 1)
+      description = `Caution! You are going to remove the last payment method. If you will not add a new one, we can't continue your subscription to the next payment period. Are you sure?`;
+
     showAlert({
       type: ALERT_TYPE_CONFIRM,
       title: `Deleting <strong>${this.state.method.brand} xxxx-${this.state.method.last4}</strong>`,
-      description: "Are you sure?",
+      description,
       onConfirm: async () => {
         const {removeSource} = this.props.payActions;
   
@@ -440,10 +446,9 @@ class PaymentMethods extends Component {
   
   render() {
     const {stripeData} = this.props.pay;
-    let methods = [];
     let defaultMethod = null;
     if (stripeData) {
-      methods = stripeData.sources;
+      this.methods = stripeData.sources;
       defaultMethod = stripeData.defaultSource;
     }
     
@@ -480,8 +485,8 @@ class PaymentMethods extends Component {
                           showLoader={this.state.pending} >
         <div styleName="content">
           <div styleName="side">
-            {methods &&
-              methods.map(method => {
+            {this.methods &&
+              this.methods.map(method => {
                 let style = "method";
                 if (method == this.state.method)
                   style += " method-checked";
@@ -542,7 +547,7 @@ class PaymentMethods extends Component {
                                   onComplete={this.onNewSourceSubscribe}
                                   payPlan={this.payPlan}
                                   userName={this.props.user.userData.fullName}
-                                  canBeDefault={!!methods && !!methods.length} />
+                                  canBeDefault={!!this.methods && !!this.methods.length} />
                 </Elements>
 
               </div>
