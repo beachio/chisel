@@ -10,21 +10,6 @@
   line-height: 30px
   text-align: left
 
-.list .head
-  position: relative
-
-  display: flex
-  flex-flow: row nowrap
-  align-items: center
-  padding: 16px
-  font-size: 18px
-  font-weight: 600
-  font-family: 'Inter-UI'
-  border-bottom: 1px solid #e8e8e8
-
-  div
-    font-size: 18px
-
 .list
   display: flex
   flex-flow: column nowrap
@@ -88,6 +73,24 @@
       flex-grow: 1
       width: 100%
 
+  .head
+    position: relative
+
+    display: flex
+    flex-flow: row nowrap
+    align-items: center
+    padding: 16px
+    font-size: 18px
+    font-weight: 600
+    font-family: 'Inter-UI'
+    border-bottom: 1px solid #e8e8e8
+
+    div
+      font-size: 18px
+
+    .listItemType
+      margin-right: 138px
+
 
 .listButtons
   width: 100px
@@ -98,13 +101,12 @@
   margin-right: 10%
 
   background: #E5E5E5
-  font-size: 14px
+  font-size: 11px
   color: #6A6A6A
   text-align: center
 
   box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.20)
   border-radius: 20px
-  font-size: 11px
   letter-spacing: 0.42px
   line-height: 24px
   padding: 0 15px
