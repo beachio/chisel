@@ -17,20 +17,20 @@ export class Sidebar extends Component {
   render() {
     const {models, isSidebarVisible} = this.props;
     const {userData} = this.props.user;
+    const {stripeInitError, payPlans} = this.props.pay;
     const {showModal, showAlert} = this.props.navActions;
   
     const gotoSite = site => {
       const nameId = site.nameId;
       browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${nameId}`);
     };
-    
-    const showUpgrade = !isPayPlanTop(userData.payPlan);
+
+    const showPay = !stripeInitError && !!payPlans && !!payPlans.length;
+    const showUpgrade = showPay && !isPayPlanTop(userData.payPlan);
 
     return (
-      <div 
-        styleName="sidebar"
-        className={isSidebarVisible ? `sidebar-visible` : sidebarHidden}
-      >
+      <div styleName="sidebar"
+           className={isSidebarVisible ? `sidebar-visible` : sidebarHidden}>
         <div styleName="header">
           Chisel
         </div>
@@ -38,7 +38,7 @@ export class Sidebar extends Component {
           <Sites sites={models.sites}
                  currentSite={models.currentSite}
                  gotoSite={gotoSite}
-                 payPlan={userData.payPlan}
+                 payPlan={showPay ? userData.payPlan : null}
                  showModal={showModal}
                  showAlert={showAlert} />
         </div>

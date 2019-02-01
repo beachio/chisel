@@ -4,6 +4,7 @@ import {Parse} from 'parse';
 import {UserData} from 'models/UserData';
 import {config} from 'utils/initialize';
 import {setTimeout64} from 'utils/common';
+import {getPayPlan, getPayPlanFree} from 'utils/data';
 import {send, PARSE_ERROR_CODE__USERNAME_TAKEN, PARSE_ERROR_CODE__OBJECT_NOT_FOUND, PARSE_ERROR_CODE__EMAIL_NOT_FOUND,
   PARSE_ERROR_CODE__EMAIL_TAKEN} from 'utils/server';
 import {UPDATE_SUBSCRIPTION} from "ducks/pay";
@@ -256,32 +257,29 @@ export function changePayPlan(payPlan) {
 }
 
 export function checkPayPlan() {
-  const payPlans = store.getState().pay.payPlans;
-  let payPlanFree;
-  for (let payPlan of payPlans) {
-    if (payPlan.isFree)
-      payPlanFree = payPlan;
-  }
+  const {payPlans} = store.getState().pay;
+  if (!payPlans || !payPlans.length)
+    return {type: CHECK_PAY_PLAN};
+
+  const payPlanFree = getPayPlanFree();
 
   const userData = store.getState().user.userData;
   const userPayPlan_o = userData.origin.get('payPlan');
 
   if (userPayPlan_o) {
-    const subscription = store.getState().pay.stripeData.subscription;
+    const {subscription} = store.getState().pay.stripeData;
     // if canceled subscription is over, we reset user pay plan to Free
-    if (!subscription && payPlanFree && userPayPlan_o != payPlanFree.origin) {
+    if (!subscription && payPlanFree && userPayPlan_o.id != payPlanFree.origin.id) {
       userData.payPlan = payPlanFree;
       userData.updateOrigin();
       send(userData.origin.save());
 
     } else {
-      for (let payPlan of payPlans) {
-        if (userPayPlan_o.id == payPlan.origin.id)
-          userData.payPlan = payPlan;
-      }
+      // fill user data
+      userData.payPlan = getPayPlan(userPayPlan_o.id);
 
       // if there will be canceling subscription, we create timer to reset user pay plan to Free
-      if (subscription.cancel_at_period_end)
+      if (subscription && subscription.cancel_at_period_end)
         setTimeout64(
           () => store.dispatch(changePayPlan(payPlanFree)),
           subscription.current_period_end * 1000 - Date.now());
@@ -356,10 +354,12 @@ export default function userReducer(state = initialState, action) {
       };
 
     case CHECK_PAY_PLAN:
-      return {
-        ...state,
-        userData: action.userData
-      };
+      if (action.userData)
+        return {
+          ...state,
+          userData: action.userData
+        };
+      return state;
       
     case UPDATE_SUBSCRIPTION:
       userData.payPlan = action.payPlan;

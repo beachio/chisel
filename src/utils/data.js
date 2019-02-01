@@ -314,10 +314,19 @@ export function getNameId(name, objects, reserved = []) {
 }
 
 export function getPayPlan(id) {
-  const plans = store.getState().pay.payPlans;
-  for (let plan of plans) {
+  const {payPlans} = store.getState().pay;
+  for (let plan of payPlans) {
     if (plan.origin && plan.origin.id == id)
       return plan;
+  }
+  return null;
+}
+
+export function getPayPlanFree() {
+  const {payPlans} = store.getState().pay;
+  for (let payPlan of payPlans) {
+    if (payPlan.isFree)
+      return payPlan;
   }
   return null;
 }

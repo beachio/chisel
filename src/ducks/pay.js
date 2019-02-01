@@ -32,9 +32,7 @@ async function requestStripeData() {
 
 export function init() {
   return async dispatch => {
-    let payPlans = await requestPayPlans();
-    if (!payPlans || !payPlans.length)
-      payPlans = [new PayPlanData()];
+    const payPlans = await requestPayPlans();
 
     try {
       const stripeData = await requestStripeData();
