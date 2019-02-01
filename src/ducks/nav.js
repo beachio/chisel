@@ -169,10 +169,17 @@ export default function navReducer(state = initialState, action) {
       };
   
     case SHOW_ALERT:
-      return {...state, alertShowing: true, alertParams: action.params};
+      return {
+        ...state,
+        alertShowing: true,
+        alertParams: action.params
+      };
   
     case CLOSE_ALERT:
-      return {...state, alertShowing: false};
+      return {
+        ...state,
+        alertShowing: false
+      };
 
     case SHOW_MODAL:
       return {

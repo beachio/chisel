@@ -122,9 +122,8 @@ class App extends React.Component {
     let res = (
       <div styleName="wrapper">
         {this.props.children}
-        {
-          showModalLoader &&
-            <SiteLoader />
+        {showModalLoader &&
+          <SiteLoader />
         }
         <CSSTransition in={!!modal}
                        timeout={300}

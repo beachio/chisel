@@ -38,6 +38,7 @@ export class Sign extends Component  {
   elmEmail;
   elmPassword;
   elmPasswordConfirm;
+  elmCheckbox;
 
 
   constructor(props) {
