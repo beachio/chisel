@@ -151,14 +151,13 @@ export default class ModelsList extends Component {
                     </div>
                     <div styleName="fields">{model.fields.length}</div>
                     <div styleName="updated">{updatedStr}</div>
-                    {
-                      isEditable &&
-                        <div styleName="controls">
-                          <div styleName="remove control-icon" onClick={event => this.onRemoveClick(event, model)}>
-                            <InlineSVG styleName="cross"
-                                      src={require("assets/images/icon-delete.svg")}/>
-                          </div>
+                    {isEditable &&
+                      <div styleName="controls">
+                        <div styleName="remove control-icon" onClick={event => this.onRemoveClick(event, model)}>
+                          <InlineSVG styleName="cross"
+                                    src={require("assets/images/icon-delete.svg")}/>
                         </div>
+                      </div>
                     }
                   </div>
                 );

@@ -25,7 +25,7 @@
 
     &:hover
       .remove
-        opacity: 1
+        opacity: 1 !important
 
     &:nth-child(2n)
       background: #FCFCFC
@@ -40,7 +40,6 @@
       left: -25px
       top: 50%
       transform: translateY(-50%)
-      
 
     .type
       flex: 1 1 auto
@@ -60,13 +59,33 @@
       margin-top: 3px
 
     .fields
-      flex-shrink: 0
-      max-width: 110px
-      width: 100%
+      flex-shrink: 0.7
+      width: 110px
 
     .updated
-      width: 180px
-      flex-shrink: 0
+      min-width: 180px
+      max-width: 220px
+      width: 25%
+
+    .controls
+      display: flex
+      flex-flow: row nowrap
+      align-items: center
+      margin-left: auto
+
+      .remove
+        opacity: 0
+        margin-left: 20px
+        transition: opacity .2s ease
+
+        .cross
+          height: 18px
+          width: 18px
+
+      .control-icon
+        width: 18px
+        height: 18px
+        cursor: pointer
 
   &-header
     border-bottom: 1px solid #e8e8e8
@@ -87,7 +106,7 @@
       flex: 1 1 auto
 
     .updated
-      width: 218px
+      margin-right: 38px
 
 .input-wrapper
   margin-top: 20px
@@ -112,23 +131,3 @@
   color: #2C2C30
   line-height: 30px
   text-align: left
-
-.controls
-  display: flex
-  flex-flow: row nowrap
-  align-items: center
-  margin-left: auto
-
-.remove
-  opacity: 0
-  margin-left: 20px
-  transition: opacity .2s ease
-
-  .cross
-    height: 18px
-    width: 18px
-
-.control-icon
-  width: 18px
-  height: 18px
-  cursor: pointer
