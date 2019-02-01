@@ -11,11 +11,11 @@ export const PARSE_ERROR_CODE__EMAIL_NOT_FOUND        = 205;
 export const PARSE_ERROR_CODE__INVALID_SESSION_TOKEN  = 209;
 
 
-export const CLOUD_ERROR_CODE__STRIPE_IS_NOT_INITED   = 701;
+export const CLOUD_ERROR_CODE__STRIPE_INIT_ERROR   = 701;
 
 
 export function halt () {
-  // halt! cleaning local storage and reload page
+  // halt! cleaning local storage and reloading page
   localStorage.clear();
   window.location = "/";
 }

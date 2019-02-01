@@ -1,7 +1,7 @@
 import {Parse} from 'parse';
 
 import {PayPlanData} from 'models/PayPlanData';
-import {send, getAllObjects} from 'utils/server';
+import {send, getAllObjects, CLOUD_ERROR_CODE__STRIPE_INIT_ERROR, PARSE_ERROR_CODE__CLOUD_FAIL} from 'utils/server';
 
 
 export const INIT_END               = 'app/pay/INIT_END';
@@ -35,16 +35,28 @@ export function init() {
     let payPlans = await requestPayPlans();
     if (!payPlans || !payPlans.length)
       payPlans = [new PayPlanData()];
-    
-    const stripeData = await requestStripeData();
-    const unpaidSub = stripeData.subscription && stripeData.subscription.status == 'past_due';
 
-    dispatch({
-      type: INIT_END,
-      payPlans,
-      stripeData,
-      unpaidSub
-    });
+    try {
+      const stripeData = await requestStripeData();
+      const unpaidSub = stripeData.subscription && stripeData.subscription.status == 'past_due';
+
+      dispatch({
+        type: INIT_END,
+        payPlans,
+        stripeData,
+        unpaidSub
+      });
+
+    } catch (error) {
+      const stripeInitError = error.code == PARSE_ERROR_CODE__CLOUD_FAIL &&
+          error.message && error.message.errorCode == CLOUD_ERROR_CODE__STRIPE_INIT_ERROR;
+
+      dispatch({
+        type: INIT_END,
+        payPlans,
+        stripeInitError
+      });
+    }
   };
 }
 
@@ -81,7 +93,8 @@ export function updateDefaultSource(sourceId) {
 
 const initialState = {
   payPlans: [],
-  stripeData: {}
+  stripeData: {},
+  stripeInitError: false
 };
 
 export default function payReducer(state = initialState, action) {
@@ -93,7 +106,8 @@ export default function payReducer(state = initialState, action) {
       return {
         ...state,
         payPlans: action.payPlans,
-        stripeData: action.stripeData ? action.stripeData : {}
+        stripeData: action.stripeData ? action.stripeData : {},
+        stripeInitError: !!action.stripeInitError
       };
   
     case ADD_SOURCE:
