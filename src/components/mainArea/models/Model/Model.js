@@ -27,26 +27,26 @@ const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemove
 
   return (
     <div className={style.join(' ')} onClick={() => onFieldClick(field)}>
-        <div className={styles.listItemText}>
-          <div className={styles.listItemName}>{field.name}</div>
-          <div className={styles.listItemType}>
-            {field.type} - {field.appearance}
-          </div>
-        </div>
+      <div className={styles.listItemName}>{field.name}</div>
+      <div className={styles.listItemType}>
+        {field.type} - {field.appearance}
+      </div>
+      <div className={styles.listButtons}>
         {field.isTitle &&
           <div className={styles.titleButton}>Title</div>
         }
         {(!field.isTitle && field.isRequired) &&
           <div className={styles.requiredButton}>Required</div>
         }
-        {isEditable &&
-          <div className={styles.controls}>
-            <div className={styles.controlIcon} onClick={event => onRemoveClick(event, field)}>
-              <InlineSVG className={styles.cross}
-                        src={require("assets/images/icon-delete.svg")}/>
-            </div>
+      </div>
+      {isEditable &&
+        <div className={styles.controls}>
+          <div className={styles.controlIcon} onClick={event => onRemoveClick(event, field)}>
+            <InlineSVG className={styles.cross}
+                      src={require("assets/images/icon-delete.svg")}/>
           </div>
-        }
+        </div>
+      }
     </div>
   );
 });
@@ -249,10 +249,8 @@ export default class Model extends Component {
         <div styleName="model-wrapper">
           <div styleName="list">
             <div styleName="head">
-              <div styleName="listItemText">
-                <div styleName="listItemName">Name</div>
-                <div styleName="listItemType">Type</div>
-              </div>
+              <div styleName="listItemName">Name</div>
+              <div styleName="listItemType">Type</div>
             </div>
 
             <SortableList onSortEnd={this.onSortEnd}
@@ -275,7 +273,7 @@ export default class Model extends Component {
                             autoFocus
                             onIconClick={this.onAddField} />
             </div>
-            }
+          }
         </div>
       );
     }
