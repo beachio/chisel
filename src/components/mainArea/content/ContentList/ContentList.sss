@@ -65,14 +65,8 @@
       min-width: 20px
       border-radius: 100%
 
-    .type
-      display: flex
-      flex-flow: row nowrap
-      flex: 1 1 200px
-      max-width: 460px
-
     .name,
-    .description,
+    .model,
     .updated
       font-size: 14px
       color: #2C2C30
@@ -80,21 +74,39 @@
       text-align: left
 
     .name
-      min-width: 450px
-      max-width: 600px
+      flex-grow: 1
+      flex-shrink: 0.8
       width: 100%
 
       &.untitled
         font-weight: 400
 
-    .description
-      max-width: 160px
+    .model
+      flex-grow: 1
       width: 100%
       letter-spacing: 0.46px
 
     .updated
-      flex: 0 1 auto
-      margin-left: 10%
+      flex-shrink: 0.2
+      width: 180px
+
+  &-header
+    border-bottom: 1px solid #e8e8e8
+    font-weight: 600
+    font-family: 'Inter-UI'
+
+    .colorLabel
+      visibility: hidden
+
+    .model,
+    .name,
+    .updated
+      color: #313133
+      text-align: left
+      font-size: 18px
+
+    .updated
+      width: 218px
 
 .items
   background: #ffffff
@@ -165,10 +177,9 @@
   display: flex
   flex-flow: row nowrap
   align-items: center
-  margin-left: auto
 
 .remove
-  margin-left: 20px
+  margin-left: 18px
   opacity: 0
 
   .cross

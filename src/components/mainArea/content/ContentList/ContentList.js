@@ -244,7 +244,14 @@ export default class ContentList extends Component {
                           leaveAnimation="accordionVertical"
                           maintainContainerHeight
                           easing="ease-out">
-
+                  {visibleItems.length > 0 &&
+                    <div styleName="list-item list-header" key="header!">
+                      <div styleName="colorLabel"></div>
+                      <div styleName="name">Name</div>
+                      <div styleName="model">Model</div>
+                      <div styleName="updated">Updated</div>
+                    </div>
+                  }
                   {visibleItems
                     .map((item, key) => {
                       const title = item.draft ? item.draft.title : item.title;
@@ -266,24 +273,22 @@ export default class ContentList extends Component {
                              key={key}
                              onClick={() => this.onItemClick(item)}>
                           <div styleName="colorLabel" style={colorStyle[item.status]}></div>
-                          <div styleName="type">
-                            {title ?
-                              <div styleName="name">{title}</div>
-                            :
-                              <div styleName="name untitled">Untitled</div>
-                            }
-                            <div styleName="description">{item.model.name}</div>
-                          </div>
+                          {title ?
+                            <div styleName="name">{title}</div>
+                          :
+                            <div styleName="name untitled">Untitled</div>
+                          }
+                          <div styleName="model">{item.model.name}</div>
                           <div styleName="updated">{updatedStr}</div>
                           {isEditable &&
                             <div styleName="controls">
                               <div styleName="control-icon edit">
                                 <InlineSVG styleName="cross"
-                                          src={require("assets/images/icon-edit.svg")}/>
+                                           src={require("assets/images/icon-edit.svg")}/>
                               </div>
                               <div styleName="remove control-icon" onClick={event => this.onRemoveClick(event, item)}>
                                 <InlineSVG styleName="cross"
-                                          src={require("assets/images/icon-delete.svg")}/>
+                                           src={require("assets/images/icon-delete.svg")}/>
                               </div>
                             </div>
                           }
