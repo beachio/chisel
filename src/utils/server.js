@@ -2,6 +2,18 @@ import {store} from 'index';
 import {logRequest, logResponse, setProblemB} from "ducks/serverStatus";
 
 
+export const PARSE_ERROR_CODE__CONNECTION_FAILED      = 100;
+export const PARSE_ERROR_CODE__OBJECT_NOT_FOUND       = 101;
+export const PARSE_ERROR_CODE__CLOUD_FAIL             = 141;
+export const PARSE_ERROR_CODE__USERNAME_TAKEN         = 202;
+export const PARSE_ERROR_CODE__EMAIL_TAKEN            = 203;
+export const PARSE_ERROR_CODE__EMAIL_NOT_FOUND        = 205;
+export const PARSE_ERROR_CODE__INVALID_SESSION_TOKEN  = 209;
+
+
+export const CLOUD_ERROR_CODE__STRIPE_IS_NOT_INITED   = 701;
+
+
 export function halt () {
   // halt! cleaning local storage and reload page
   localStorage.clear();
@@ -18,10 +30,10 @@ export async function send (req) {
     return result;
   
   } catch (error) {
-    if (error.code == 209)
+    if (error.code == PARSE_ERROR_CODE__INVALID_SESSION_TOKEN)
       halt();
 
-    if (error.code == 100)
+    if (error.code == PARSE_ERROR_CODE__CONNECTION_FAILED)
       store.dispatch(setProblemB());
     else
       store.dispatch(logResponse(time));
