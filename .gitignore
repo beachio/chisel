@@ -3,5 +3,6 @@ logs
 npm-debug.log
 .DS_Store
 .idea
+.vscode
 *.zip
 dist/
