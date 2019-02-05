@@ -15,11 +15,11 @@ async function requestConfig() {
   config.JSkey      = process.env.JS_KEY                || _config.JSkey;
   config.RESTkey    = process.env.REST_KEY              || _config.RESTkey;
 
-  const response = await fetch('/chisel-config.json');
-  if (!response.ok)
-    return;
-
   try {
+    const response = await fetch('/chisel-config.json');
+    if (!response.ok)
+      return;
+
     const result = await response.json();
     config.serverURL = result.configServerURL || config.serverURL;
     config.appId = result.configAppId || config.appId;
