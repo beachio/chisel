@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "start": "node build/server.js",
-    "bundle": "rimraf dist && webpack --config build/webpack.dev.config.js",
+    "bundle": "rimraf dist && webpack --config build/webpack.dev-build.config.js",
     "build": "node build/build.js",
     "localrun": "node build/local.run.js"
   },
