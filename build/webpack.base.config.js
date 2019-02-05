@@ -6,8 +6,7 @@ module.exports = {
   entry: ['index'],
   output: {
     path: path.join(__dirname, '../dist/'),
-    filename: '[name].js',
-    publicPath: '/'
+    filename: '[name].js'
   },
   resolve: {
     modules: ['src', 'node_modules'],

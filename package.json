@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/beachio/chisel/issues"
   },
-  "main": "dist/main.js",
+  "main": "build/electron.js",
   "files": [
     "bin",
     "build",
@@ -22,9 +22,12 @@
   ],
   "scripts": {
     "start": "node build/server.js",
+    "start-electron": "RUN_ELECTRON=true node build/server.js",
     "bundle": "rimraf dist && webpack --config build/webpack.dev-build.config.js",
     "build": "node build/build.js",
-    "localrun": "node build/local.run.js"
+    "localrun": "node build/local.run.js",
+    "electron-pack": "electron-builder",
+    "preelectron-pack": "npm run build && cp -R build/electron.js dist/electron.js"
   },
   "bin": {
     "chisel-cms": "./bin/chisel-cms"
@@ -49,6 +52,8 @@
     "connect-history-api-fallback": "^1.6.0",
     "cross-env": "^5.1.1",
     "css-loader": "^2.1.0",
+    "electron": "^4.0.3",
+    "electron-builder": "^20.38.5",
     "eslint": "^5.12.1",
     "eslint-plugin-react": "^7.12.4",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
@@ -82,6 +87,7 @@
     "commander": "^2.11.0",
     "core-js": "^2.6.3",
     "draft-js": "^0.10.5",
+    "electron-is-dev": "^1.0.1",
     "express": "^4.16.2",
     "lodash": "^4.17.4",
     "normalize.css": "^8.0.1",

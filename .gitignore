@@ -6,3 +6,4 @@ npm-debug.log
 .vscode
 *.zip
 dist/
+electron-build
