@@ -161,7 +161,7 @@ class _PayCardElement extends Component {
     return (
       <form onSubmit={this.submit} styleName="form">
         <section styleName="section">
-          Billing address
+          <div styleName="section-header">Billing address</div>
           <div styleName="input-wrapper">
             <InputControl placeholder="Name"
                           autoFocus
@@ -202,7 +202,7 @@ class _PayCardElement extends Component {
         </section>
 
         <section styleName="section">
-          Card details
+          <div styleName="section-header">Card details</div>
           <div styleName="card-wrapper">
             <CardElement style={style} onChange={this.onChangeCard} hidePostalCode />
           </div>

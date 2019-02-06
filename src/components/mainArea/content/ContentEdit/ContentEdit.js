@@ -99,7 +99,8 @@ export default class ContentEdit extends Component {
     return (
       <span>
         <span styleName="back-link" onClick={this.goBack}>Content</span>
-        <span> / {this.state.title || 'Untitled'}</span>
+        <span> / </span>
+        <span styleName="item-title">{this.state.title || 'Untitled'}</span>
       </span>
     );
   };

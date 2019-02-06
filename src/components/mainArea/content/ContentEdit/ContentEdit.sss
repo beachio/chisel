@@ -148,6 +148,8 @@
       flex-flow: column nowrap
 
 .status
+  user-select: none
+
   .Draft
     color: #5CA6DC
 
@@ -207,6 +209,7 @@
     will-change: border-color
 
     cursor: pointer
+    user-select: none
 
     &-disabled
       cursor: auto
@@ -367,6 +370,7 @@
   font-size: 13px
   color: #999999
   cursor: pointer
+  user-select: none
 
 .dropdown-wrapper
   display: flex
@@ -379,3 +383,6 @@
   cursor: pointer
   &:hover
     border-bottom: 2px solid #2C2C30
+
+.item-title
+  user-select: text

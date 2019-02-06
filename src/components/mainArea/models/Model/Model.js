@@ -189,7 +189,11 @@ export default class Model extends Component {
   renderTitle() {
     if (this.model.name)
       return (
-        <span><span styleName="back-link" onClick={browserHistory.goBack}>Models</span> / {this.model.name}</span>
+        <span>
+          <span styleName="back-link" onClick={browserHistory.goBack}>Models</span>
+          <span> / </span>
+          <span styleName="model-title">{this.model.name}</span>
+        </span>
       );
 
     return 'Models';
@@ -246,7 +250,7 @@ export default class Model extends Component {
 
     } else {
       content = (
-        <div styleName="model-wrapper">
+        <div>
           <div styleName="list">
             <div styleName="head">
               <div styleName="listItemName">Name</div>

@@ -282,18 +282,18 @@ export class UserProfile extends Component  {
               <div styleName="section-header">Your Personal Data</div>
               <div styleName="name-wrapper">
                 <div styleName="field">
-                  <div styleName="field-title">First Name</div>
                   <div styleName="input-wrapper">
                     <InputControl type="big"
+                                  label="First Name"
                                   titled
                                   value={this.state.firstName}
                                   onChange={this.onChangeFirstName} />
                   </div>
                 </div>
                 <div styleName="field">
-                  <div styleName="field-title">Last Name</div>
                   <div styleName="input-wrapper">
                     <InputControl type="big"
+                                  label="Last Name"
                                   titled
                                   value={this.state.lastName}
                                   onChange={this.onChangeLastName} />
@@ -320,9 +320,9 @@ export class UserProfile extends Component  {
             <form styleName="section" onSubmit={this.onSaveEmail}>
               <div styleName="section-header">Your email</div>
               <div styleName="field">
-                <div styleName="field-title">Email</div>
                 <div styleName="input-wrapper">
                   <InputControl type="big"
+                                label="Email"
                                 value={this.state.emailNew}
                                 titled
                                 onChange={this.onChangeEmail} />
@@ -355,9 +355,9 @@ export class UserProfile extends Component  {
             <form styleName="section" onSubmit={this.onSavePassword}>
               <div styleName="section-header">Changing password</div>
               <div styleName="field">
-                <div styleName="field-title">Enter old password</div>
                 <div styleName="input-wrapper">
                   <InputControl type="big"
+                                label="Enter old password"
                                 inputType="password"
                                 titled
                                 value={this.state.passwordOld}
@@ -365,9 +365,9 @@ export class UserProfile extends Component  {
                 </div>
               </div>
               <div styleName="field">
-                <div styleName="field-title">Enter new password</div>
                 <div styleName="input-wrapper">
                   <InputControl type="big"
+                                label="Enter new password"
                                 inputType="password"
                                 titled
                                 value={this.state.password}
@@ -375,9 +375,9 @@ export class UserProfile extends Component  {
                 </div>
               </div>
               <div styleName="field">
-                <div styleName="field-title">Confirm new password</div>
                 <div styleName="input-wrapper">
                   <InputControl type="big"
+                                label="Confirm new password"
                                 inputType="password"
                                 titled
                                 value={this.state.passwordConfirm}
@@ -442,9 +442,9 @@ export class UserProfile extends Component  {
             <form styleName="section" onSubmit={this.onSaveServer}>
               <div styleName="section-header">Parse server data</div>
               <div styleName="field">
-                <div styleName="field-title">Server URL</div>
                 <div styleName="input-wrapper">
                   <InputControl type="big"
+                                label="Server URL"
                                 value={this.state.serverURL}
                                 onChange={this.onChangeServerURL} />
                 </div>

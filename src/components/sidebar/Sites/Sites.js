@@ -38,7 +38,7 @@ export default class Sites extends Component {
     const {sites} = this.props;
     if (this.sitesLimit && sites.length >= this.sitesLimit)
       this.props.showAlert({
-        title: `Warinng`,
+        title: `Warning`,
         type: ALERT_TYPE_CONFIRM,
         description: `You can't add new site because you have exhausted your limit (${this.sitesLimit}).`,
         confirmLabel: `Upgrade my account`,
