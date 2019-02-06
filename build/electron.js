@@ -197,6 +197,31 @@ function findReopenMenuItem() {
   }
   return null;
 }
+
+let templateContextText = [{
+  label: 'Undo',
+  role: 'undo'
+}, {
+  label: 'Redo',
+  role: 'redo'
+}, {
+  type: 'separator'
+}, {
+  label: 'Cut',
+  role: 'cut'
+}, {
+  label: 'Copy',
+  role: 'copy'
+}, {
+  label: 'Paste',
+  role: 'paste'
+}, {
+  label: 'Select All',
+  role: 'selectall'
+}];
+
+
+
 let mainWindow;
 
 function createWindow() {
@@ -224,6 +249,11 @@ app.on('browser-window-created', (event, win) => {
   if (reopenMenuItem)
     reopenMenuItem.enabled = false;
 
+  const contextMenu = Menu.buildFromTemplate(templateContextText);
+  win.webContents.on('context-menu', (e, params) => {
+    contextMenu.popup(win, params.x, params.y);
+  });
+});
 
 app.on('window-all-closed', () => {
   let reopenMenuItem = findReopenMenuItem();
