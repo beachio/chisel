@@ -32,7 +32,7 @@ export default class ContainerComponent extends Component {
         }
         <div styleName={headerStyles}>
           {titlesCmp}
-          {(rLinkTitle && onClickRlink) &&
+          {(!!rLinkTitle && !!onClickRlink) &&
             <div styleName="json-fields" onClick={onClickRlink}>
               {rLinkTitle}
             </div>
