@@ -22,7 +22,8 @@
   ],
   "scripts": {
     "start": "node build/server.js",
-    "start-electron": "RUN_ELECTRON=true node build/server.js",
+    "start-electron": "RUN_ELECTRON=true BROWSER=none node build/server.js",
+    "start-electron-only": "electron .",
     "bundle": "rimraf dist && webpack --config build/webpack.dev-build.config.js",
     "build": "node build/build.js",
     "localrun": "node build/local.run.js",
