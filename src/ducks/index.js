@@ -6,7 +6,6 @@ import content from './content';
 import nav from './nav';
 import user from './user';
 import media from './media';
-import serverStatus from './serverStatus';
 import pay from './pay';
 
 
@@ -16,7 +15,6 @@ export default combineReducers({
   nav,
   user,
   media,
-  serverStatus,
   pay,
   routing: routerReducer
 });

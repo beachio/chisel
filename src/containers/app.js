@@ -28,12 +28,12 @@ class App extends React.Component {
   lastModal = <span></span>;
 
   render() {
-    const {nav, user, content, models, serverStatus} = this.props;
+    const {nav, user, content, models} = this.props;
     const {closeAlert, closeModal} = this.props.navActions;
     const {addSite, addField, updateField} = this.props.modelActions;
   
     const getAlarm = () => {
-      if (serverStatus.problemA && !serverStatus.problemB)
+      if (nav.serverProblemA && !nav.serverProblemB)
         return (
           <div styleName="alarm">
             There is a problem with server. Please wait...
@@ -47,7 +47,7 @@ class App extends React.Component {
         return <AlertModal params={nav.alertParams} onClose={closeAlert}/>;
     
       if (!nav.modalShowing) {
-        if (!serverStatus.problemB || !nav.initEnded)
+        if (!nav.serverProblemB || !nav.initEnded)
           return null;
 
         let params = {
@@ -117,7 +117,7 @@ class App extends React.Component {
     
     const showModalLoader =
       (user.pending || user.authorized && !nav.initEnded) &&
-      !serverStatus.problemB;
+      !nav.serverProblemB;
 
     let res = (
       <div styleName="wrapper">
@@ -145,11 +145,10 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    content:      state.content,
-    models:       state.models,
-    nav:          state.nav,
-    serverStatus: state.serverStatus,
-    user:         state.user
+    content:  state.content,
+    models:   state.models,
+    nav:      state.nav,
+    user:     state.user
   };
 }
 

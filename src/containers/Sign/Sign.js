@@ -54,9 +54,9 @@ export class Sign extends Component  {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {user, serverStatus} = nextProps;
+    const {user, nav} = nextProps;
 
-    if (serverStatus.problemB) {
+    if (nav.serverProblemB) {
       this.setState({
         error: null,
         lock: false,
@@ -443,8 +443,8 @@ export class Sign extends Component  {
 
 function mapStateToProps(state) {
   return {
-    user:         state.user,
-    serverStatus: state.serverStatus
+    nav:  state.nav,
+    user: state.user,
   };
 }
 

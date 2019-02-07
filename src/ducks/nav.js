@@ -2,17 +2,20 @@ import {browserHistory} from "react-router";
 
 
 import {LOGOUT} from 'ducks/user';
-import {INIT_END as INIT_END_pay} from "./pay";
+import {SITE_ADDING_PROBLEM as SITE_ADDING_PROBLEM_models} from "ducks/models";
+import {INIT_END as INIT_END_pay} from "ducks/pay";
 import {ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 
 
-export const INIT_END         = 'app/nav/INIT_END';
-export const SHOW_ALERT       = 'app/nav/SHOW_ALERT';
-export const CLOSE_ALERT      = 'app/nav/CLOSE_ALERT';
-export const SHOW_MODAL       = 'app/nav/SHOW_MODAL';
-export const CLOSE_MODAL      = 'app/nav/CLOSE_MODAL';
-export const SET_CURRENT_PAGE = 'app/nav/SET_CURRENT_PAGE';
-export const TOGGLE_SIDEBAR   = 'app/nav/TOGGLE_SIDEBAR';
+export const INIT_END             = 'app/nav/INIT_END';
+export const SHOW_ALERT           = 'app/nav/SHOW_ALERT';
+export const CLOSE_ALERT          = 'app/nav/CLOSE_ALERT';
+export const SHOW_MODAL           = 'app/nav/SHOW_MODAL';
+export const CLOSE_MODAL          = 'app/nav/CLOSE_MODAL';
+export const SET_CURRENT_PAGE     = 'app/nav/SET_CURRENT_PAGE';
+export const TOGGLE_SIDEBAR       = 'app/nav/TOGGLE_SIDEBAR';
+export const SET_SERVER_PROBLEM_A = 'app/nav/SET_SERVER_PROBLEM_A';
+export const SET_SERVER_PROBLEM_B = 'app/nav/SET_SERVER_PROBLEM_B';
 
 
 export const PAGE_NO_SITES        = 'app/nav/pages/PAGE_NO_SITES';
@@ -102,6 +105,20 @@ export function setCurrentPage(openedPage) {
   };
 }
 
+export function setServerProblemA (value = true) {
+  return {
+    type: SET_SERVER_PROBLEM_A,
+    value
+  };
+}
+
+export function setServerProblemB (value = true) {
+  return {
+    type: SET_SERVER_PROBLEM_B,
+    value
+  };
+}
+
 const initialState = {
   initEnded: false,
 
@@ -116,7 +133,10 @@ const initialState = {
   modalType: null,
   modalParams: null,
 
-  showUnpaidSub: false
+  showUnpaidSub: false,
+
+  serverProblemA: false,
+  serverProblemB: false
 };
 
 export default function navReducer(state = initialState, action) {
@@ -191,7 +211,16 @@ export default function navReducer(state = initialState, action) {
 
     case CLOSE_MODAL:
       return {...state, modalShowing: false};
-      
+
+    case SET_SERVER_PROBLEM_A:
+      return {...state, serverProblemA: action.value};
+
+    case SET_SERVER_PROBLEM_B:
+      return {...state, serverProblemB: action.value};
+
+    case SITE_ADDING_PROBLEM_models:
+      return {...state, serverProblemB: true};
+
     default:
       return state;
   }
