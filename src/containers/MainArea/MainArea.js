@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
-import {Helmet} from "react-helmet";
 import {ScrollContainer} from 'react-router-scroll';
 
 import Header from 'containers/Header/Header';
@@ -25,15 +24,10 @@ export class MainArea extends Component {
   render() {
     const {models, nav} = this.props;
 
-    let title = "Userspace - Chisel";
     let content = null;
 
     if (nav.initEnded) {
-      let curSite = models.currentSite;
-
-      if (curSite)
-        title = `Site: ${curSite.name} - Chisel`;
-
+      const curSite = models.currentSite;
       if (curSite ||
           nav.openedPage == PAGE_PROFILE ||
           nav.openedPage == PAGE_PAY_PLANS ||
@@ -45,9 +39,6 @@ export class MainArea extends Component {
 
     return (
       <div styleName="wrapper">
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
         <Sidebar isSidebarVisible={nav.isSidebarVisible}/>
         <div styleName="inner">
           <Header />
