@@ -290,3 +290,8 @@ export function throttle(func, ms) {
     }, ms);
   };
 }
+
+export function isElectron() {
+  const userAgent = navigator.userAgent.toLowerCase();
+  return userAgent.indexOf(' electron/') > -1;
+}
