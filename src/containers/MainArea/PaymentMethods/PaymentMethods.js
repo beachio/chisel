@@ -91,10 +91,10 @@ class _PayCardElement extends Component {
       return;
     }
 
-    const {onStart, onComplete} = this.props;
+    const {onStart, onComplete, onError} = this.props;
     
     onStart();
-    const {token} = await this.props.stripe.createToken({
+    const {token, error} = await this.props.stripe.createToken({
       name:           this.state.name,
       address_line1:  this.state.address,
       address_city:   this.state.city,
@@ -102,7 +102,10 @@ class _PayCardElement extends Component {
       address_zip:    this.state.zip,
       address_country:countries[this.state.country]
     });
-    onComplete(token, this.state.defaultMethod);
+    if (error)
+      onError(error);
+    else if (token)
+      onComplete(token, this.state.defaultMethod);
   };
   
   onDefaultMethodCheck = checked => {
@@ -283,6 +286,16 @@ class PaymentMethods extends Component {
     this.setState({canMakePaymentRequest});
   };
   */
+
+  onError = error => {
+    const {showAlert} = this.props.navActions;
+    showAlert({
+      type: ALERT_TYPE_ALERT,
+      title: "Payment method data error",
+      description: error.message
+    });
+    this.setState({pending: false});
+  };
   
   onNewSourceSubscribe = async (token, asDefault) => {
     const {userData} = this.props.user;
@@ -545,6 +558,7 @@ class PaymentMethods extends Component {
                 <Elements>
                   <PayCardElement onStart={() => this.setState({pending: true})}
                                   onComplete={this.onNewSourceSubscribe}
+                                  onError={this.onError}
                                   payPlan={this.payPlan}
                                   userName={this.props.user.userData.fullName}
                                   canBeDefault={!!this.methods && !!this.methods.length} />
