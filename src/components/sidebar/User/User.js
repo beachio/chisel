@@ -39,7 +39,7 @@ export default class User extends Component {
 
             
               <div styleName="avatar">
-                <Gravatar email={userData.email} styleName="gravatar"/>
+                <Gravatar protocol="https://" email={userData.email} styleName="gravatar"/>
               </div>
           </div>
 

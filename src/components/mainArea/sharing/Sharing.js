@@ -168,7 +168,7 @@ export default class Sharing extends Component {
             <div styleName="list">
               <div styleName="list-item">
                 <div styleName="avatar">
-                  <Gravatar email={owner.email} styleName="gravatar"/>
+                  <Gravatar protocol="https://" email={owner.email} styleName="gravatar"/>
                 </div>
                 <div styleName="type">
                   <div styleName="name">{owner.firstName} {owner.lastName}</div>
@@ -227,7 +227,7 @@ export default class Sharing extends Component {
                   return (
                     <div styleName={style} key={collaboration.email}>
                       <div styleName="avatar">
-                        <Gravatar email={collaboration.email} styleName="gravatar"/>
+                        <Gravatar protocol="https://" email={collaboration.email} styleName="gravatar"/>
                       </div>
                       {blockName}
                       {
