@@ -1,6 +1,5 @@
 module.exports = {
   appId: "com.beachio.chisel-cms",
-  asar: false,
   productName: "Chisel CMS",
   files: [
     "dist/**/*",
