@@ -28,7 +28,7 @@
     "build": "node build/build.js",
     "localrun": "node build/local.run.js",
     "electron-pack": "electron-builder --mac --win -c electron/electron-builder.js",
-    "preelectron-pack1": "npm run build"
+    "preelectron-pack": "npm run build"
   },
   "bin": {
     "chisel-cms": "./bin/chisel-cms"
