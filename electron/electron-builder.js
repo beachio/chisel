@@ -1,14 +1,18 @@
 module.exports = {
   appId: "com.beachio.chisel-cms",
+  asar: false,
+  productName: "Chisel CMS",
   files: [
     "dist/**/*",
+    "electron/electron.js",
     "!node_modules/**/*",
     "node_modules/electron-is-dev/**/*"
   ],
   directories: {
-    output: 'electron-build'
+    output: 'electron/build',
+    buildResources: 'electron/build-resources'
   },
   extraMetadata: {
-    main: "dist/electron.js"
+    main: "electron/electron.js"
   }
 };

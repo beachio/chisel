@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/beachio/chisel/issues"
   },
-  "main": "build/electron.js",
+  "main": "electron/electron.js",
   "files": [
     "bin",
     "build",
@@ -27,8 +27,8 @@
     "bundle": "rimraf dist && webpack --config build/webpack.dev-build.config.js",
     "build": "node build/build.js",
     "localrun": "node build/local.run.js",
-    "electron-pack": "electron-builder",
-    "preelectron-pack": "npm run build && cp -R build/electron.js dist/electron.js"
+    "electron-pack": "electron-builder --mac --win -c electron/electron-builder.js",
+    "preelectron-pack1": "npm run build"
   },
   "bin": {
     "chisel-cms": "./bin/chisel-cms"
