@@ -228,7 +228,6 @@ function createWindow() {
   mainWindow = new BrowserWindow({width: 1600, height: 960});
   mainWindow.loadURL(isDev ? 'http://localhost:9000' : `file://${path.join(__dirname, '../dist/index.html')}`);
   mainWindow.on('closed', () => mainWindow = null);
-  mainWindow.openDevTools();
 }
 
 
