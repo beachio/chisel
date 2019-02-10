@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 
-//const {ipcRenderer} = window.require("electron");
+const {ipcRenderer} = window.require("electron");
 
 import {checkURL} from 'utils/common';
 
@@ -11,6 +11,9 @@ import InputControl from "components/elements/InputControl/InputControl";
 
 
 import styles from './app.sss';
+
+
+const LOCAL_STORAGE_KEY = 'chisel-servers-list';
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -40,7 +43,7 @@ export default class App extends Component {
     super(props);
 
     let servers;
-    const local = localStorage.getItem('chisel-servers');
+    const local = localStorage.getItem(LOCAL_STORAGE_KEY);
     try {
       servers = JSON.parse(local);
     } catch (e) {}
@@ -105,7 +108,7 @@ export default class App extends Component {
       RESTkey:this.state.RESTkey
     };
     this.servers.push(server);
-    localStorage.setItem('chisel-servers', JSON.stringify(this.servers));
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.servers));
     this.setState({server});
     return true;
   };
@@ -115,7 +118,8 @@ export default class App extends Component {
     ipcRenderer.on('server-select--dialog-on-remove-answer', (event, index) => {
       if (index === 0) {
         this.servers.splice(this.servers.indexOf(this.state.server), 1);
-        localStorage.setItem('chisel-servers', this.servers);
+        localStorage.setItem(LOCAL_STORAGE_KEY, this.servers);
+        this.onServerClick(this.servers[0]);
       }
     });
   };

@@ -1,8 +1,19 @@
-const {app, BrowserWindow, Menu, MenuItem, shell, autoUpdater, ipcMain} = require('electron');
+const {app, BrowserWindow, Menu, MenuItem, shell, autoUpdater, ipcMain, dialog} = require('electron');
 const path = require('path');
 const url = require('url');
 const isDev = require('electron-is-dev');
 
+
+let selectorWindow;
+
+function createSelectorWindow() {
+  if (selectorWindow)
+    return;
+
+  selectorWindow = new BrowserWindow({width: 960, height: 800});
+  selectorWindow.loadURL(isDev ? 'http://localhost:9900' : `file://${path.join(__dirname, '../server-selector/index.html')}`);
+  selectorWindow.on('closed', () => selectorWindow = null);
+}
 
 function constructMenu() {
   let menuTemplate = [{
@@ -65,7 +76,13 @@ function constructMenu() {
           focusedWindow.toggleDevTools();
       }
     }, {
-      type: 'separator'
+      label: 'Show Server Select window',
+      click: (item, focusedWindow) => {
+        if (selectorWindow)
+          selectorWindow.focus();
+        else
+          createSelectorWindow();
+      }
     }]
   }, {
     label: 'Window',
@@ -222,25 +239,38 @@ let templateContextText = [{
 
 
 
-let mainWindow;
+ipcMain.on('server-select--dialog-on-remove', event => {
+  const options = {
+    type: 'info',
+    title: 'Removing server',
+    message: "Are you sure?",
+    buttons: ['Yes', 'No']
+  };
+  dialog.showMessageBox(options, index => {
+    event.sender.send('server-select--dialog-on-remove-answer', index);
+  });
+});
 
-function createWindow() {
-  mainWindow = new BrowserWindow({width: 1600, height: 960});
-  mainWindow.loadURL(isDev ? 'http://localhost:9000' : `file://${path.join(__dirname, '../dist/index.html')}`);
-  mainWindow.on('closed', () => mainWindow = null);
-}
+ipcMain.on('server-select--select', (event, server) => {
+  selectorWindow.close();
+
+  const window = new BrowserWindow({width: 1280, height: 800, webPreferences: {
+      additionalArguments: ['--chisel-server ' + JSON.stringify(server)]
+    }});
+  window.loadURL(isDev ? 'http://localhost:9000' : `file://${path.join(__dirname, '../dist/index.html')}`);
+});
+
+
 
 
 
 //================== app hooks==========
 
-
-
 app.on('ready', () => {
   const menu = Menu.buildFromTemplate(constructMenu());
   Menu.setApplicationMenu(menu);
 
-  createWindow();
+  createSelectorWindow();
 });
 
 app.on('browser-window-created', (event, win) => {
@@ -259,12 +289,13 @@ app.on('window-all-closed', () => {
   if (reopenMenuItem)
     reopenMenuItem.enabled = true;
 
-  //if (process.platform !== 'darwin')
+  if (process.platform !== 'darwin')
     app.quit();
 });
 
 app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow();
-  }
+  if (!BrowserWindow.getAllWindows().length)
+    createSelectorWindow();
+  //if (mainWindow === null)
+    //createWindow();
 });

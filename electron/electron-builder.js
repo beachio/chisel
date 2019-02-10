@@ -4,6 +4,10 @@ module.exports = {
   files: [
     "dist/**/*",
     "electron/electron.js",
+    {
+      from: "electron/server-selector/build",
+      to: "server-selector"
+    },
     "!node_modules/**/*",
     "node_modules/electron-is-dev/**/*"
   ],
