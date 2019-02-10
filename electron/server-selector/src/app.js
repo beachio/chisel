@@ -127,7 +127,7 @@ export default class App extends Component {
 
     this.setState({server, dirty: false});
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.servers));
-    return true;
+    return server;
   };
 
   onRemoveServer = () => {
@@ -143,14 +143,11 @@ export default class App extends Component {
   };
 
   onSelectServer = () => {
-    if (!this.state.server) {
-      const added = this.onSaveServer();
-      if (!added)
-        return;
-    }
+    const server = this.onSaveServer();
+    if (!server)
+      return;
 
-    if (!this.state.error)
-      ipcRenderer.send('server-select--select', this.state.server);
+    ipcRenderer.send('server-select--select', server);
   };
 
   onServerClick = server => {
