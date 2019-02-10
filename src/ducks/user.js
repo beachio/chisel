@@ -3,7 +3,7 @@ import {Parse} from 'parse';
 
 import {UserData} from 'models/UserData';
 import {config} from 'utils/initialize';
-import {setTimeout64} from 'utils/common';
+import {setTimeout64, isElectron} from 'utils/common';
 import {getPayPlan, getPayPlanFree} from 'utils/data';
 import {send, PARSE_ERROR_CODE__USERNAME_TAKEN, PARSE_ERROR_CODE__OBJECT_NOT_FOUND, PARSE_ERROR_CODE__EMAIL_NOT_FOUND,
   PARSE_ERROR_CODE__EMAIL_TAKEN} from 'utils/server';
@@ -29,6 +29,10 @@ export const ERROR_WRONG_PASS   = 'app/user/ERROR_WRONG_PASS';
 export const ERROR_UNVERIF      = 'app/user/ERROR_UNVERIF';
 export const ERROR_OTHER        = 'app/user/ERROR_OTHER';
 export const OK                 = 'app/user/OK';
+
+
+const LOCAL_STORAGE_KEY = 'chisel-servers-list';
+
 
 
 export function register(email, password) {
@@ -69,6 +73,37 @@ export function register(email, password) {
   };
 }
 
+function getLocalServer(servers) {
+  for (let server of servers) {
+    if (server.URL == config.serverURL && server.appId == config.appId)
+      return server;
+  }
+  return null;
+}
+
+function setLocalServer(auth) {
+  if (!isElectron())
+    return;
+
+  let servers, server;
+  try {
+    servers = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+  } catch (e) {}
+  if (!servers || !servers.length)
+    servers = [];
+
+  server = getLocalServer(servers);
+  if (!server) {
+    server = {
+      URL: config.serverURL,
+      appId: config.appId
+    };
+    servers.push(server);
+  }
+  server.auth = auth;
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(servers));
+}
+
 export function login(email, password) {
   return dispatch => {
     dispatch({
@@ -80,6 +115,8 @@ export function login(email, password) {
     send(Parse.User.logIn(email, password))
 
       .then(() => {
+        setLocalServer({email, password});
+
         const userData = new UserData().setOrigin();
         dispatch({
           type: LOGIN_RESPONSE,
@@ -106,6 +143,17 @@ export function login(email, password) {
 
 export function getLocalStorage() {
   return dispatch => {
+    if (isElectron()) {
+      try {
+        const servers = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+        const {auth} = getLocalServer(servers);
+        if (auth && auth.email && auth.password) {
+          store.dispatch(login(auth.email, auth.password));
+          return;
+        }
+      } catch (e) {}
+    }
+
     const currentUser = Parse.User.current();
     if (!currentUser || !currentUser.get('sessionToken')) {
       dispatch({type: LOGIN_RESPONSE});
@@ -128,7 +176,7 @@ export function getLocalStorage() {
 
 export function logout() {
   send(Parse.User.logOut());
-  
+  setLocalServer(null);
   return {type: LOGOUT};
 }
 
