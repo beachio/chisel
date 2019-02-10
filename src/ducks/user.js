@@ -227,6 +227,8 @@ export function updatePassword(password) {
   const userData = Parse.User.current();
   userData.set(`password`, password);
   send(userData.save());
+
+  setLocalServer({email: userData.get('email'), password});
   
   return {type: UPDATE_PASSWORD};
 }
