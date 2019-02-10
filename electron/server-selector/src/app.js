@@ -27,7 +27,12 @@ export default class App extends Component {
     JSkey: '',
     RESTkey: '',
 
-    error: null
+    dirty: false,
+    error: null,
+
+    redName: false,
+    redURL: false,
+    redAppId: false
   };
 
   servers = [{
@@ -59,74 +64,87 @@ export default class App extends Component {
   }
 
   onChangeName = name => {
-    this.setState({name, error: null});
+    this.setState({name, error: null, dirty: true, redName: false});
   };
 
   onChangeURL = URL => {
-    this.setState({URL, error: null});
+    this.setState({URL, error: null, dirty: true, redURL: false});
   };
 
   onChangeAppId = appId => {
-    this.setState({appId, error: null});
+    this.setState({appId, error: null, dirty: true, redAppId: false});
   };
 
   onChangeJSkey = JSkey => {
-    this.setState({JSkey, error: null});
+    this.setState({JSkey, error: null, dirty: true});
   };
 
   onChangeRESTkey = RESTkey => {
-    this.setState({RESTkey, error: null});
+    this.setState({RESTkey, error: null, dirty: true});
   };
 
   checkErrors = () => {
-    if (!this.state.name || !this.state.URL || !this.state.appId)
-      return `You should fill required fields.`;
+    if (!this.state.name || !this.state.URL || !this.state.appId) {
+      this.setState({
+        error: `You should fill all required fields.`,
+        redName:  !this.state.name,
+        redURL:   !this.state.URL,
+        redAppId: !this.state.appId
+      });
+      return false;
 
-    if (!checkURL(this.state.URL))
-      return `The URLis incorrect!`;
+    } else if (!checkURL(this.state.URL)) {
+      this.setState({error: `The URL is incorrect!`, redURL: true});
+      return false;
 
-    for (let server of this.servers) {
-      if (this.name == server.name)
-        return `A server namemust be unique!`;
+    } else {
+      for (let server of this.servers) {
+        if (this.name == server.name) {
+          this.setState({error: `A server name must be unique!`, redName: true});
+          return false;
+        }
+      }
     }
 
-    return null;
+    return true;
   };
 
-  onAddServer = () => {
-    const error = this.checkErrors();
-    if (error) {
-      this.setState({error});
+  onSaveServer = () => {
+    if (!this.checkErrors())
       return false;
+
+    let server = this.state.server;
+    if (!server) {
+      server = {};
+      this.servers.push(server);
     }
 
-    const server = {
-      name:   this.state.name,
-      URL:    this.state.URL,
-      appId:  this.state.appId,
-      JSkey:  this.state.JSkey,
-      RESTkey:this.state.RESTkey
-    };
-    this.servers.push(server);
+    server.name   = this.state.name;
+    server.URL    = this.state.URL;
+    server.appId  = this.state.appId;
+    server.JSkey  = this.state.JSkey;
+    server.RESTkey= this.state.RESTkey;
+
+    this.setState({server, dirty: false});
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.servers));
-    this.setState({server});
     return true;
   };
 
   onRemoveServer = () => {
     ipcRenderer.send('server-select--dialog-on-remove');
     ipcRenderer.on('server-select--dialog-on-remove-answer', (event, index) => {
-      if (index === 0) {
-        this.servers.splice(this.servers.indexOf(this.state.server), 1);
-        localStorage.setItem(LOCAL_STORAGE_KEY, this.servers);
-        this.onServerClick(this.servers[0]);
-      }
+      if (index !== 0)
+        return;
+
+      this.servers.splice(this.servers.indexOf(this.state.server), 1);
+      localStorage.setItem(LOCAL_STORAGE_KEY, this.servers);
+      this.onServerClick(this.servers[0]);
     });
   };
 
   onSelectServer = () => {
     if (!this.state.server) {
-      const added = this.onAddServer();
+      const added = this.onSaveServer();
       if (!added)
         return;
     }
@@ -143,7 +161,9 @@ export default class App extends Component {
         URL:    server.URL,
         appId:  server.appId,
         JSkey:  server.JSkey,
-        RESTkey:server.RESTkey
+        RESTkey:server.RESTkey,
+
+        dirty: false
       });
     else
       this.setState({
@@ -152,8 +172,17 @@ export default class App extends Component {
         URL:    '',
         appId:  '',
         JSkey:  '',
-        RESTkey:''
+        RESTkey:'',
+
+        dirty: true
       });
+
+    this.setState({
+      error: null,
+      redName: false,
+      redURL: false,
+      redAppId: false
+    });
   };
 
   render() {
@@ -194,18 +223,21 @@ export default class App extends Component {
           <div styleName="input-wrapper">
             <InputControl label="Name:"
                           onChange={this.onChangeName}
+                          red={this.state.redName}
                           value={this.state.name} />
           </div>
 
           <div styleName="input-wrapper">
             <InputControl label="URL:"
                           onChange={this.onChangeURL}
+                          red={this.state.redURL}
                           value={this.state.URL} />
           </div>
 
           <div styleName="input-wrapper">
             <InputControl label="App ID:"
                           onChange={this.onChangeAppId}
+                          red={this.state.redAppId}
                           value={this.state.appId} />
           </div>
 
@@ -221,21 +253,30 @@ export default class App extends Component {
                           value={this.state.RESTkey} />
           </div>
 
+
+          <div styleName="buttons">
+            <div styleName="button-wrapper">
+              <ButtonControl onClick={this.onSelectServer}
+                             value="Select"/>
+            </div>
+            <div styleName="button-wrapper">
+              <ButtonControl onClick={this.onSaveServer}
+                             disabled={!this.state.dirty || this.state.error}
+                             color='purple'
+                             value="Save"/>
+            </div>
+            <div styleName="button-wrapper">
+              {!!this.state.server &&
+                <ButtonControl onClick={this.onRemoveServer}
+                               color="red"
+                               value="Remove server"/>
+              }
+            </div>
+          </div>
+
           {this.state.error &&
             <div styleName="error">{this.state.error}</div>
           }
-
-          <div styleName="button-wrapper">
-            {!!this.state.server &&
-              <ButtonControl onClick={this.onRemoveServer}
-                             color="red"
-                             value="Remove server"/>
-            }
-          </div>
-          <div styleName="button-wrapper">
-            <ButtonControl onClick={this.onSelectServer}
-                           value="Select"/>
-          </div>
         </div>
       </div>
     );

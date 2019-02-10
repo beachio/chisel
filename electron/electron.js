@@ -10,7 +10,7 @@ function createSelectorWindow() {
   if (selectorWindow)
     return;
 
-  selectorWindow = new BrowserWindow({width: 960, height: 800});
+  selectorWindow = new BrowserWindow({width: 960, height: 760});
   selectorWindow.loadURL(isDev ? 'http://localhost:9900' : `file://${path.join(__dirname, '../server-selector/index.html')}`);
   selectorWindow.on('closed', () => selectorWindow = null);
 }
