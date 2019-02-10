@@ -1,6 +1,6 @@
 {
   "name": "chisel-cms",
-  "version": "0.11.3",
+  "version": "0.11.4",
   "description": "API-first headless CMS running on Parse Server",
   "author": "Beach.io <beach.io>",
   "license": "MIT",
@@ -100,7 +100,7 @@
     "react-flatpickr": "^3.7.1",
     "react-flip-move": "^3.0.3",
     "react-gravatar": "^2.6.3",
-    "react-helmet": "^5.2.0",
+    "react-helmet": "^6.0.0-beta",
     "react-mde": "github:Nes-si/react-mde",
     "react-medium-editor": "github:Nes-si/react-medium-editor",
     "react-redux": "^6.0.0",
