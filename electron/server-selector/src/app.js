@@ -46,6 +46,13 @@ export default class App extends Component {
     } catch (e) {}
     if (servers && servers.length)
       this.servers = servers;
+
+    this.state.server = this.servers[0];
+    this.state.name   = this.state.server.name;
+    this.state.URL    = this.state.server.URL;
+    this.state.appId  = this.state.server.appId;
+    this.state.JSkey  = this.state.server.JSkey;
+    this.state.RESTkey= this.state.server.RESTkey;
   }
 
   onChangeName = name => {
