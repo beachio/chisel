@@ -6,11 +6,15 @@ const isDev = require('electron-is-dev');
 
 let selectorWindow;
 
-function createSelectorWindow() {
+function createSelectorWindow(onStart = false) {
   if (selectorWindow)
     return;
 
-  selectorWindow = new BrowserWindow({width: 960, height: 760});
+  const additionalArguments = [];
+  if (onStart)
+    additionalArguments.push('--chisel-on-start');
+
+  selectorWindow = new BrowserWindow({width: 960, height: 760, webPreferences: {additionalArguments}});
   selectorWindow.loadURL(isDev ? 'http://localhost:9900' : `file://${path.join(__dirname, '../server-selector/index.html')}`);
   selectorWindow.on('closed', () => selectorWindow = null);
 }
@@ -270,7 +274,7 @@ app.on('ready', () => {
   const menu = Menu.buildFromTemplate(constructMenu());
   Menu.setApplicationMenu(menu);
 
-  createSelectorWindow();
+  createSelectorWindow(true);
 });
 
 app.on('browser-window-created', (event, win) => {

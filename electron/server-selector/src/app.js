@@ -8,6 +8,7 @@ import {checkURL} from 'utils/common';
 import ButtonControl from "components/elements/ButtonControl/ButtonControl";
 import IconsComponent from 'components/elements/IconsComponent/IconsComponent';
 import InputControl from "components/elements/InputControl/InputControl";
+import CheckboxControl from "components/elements/CheckboxControl/CheckboxControl";
 
 
 import styles from './app.sss';
@@ -27,6 +28,8 @@ export default class App extends Component {
     JSkey: '',
     RESTkey: '',
 
+    loadOnStart: true,
+
     dirty: false,
     error: null,
 
@@ -40,7 +43,8 @@ export default class App extends Component {
     URL: 'http://dockerhost.forge-parse-server.c66.me:96/parse',
     appId: '34edf2a8ec1b3351d2594c3e90e70cd8',
     JSkey: `liYLwLfENUIiiD6bz8TerwIZPPnJWP3VVHCSUUOT`,
-    RESTkey: `AMMaWJMu4u6hSANZfbBFZHLhU83DWOXHXPVnPHJE`
+    RESTkey: `AMMaWJMu4u6hSANZfbBFZHLhU83DWOXHXPVnPHJE`,
+    loadOnStart: true
   }];
 
 
@@ -52,15 +56,36 @@ export default class App extends Component {
     try {
       servers = JSON.parse(local);
     } catch (e) {}
-    if (servers && servers.length)
-      this.servers = servers;
+    if (servers && servers.length) {
+      for (let server of servers) {
+        if (server.loadOnStart) {
+          try {
+            const {argv} = window.process;
+            for (let arg of argv) {
+              if (arg == '--chisel-on-start') {
+                ipcRenderer.send('server-select--select', server);
+                return;
+              }
+            }
+          } catch (e) {}
 
-    this.state.server = this.servers[0];
-    this.state.name   = this.state.server.name;
-    this.state.URL    = this.state.server.URL;
-    this.state.appId  = this.state.server.appId;
-    this.state.JSkey  = this.state.server.JSkey;
-    this.state.RESTkey= this.state.server.RESTkey;
+          this.state.server = server;
+          break;
+        }
+      }
+
+      this.servers = servers;
+    }
+
+    if (!this.state.server)
+      this.state.server = this.servers[0];
+
+    this.state.name       = this.state.server.name;
+    this.state.URL        = this.state.server.URL;
+    this.state.appId      = this.state.server.appId;
+    this.state.JSkey      = this.state.server.JSkey;
+    this.state.RESTkey    = this.state.server.RESTkey;
+    this.state.loadOnStart= this.state.server.loadOnStart;
   }
 
   onChangeName = name => {
@@ -81,6 +106,10 @@ export default class App extends Component {
 
   onChangeRESTkey = RESTkey => {
     this.setState({RESTkey, error: null, dirty: true});
+  };
+
+  onChangeLoadOnStart = loadOnStart => {
+    this.setState({loadOnStart, dirty: true});
   };
 
   checkErrors = () => {
@@ -125,6 +154,16 @@ export default class App extends Component {
     server.JSkey  = this.state.JSkey;
     server.RESTkey= this.state.RESTkey;
 
+    if (this.state.loadOnStart && !server.loadOnStart) {
+      server.loadOnStart = true;
+      for (let server1 of this.servers) {
+        if (server1.loadOnStart && server1 != server)
+          server1.loadOnStart = false;
+      }
+    } else {
+      server.loadOnStart = this.state.loadOnStart;
+    }
+
     this.setState({server, dirty: false});
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.servers));
     return server;
@@ -154,11 +193,12 @@ export default class App extends Component {
     if (server)
       this.setState({
         server,
-        name:   server.name,
-        URL:    server.URL,
-        appId:  server.appId,
-        JSkey:  server.JSkey,
-        RESTkey:server.RESTkey,
+        name:       server.name,
+        URL:        server.URL,
+        appId:      server.appId,
+        JSkey:      server.JSkey,
+        RESTkey:    server.RESTkey,
+        loadOnStart:server.loadOnStart,
 
         dirty: false
       });
@@ -170,6 +210,7 @@ export default class App extends Component {
         appId:  '',
         JSkey:  '',
         RESTkey:'',
+        loadOnStart:true,
 
         dirty: true
       });
@@ -250,6 +291,11 @@ export default class App extends Component {
                           value={this.state.RESTkey} />
           </div>
 
+          <div styleName="input-wrapper">
+            <CheckboxControl title="Load on start"
+                             checked={this.state.loadOnStart}
+                             onChange={this.onChangeLoadOnStart} />
+          </div>
 
           <div styleName="buttons">
             <div styleName="button-wrapper">
