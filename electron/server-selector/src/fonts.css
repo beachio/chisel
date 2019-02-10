@@ -1,0 +1,27 @@
+@font-face {
+  font-family: 'Inter-UI';
+  src: url('~assets/fonts/Inter-UI-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter-UI';
+  src: url('~assets/fonts/Inter-UI-Medium.ttf');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter-UI';
+  src: url('~assets/fonts/Inter-UI-SemiBold.ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter-UI';
+  src: url('~assets/fonts/Inter-UI-Bold.ttf');
+  font-weight: 700;
+  font-style: normal;
+}
