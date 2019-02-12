@@ -144,13 +144,13 @@ function constructMenu() {
         {role: 'front'}
       );
 
-      addUpdateMenuItems(menuTemplate[0].submenu, 1);
+      //addUpdateMenuItems(menuTemplate[0].submenu, 1);
 
       break;
 
     case 'win32':
       const helpMenu = menuTemplate[menuTemplate.length - 1].submenu;
-      addUpdateMenuItems(helpMenu, 0);
+      //addUpdateMenuItems(helpMenu, 0);
       break;
   }
 
