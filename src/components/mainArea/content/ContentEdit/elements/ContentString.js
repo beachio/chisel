@@ -142,6 +142,10 @@ export default class ContentString extends ContentBase {
     if (this.field.isTitle)
       this.props.updateItemTitle(value);
   };
+
+  onChangeTextarea = event => {
+    this.setValue(event.target.value);
+  };
   
   onChangeList = values => {
     this.setValue(values);
@@ -327,7 +331,7 @@ export default class ContentString extends ContentBase {
               <textarea styleName="textarea"
                         value={value}
                         readOnly={!this.state.isEditable}
-                        onChange={this.onChange} />
+                        onChange={this.onChangeTextarea} />
             );
       
           case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
