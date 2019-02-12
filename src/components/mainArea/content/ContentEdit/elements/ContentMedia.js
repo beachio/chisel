@@ -10,6 +10,7 @@ import {MODAL_TYPE_MEDIA} from 'ducks/nav';
 import {trimFileExt, filterSpecials, convertDataUnits, BYTES, M_BYTES, checkFileType, TYPE_OTHER} from 'utils/common';
 import MediaView from 'components/elements/MediaView/MediaView';
 import LoaderComponent from "components/elements/LoaderComponent/LoaderComponent";
+import InputControl from "components/elements/InputControl/InputControl";
 
 import styles from '../ContentEdit.sss';
 
@@ -218,8 +219,7 @@ export default class ContentMedia extends ContentBase {
     }
   }
   
-  onMediaNameChange(event, item) {
-    let value = event.target.value;
+  onMediaNameChange(value, item) {
     item.name = value;
     
     if (!this.mediaTimeouts[item.key])
@@ -238,11 +238,10 @@ export default class ContentMedia extends ContentBase {
       return (
         <div styleName="media-item" key={item.key}>
           <div styleName="media-header">
-            <input type="text"
-                   placeholder="File name"
-                   readOnly={!this.state.isEditable}
-                   onChange={e => this.onMediaNameChange(e, item)}
-                   value={item.name} />
+            <InputControl placeholder="File name"
+                          readOnly={!this.state.isEditable}
+                          onChange={e => this.onMediaNameChange(e, item)}
+                          value={item.name} />
             {
               this.state.isEditable &&
                 <InlineSVG styleName="media-cross"
