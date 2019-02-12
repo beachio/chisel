@@ -264,7 +264,7 @@ export default class FieldModal extends Component {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
             const {range} = this.validations;
-            error = range.active && range.minActive && range.maxActive && range.min > range.max;
+            error = range && range.active && range.minActive && range.maxActive && range.min > range.max;
             range.isError = error;
             break;
         }
@@ -275,7 +275,7 @@ export default class FieldModal extends Component {
           case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
           case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
             const {range} = this.validations;
-            error = range.active && range.minActive && range.maxActive && range.min > range.max;
+            error = range && range.active && range.minActive && range.maxActive && range.min > range.max;
             range.isError = error;
             break;
         }
@@ -285,7 +285,7 @@ export default class FieldModal extends Component {
         switch (this.state.appearance) {
           case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
             const {range} = this.validations;
-            error = range.active && range.minActive && range.maxActive && range.min > range.max;
+            error = range && range.active && range.minActive && range.maxActive && range.min > range.max;
             range.isError = error;
             break;
 
@@ -298,7 +298,7 @@ export default class FieldModal extends Component {
         switch (this.state.appearance) {
           case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
             const {range} = this.validations;
-            error = range.active && range.minActive && range.maxActive && range.min > range.max;
+            error = range && range.active && range.minActive && range.maxActive && range.min > range.max;
             range.isError = error;
             break;
         }
@@ -310,7 +310,7 @@ export default class FieldModal extends Component {
           case ftps.FIELD_APPEARANCE__DATE__DATE_ONLY:
           case ftps.FIELD_APPEARANCE__DATE__TIME_ONLY:
             const {rangeDate} = this.validations;
-            if (rangeDate.active && rangeDate.minActive && rangeDate.maxActive) {
+            if (rangeDate && rangeDate.active && rangeDate.minActive && rangeDate.maxActive) {
               const dateMin = new Date(rangeDate.min);
               const dateMax = new Date(rangeDate.max);
               error = dateMin > dateMax;
@@ -322,7 +322,7 @@ export default class FieldModal extends Component {
 
       case ftps.FIELD_TYPE_REFERENCE:
         const {models} = this.validations;
-        if (models.active && !models.modelsList.length)
+        if (models && models.active && !models.modelsList.length)
           error = true;
         models.isError = error;
         break;
@@ -330,7 +330,7 @@ export default class FieldModal extends Component {
       case ftps.FIELD_TYPE_MEDIA:
         const {fileSize} = this.validations;
         let error1 = false;
-        if (fileSize.active && fileSize.minActive && fileSize.maxActive) {
+        if (fileSize && fileSize.active && fileSize.minActive && fileSize.maxActive) {
           const min = convertDataUnits(fileSize.min, fileSize.minUnit, BYTES);
           const max = convertDataUnits(fileSize.max, fileSize.maxUnit, BYTES);
           error1 = min > max;
@@ -339,7 +339,7 @@ export default class FieldModal extends Component {
 
         const {fileTypes} = this.validations;
         let error2 = false;
-        if (fileTypes.active && !fileTypes.types.length)
+        if (fileTypes && fileTypes.active && !fileTypes.types.length)
           error2 = true;
         fileTypes.isError = error2;
 
