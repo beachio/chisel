@@ -140,7 +140,7 @@ export default class ContentReference extends ContentBase {
       } else {
         return (
           <div styleName="reference-item" key={key} onClick={e => this.onReferenceClear(e, item)}>
-            <input type="text" value="Error: item was deleted. Click to reset." readOnly />
+            <div styleName="reference-error">Error: item was deleted. Click to reset.</div>
           </div>
         );
       }
