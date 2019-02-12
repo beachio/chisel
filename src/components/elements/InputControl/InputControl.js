@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 
+import {addElectronContextMenu} from "utils/common";
+
 import IconsComponent from 'components/elements/IconsComponent/IconsComponent';
 
 import styles from './InputControl.sss';
@@ -14,8 +16,15 @@ export default class InputControl extends Component {
       onChange(e.target.value);
   };
 
+  ref = elm => {
+    const {DOMRef, readOnly} = this.props;
+    addElectronContextMenu(elm, readOnly);
+    if (DOMRef && elm)
+      DOMRef(elm);
+  };
+
   render() {
-    let {label, type, value, placeholder, onChange, readOnly, autoFocus, onKeyDown, onBlur, DOMRef, icon,
+    let {label, type, value, placeholder, onChange, readOnly, autoFocus, onKeyDown, onBlur, icon,
       onIconClick, inputType, dropdown, titled, red} = this.props;
 
     if (!onChange)
@@ -61,7 +70,7 @@ export default class InputControl extends Component {
                  onBlur={onBlur}
                  onKeyDown={onKeyDown}
                  readOnly={readOnly}
-                 ref={DOMRef} />
+                 ref={this.ref} />
         </div>
       </div>
     );

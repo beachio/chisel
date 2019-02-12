@@ -295,3 +295,34 @@ export function isElectron() {
   const userAgent = navigator.userAgent.toLowerCase();
   return userAgent.indexOf(' electron/') > -1;
 }
+
+export function addElectronContextMenu(elm, readOnly) {
+  if (!isElectron() || !elm)
+    return;
+
+  const {remote} = window.require('electron');
+  const {Menu} = remote;
+
+  const templateMenu =
+    readOnly ?
+      [
+        {role: 'copy'},
+        {role: 'selectall'}
+      ]
+    :
+      [
+        {role: 'undo'},
+        {role: 'redo'},
+        {type: 'separator'},
+        {role: 'cut'},
+        {role: 'copy'},
+        {role: 'paste'},
+        {role: 'selectall'}
+      ];
+  const contextMenu = Menu.buildFromTemplate(templateMenu);
+
+  elm.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    contextMenu.popup({window: remote.getCurrentWindow()})
+  }, false);
+}

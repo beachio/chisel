@@ -173,17 +173,6 @@ function findReopenMenuItem() {
   return null;
 }
 
-let templateContextText = [
-  {role: 'undo'},
-  {role: 'redo'},
-  {type: 'separator'},
-  {role: 'cut'},
-  {role: 'copy'},
-  {role: 'paste'},
-  {role: 'selectall'}
-];
-
-
 
 ipcMain.on('server-select--dialog-on-remove', event => {
   const options = {
@@ -223,11 +212,6 @@ app.on('browser-window-created', (event, win) => {
   let reopenMenuItem = findReopenMenuItem();
   if (reopenMenuItem)
     reopenMenuItem.enabled = false;
-
-  const contextMenu = Menu.buildFromTemplate(templateContextText);
-  win.webContents.on('context-menu', (e, params) => {
-    contextMenu.popup(win, params.x, params.y);
-  });
 });
 
 app.on('window-all-closed', () => {
