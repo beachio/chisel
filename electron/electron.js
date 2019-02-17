@@ -187,12 +187,12 @@ ipcMain.on('server-select--dialog-on-remove', event => {
 });
 
 ipcMain.on('server-select--select', (event, server) => {
-  selectorWindow.close();
-
   const window = new BrowserWindow({width: 1280, height: 800, webPreferences: {
       additionalArguments: ['--chisel-server ' + JSON.stringify(server)]
     }});
   window.loadURL(isDev ? 'http://localhost:9000' : `file://${path.join(__dirname, '../dist/index.html')}`);
+
+  selectorWindow.close();
 });
 
 
