@@ -28,7 +28,7 @@ async function requestConfig() {
 
   //try to load config from Electron
   try {
-    const prefix = '--chisel-server ';
+    const prefix = '--chisel-server=';
     const {argv} = window.process;
     for (let arg of argv) {
       if (arg.indexOf(prefix) == 0) {
