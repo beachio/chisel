@@ -17,5 +17,12 @@ module.exports = {
   },
   extraMetadata: {
     main: "electron/electron.js"
+  },
+  linux: {
+    category: "Network",
+    icon: "icon.png"
+  },
+  nsis: {
+    oneClick: false
   }
 };
