@@ -91,11 +91,6 @@ export const routing = store => next => action => {
   switch (action.type) {
     case LOCATION_CHANGE:
       URL = action.payload.pathname;
-
-      if (URL.indexOf('/index.html') != -1) {
-        browserHistory.replace(`/`);
-        URL = '/';
-      }
       
       if (URL.indexOf(URL_USERSPACE) != -1 && !returnURL)
         returnURL = URL;

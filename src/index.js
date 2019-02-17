@@ -76,6 +76,7 @@ class Root extends Component {
               <Redirect from='/userspace/:site' to='/userspace/:site/models' />
             </Route>
             <IndexRedirect to='/userspace' />
+            <Redirect from='/**/index.html' to='/' />
             <Redirect from='/*' to='/invalid-link' />
           </Route>
         </Router>
