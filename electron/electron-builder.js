@@ -19,10 +19,10 @@ module.exports = {
     main: "electron/electron.js"
   },
   linux: {
-    category: "Network",
-    icon: "icon.png"
+    category: "Network"
   },
   nsis: {
-    oneClick: false
+    oneClick: false,
+    allowToChangeInstallationDirectory: true
   }
 };
