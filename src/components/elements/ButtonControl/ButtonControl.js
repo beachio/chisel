@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
-import classNames from 'classnames';
 
 import LoaderComponent from "components/elements/LoaderComponent/LoaderComponent";
 
@@ -14,21 +13,12 @@ export default class ButtonControl extends Component {
     if (!type)
       type = 'button';
 
-    let buttonControlClasses = classNames({
-      'ButtonControl': true,
-      'ButtonControl-red':    color === 'red',
-      'ButtonControl-green':  color === 'green',
-      'ButtonControl-gray':   color === 'gray',
-      'ButtonControl-purple': color === 'purple',
-      'ButtonControl-black':  color === 'black',
-    });
-    
+    let buttonControlClasses = 'ButtonControl';
     if (disabled) {
       onClick = null;
-      buttonControlClasses = classNames({
-        'ButtonControl': true,
-        'ButtonControl-disabled': true
-      });
+      buttonControlClasses += ' ButtonControl-disabled';
+    } else if (color) {
+      buttonControlClasses += ' ButtonControl-' + color;
     }
 
     return (
