@@ -299,21 +299,20 @@ export default class App extends Component {
 
           <div styleName="buttons">
             <div styleName="button-wrapper">
-              <ButtonControl onClick={this.onSelectServer}
-                             value="Select"/>
+              <ButtonControl onClick={this.onRemoveServer}
+                             color="red-outline"
+                             disabled={!this.state.server}
+                             value="Remove Server"/>
             </div>
             <div styleName="button-wrapper">
               <ButtonControl onClick={this.onSaveServer}
                              disabled={!this.state.dirty || this.state.error}
-                             color='purple'
                              value="Save"/>
             </div>
             <div styleName="button-wrapper">
-              {!!this.state.server &&
-                <ButtonControl onClick={this.onRemoveServer}
-                               color="red"
-                               value="Remove server"/>
-              }
+              <ButtonControl onClick={this.onSelectServer}
+                             color='purple'
+                             value="Select"/>
             </div>
           </div>
 
