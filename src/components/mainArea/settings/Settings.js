@@ -245,7 +245,7 @@ export default class Settings extends Component {
               isEditable &&
                 <div styleName="field button-wrapper">
                   <ButtonControl color="red"
-                                 value="Delete site"
+                                 value="Delete Site"
                                  onClick={this.onDelete} />
                 </div>
             }

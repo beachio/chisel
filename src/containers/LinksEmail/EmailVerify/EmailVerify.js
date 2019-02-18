@@ -37,7 +37,7 @@ export class EmailVerify extends Component  {
           <div styleName="button">
             <ButtonControl color="green"
                            type="submit"
-                           value="Log in" />
+                           value="Log In" />
           </div>
         </form>
       </div>

@@ -118,7 +118,7 @@ export class PasswordSet extends Component  {
               <ButtonControl color="green"
                              type="submit"
                              disabled={!this.isAvail()}
-                             value="Change password" />
+                             value="Change Password" />
             </div>
     
             <div styleName="errors">
@@ -138,7 +138,7 @@ export class PasswordSet extends Component  {
             <div styleName="button">
               <ButtonControl color="green"
                              type="submit"
-                             value="Log in" />
+                             value="Log In" />
             </div>
           </form>
         );

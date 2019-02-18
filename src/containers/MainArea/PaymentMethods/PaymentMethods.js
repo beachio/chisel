@@ -222,7 +222,7 @@ class _PayCardElement extends Component {
           <ButtonControl color="purple"
                          type="submit"
                          disabled={!this.state.complete || this.state.errorRequired}
-                         value={payPlan ? "Subscribe" : "Add method"} />
+                         value={payPlan ? "Subscribe" : "Add Method"} />
         </div>
         {this.state.error &&
           <div styleName="error">{this.state.error}</div>
@@ -482,7 +482,7 @@ class PaymentMethods extends Component {
         setAsDefaultElm = (
           <div styleName="button-wrapper">
             <ButtonControl onClick={this.onSetDefaultMethod}
-                           value="Set method as default"/>
+                           value="Set Method as Default"/>
           </div>
         );
       }

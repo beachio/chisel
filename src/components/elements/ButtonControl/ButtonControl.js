@@ -36,7 +36,7 @@ export default class ButtonControl extends Component {
               onClick={onClick}
               type={type}
               ref={DOMRef}>
-        {value || 'Clear'}
+        {value}
         {showLoader &&
           <div styleName="loader-wrapper">
             <LoaderComponent/>

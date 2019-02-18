@@ -144,7 +144,7 @@ export default class CollabRoleModal extends Component {
             <div styleName="buttons-wrapper">
               <div styleName="buttons-inner">
                 <ButtonControl color="green"
-                               value="Ok"
+                               value="OK"
                                onClick={this.onConfirm} />
               </div>
               <div styleName="buttons-inner">

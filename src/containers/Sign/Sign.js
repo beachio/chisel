@@ -234,13 +234,12 @@ export class Sign extends Component  {
               <ButtonControl color="purple"
                              type="submit"
                              disabled={!this.getLoginAvail()}
-                             value="Login" />
+                             value="Log In" />
             </div>
 
             <div styleName="errors">
-              {
-                this.state.error == ERROR_WRONG_PASS &&
-                  <div styleName="error">Wrong email or password!</div>
+              {this.state.error == ERROR_WRONG_PASS &&
+                <div styleName="error">Wrong email or password!</div>
               }
             </div>
           </form>
@@ -248,12 +247,12 @@ export class Sign extends Component  {
 
         bottomContent = (
           <div styleName="bottom-content">
-              No account? No problem!
+            No account? No problem!
             <div styleName="button-wrapper">
               <ButtonControl color="black"
-                type="submit"
-                value="Sign Up"
-                onClick={() => this.setMode(MODE_REG)}/>
+                             type="submit"
+                             value="Sign Up"
+                             onClick={() => this.setMode(MODE_REG)}/>
             </div>
           </div>
         );
@@ -307,9 +306,9 @@ export class Sign extends Component  {
             </div>
             <div styleName="button-wrapper">
               <ButtonControl color="black"
-                type="submit"
-                value="Log in"
-                onClick={() => this.setMode(MODE_LOGIN)}/>
+                             type="submit"
+                             value="Log In"
+                             onClick={() => this.setMode(MODE_LOGIN)}/>
             </div>
           </div>
         );
@@ -373,7 +372,7 @@ export class Sign extends Component  {
               <ButtonControl color="green"
                              type="submit"
                              disabled={!this.getForgotAvail()}
-                             value="Restore password" />
+                             value="Restore Password" />
             </div>
 
             <div styleName="errors">

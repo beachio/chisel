@@ -320,14 +320,14 @@ export default class ContentEdit extends Component {
             </div>
             <div styleName="button-publish">
               <ButtonControl color="black"
-                             value="Discard changes"
+                             value="Discard Changes"
                              disabled={this.item.status != STATUS_UPDATED && !this.state.dirty}
                              onClick={this.onDiscard}/>
             </div>
             {this.item.status == STATUS_ARCHIVED ?
               <div styleName="button-publish">
                 <ButtonControl color="black"
-                               value="Restore from archive"
+                               value="Restore From Archive"
                                onClick={this.onRestore}/>
               </div>
             :

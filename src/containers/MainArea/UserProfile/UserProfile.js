@@ -306,7 +306,7 @@ export class UserProfile extends Component  {
                                  type="submit"
                                  titled
                                  disabled={!this.state.dirtyData || this.state.errorData}
-                                 value="Update personal data"/>
+                                 value="Update Personal Data"/>
                 </div>
                 {this.state.successData &&
                   <div styleName="field-success">{this.state.successData}</div>
@@ -333,7 +333,7 @@ export class UserProfile extends Component  {
                   <ButtonControl color="purple"
                                  type="submit"
                                  disabled={!this.state.dirtyEmail || this.state.errorEmail}
-                                 value="Change email"/>
+                                 value="Change Email"/>
                 </div>
                 {this.state.successEmailState &&
                   <div styleName="field-success">
@@ -389,7 +389,7 @@ export class UserProfile extends Component  {
                   <ButtonControl color="purple"
                                  type="submit"
                                  disabled={!this.state.dirtyPassword || this.state.errorPassword}
-                                 value="Set new password"/>
+                                 value="Set New Password"/>
                 </div>
                 {this.state.successPassword &&
                   <div styleName="field-success">{this.state.successPassword}</div>
@@ -421,12 +421,12 @@ export class UserProfile extends Component  {
                 <div styleName="buttons-wrapper">
                   <ButtonControl color="purple"
                                  onClick={this.onChangePayPlan}
-                                 value="Change pay plan"/>
+                                 value="Change Pay Plan"/>
                 </div>
                 <div styleName="buttons-wrapper">
                   <ButtonControl color="purple"
                                  onClick={this.onChangePayMethods}
-                                 value="Change pay methods"/>
+                                 value="Change Pay Methods"/>
                 </div>
               </div>
             }
@@ -454,7 +454,7 @@ export class UserProfile extends Component  {
                   <ButtonControl color="purple"
                                  type="submit"
                                  disabled={!this.state.dirtyServer || this.state.errorServer}
-                                 value="Update server data"/>
+                                 value="Update Server Data"/>
                 </div>
                 {this.state.successServer &&
                   <div styleName="field-success">{this.state.successServer}</div>
