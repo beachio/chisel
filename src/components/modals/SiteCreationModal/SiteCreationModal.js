@@ -9,6 +9,8 @@ import {removeOddSpaces} from "utils/common";
 
 import styles from './SiteCreationModal.sss';
 
+import ImageTemplateEmpty from "assets/images/template-empty.png";
+
 
 @CSSModules(styles, {allowMultiple: true})
 export class TemplateControl extends Component {
@@ -52,7 +54,7 @@ export class TemplateControl extends Component {
            onClick={this.onClick}>
         <div styleName={style}>
           <img styleName="icon-img"
-               src={this.template.icon ? this.template.icon.url() : require("assets/images/template-empty.png")}>
+               src={this.template.icon ? this.template.icon.url() : ImageTemplateEmpty}>
           </img>
           <div styleName="text">
             <div styleName="title">{this.template.name}</div>

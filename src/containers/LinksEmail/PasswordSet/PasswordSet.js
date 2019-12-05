@@ -11,6 +11,8 @@ import {parseURLParams, URLEncode} from 'utils/common';
 
 import styles from './PasswordSet.sss';
 
+import ImageChiselLogo from 'assets/images/chisel-logo.png';
+
 
 const MODE_SETUP  = 'MODE_SETUP';
 const MODE_DONE   = 'MODE_DONE';
@@ -152,7 +154,7 @@ export class PasswordSet extends Component  {
           <title>Changing password - Chisel</title>
         </Helmet>
         <div styleName="logo">
-          <img src={require("assets/images/chisel-logo.png")} />
+          <img src={ImageChiselLogo} />
         </div>
         <div styleName="title">{title}</div>
         {content}

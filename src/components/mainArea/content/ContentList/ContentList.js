@@ -13,6 +13,11 @@ import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal
 
 import styles from './ContentList.sss';
 
+import ImageEye from './eye.png';
+import ImageEyeGray from './eye-gray.png';
+import ImageIconEdit from 'assets/images/icon-edit.svg';
+import ImageIconDelete from 'assets/images/icon-delete.svg';
+
 
 const allStatuses = [STATUS_DRAFT, STATUS_PUBLISHED, STATUS_UPDATED, STATUS_ARCHIVED];
 
@@ -154,8 +159,8 @@ export default class ContentList extends Component {
   render() {
     const {isEditable, models, filteredModels, filteredStatuses} = this.props;
 
-    const eyeDisabled = <img styleName="eye" src={require("./eye-gray.png")} />;
-    const eyeEnabled = <img styleName="eye eye-active" src={require("./eye.png")} />;
+    const eyeDisabled = <img styleName="eye" src={ImageEyeGray} />;
+    const eyeEnabled = <img styleName="eye eye-active" src={ImageEye} />;
 
     const visibleItems =
       this.state.items
@@ -284,11 +289,11 @@ export default class ContentList extends Component {
                             <div styleName="controls">
                               <div styleName="control-icon edit">
                                 <InlineSVG styleName="cross"
-                                           src={require("assets/images/icon-edit.svg")}/>
+                                           src={ImageIconEdit}/>
                               </div>
                               <div styleName="remove control-icon" onClick={event => this.onRemoveClick(event, item)}>
                                 <InlineSVG styleName="cross"
-                                           src={require("assets/images/icon-delete.svg")}/>
+                                           src={ImageIconDelete}/>
                               </div>
                             </div>
                           }

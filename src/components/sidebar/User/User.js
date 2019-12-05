@@ -8,6 +8,11 @@ import {URL_USERSPACE, URL_PROFILE} from 'ducks/nav';
 
 import styles from './User.sss';
 
+import ImageArrowDown from "./arrow-down.svg";
+import ImageAvatar from "./avatar.png";
+import ImageLogout from "./logout.svg";
+
+
 
 @CSSModules(styles, {allowMultiple: true})
 export default class User extends Component {
@@ -44,7 +49,7 @@ export default class User extends Component {
           </div>
 
           <div styleName="arrow">
-            <InlineSVG src={require("./arrow-down.svg")} />
+            <InlineSVG src={ImageArrowDown} />
           </div>
         </div>
         
@@ -55,12 +60,12 @@ export default class User extends Component {
                 to={`/${URL_USERSPACE}/${URL_PROFILE}/`}
               >
               <div styleName="logout">
-                <InlineSVG styleName="logout-icon" src={require("./avatar.svg")} />
+                <InlineSVG styleName="logout-icon" src={ImageAvatar} />
                 Profile
               </div>
             </Link>
             <div styleName="logout" onClick={logoutHandler}>
-              <InlineSVG styleName="logout-icon" src={require("./logout.svg")} />
+              <InlineSVG styleName="logout-icon" src={ImageLogout} />
               Log out
             </div>
           </div>

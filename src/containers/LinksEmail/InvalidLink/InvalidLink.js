@@ -9,6 +9,8 @@ import {URL_USERSPACE, URL_SIGN} from 'ducks/nav';
 
 import styles from './InvalidLink.sss';
 
+import ImageChiselLogo from 'assets/images/chisel-logo.png';
+
 
 @CSSModules(styles, {allowMultiple: true})
 export class InvalidLink extends Component  {
@@ -30,7 +32,7 @@ export class InvalidLink extends Component  {
           <title>Invalid link - Chisel</title>
         </Helmet>
         <div styleName="logo">
-          <img src={require("assets/images/chisel-logo.png")} />
+          <img src={ImageChiselLogo} />
         </div>
         <div styleName="title">The link is invalid.</div>
         <form styleName="form" onSubmit={this.onLogin}>

@@ -11,6 +11,8 @@ import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal
 
 import styles from './ModelsList.sss';
 
+import ImageIconDelete from 'assets/images/icon-delete.svg';
+
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ModelsList extends Component {
@@ -155,7 +157,7 @@ export default class ModelsList extends Component {
                       <div styleName="controls">
                         <div styleName="remove control-icon" onClick={event => this.onRemoveClick(event, model)}>
                           <InlineSVG styleName="cross"
-                                    src={require("assets/images/icon-delete.svg")}/>
+                                    src={ImageIconDelete}/>
                         </div>
                       </div>
                     }

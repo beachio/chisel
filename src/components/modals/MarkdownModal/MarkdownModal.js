@@ -6,6 +6,8 @@ import MarkdownEditor, {LAYOUT_SPLIT} from 'components/elements/MarkdownEditor/M
 
 import styles from './MarkdownModal.sss';
 
+import ImageCrossCircle from 'assets/images/cross-circle.svg';
+
 
 @CSSModules(styles, {allowMultiple: true})
 export default class MarkdownModal extends Component {
@@ -37,7 +39,7 @@ export default class MarkdownModal extends Component {
       <div styleName="wrapper">
         <div styleName="return" onClick={this.onClosing}>
           <InlineSVG styleName="cross"
-                     src={require("assets/images/cross-circle.svg")} />
+                     src={ImageCrossCircle} />
         </div>
         <MarkdownEditor layout={LAYOUT_SPLIT}
                         value={this.text}

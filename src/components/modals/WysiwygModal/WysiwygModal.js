@@ -10,6 +10,8 @@ import Editor from 'react-medium-editor';
 
 import styles from './WysiwygModal.sss';
 
+import ImageCrossCircle from 'assets/images/cross-circle.svg';
+
 
 @CSSModules(styles, {allowMultiple: true})
 export default class WysiwygModal extends Component {
@@ -39,7 +41,7 @@ export default class WysiwygModal extends Component {
       <div styleName="wrapper">
         <div styleName="return" onClick={this.onClosing}>
           <InlineSVG styleName="cross"
-                     src={require("assets/images/cross-circle.svg")} />
+                     src={ImageCrossCircle} />
         </div>
         <Editor styleName="editor"
                 text={this.text}

@@ -9,6 +9,8 @@ import {URL_USERSPACE, URL_SIGN} from 'ducks/nav';
 
 import styles from './EmailVerify.sss';
 
+import ImageChiselLogo from 'assets/images/chisel-logo.png';
+
 
 @CSSModules(styles, {allowMultiple: true})
 export class EmailVerify extends Component  {
@@ -30,7 +32,7 @@ export class EmailVerify extends Component  {
           <title>Verifying email - Chisel</title>
         </Helmet>
         <div styleName="logo">
-          <img src={require("assets/images/chisel-logo.png")} />
+          <img src={ImageChiselLogo} />
         </div>
         <div styleName="title">Your email was verified successfully.</div>
         <form styleName="form" onSubmit={this.onLogin}>

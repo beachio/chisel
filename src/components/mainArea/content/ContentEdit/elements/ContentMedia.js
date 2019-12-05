@@ -14,6 +14,8 @@ import InputControl from "components/elements/InputControl/InputControl";
 
 import styles from '../ContentEdit.sss';
 
+import ImageIconDelete from 'assets/images/icon-delete.svg';
+
 
 const AUTOSAVE_TIMEOUT = 2000;
 
@@ -245,7 +247,7 @@ export default class ContentMedia extends ContentBase {
             {
               this.state.isEditable &&
                 <InlineSVG styleName="media-cross"
-                           src={require('assets/images/icon-delete.svg')}
+                           src={ImageIconDelete}
                            onClick={() => this.onMediaClear(item)}/>
             }
           </div>

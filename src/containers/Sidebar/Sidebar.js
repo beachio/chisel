@@ -11,6 +11,9 @@ import {isPayPlanTop} from 'utils/data';
 
 import styles, {sidebarHidden} from './Sidebar.sss';
 
+import ImageQuestion from './question.svg';
+
+
 
 @CSSModules(styles, {allowMultiple: true})
 export class Sidebar extends Component {
@@ -52,7 +55,7 @@ export class Sidebar extends Component {
           }
         
           {/* <a styleName="answer-question" href="http://guild.beach.io" target="_blank">
-            <InlineSVG styleName="icon" src={require("./question.svg")} />
+            <InlineSVG styleName="icon" src={ImageQuestion} />
           </a> */}
         </div>
       </div>
