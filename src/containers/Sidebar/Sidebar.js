@@ -31,9 +31,9 @@ export class Sidebar extends Component {
     return (
       <div styleName="sidebar"
            className={isSidebarVisible ? `sidebar-visible` : sidebarHidden}>
-        <div styleName="header">
+        <Link styleName="header" to="/">
           Chisel
-        </div>
+        </Link>
         <div styleName="sites-wrapper">
           <Sites sites={models.sites}
                  currentSite={models.currentSite}
