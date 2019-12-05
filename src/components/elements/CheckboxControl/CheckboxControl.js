@@ -22,7 +22,7 @@ export default class CheckboxControl extends Component {
   };
   
   render() {
-    const {title, checked, disabled, labelStyles, checkboxStyles} = this.props;
+    const {title, checked, disabled} = this.props;
     let style = `CheckboxControl`;
     if (disabled)
       style += ` disabled`;
