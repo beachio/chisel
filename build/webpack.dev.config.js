@@ -7,7 +7,6 @@ const baseWebpackConfig = require('./webpack.base.config');
 module.exports = merge(baseWebpackConfig, {
   mode: 'development',
   devtool: 'source-map',
-  entry: ['webpack-hot-middleware/client?reload=true'],
   output: {
     publicPath: '/'
   },
