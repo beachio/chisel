@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 import CSSModules from 'react-css-modules';
 import {browserHistory} from "react-router";
 import {Parse} from "parse";

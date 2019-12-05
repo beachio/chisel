@@ -4,7 +4,7 @@ import {CardElement, injectStripe, Elements} from 'react-stripe-elements';
 import {Parse} from 'parse';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 import {browserHistory} from "react-router";
 
 import ButtonControl from "components/elements/ButtonControl/ButtonControl";

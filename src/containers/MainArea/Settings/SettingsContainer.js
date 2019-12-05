@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 
 import Settings from 'components/mainArea/settings/Settings';
 import {ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';

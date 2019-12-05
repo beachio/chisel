@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {config} from 'utils/initialize';

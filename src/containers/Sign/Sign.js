@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 import InlineSVG from 'svg-inline-react';
 import CheckboxControl from 'components/elements/CheckboxControl/CheckboxControl';
 

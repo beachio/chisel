@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 import {browserHistory} from 'react-router';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';

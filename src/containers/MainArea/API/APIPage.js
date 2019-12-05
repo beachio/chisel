@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import InlineSVG from 'svg-inline-react';
 import {connect} from 'react-redux';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 
 import {ROLE_EDITOR} from 'models/UserData';
 import {NoRights} from "components/mainArea/common/NoRights";
