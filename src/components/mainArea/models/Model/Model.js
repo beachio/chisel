@@ -54,9 +54,8 @@ const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemove
 const SortableList = SortableContainer(({fields, isEditable, onFieldClick, onRemoveClick}) => {
   return (
     <div>
-      {fields.map((field, index) => (
-        <SortableItem key={`item-${index}`}
-                      index={index}
+      {fields.map(field => (
+        <SortableItem key={field.origin.id}
                       field={field}
                       isEditable={isEditable}
                       onFieldClick={onFieldClick}

@@ -63,7 +63,7 @@ export default class Sites extends Component {
           }
         </div>
         <div styleName="list">
-          {sites.map((site, key) => {
+          {sites.map(site => {
             let style = "element";
             if (this.state.site == site)
               style += " element-active";
@@ -71,7 +71,7 @@ export default class Sites extends Component {
             return (
               <div styleName={style}
                    onClick={() => this.onClickSite(site)}
-                   key={key}>
+                   key={site.origin.id}>
 
                 {!!site.icon ?
                   <img styleName="icon-img"

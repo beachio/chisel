@@ -118,10 +118,8 @@ export default class Sharing extends Component {
       });
   };
 
-  onRoleClick(e, index) {
+  onRoleClick(e, collab) {
     e.stopPropagation();
-
-    const collab = this.state.collaborations[index];
 
     this.props.showModal(MODAL_TYPE_ROLE, {
       role: collab.role,
@@ -183,7 +181,7 @@ export default class Sharing extends Component {
                         leaveAnimation="fade"
                         maintainContainerHeight
                         easing="ease-out">
-                {this.state.collaborations.map((collaboration, index) => {
+                {this.state.collaborations.map(collaboration => {
                   let user = collaboration.user;
 
                   let localDelete = isEditable;
@@ -232,7 +230,7 @@ export default class Sharing extends Component {
                       {blockName}
                       {
                         localRole ?
-                          <div styleName="role editable" onClick={event => this.onRoleClick(event, index)}>
+                          <div styleName="role editable" onClick={event => this.onRoleClick(event, collaboration)}>
                             {collaboration.role}
                           </div>
                         :
