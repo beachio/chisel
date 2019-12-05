@@ -30,7 +30,7 @@ export default class InputControl extends Component {
     if (!onChange)
       readOnly = true;
 
-    if (value == undefined || value == null)
+    if (value == undefined)
       value = ``;
 
     if (!inputType)
