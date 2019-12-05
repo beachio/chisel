@@ -1,22 +1,19 @@
 module.exports = ({file, options, env}) => {
+  const res = {
+    plugins: [
+      require('postcss-flexibility'),
+      require('postcss-flexbugs-fixes'),
+      require('autoprefixer')
+    ]
+  };
 
-  if (file.extname === '.sss')
-    return {
-      parser: 'sugarss',
-      plugins: {
-        'postcss-flexibility': {},
-        'postcss-flexbugs-fixes': {},
-        'autoprefixer': {},
-        'precss': {}
-      }
-    };
+  if (env == 'production')
+    res.plugins.unshift(require('cssnano'));
 
-  else
-    return {
-      plugins: {
-        'postcss-flexibility': {},
-        'postcss-flexbugs-fixes': {},
-        'autoprefixer': {}
-      }
-    };
+  if (file.extname === '.sss') {
+    res.parser = 'sugarss';
+    res.plugins.push(require('precss'));
+  }
+
+  return res;
 };
