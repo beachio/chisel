@@ -6,6 +6,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const baseWebpackConfig = require('./webpack.base.config');
 
 
+process.env.NODE_ENV = 'development';
+
 module.exports = merge(baseWebpackConfig, {
   mode: 'development',
   devtool: 'source-map',
