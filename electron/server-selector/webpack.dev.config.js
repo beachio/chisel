@@ -31,8 +31,9 @@ module.exports = merge(baseWebpackConfig, {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
-              localIdentName: "[name]---[local]---[hash:base64:5]",
+              modules: {
+                localIdentName: "[name]---[local]---[hash:base64:5]",
+              },
               importLoaders: 1
             }
           },
