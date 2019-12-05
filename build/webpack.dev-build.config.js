@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 
@@ -14,10 +13,6 @@ module.exports = merge(baseWebpackConfig, {
     publicPath: './'
   },
   plugins: [
-    new LodashModuleReplacementPlugin({
-      'collections': true,
-      'shorthands': true
-    }),
     new MiniCssExtractPlugin({
       filename: '[name].min.css'
     })

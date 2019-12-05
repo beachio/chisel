@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
-import _ from 'lodash/core';
+
+import {getUniqueId} from 'utils/common';
 
 import styles from './SwitchControl.sss';
 
@@ -10,14 +11,12 @@ export default class SwitchControl extends Component {
   state = {
     checked: false
   };
-  
-  id = '0';
+  id = getUniqueId();
   
   constructor(props) {
     super(props);
     
     this.state.checked = props.checked;
-    this.id = _.uniqueId('switch_');
   }
   
   componentWillReceiveProps (nextProps) {

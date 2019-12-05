@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 const baseWebpackConfig = require('./webpack.base.config');
 
@@ -13,10 +12,6 @@ module.exports = merge(baseWebpackConfig, {
     publicPath: '/'
   },
   plugins: [
-    new LodashModuleReplacementPlugin({
-      'collections': true,
-      'shorthands': true
-    }),
     new webpack.HotModuleReplacementPlugin()
   ],
   module: {

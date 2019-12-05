@@ -27,7 +27,6 @@ module.exports = {
 
     ["@babel/plugin-transform-runtime", {useESModules: true}],
 
-    "babel-plugin-lodash",
     "react-hot-loader/babel"
   ]
 };
