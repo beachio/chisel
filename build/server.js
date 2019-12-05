@@ -6,9 +6,9 @@ const {exec} = require('child_process');
 const config = require('./webpack.dev.config');
 
 
-let port = process.env.PORT || 9000;
+const port = process.env.PORT || 9000;
 
-let server = new WebpackDevServer(
+const server = new WebpackDevServer(
   webpack(config),
   {
     contentBase: path.join(__dirname, '../static/'),
