@@ -348,6 +348,7 @@ template {
 [hidden] {
   display: none;
 }
+
 @font-face {
   font-family: 'Inter-UI';
   src: url(./assets/fonts/Inter-UI-Regular.eb136d4.ttf);
@@ -374,7 +375,8 @@ template {
   src: url(./assets/fonts/Inter-UI-Bold.2936b39.ttf);
   font-weight: 700;
   font-style: normal;
-}* {
+}
+* {
   box-sizing: border-box
 }
 
@@ -405,104 +407,8 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0
 }
-.app---content---3ogea {
-  width: 100%;
-  padding: 30px;
-  padding-right: 50px;
 
-  -js-display: flex;
-
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-
-  letter-spacing: 0.5px;
-  font-size: 14px;
-  color: #2C2C30;
-}
-
-  .app---content---3ogea .app---side---xM_vg {
-    flex: 0 0 270px;
-    padding-right: 40px;
-}
-
-  .app---content---3ogea .app---side---xM_vg .app---server---2Fxyt {
-      -js-display: flex;
-      -js-display: flex;
-      display: flex;
-      flex-flow: row nowrap;
-      justify-content: space-between;
-      align-items: center;
-
-      padding-bottom: 10px;
-      padding-top: 10px;
-      padding-right: 11px;
-      margin-bottom: 10px;
-      border-radius: 20px;
-
-      background: #FFFFFF;
-      box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.05);
-      cursor: pointer;
-}
-
-  .app---content---3ogea .app---side---xM_vg .app---server-checked---1PayG {
-        background: #eeeeee;
-}
-
-  .app---content---3ogea .app---side---xM_vg .app---server---2Fxyt .app---name---bWDb0 {
-        font-size: 14px;
-        color: #313133;
-        line-height: 24px;
-        padding-left: 15px;
-        -webkit-user-select: none;
-           -moz-user-select: none;
-            -ms-user-select: none;
-                user-select: none;
-}
-
-  .app---content---3ogea .app---side---xM_vg .app---server-new---2TZsG .app---name---bWDb0 {
-          font-weight: 300;
-}
-
-  .app---content---3ogea .app---main---rgXDd {
-    flex: 1 1;
-    padding-left: 40px;
-    color: #666666;
-}
-
-  .app---content---3ogea .app---main---rgXDd .app---label---UgBQV {
-      -webkit-user-select: none;
-         -moz-user-select: none;
-          -ms-user-select: none;
-              user-select: none;
-}
-
-.app---input-wrapper---daq3d {
-  margin-bottom: 30px;
-}
-
-.app---error---2tTiK {
-  margin-top: 40px;
-  color: red;
-}
-
-.app---buttons---2sJ6p {
-  margin-top: 40px;
-}
-
-.app---button-wrapper---3ChOa {
-  display: inline-block;
-  margin-right: 40px;
-}
-
-.app---button-wrapper---3ChOa:last-child {
-    margin-right: 0;
-}
-
-.app---icon-plus---2Yed2 {
-  width: 18px;
-  height: 18px;
-}.LoaderComponent---loader---1Jt2_ {
+.LoaderComponent---loader---1Jt2_ {
   display: inline-block;
   width: 30px;
   height: 30px;
@@ -605,10 +511,11 @@ input::-webkit-inner-spin-button {
     height: 0%;
   }
 }
+
 .ButtonControl---ButtonControl---W6bNo {
   font-family: 'Inter-UI', sans-serif;
   border-radius: 20px;
-  border: none;
+  border: 2px solid rgba(0,0,0,0);
   outline: none;
 
   font-size: 14px;
@@ -626,11 +533,17 @@ input::-webkit-inner-spin-button {
 
   -js-display: flex;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: -webkit-box;
 
-  box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.05);
+  display: flex;
+  -webkit-box-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+          align-items: center;
+
+  box-shadow: 0 1px 0 0 rgba(0,0,0,0.07), 0 1px 10px 0 rgba(0,0,0,0.07);
+
+  -webkit-transition: -webkit-transform 0.2s;
 
   transition: -webkit-transform 0.2s;
 
@@ -640,30 +553,40 @@ input::-webkit-inner-spin-button {
 }
 
   .ButtonControl---ButtonControl-red---3RZN3 {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#c66a6a), color-stop(150%, #bc5b5b));
     background-image: linear-gradient(-180deg, #c66a6a 0%, #bc5b5b 150%);
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
     color: #ffffff;
 }
 
+  .ButtonControl---ButtonControl-red-outline---2WAgx {
+    border: 2px solid #c66a6a;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
+}
+
   .ButtonControl---ButtonControl-green---3IRx1 {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#57C95A), color-stop(150%, #388E3C));
     background-image: linear-gradient(-180deg, #57C95A 0%, #388E3C 150%);
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.10);
     color: #ffffff;
 }
 
   .ButtonControl---ButtonControl-gray---10PYP {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#607D8B), color-stop(150%, #3E5059));
     background-image: linear-gradient(-180deg, #607D8B 0%, #3E5059 150%);
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.20);
     color: #ffffff;
 }
 
   .ButtonControl---ButtonControl-purple---1luij {
+    background-image: -webkit-gradient(linear, right top, left top, from(#8a5ebe), color-stop(150%, #7b50b2));
     background-image: linear-gradient(-90deg, #8a5ebe 0%, #7b50b2 150%);
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
     color: #ffffff;
 }
 
   .ButtonControl---ButtonControl-black---16SXf {
+    background-image: -webkit-gradient(linear, right top, left top, from(#434349), color-stop(150%, #37373c));
     background-image: linear-gradient(-90deg, #434349 0%, #37373c 150%);
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
     color: #ffffff;
@@ -693,6 +616,7 @@ input::-webkit-inner-spin-button {
 .ButtonControl---ButtonControl---W6bNo .ButtonControl---loader-wrapper---2IRaM {
     margin-left: 15px;
 }
+
 .InputControl---InputControl---BkKKu {
   width: 100%;
 }
@@ -701,8 +625,11 @@ input::-webkit-inner-spin-button {
   width: 100%;
   text-align: left;
   -js-display: flex;
+  display: -webkit-box;
   display: flex;
-  flex-flow: column nowrap;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-flow: column nowrap;
   position: relative;
 }
 
@@ -718,6 +645,8 @@ input::-webkit-inner-spin-button {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+
+  -webkit-transition: color 0.2s ease;
 
   transition: color 0.2s ease;
   will-change: color;
@@ -739,7 +668,8 @@ input::-webkit-inner-spin-button {
   width: 100%;
   outline: none;
   margin-top: 0;
-  order: 2;
+  -webkit-box-ordinal-group: 3;
+          order: 2;
 }
 
 .InputControl---icon---3Zb66 {
@@ -789,7 +719,8 @@ input::-webkit-inner-spin-button {
   line-height: 24px;
   font-weight: 400;
   letter-spacing: 0.5px;
-  order: 2;
+  -webkit-box-ordinal-group: 3;
+          order: 2;
 }
 
 .InputControl---input-titled---28KLn {
@@ -797,6 +728,10 @@ input::-webkit-inner-spin-button {
 }
 
 .InputControl---input---2pUgF::-webkit-input-placeholder {
+    color: #bbbbbb;
+}
+
+.InputControl---input---2pUgF::-moz-placeholder {
     color: #bbbbbb;
 }
 
@@ -809,6 +744,10 @@ input::-webkit-inner-spin-button {
 }
 
 &::-webkit-input-placeholder {
+    color: #bbbbbb;
+}
+
+&::-moz-placeholder {
     color: #bbbbbb;
 }
 
@@ -835,11 +774,16 @@ input::-webkit-inner-spin-button {
 .InputControl---input-red---3NCFc {
     background: #ffd3d5;
 }
+
 .CheckboxControl---CheckboxControl---kLRku {
   -js-display: flex;
+  display: -webkit-box;
   display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-flow: row nowrap;
+  -webkit-box-align: center;
+          align-items: center;
 }
 
 .CheckboxControl---checkbox---4lbDT {
@@ -888,6 +832,7 @@ input::-webkit-inner-spin-button {
 
 .CheckboxControl---checkbox---4lbDT + .CheckboxControl---checkbox-label---1ctNj:before,
   .CheckboxControl---checkbox---4lbDT:checked + .CheckboxControl---checkbox-label---1ctNj:before {
+    -webkit-transition: background 0.1s ease;
     transition: background 0.1s ease;
 }
 
@@ -903,3 +848,114 @@ input::-webkit-inner-spin-button {
     background: #dbdbdb;
 }
 
+
+.app---content---3ogea {
+  width: 100%;
+  padding: 30px;
+  padding-right: 50px;
+
+  -js-display: flex;
+
+  display: -webkit-box;
+
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-flow: row nowrap;
+  -webkit-box-pack: justify;
+          justify-content: space-between;
+
+  letter-spacing: 0.5px;
+  font-size: 14px;
+  color: #2C2C30;
+}
+
+  .app---content---3ogea .app---side---xM_vg {
+    -webkit-box-flex: 0;
+            flex: 0 0 270px;
+    padding-right: 40px;
+}
+
+  .app---content---3ogea .app---side---xM_vg .app---server---2Fxyt {
+      -js-display: flex;
+      -js-display: flex;
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+              flex-flow: row nowrap;
+      -webkit-box-pack: justify;
+              justify-content: space-between;
+      -webkit-box-align: center;
+              align-items: center;
+
+      padding-bottom: 10px;
+      padding-top: 10px;
+      padding-right: 11px;
+      margin-bottom: 10px;
+      border-radius: 20px;
+
+      background: #FFFFFF;
+      box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.05);
+      cursor: pointer;
+}
+
+  .app---content---3ogea .app---side---xM_vg .app---server-checked---1PayG {
+        background: #eeeeee;
+}
+
+  .app---content---3ogea .app---side---xM_vg .app---server---2Fxyt .app---name---bWDb0 {
+        font-size: 14px;
+        color: #313133;
+        line-height: 24px;
+        padding-left: 15px;
+        -webkit-user-select: none;
+           -moz-user-select: none;
+            -ms-user-select: none;
+                user-select: none;
+}
+
+  .app---content---3ogea .app---side---xM_vg .app---server-new---2TZsG .app---name---bWDb0 {
+          font-weight: 300;
+}
+
+  .app---content---3ogea .app---main---rgXDd {
+    -webkit-box-flex: 1;
+            flex: 1 1;
+    padding-left: 40px;
+    color: #666666;
+}
+
+  .app---content---3ogea .app---main---rgXDd .app---label---UgBQV {
+      -webkit-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+}
+
+.app---input-wrapper---daq3d {
+  margin-bottom: 30px;
+}
+
+.app---error---2tTiK {
+  margin-top: 40px;
+  color: red;
+}
+
+.app---buttons---2sJ6p {
+  margin-top: 40px;
+}
+
+.app---button-wrapper---3ChOa {
+  display: inline-block;
+  margin-right: 40px;
+}
+
+.app---button-wrapper---3ChOa:last-child {
+    margin-right: 0;
+}
+
+.app---icon-plus---2Yed2 {
+  width: 18px;
+  height: 18px;
+}
