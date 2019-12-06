@@ -50,8 +50,10 @@ async function initParse() {
   const appConfig = await send(Parse.Config.get());
   if (appConfig) {
     const key = appConfig.get('StripeKeyPublic');
-    if (key)
+    if (key) {
+      config.stripeKeyExists = true;
       setStripeKey(key);
+    }
   }
 }
 

@@ -4,7 +4,7 @@ import InlineSVG from 'svg-inline-react';
 import {browserHistory} from "react-router";
 
 import {MODAL_TYPE_SITE, URL_USERSPACE, URL_PAY_PLANS} from "ducks/nav";
-import {ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
+import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from "components/modals/AlertModal/AlertModal";
 
 import styles from './Sites.sss';
 
@@ -38,18 +38,23 @@ export default class Sites extends Component {
   };
 
   onClickAdd = () => {
-    const {sites} = this.props;
-    if (this.sitesLimit && sites.length >= this.sitesLimit)
-      this.props.showAlert({
+    const {sites, showPayUpgrade} = this.props;
+    if (this.sitesLimit && sites.length >= this.sitesLimit) {
+      const options = {
         title: `Warning`,
-        type: ALERT_TYPE_CONFIRM,
-        description: `You can't add new site because you have exhausted your limit (${this.sitesLimit}).`,
-        confirmLabel: `Upgrade my account`,
-        cancelLabel: `Close`,
-        onConfirm: () => browserHistory.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`)
-      });
-    else
+        type: ALERT_TYPE_ALERT,
+        description: `You can't add new site because you have exhausted your limit (${this.sitesLimit} ${this.sitesLimit == 1 ? 'site' : 'sites'}).`
+      };
+      if (showPayUpgrade) {
+        options.type = ALERT_TYPE_CONFIRM;
+        options.confirmLabel = `Upgrade my account`;
+        options.cancelLabel = `Close`;
+        options.onConfirm = () => browserHistory.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
+      }
+      this.props.showAlert(options);
+    } else {
       this.props.showModal(MODAL_TYPE_SITE);
+    }
   };
 
   render() {

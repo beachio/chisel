@@ -28,8 +28,8 @@ export class Sidebar extends Component {
       browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${nameId}`);
     };
 
-    const showPay = !stripeInitError && !!payPlans && !!payPlans.length;
-    const showUpgrade = showPay && !isPayPlanTop(userData.payPlan);
+    const showPay = !!userData.payPlan;
+    const showPayUpgrade = showPay && !stripeInitError && !isPayPlanTop(userData.payPlan);
 
     return (
       <div styleName="sidebar"
@@ -41,13 +41,14 @@ export class Sidebar extends Component {
           <Sites sites={models.sites}
                  currentSite={models.currentSite}
                  gotoSite={gotoSite}
-                 payPlan={showPay ? userData.payPlan : null}
+                 payPlan={userData.payPlan}
+                 showPayUpgrade={showPayUpgrade}
                  showModal={showModal}
                  showAlert={showAlert} />
         </div>
   
         <div styleName="bottom-panel">
-          {showUpgrade &&
+          {showPayUpgrade &&
             <Link styleName="pay-plans"
                   to={`/${URL_USERSPACE}/${URL_PAY_PLANS}/`}>
               Upgrade your account

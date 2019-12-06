@@ -15,7 +15,6 @@ import InputControl from "components/elements/InputControl/InputControl";
 import DropdownControl from "components/elements/DropdownControl/DropdownControl";
 import {ALERT_TYPE_ALERT, ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 import {send} from 'utils/server';
-import {update as updateUser} from "ducks/user";
 import {showAlert, URL_USERSPACE} from "ducks/nav";
 import {addSource, removeSource, updateSubscription, updateDefaultSource} from 'ducks/pay';
 import {getPayPlan, getPayMethod} from "utils/data";
@@ -300,8 +299,7 @@ class PaymentMethods extends Component {
   
   onNewSourceSubscribe = async (token, asDefault) => {
     const {userData} = this.props.user;
-    const {updateUser} = this.props.userActions;
-    const {addSource, updateSubscription, updateDefaultSource} = this.props.payActions;
+    const {addSource, updateSubscription} = this.props.payActions;
     const {showAlert} = this.props.navActions;
 
     let StripeId;
@@ -322,14 +320,10 @@ class PaymentMethods extends Component {
     }
 
     if (!this.payPlan) {
-      if (StripeId) {
+      // StripeId is null if user already have one
+      if (StripeId)
         userData.StripeId = StripeId;
-        updateUser(userData);
-      }
-      addSource(token.card);
-      if (asDefault)
-        updateDefaultSource(token.card.id);
-
+      addSource(token.card, asDefault);
       this.setState({method: token.card, pending: false});
       return;
     }
@@ -342,14 +336,11 @@ class PaymentMethods extends Component {
         })
       );
 
-      if (StripeId) {
+      // StripeId is null if user already have one
+      if (StripeId)
         userData.StripeId = StripeId;
-        updateUser(userData);
-      }
-      addSource(token.card);
-      if (asDefault)
-        updateDefaultSource(token.card.id);
 
+      addSource(token.card, asDefault);
       updateSubscription(subscription, this.payPlan);
 
       showAlert({
@@ -584,7 +575,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators({updateUser}, dispatch),
     navActions: bindActionCreators({showAlert}, dispatch),
     payActions: bindActionCreators({addSource, removeSource, updateSubscription, updateDefaultSource}, dispatch)
   };

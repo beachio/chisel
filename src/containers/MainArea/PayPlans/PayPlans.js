@@ -8,7 +8,7 @@ import {Parse} from "parse";
 
 import {send} from "utils/server";
 import ContainerComponent from "components/elements/ContainerComponent/ContainerComponent";
-import {changePayPlan, checkPayPlan} from "ducks/user";
+import {checkPayPlan} from "ducks/user";
 import {URL_PAYMENT_METHODS, URL_USERSPACE, showAlert} from "ducks/nav";
 import {updateSubscription} from 'ducks/pay';
 import {ALERT_TYPE_ALERT, ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
@@ -193,7 +193,7 @@ function mapDispatchToProps(dispatch) {
   return {
     navActions: bindActionCreators({showAlert}, dispatch),
     payActions: bindActionCreators({updateSubscription}, dispatch),
-    userActions: bindActionCreators({changePayPlan, checkPayPlan}, dispatch)
+    userActions: bindActionCreators({checkPayPlan}, dispatch)
   };
 }
 
