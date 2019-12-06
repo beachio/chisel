@@ -185,8 +185,6 @@ export default class ContentEdit extends Component {
   
   updateItemTitle = title => {
     this.setState({title});
-    let draft = this.item.draft ? this.item.draft : this.item;
-    draft.title = title;
   };
   
   addItem = item => {
