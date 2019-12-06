@@ -10,12 +10,14 @@ import {PAGE_PROFILE, PAGE_PAY_PLANS, PAGE_PAYMENT_METHODS} from 'ducks/nav';
 
 import styles from './MainArea.sss';
 
+import ImageHammer from 'assets/images/hammer.svg';
+
 
 @CSSModules(styles, {allowMultiple: true})
 export class MainArea extends Component {
   cmpNoSites = (
     <div className="start-working">
-      <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
+      <InlineSVG className="hammer" src={ImageHammer}/>
       Add new site to start working
       <div className="hint">Find "Add new site" button in the sidebar</div>
     </div>

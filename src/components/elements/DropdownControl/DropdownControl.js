@@ -7,6 +7,9 @@ import InputControl from 'components/elements/InputControl/InputControl';
 
 import styles from './DropdownControl.sss';
 
+import ImageIconTriangularArrow from 'assets/images/icon-triangular-arrow.svg';
+import ImageArrows from 'assets/images/arrows.svg';
+
 
 @CSSModules(styles, {allowMultiple: true})
 export default class DropdownControl extends Component {
@@ -99,9 +102,9 @@ export default class DropdownControl extends Component {
       'arrow-rotated': this.state.listVis
     });
 
-    let icon = <InlineSVG styleName={arrowClasses} src={require("assets/images/icon-triangular-arrow.svg")} />;
+    let icon = <InlineSVG styleName={arrowClasses} src={ImageIconTriangularArrow} />;
     if (type === 'big')
-      icon = <InlineSVG styleName="arrows" src={require("assets/images/arrows.svg")} />;
+      icon = <InlineSVG styleName="arrows" src={ImageArrows} />;
 
     return (
       <div styleName={wrapperClasses} onBlur={this.onBlur}>
@@ -115,15 +118,15 @@ export default class DropdownControl extends Component {
                  onClick={this.onInputClick}
                  readOnly />
           <div styleName="suggestions">
-            {this.list.map((item, key) => {
+            {this.list.map(item => {
               const styleName = classNames({
                 'suggestion': true,
                 'empty': !item
               });
               return (
-                <div onMouseDown={() => this.onSuggestionClick(item)}
+                <div onMouseDown={e => this.onSuggestionClick(item)}
                      styleName={styleName}
-                     key={key}>
+                     key={item}>
                   {!!item ? item : '(empty)'}
                 </div>
               );

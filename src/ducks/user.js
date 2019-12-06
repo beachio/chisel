@@ -334,8 +334,10 @@ export function checkPayPlan() {
           () => store.dispatch(changePayPlan(payPlanFree)),
           subscription.current_period_end * 1000 - Date.now());
     }
-  } else {
+  } else if (config.stripeKeyExists) {
     userData.payPlan = payPlanFree;
+    userData.updateOrigin();
+    send(userData.origin.save());
   }
 
   return {

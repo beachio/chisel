@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 
 import Sharing from 'components/mainArea/sharing/Sharing';
 import {ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';

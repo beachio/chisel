@@ -11,6 +11,9 @@ import {isPayPlanTop} from 'utils/data';
 
 import styles, {sidebarHidden} from './Sidebar.sss';
 
+import ImageQuestion from './question.svg';
+
+
 
 @CSSModules(styles, {allowMultiple: true})
 export class Sidebar extends Component {
@@ -25,26 +28,27 @@ export class Sidebar extends Component {
       browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${nameId}`);
     };
 
-    const showPay = !stripeInitError && !!payPlans && !!payPlans.length;
-    const showUpgrade = showPay && !isPayPlanTop(userData.payPlan);
+    const showPay = !!userData.payPlan;
+    const showPayUpgrade = showPay && !stripeInitError && !isPayPlanTop(userData.payPlan);
 
     return (
       <div styleName="sidebar"
            className={isSidebarVisible ? `sidebar-visible` : sidebarHidden}>
-        <div styleName="header">
+        <Link styleName="header" to="/">
           Chisel
-        </div>
+        </Link>
         <div styleName="sites-wrapper">
           <Sites sites={models.sites}
                  currentSite={models.currentSite}
                  gotoSite={gotoSite}
-                 payPlan={showPay ? userData.payPlan : null}
+                 payPlan={userData.payPlan}
+                 showPayUpgrade={showPayUpgrade}
                  showModal={showModal}
                  showAlert={showAlert} />
         </div>
   
         <div styleName="bottom-panel">
-          {showUpgrade &&
+          {showPayUpgrade &&
             <Link styleName="pay-plans"
                   to={`/${URL_USERSPACE}/${URL_PAY_PLANS}/`}>
               Upgrade your account
@@ -52,7 +56,7 @@ export class Sidebar extends Component {
           }
         
           {/* <a styleName="answer-question" href="http://guild.beach.io" target="_blank">
-            <InlineSVG styleName="icon" src={require("./question.svg")} />
+            <InlineSVG styleName="icon" src={ImageQuestion} />
           </a> */}
         </div>
       </div>

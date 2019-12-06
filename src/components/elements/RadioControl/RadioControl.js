@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
-import _ from "lodash/core";
+
+import {getUniqueId} from 'utils/common';
 
 import styles from './RadioControl.sss';
 
@@ -10,13 +11,12 @@ export default class DropdownControl extends Component {
   state = {
     value: false
   };
-  id = '0';
+  id = getUniqueId();
   
   constructor(props) {
     super(props);
     
     this.state.value = props.value;
-    this.id = _.uniqueId('radio_');
   }
   
   componentWillReceiveProps (nextProps) {

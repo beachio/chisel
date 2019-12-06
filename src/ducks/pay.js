@@ -1,5 +1,6 @@
 import {Parse} from 'parse';
 
+import {config} from 'utils/initialize';
 import {PayPlanData} from 'models/PayPlanData';
 import {send, getAllObjects, CLOUD_ERROR_CODE__STRIPE_INIT_ERROR, PARSE_ERROR_CODE__CLOUD_FAIL} from 'utils/server';
 
@@ -105,13 +106,13 @@ export default function payReducer(state = initialState, action) {
         ...state,
         payPlans: action.payPlans,
         stripeData: action.stripeData ? action.stripeData : {},
-        stripeInitError: !!action.stripeInitError
+        stripeInitError: !!action.stripeInitError || !config.stripeKeyExists
       };
   
     case ADD_SOURCE:
       sources.push(action.source);
       if (action.isDefault)
-        stripeData.defaultSource = source;
+        stripeData.defaultSource = action.source.id;
       return {
         ...state,
         stripeData

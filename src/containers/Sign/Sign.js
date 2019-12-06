@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 import InlineSVG from 'svg-inline-react';
 import CheckboxControl from 'components/elements/CheckboxControl/CheckboxControl';
 
@@ -12,6 +12,10 @@ import {login, register, restorePassword, resendVerEmail, resetStatus,
 import {parseURLParams} from 'utils/common';
 
 import styles from './Sign.sss';
+
+import ImageLoginIllustration from "assets/images/chisel_login_illustration.png";
+import ImageProductLogo from "assets/images/product-logo.svg";
+import ImageProductLogoB from "assets/images/product-logo-b.svg";
 
 
 const MODE_LOGIN        = 'login';
@@ -266,7 +270,7 @@ export class Sign extends Component  {
 
         icon = (
           <InlineSVG
-            src={require("assets/images/product-logo.svg")}
+            src={ImageProductLogo}
           />
         );
 
@@ -322,7 +326,7 @@ export class Sign extends Component  {
 
         icon = (
           <InlineSVG
-            src={require("assets/images/product-logo-b.svg")}
+            src={ImageProductLogoB}
           />
         );
 
@@ -423,7 +427,7 @@ export class Sign extends Component  {
           <title>Sign in / Sign up - Chisel</title>
         </Helmet>
         <div styleName="image">
-          <img src={require("assets/images/chisel_login_illustration.png")} />
+          <img src={ImageLoginIllustration} />
         </div>
         <div styleName="content">
           <div styleName="inner">

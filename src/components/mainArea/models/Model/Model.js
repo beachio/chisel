@@ -16,6 +16,9 @@ import {ModelFieldData} from 'models/ModelData';
 
 import styles from './Model.sss';
 
+import ImageIconDelete from 'assets/images/icon-delete.svg';
+
+
 const DragHandle = SortableHandle(({color}) =>
   (<div className={styles.listItemColor} style={{background: color}}></div>)
 );
@@ -43,7 +46,7 @@ const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemove
         <div className={styles.controls}>
           <div className={styles.controlIcon} onClick={event => onRemoveClick(event, field)}>
             <InlineSVG className={styles.cross}
-                      src={require("assets/images/icon-delete.svg")}/>
+                      src={ImageIconDelete}/>
           </div>
         </div>
       }
@@ -55,7 +58,7 @@ const SortableList = SortableContainer(({fields, isEditable, onFieldClick, onRem
   return (
     <div>
       {fields.map((field, index) => (
-        <SortableItem key={`item-${index}`}
+        <SortableItem key={field.origin.id}
                       index={index}
                       field={field}
                       isEditable={isEditable}

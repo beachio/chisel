@@ -4,8 +4,7 @@ import {CardElement, injectStripe, Elements} from 'react-stripe-elements';
 import {Parse} from 'parse';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
-import {Helmet} from "react-helmet";
-import {browserHistory} from "react-router";
+import {Helmet} from "react-helmet-async";
 
 import ButtonControl from "components/elements/ButtonControl/ButtonControl";
 import CheckboxControl from "components/elements/CheckboxControl/CheckboxControl";
@@ -15,8 +14,7 @@ import InputControl from "components/elements/InputControl/InputControl";
 import DropdownControl from "components/elements/DropdownControl/DropdownControl";
 import {ALERT_TYPE_ALERT, ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 import {send} from 'utils/server';
-import {update as updateUser} from "ducks/user";
-import {showAlert, URL_USERSPACE} from "ducks/nav";
+import {showAlert, returnHome, URL_USERSPACE} from "ducks/nav";
 import {addSource, removeSource, updateSubscription, updateDefaultSource} from 'ducks/pay';
 import {getPayPlan, getPayMethod} from "utils/data";
 
@@ -151,6 +149,7 @@ class _PayCardElement extends Component {
         color: '#313133',
         fontFamily: "Source Code Pro, monospace",
         '::placeholder': {
+          fontFamily: "Open Sans, sans-serif",
           color: '#999999',
         }
       },
@@ -299,9 +298,8 @@ class PaymentMethods extends Component {
   
   onNewSourceSubscribe = async (token, asDefault) => {
     const {userData} = this.props.user;
-    const {updateUser} = this.props.userActions;
-    const {addSource, updateSubscription, updateDefaultSource} = this.props.payActions;
-    const {showAlert} = this.props.navActions;
+    const {addSource, updateSubscription} = this.props.payActions;
+    const {showAlert, returnHome} = this.props.navActions;
 
     let StripeId;
 
@@ -321,14 +319,10 @@ class PaymentMethods extends Component {
     }
 
     if (!this.payPlan) {
-      if (StripeId) {
+      // StripeId is null if user already have one
+      if (StripeId)
         userData.StripeId = StripeId;
-        updateUser(userData);
-      }
-      addSource(token.card);
-      if (asDefault)
-        updateDefaultSource(token.card.id);
-
+      addSource(token.card, asDefault);
       this.setState({method: token.card, pending: false});
       return;
     }
@@ -341,21 +335,18 @@ class PaymentMethods extends Component {
         })
       );
 
-      if (StripeId) {
+      // StripeId is null if user already have one
+      if (StripeId)
         userData.StripeId = StripeId;
-        updateUser(userData);
-      }
-      addSource(token.card);
-      if (asDefault)
-        updateDefaultSource(token.card.id);
 
+      addSource(token.card, asDefault);
       updateSubscription(subscription, this.payPlan);
 
       showAlert({
         type: ALERT_TYPE_ALERT,
         title: "Payment complete",
         description: `You are successfully subscribed to ${this.payPlan.name}.`,
-        callback: () => browserHistory.push(`/${URL_USERSPACE}`)
+        callback: returnHome
       });
 
     } catch (error) {
@@ -372,7 +363,7 @@ class PaymentMethods extends Component {
   
   onSubscribe = async () => {
     const {updateSubscription} = this.props.payActions;
-    const {showAlert} = this.props.navActions;
+    const {showAlert, returnHome} = this.props.navActions;
     
     try {
       this.setState({pending: true});
@@ -388,7 +379,7 @@ class PaymentMethods extends Component {
         type: ALERT_TYPE_ALERT,
         title: "Payment complete",
         description: `You are successfully change your subscription to ${this.payPlan.name}.`,
-        callback: () => browserHistory.push(`/${URL_USERSPACE}`)
+        callback: returnHome
       });
       
     } catch (e) {
@@ -469,7 +460,7 @@ class PaymentMethods extends Component {
     if (!this.state.method)
       newMethodStyle += " method-checked";
     
-    let setAsDefaultElm = <div>This is default method.</div>;
+    let setAsDefaultElm = <div>This is a default method.</div>;
     if (this.state.method && this.state.method.id != defaultMethod) {
       if (this.payPlan) {
         setAsDefaultElm = (
@@ -482,7 +473,7 @@ class PaymentMethods extends Component {
         setAsDefaultElm = (
           <div styleName="button-wrapper">
             <ButtonControl onClick={this.onSetDefaultMethod}
-                           value="Set Method as Default"/>
+                           value="Set this method as default"/>
           </div>
         );
       }
@@ -544,7 +535,7 @@ class PaymentMethods extends Component {
                 
                 <div styleName="button-wrapper">
                   <ButtonControl onClick={this.onRemoveMethod}
-                                 value="Remove method" />
+                                 value="Remove this method" />
                 </div>
                 {!!this.payPlan &&
                   <div styleName="button-wrapper">
@@ -583,8 +574,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators({updateUser}, dispatch),
-    navActions: bindActionCreators({showAlert}, dispatch),
+    navActions: bindActionCreators({showAlert, returnHome}, dispatch),
     payActions: bindActionCreators({addSource, removeSource, updateSubscription, updateDefaultSource}, dispatch)
   };
 }

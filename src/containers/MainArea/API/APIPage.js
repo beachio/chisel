@@ -1,17 +1,19 @@
 import React, {Component} from 'react';
 import InlineSVG from 'svg-inline-react';
 import {connect} from 'react-redux';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 
 import {ROLE_EDITOR} from 'models/UserData';
 import {NoRights} from "components/mainArea/common/NoRights";
+
+import ImageHammer from 'assets/images/hammer.svg';
 
 
 export class APIPage extends Component  {
   render() {
     return (
       <div className="start-working">
-        <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
+        <InlineSVG className="hammer" src={ImageHammer}/>
         <div className="docs">
           Parse Server has extensive <a className="docs-link" href="http://parseplatform.github.io/docs/" target="_blank">Documentation</a>. Take a look!
           <div className="hint">Our Interactive API Docs will be coming soon...</div>

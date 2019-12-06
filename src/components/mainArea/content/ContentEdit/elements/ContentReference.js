@@ -9,6 +9,8 @@ import {ContentItemData} from 'models/ContentData';
 
 import styles from '../ContentEdit.sss';
 
+import ImageCrossCircle from 'assets/images/cross-circle.svg';
+
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentReference extends ContentBase {
@@ -132,7 +134,7 @@ export default class ContentReference extends ContentBase {
               <span styleName={titleStyle}> {title}</span>
             </span>
             <InlineSVG styleName="reference-cross"
-                       src={require('assets/images/cross-circle.svg')}
+                       src={ImageCrossCircle}
                        onClick={e => this.onReferenceClear(e, item)} />
           </div>
         );

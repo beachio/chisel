@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 import {browserHistory} from "react-router";
 import CSSModules from 'react-css-modules';
 
@@ -260,9 +260,10 @@ export class UserProfile extends Component  {
   
   render() {
     let dateSubEnd, cancelSub;
-    const {stripeInitError, payPlans} = this.props.pay;
-    const showPay = !stripeInitError && !!payPlans && !!payPlans.length;
-    if (showPay) {
+    const {stripeInitError} = this.props.pay;
+    const showPay = !!this.userData.payPlan;
+    const showPayChange = showPay && !stripeInitError;
+    if (showPayChange) {
       const {subscription} = this.props.pay.stripeData;
       if (subscription) {
         dateSubEnd = getTextDate(new Date(subscription.current_period_end * 1000));
@@ -418,16 +419,20 @@ export class UserProfile extends Component  {
                     <div styleName="field-value">{dateSubEnd}</div>
                   </div>)
                 }
-                <div styleName="buttons-wrapper">
-                  <ButtonControl color="purple"
-                                 onClick={this.onChangePayPlan}
-                                 value="Change Pay Plan"/>
-                </div>
-                <div styleName="buttons-wrapper">
-                  <ButtonControl color="purple"
-                                 onClick={this.onChangePayMethods}
-                                 value="Change Pay Methods"/>
-                </div>
+                {showPayChange && (
+                  <>
+                    <div styleName="buttons-wrapper">
+                      <ButtonControl color="purple"
+                                     onClick={this.onChangePayPlan}
+                                     value="Change Pay Plan"/>
+                    </div>
+                    <div styleName="buttons-wrapper">
+                      <ButtonControl color="purple"
+                                     onClick={this.onChangePayMethods}
+                                     value="Change Pay Methods"/>
+                    </div>
+                  </>)
+                }
               </div>
             }
 

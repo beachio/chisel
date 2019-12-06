@@ -14,6 +14,8 @@ import {MODAL_TYPE_ROLE} from "ducks/nav";
 
 import styles from './Sharing.sss';
 
+import ImageCrossCircle from 'assets/images/cross-circle.svg';
+
 
 @CSSModules(styles, {allowMultiple: true})
 export default class Sharing extends Component {
@@ -118,10 +120,8 @@ export default class Sharing extends Component {
       });
   };
 
-  onRoleClick(e, index) {
+  onRoleClick(e, collab) {
     e.stopPropagation();
-
-    const collab = this.state.collaborations[index];
 
     this.props.showModal(MODAL_TYPE_ROLE, {
       role: collab.role,
@@ -183,7 +183,7 @@ export default class Sharing extends Component {
                         leaveAnimation="fade"
                         maintainContainerHeight
                         easing="ease-out">
-                {this.state.collaborations.map((collaboration, index) => {
+                {this.state.collaborations.map(collaboration => {
                   let user = collaboration.user;
 
                   let localDelete = isEditable;
@@ -232,7 +232,7 @@ export default class Sharing extends Component {
                       {blockName}
                       {
                         localRole ?
-                          <div styleName="role editable" onClick={event => this.onRoleClick(event, index)}>
+                          <div styleName="role editable" onClick={event => this.onRoleClick(event, collaboration)}>
                             {collaboration.role}
                           </div>
                         :
@@ -245,7 +245,7 @@ export default class Sharing extends Component {
                           <div styleName="hidden-controls">
                             <div styleName="hidden-remove" onClick={event => this.onDeleteClick(event, collaboration)}>
                               <InlineSVG styleName="cross"
-                                         src={require("assets/images/cross-circle.svg")}/>
+                                         src={ImageCrossCircle}/>
                             </div>
                           </div>
                       }
@@ -287,21 +287,8 @@ export default class Sharing extends Component {
               <div styleName="contacts">
                 <div styleName="contacts-item">
                   <div styleName="icon-wrapper">
-                    <InlineSVG styleName="icon" src={require("./slack.svg")} />
                   </div>
                   Slack
-                </div>
-                <div styleName="contacts-item">
-                  <div styleName="icon-wrapper">
-                    <InlineSVG styleName="icon" src={require("./github.svg")} />
-                  </div>
-                  Github
-                </div>
-                <div styleName="contacts-item">
-                  <div styleName="icon-wrapper">
-                    <InlineSVG styleName="icon icon-bucket" src={require("./bitbucket.svg")} />
-                  </div>
-                  Bitbucket
                 </div>
               </div>
             </div>

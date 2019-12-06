@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 import {browserHistory} from 'react-router';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {URL_USERSPACE, URL_SIGN} from 'ducks/nav';
 
 import styles from './EmailVerify.sss';
+
+import ImageChiselLogo from 'assets/images/chisel-logo.png';
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -30,7 +32,7 @@ export class EmailVerify extends Component  {
           <title>Verifying email - Chisel</title>
         </Helmet>
         <div styleName="logo">
-          <img src={require("assets/images/chisel-logo.png")} />
+          <img src={ImageChiselLogo} />
         </div>
         <div styleName="title">Your email was verified successfully.</div>
         <form styleName="form" onSubmit={this.onLogin}>

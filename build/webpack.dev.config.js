@@ -1,22 +1,18 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 const baseWebpackConfig = require('./webpack.base.config');
 
 
+process.env.NODE_ENV = 'development';
+
 module.exports = merge(baseWebpackConfig, {
   mode: 'development',
   devtool: 'source-map',
-  entry: ['webpack-hot-middleware/client?reload=true'],
   output: {
     publicPath: '/'
   },
   plugins: [
-    new LodashModuleReplacementPlugin({
-      'collections': true,
-      'shorthands': true
-    }),
     new webpack.HotModuleReplacementPlugin()
   ],
   module: {
@@ -25,7 +21,12 @@ module.exports = merge(baseWebpackConfig, {
         test: /\.css$|\.global\.sss$/,
         use: [
           'style-loader',
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1
+            }
+          },
           'postcss-loader'
         ]
       },
@@ -36,8 +37,9 @@ module.exports = merge(baseWebpackConfig, {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
-              localIdentName: "[name]---[local]---[hash:base64:5]",
+              modules: {
+                localIdentName: "[name]---[local]---[hash:base64:5]",
+              },
               importLoaders: 1
             }
           },

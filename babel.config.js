@@ -4,7 +4,11 @@ module.exports = {
       "@babel/preset-env",
       {
         modules: false,
-        useBuiltIns: "entry"
+        useBuiltIns: "usage",
+        corejs: {
+          version: '3.3',
+          proposals: true
+        }
       }
     ],
     "@babel/preset-react"
@@ -21,10 +25,8 @@ module.exports = {
     "@babel/plugin-proposal-numeric-separator",
     "@babel/plugin-proposal-throw-expressions",
 
-    "@babel/plugin-transform-runtime",
-    "@babel/plugin-transform-regenerator",
+    ["@babel/plugin-transform-runtime", {useESModules: true}],
 
-    "babel-plugin-lodash",
     "react-hot-loader/babel"
   ]
 };

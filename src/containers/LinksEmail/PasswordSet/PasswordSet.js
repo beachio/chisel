@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {config} from 'utils/initialize';
@@ -10,6 +10,8 @@ import {login} from 'ducks/user';
 import {parseURLParams, URLEncode} from 'utils/common';
 
 import styles from './PasswordSet.sss';
+
+import ImageChiselLogo from 'assets/images/chisel-logo.png';
 
 
 const MODE_SETUP  = 'MODE_SETUP';
@@ -152,7 +154,7 @@ export class PasswordSet extends Component  {
           <title>Changing password - Chisel</title>
         </Helmet>
         <div styleName="logo">
-          <img src={require("assets/images/chisel-logo.png")} />
+          <img src={ImageChiselLogo} />
         </div>
         <div styleName="title">{title}</div>
         {content}

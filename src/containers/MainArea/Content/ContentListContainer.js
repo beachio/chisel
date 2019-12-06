@@ -2,13 +2,15 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 import InlineSVG from 'svg-inline-react';
 
 import ContentList from 'components/mainArea/content/ContentList/ContentList';
 import {ROLE_OWNER, ROLE_ADMIN, ROLE_DEVELOPER} from 'models/UserData';
 import {addItem, deleteItem, filterModel, filterStatus} from 'ducks/content';
 import {showAlert, URL_CONTENT, URL_ITEM, URL_USERSPACE, URL_SITE} from 'ducks/nav';
+
+import ImageHammer from 'assets/images/hammer.svg';
 
 
 export class ContentListContainer extends Component {
@@ -19,7 +21,7 @@ export class ContentListContainer extends Component {
     
     let cmpContent = (
       <div key="content" className="start-working">
-        <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
+        <InlineSVG className="hammer" src={ImageHammer}/>
         There are no models.
       </div>
     );
@@ -40,7 +42,7 @@ export class ContentListContainer extends Component {
       if (!items.length && models.role == ROLE_DEVELOPER) {
         cmpContent = (
           <div key="content" className="start-working">
-            <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
+            <InlineSVG className="hammer" src={ImageHammer}/>
             There are no items.
           </div>
         );
@@ -71,7 +73,7 @@ export class ContentListContainer extends Component {
     } else if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN) {
       cmpContent = (
         <div key="content" className="start-working">
-          <InlineSVG className="hammer" src={require("assets/images/hammer.svg")}/>
+          <InlineSVG className="hammer" src={ImageHammer}/>
           There are no models. Add any model to start creating content.
         </div>
       );

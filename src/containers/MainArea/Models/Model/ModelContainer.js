@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 
 import Model from 'components/mainArea/models/Model/Model';
 import {setCurrentModel, updateModel, updateField, deleteField} from 'ducks/models';

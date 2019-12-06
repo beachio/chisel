@@ -326,3 +326,9 @@ export function addElectronContextMenu(elm, readOnly) {
     contextMenu.popup({window: remote.getCurrentWindow()})
   }, false);
 }
+
+
+let id = 0;
+export function getUniqueId() {
+  return id++;
+}

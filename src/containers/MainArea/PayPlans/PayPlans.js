@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 import CSSModules from 'react-css-modules';
 import {browserHistory} from "react-router";
 import {Parse} from "parse";
 
 import {send} from "utils/server";
 import ContainerComponent from "components/elements/ContainerComponent/ContainerComponent";
-import {changePayPlan, checkPayPlan} from "ducks/user";
-import {URL_PAYMENT_METHODS, URL_USERSPACE, showAlert} from "ducks/nav";
+import {checkPayPlan} from "ducks/user";
+import {URL_PAYMENT_METHODS, URL_USERSPACE, showAlert, returnHome} from "ducks/nav";
 import {updateSubscription} from 'ducks/pay';
 import {ALERT_TYPE_ALERT, ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 
@@ -81,7 +81,7 @@ export class PayPlans extends Component {
       browserHistory.push(URL);
     
     } else {
-      const {showAlert} = this.props.navActions;
+      const {showAlert, returnHome} = this.props.navActions;
       
       let description = `You are going to upgrade your payment plan. Are you sure?`;
       if (payPlanUser.greaterThan(payPlan)) {
@@ -124,7 +124,7 @@ export class PayPlans extends Component {
             type: ALERT_TYPE_ALERT,
             title: "Payment complete",
             description: `You are successfully change your subscription to ${payPlan.name}.`,
-            callback: () => browserHistory.push(`/${URL_USERSPACE}`)
+            callback: returnHome
           });
         }
       });
@@ -191,9 +191,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    navActions: bindActionCreators({showAlert}, dispatch),
+    navActions: bindActionCreators({showAlert, returnHome}, dispatch),
     payActions: bindActionCreators({updateSubscription}, dispatch),
-    userActions: bindActionCreators({changePayPlan, checkPayPlan}, dispatch)
+    userActions: bindActionCreators({checkPayPlan}, dispatch)
   };
 }
 

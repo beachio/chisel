@@ -14,7 +14,14 @@ function createSelectorWindow(onStart = false) {
   if (onStart)
     additionalArguments.push('--chisel-on-start');
 
-  selectorWindow = new BrowserWindow({width: 960, height: 760, webPreferences: {additionalArguments}});
+  selectorWindow = new BrowserWindow({
+    width: 960,
+    height: 760,
+    webPreferences: {
+      additionalArguments,
+      nodeIntegration: true
+    }
+  });
   selectorWindow.loadURL(isDev ? 'http://localhost:9900' : `file://${path.join(__dirname, '../server-selector/index.html')}`);
   selectorWindow.on('closed', () => selectorWindow = null);
 }
@@ -122,7 +129,7 @@ function constructMenu() {
 
   switch (process.platform) {
     case 'darwin':
-      const name = app.getName();
+      const name = app.name;
       menuTemplate.unshift({
         label: name,
         submenu: [
@@ -187,9 +194,14 @@ ipcMain.on('server-select--dialog-on-remove', event => {
 });
 
 ipcMain.on('server-select--select', (event, server) => {
-  const window = new BrowserWindow({width: 1280, height: 800, webPreferences: {
-      additionalArguments: ['--chisel-server=' + JSON.stringify(server)]
-    }});
+  const window = new BrowserWindow({
+    width: 1280,
+    height: 800,
+    webPreferences: {
+      additionalArguments: ['--chisel-server=' + JSON.stringify(server)],
+      nodeIntegration: true
+    }
+  });
   window.loadURL(isDev ? 'http://localhost:9000' : `file://${path.join(__dirname, '../dist/index.html')}`);
 
   selectorWindow.close();
