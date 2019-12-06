@@ -9,7 +9,7 @@ import {URL_USERSPACE, URL_PROFILE} from 'ducks/nav';
 import styles from './User.sss';
 
 import ImageArrowDown from "./arrow-down.svg";
-import ImageAvatar from "./avatar.png";
+import ImageAvatar from "./avatar.svg";
 import ImageLogout from "./logout.svg";
 
 
@@ -38,11 +38,9 @@ export default class User extends Component {
 
     return (
       <div styleName="wrapper" onBlur={this.closeAccountMenu} tabIndex="0">
-        <div styleName={`user ${this.state.isAccountOpened ? 'user-active' : ''}`} onClick={this.toggleAccountMenu}>
+        <div styleName={`user ${this.state.isAccountOpened ? 'userActive' : ''}`} onClick={this.toggleAccountMenu}>
           <div styleName="profile">
             <div styleName="avatar-name">{name}</div>
-
-            
               <div styleName="avatar">
                 <Gravatar protocol="https://" email={userData.email} styleName="gravatar"/>
               </div>
@@ -56,7 +54,7 @@ export default class User extends Component {
         {this.state.isAccountOpened &&
           <div styleName="submenu">
             <Link
-                activeClassName={styles.activeBla}
+                activeClassName={styles.userActive}
                 to={`/${URL_USERSPACE}/${URL_PROFILE}/`}
               >
               <div styleName="logout">
