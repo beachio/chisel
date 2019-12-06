@@ -151,6 +151,7 @@ class _PayCardElement extends Component {
         color: '#313133',
         fontFamily: "Source Code Pro, monospace",
         '::placeholder': {
+          fontFamily: "Open Sans, sans-serif",
           color: '#999999',
         }
       },
@@ -469,7 +470,7 @@ class PaymentMethods extends Component {
     if (!this.state.method)
       newMethodStyle += " method-checked";
     
-    let setAsDefaultElm = <div>This is default method.</div>;
+    let setAsDefaultElm = <div>This is a default method.</div>;
     if (this.state.method && this.state.method.id != defaultMethod) {
       if (this.payPlan) {
         setAsDefaultElm = (
@@ -482,7 +483,7 @@ class PaymentMethods extends Component {
         setAsDefaultElm = (
           <div styleName="button-wrapper">
             <ButtonControl onClick={this.onSetDefaultMethod}
-                           value="Set Method as Default"/>
+                           value="Set this method as default"/>
           </div>
         );
       }
@@ -544,7 +545,7 @@ class PaymentMethods extends Component {
                 
                 <div styleName="button-wrapper">
                   <ButtonControl onClick={this.onRemoveMethod}
-                                 value="Remove method" />
+                                 value="Remove this method" />
                 </div>
                 {!!this.payPlan &&
                   <div styleName="button-wrapper">
