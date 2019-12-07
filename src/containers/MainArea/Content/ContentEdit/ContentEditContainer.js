@@ -75,12 +75,11 @@ export class ContentEditContainer extends Component {
     const itemTitle = item.title ? item.title : 'Untitled';
     const title = `Item: ${itemTitle} - Site: ${site.name} - Chisel`;
     
-    return [
-      <Helmet key="helmet">
+    return <>
+      <Helmet>
         <title>{title}</title>
-      </Helmet>,
-      <ContentEdit key="content"
-                   item={item}
+      </Helmet>
+      <ContentEdit item={item}
                    onClose={closeItem}
                    gotoItem={gotoItem}
                    addItem={addItem}
@@ -97,7 +96,7 @@ export class ContentEditContainer extends Component {
                    showAlert={showAlert}
                    showModal={showModal}
                    isEditable={models.role != ROLE_DEVELOPER} />
-    ];
+    </>;
   }
 }
 

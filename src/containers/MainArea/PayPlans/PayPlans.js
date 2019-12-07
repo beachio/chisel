@@ -137,13 +137,12 @@ export class PayPlans extends Component {
 
     const cancelSub = stripeData.subscription ? stripeData.subscription.cancel_at_period_end : false;
     
-    return [
-      <Helmet key="helmet">
+    return <>
+      <Helmet>
         <title>Billing - Chisel</title>
-      </Helmet>,
+      </Helmet>
     
-      <ContainerComponent key="content"
-                          title="Billing"
+      <ContainerComponent title="Billing"
                           showLoader={this.state.pending} >
         <div styleName="content">
           <div styleName="head">
@@ -177,7 +176,7 @@ export class PayPlans extends Component {
         </div>
         
       </ContainerComponent>
-    ];
+    </>;
   }
 }
 

@@ -20,7 +20,7 @@ export class ContentListContainer extends Component {
     const {showAlert} = this.props.navActions;
     
     let cmpContent = (
-      <div key="content" className="start-working">
+      <div className="start-working">
         <InlineSVG className="hammer" src={ImageHammer}/>
         There are no models.
       </div>
@@ -41,7 +41,7 @@ export class ContentListContainer extends Component {
 
       if (!items.length && models.role == ROLE_DEVELOPER) {
         cmpContent = (
-          <div key="content" className="start-working">
+          <div className="start-working">
             <InlineSVG className="hammer" src={ImageHammer}/>
             There are no items.
           </div>
@@ -55,8 +55,7 @@ export class ContentListContainer extends Component {
             `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_CONTENT}/${URL_ITEM}${modelId}~${itemId}`);
         };
 
-        cmpContent = <ContentList key="content"
-                                  items={items}
+        cmpContent = <ContentList items={items}
                                   models={site.models}
                                   gotoItem={gotoItem}
                                   addItem={addItem}
@@ -72,19 +71,19 @@ export class ContentListContainer extends Component {
 
     } else if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN) {
       cmpContent = (
-        <div key="content" className="start-working">
+        <div className="start-working">
           <InlineSVG className="hammer" src={ImageHammer}/>
           There are no models. Add any model to start creating content.
         </div>
       );
     }
     
-    return [
-      <Helmet key="helmet">
+    return <>
+      <Helmet>
         <title>{title}</title>
-      </Helmet>,
-      cmpContent
-    ];
+      </Helmet>
+      {cmpContent}
+    </>;
   }
 }
 

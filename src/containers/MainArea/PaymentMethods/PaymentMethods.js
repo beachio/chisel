@@ -479,13 +479,12 @@ class PaymentMethods extends Component {
       }
     }
     
-    return [
-      <Helmet key="helmet">
+    return <>
+      <Helmet>
         <title>Payment methods - Chisel</title>
-      </Helmet>,
+      </Helmet>
     
-      <ContainerComponent key="content"
-                          title="Payment methods"
+      <ContainerComponent title="Payment methods"
                           showLoader={this.state.pending} >
         <div styleName="content">
           <div styleName="side">
@@ -560,7 +559,7 @@ class PaymentMethods extends Component {
           </div>
         </div>
       </ContainerComponent>
-    ];
+    </>;
   }
 }
 

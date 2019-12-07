@@ -18,7 +18,7 @@ export class ModelsListContainer extends Component {
     const {showAlert} = this.props.navActions;
     
     let title = `Chisel`;
-    let content = <NoRights key="content" />;
+    let content = <NoRights />;
 
     const site = models.currentSite;
     if (site && (models.role == ROLE_ADMIN || models.role == ROLE_OWNER)) {
@@ -26,8 +26,7 @@ export class ModelsListContainer extends Component {
       const gotoModel = model => browserHistory.push(
         `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}/${URL_MODEL}${model.nameId}`);
       content = (
-        <ModelsList key="content"
-                    site={site}
+        <ModelsList site={site}
                     gotoModel={gotoModel}
                     addModel={addModel}
                     deleteModel={deleteModel}
@@ -37,12 +36,12 @@ export class ModelsListContainer extends Component {
       );
     }
     
-    return [
-      <Helmet key="helmet">
+    return <>
+      <Helmet>
         <title>{title}</title>
-      </Helmet>,
-      content
-    ];
+      </Helmet>
+      {content}
+    </>;
   }
 }
 

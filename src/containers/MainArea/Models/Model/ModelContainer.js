@@ -43,7 +43,7 @@ export class ModelContainer extends Component  {
     const {showAlert, showModal} = this.props.navActions;
     
     let title = `Chisel`;
-    let content = <NoRights key="content" />;
+    let content = <NoRights />;
 
     const site = models.currentSite;
     const model = this.model;
@@ -55,8 +55,7 @@ export class ModelContainer extends Component  {
         `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}`);
 
       content = (
-        <Model key="content"
-               model={model}
+        <Model model={model}
                onClose={closeModel}
                updateModel={updateModel}
                updateField={updateField}
@@ -69,12 +68,12 @@ export class ModelContainer extends Component  {
       );
     }
     
-    return [
-      <Helmet key="helmet">
+    return <>
+      <Helmet>
         <title>{title}</title>
-      </Helmet>,
-      content
-    ];
+      </Helmet>
+      {content}
+    </>;
   }
 }
 

@@ -28,7 +28,7 @@ export class APIPageContainer extends Component  {
     const {models} = this.props;
 
     let title = `Chisel`;
-    let content = <NoRights key="content" />;
+    let content = <NoRights />;
 
     const curSite = models.currentSite;
     if (curSite) {
@@ -36,15 +36,15 @@ export class APIPageContainer extends Component  {
 
       const role = models.role;
       if (role != ROLE_EDITOR)
-        content = <APIPage key="content" />;
+        content = <APIPage />;
     }
 
-    return [
-      <Helmet key="helmet">
+    return <>
+      <Helmet>
         <title>{title}</title>
-      </Helmet>,
-      content
-    ];
+      </Helmet>
+      {content}
+    </>;
   }
 }
 
