@@ -1,6 +1,6 @@
 {
   "name": "chisel-cms",
-  "version": "0.12.3",
+  "version": "0.12.4",
   "description": "API-first headless CMS running on Parse Server",
   "author": "Beach.io <beach.io>",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "start": "node build/server.js",
     "bundle": "rimraf dist && webpack --config build/webpack.dev-build.config.js",
     "build": "node build/build.js",
-    "build-electron": "ELECTRON=true node build/build.js",
+    "build-electron": "ELECTRON=true node build/build.js && npm run electron-pack",
     "localrun": "node build/local.run.js",
     "start-electron-server-selector": "node electron/server-selector/server.js",
     "build-electron-server-selector": "node electron/server-selector/build.js",
