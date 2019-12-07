@@ -176,7 +176,7 @@ export default class App extends Component {
         return;
 
       this.servers.splice(this.servers.indexOf(this.state.server), 1);
-      localStorage.setItem(LOCAL_STORAGE_KEY, this.servers);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.servers));
       this.onServerClick(this.servers[0]);
     });
   };
