@@ -1,4 +1,5 @@
 import {browserHistory} from "react-router";
+import {LOCATION_CHANGE} from 'react-router-redux';
 
 
 import {LOGOUT} from 'ducks/user';
@@ -222,6 +223,13 @@ export default function navReducer(state = initialState, action) {
         modalShowing: true,
         modalType: action.modalType,
         modalParams: action.params
+      };
+
+    case LOCATION_CHANGE:
+      return {
+        ...state,
+        alertShowing: false,
+        modalShowing: false
       };
 
     case CLOSE_MODAL:
