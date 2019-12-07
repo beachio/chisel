@@ -7,4 +7,4 @@ npm-debug.log
 *.zip
 dist/
 electron-build
-electron/build
+electron/bin

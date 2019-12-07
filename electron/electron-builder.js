@@ -2,7 +2,11 @@ module.exports = {
   appId: "com.beachio.chisel-cms",
   productName: "Chisel CMS",
   files: [
-    "dist/**/*",
+    "package.json",
+    {
+      from: "electron/dist",
+      to: "dist"
+    },
     "electron/electron.js",
     {
       from: "electron/server-selector/build",
@@ -12,7 +16,7 @@ module.exports = {
     "node_modules/electron-is-dev/**/*"
   ],
   directories: {
-    output: 'electron/build',
+    output: 'electron/bin',
     buildResources: 'electron/build-resources'
   },
   extraMetadata: {

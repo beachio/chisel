@@ -19,9 +19,6 @@ module.exports = merge(baseWebpackConfig, {
       modules: false
     })*/
   ],
-  output: {
-    publicPath: './'
-  },
   module: {
     rules: [
       {

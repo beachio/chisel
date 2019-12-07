@@ -351,63 +351,63 @@ template {
 
 @font-face {
   font-family: 'Open Sans';
-  src: url(./assets/fonts/OpenSans-Light-webfont.2f76324.ttf);
+  src: url(/assets/fonts/OpenSans-Light-webfont.2f76324.ttf);
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Open Sans';
-  src: url(./assets/fonts/OpenSans-Regular-webfont.474eca2.ttf);
+  src: url(/assets/fonts/OpenSans-Regular-webfont.474eca2.ttf);
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Open Sans';
-  src: url(./assets/fonts/OpenSans-Regular-webfont.474eca2.ttf);
+  src: url(/assets/fonts/OpenSans-Regular-webfont.474eca2.ttf);
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Open Sans';
-  src: url(./assets/fonts/OpenSans-Semibold-webfont.8b8308c.ttf);
+  src: url(/assets/fonts/OpenSans-Semibold-webfont.8b8308c.ttf);
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Open Sans';
-  src: url(./assets/fonts/OpenSans-Bold-webfont.c060558.ttf);
+  src: url(/assets/fonts/OpenSans-Bold-webfont.c060558.ttf);
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Inter-UI';
-  src: url(./assets/fonts/Inter-UI-Regular.eb136d4.ttf);
+  src: url(/assets/fonts/Inter-UI-Regular.eb136d4.ttf);
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Inter-UI';
-  src: url(./assets/fonts/Inter-UI-Medium.07574ef.ttf);
+  src: url(/assets/fonts/Inter-UI-Medium.07574ef.ttf);
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Inter-UI';
-  src: url(./assets/fonts/Inter-UI-SemiBold.5b46217.ttf);
+  src: url(/assets/fonts/Inter-UI-SemiBold.5b46217.ttf);
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Inter-UI';
-  src: url(./assets/fonts/Inter-UI-Bold.2936b39.ttf);
+  src: url(/assets/fonts/Inter-UI-Bold.2936b39.ttf);
   font-weight: 700;
   font-style: normal;
 }
