@@ -179,6 +179,7 @@ export default class Settings extends Component {
             Upload Site Icon
             <input styleName="icon-hidden"
                    type="file"
+                   accept="image/jpeg,image/png,image/gif"
                    disabled={!isEditable}
                    onChange={this.onChangeIcon} />
           </div>
