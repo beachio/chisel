@@ -5,6 +5,4 @@ npm-debug.log
 .idea
 .vscode
 *.zip
-dist/
-electron-build
 electron/bin
