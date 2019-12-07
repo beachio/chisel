@@ -22,7 +22,6 @@
   ],
   "scripts": {
     "start": "node build/server.js",
-    "start-electron": "RUN_ELECTRON=true BROWSER=none node build/server.js",
     "bundle": "rimraf dist && webpack --config build/webpack.dev-build.config.js",
     "build": "node build/build.js",
     "build-electron": "ELECTRON=true node build/build.js",
@@ -30,7 +29,7 @@
     "start-electron-server-selector": "node electron/server-selector/server.js",
     "build-electron-server-selector": "node electron/server-selector/build.js",
     "start-electron-only": "electron .",
-    "electron-pack": "electron-builder -c electron/electron-builder.js"
+    "electron-pack": "electron-builder -c electron/electron-builder.js --win --mac --linux"
   },
   "bin": {
     "chisel-cms": "./bin/chisel-cms"
