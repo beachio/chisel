@@ -11,7 +11,7 @@ import ContainerComponent from 'components/elements/ContainerComponent/Container
 import {update, updateEmail, updatePassword, resendVerEmail, ERROR_USER_EXISTS, ERROR_OTHER} from 'ducks/user';
 import {URL_PAY_PLANS, URL_USERSPACE, URL_PAYMENT_METHODS} from "ducks/nav";
 import {config, changeServerURL} from 'utils/initialize';
-import {checkURL, checkEmail, getTextDate} from 'utils/common';
+import {checkURL, checkEmail, getTextDate} from 'utils/strings';
 import {checkPassword} from 'utils/data';
 
 import styles from './UserProfile.sss';

@@ -2,7 +2,7 @@ import {Parse} from 'parse';
 
 import {store} from 'index';
 import {UserData} from 'models/UserData';
-import {removeOddSpaces, filterSpecials, checkURL} from 'utils/common';
+import {removeOddSpaces, filterSpecials, checkURL} from 'utils/strings';
 import {ROLE_OWNER} from 'models/UserData';
 import {send} from 'utils/server';
 

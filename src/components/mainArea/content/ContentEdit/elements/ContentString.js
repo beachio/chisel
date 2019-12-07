@@ -12,7 +12,8 @@ import DynamicListComponent from 'components/elements/DynamicListComponent/Dynam
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import MarkdownEditor from 'components/elements/MarkdownEditor/MarkdownEditor';
 import {MODAL_TYPE_WYSIWYG, MODAL_TYPE_MARKDOWN} from 'ducks/nav';
-import {filterSpecialsAndCapital, checkURL, addElectronContextMenu} from 'utils/common';
+import {addElectronContextMenu} from 'utils/common';
+import {filterSpecialsAndCapital, checkURL} from 'utils/strings';
 
 import * as ftps from 'models/ModelData';
 

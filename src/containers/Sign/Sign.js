@@ -9,7 +9,7 @@ import CheckboxControl from 'components/elements/CheckboxControl/CheckboxControl
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {login, register, restorePassword, resendVerEmail, resetStatus,
   ERROR_USER_EXISTS, ERROR_WRONG_PASS, ERROR_UNVERIF, ERROR_OTHER, OK} from 'ducks/user';
-import {parseURLParams} from 'utils/common';
+import {parseURLParams} from 'utils/strings';
 
 import styles from './Sign.sss';
 

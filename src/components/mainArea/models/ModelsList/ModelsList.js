@@ -4,7 +4,7 @@ import InlineSVG from 'svg-inline-react';
 import FlipMove from 'react-flip-move';
 
 import {checkModelName, getAlertForNameError, getContentForModel} from 'utils/data';
-import {getRelativeTime} from 'utils/common';
+import {getRelativeTime} from 'utils/strings';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
 import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';

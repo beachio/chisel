@@ -5,7 +5,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import InputControl from 'components/elements/InputControl/InputControl';
 import {SiteData} from 'models/ModelData';
 import {checkSiteName, NAME_ERROR_NAME_EXIST} from "utils/data";
-import {removeOddSpaces} from "utils/common";
+import {removeOddSpaces} from "utils/strings";
 
 import styles from './SiteCreationModal.sss';
 

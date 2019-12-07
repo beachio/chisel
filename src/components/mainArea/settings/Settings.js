@@ -7,7 +7,7 @@ import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {checkSiteName, checkSiteDomain, DOMAIN_ERROR_EXIST, DOMAIN_ERROR_SYNTAX} from 'utils/data';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
-import {filterSpecials, checkURL} from 'utils/common';
+import {filterSpecials, checkURL} from 'utils/strings';
 
 
 import styles from './Settings.sss';

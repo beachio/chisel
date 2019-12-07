@@ -12,7 +12,8 @@ import ValidationString from 'components/modals/FieldModal/Validations/Validatio
 import ValidationDate from 'components/modals/FieldModal/Validations/ValidationDate';
 import ValidationReference from 'components/modals/FieldModal/Validations/ValidationReference';
 import ValidationMedia from "components/modals/FieldModal/Validations/ValidationMedia";
-import {BYTES, convertDataUnits, removeOddSpaces, throttle} from "utils/common";
+import {BYTES, convertDataUnits, throttle} from "utils/common";
+import {removeOddSpaces} from "utils/strings";
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST} from 'utils/data';
 
 import {FIELD_TYPES, canBeList, canBeTitle, canBeUnique} from 'models/ModelData';

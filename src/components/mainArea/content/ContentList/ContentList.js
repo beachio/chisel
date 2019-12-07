@@ -8,7 +8,7 @@ import DropdownControl from 'components/elements/DropdownControl/DropdownControl
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
 import {getModelByName, checkUniqueFieldValue} from 'utils/data';
-import {getRelativeTime} from 'utils/common';
+import {getRelativeTime} from 'utils/strings';
 import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
 
 import styles from './ContentList.sss';

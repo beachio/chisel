@@ -3,7 +3,7 @@ import CSSModules from 'react-css-modules';
 
 const {ipcRenderer} = window.require("electron");
 
-import {checkURL} from 'utils/common';
+import {checkURL} from 'utils/strings';
 
 import ButtonControl from "components/elements/ButtonControl/ButtonControl";
 import IconsComponent from 'components/elements/IconsComponent/IconsComponent';

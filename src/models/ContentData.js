@@ -1,6 +1,6 @@
 import {Parse} from 'parse';
 
-import {removeOddSpaces, filterSpecialsAndCapital} from 'utils/common';
+import {removeOddSpaces, filterSpecialsAndCapital} from 'utils/strings';
 import {getMediaByO, getContentByO} from 'utils/data';
 import {FIELD_APPEARANCE__SHORT_TEXT__SLUG, FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCE} from 'models/ModelData';
 

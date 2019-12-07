@@ -6,7 +6,7 @@ import {Parse} from 'parse';
 import FlipMove from 'react-flip-move';
 
 import {getUser, checkCollaboration, COLLAB_CORRECT, COLLAB_ERROR_EXIST, COLLAB_ERROR_SELF} from 'utils/data';
-import {checkEmail} from 'utils/common';
+import {checkEmail} from 'utils/strings';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';

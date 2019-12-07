@@ -7,7 +7,7 @@ import {Helmet} from "react-helmet-async";
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {config} from 'utils/initialize';
 import {login} from 'ducks/user';
-import {parseURLParams, URLEncode} from 'utils/common';
+import {parseURLParams, URLEncode} from 'utils/strings';
 
 import styles from './PasswordSet.sss';
 

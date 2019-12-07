@@ -5,7 +5,8 @@ import {send, getAllObjects} from 'utils/server';
 import {LOGOUT} from 'ducks/user';
 import {UserData, CollaborationData, ROLE_OWNER} from 'models/UserData';
 import {canBeTitle, FIELD_NAMES_RESERVED, ModelData, ModelFieldData, SiteData, TemplateData} from 'models/ModelData';
-import {filterSpecials, getRandomColor} from 'utils/common';
+import {getRandomColor} from 'utils/common';
+import {filterSpecials} from 'utils/strings';
 import {getNameId, getRole} from 'utils/data';
 
 

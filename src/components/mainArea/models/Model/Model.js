@@ -8,7 +8,7 @@ import ContainerComponent from 'components/elements/ContainerComponent/Container
 import InputControl from 'components/elements/InputControl/InputControl';
 import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
 import JSONView from 'components/elements/JSONView/JSONView';
-import {removeOddSpaces} from 'utils/common';
+import {removeOddSpaces} from 'utils/strings';
 import {getNameId, checkModelName, checkFieldName, getAlertForNameError, getContentForModel, NAME_ERROR_OTHER} from 'utils/data';
 import {MODAL_TYPE_FIELD} from 'ducks/nav';
 import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';

@@ -1,6 +1,6 @@
 import {Parse} from 'parse';
 
-import {removeOddSpaces, filterSpecials} from 'utils/common';
+import {removeOddSpaces, filterSpecials} from 'utils/strings';
 
 
 export class TemplateData {
