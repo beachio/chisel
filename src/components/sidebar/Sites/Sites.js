@@ -9,7 +9,7 @@ import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from "components/modals/AlertModal
 import styles from './Sites.sss';
 
 import ImageHammer from 'assets/images/hammer.svg';
-import ImageLink from 'assets/images/link.svg';
+import ImageIconLink from 'assets/images/icons/link.svg';
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -96,11 +96,11 @@ export default class Sites extends Component {
                   <a href={site.domain}
                      target="_blank"
                      styleName="link">
-                    <InlineSVG src={ImageLink}/>
+                    <InlineSVG src={ImageIconLink}/>
                   </a>
                 :
                   <div styleName="link-disabled">
-                    <InlineSVG src={ImageLink}/>
+                    <InlineSVG src={ImageIconLink}/>
                   </div>
                 }
               </div>

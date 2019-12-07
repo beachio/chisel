@@ -11,7 +11,7 @@ import {toggleSidebar} from 'ducks/nav';
 
 import styles from './Header.sss';
 
-import ImageSidebar from 'assets/images/sidebar.svg';
+import ImageIconSidebar from 'assets/images/icons/sidebar.svg';
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -27,7 +27,7 @@ export class Header extends Component  {
     return (
       <div styleName="header">
         <div styleName="sidebar-icon" onClick={toggleSidebar}>
-          <InlineSVG src={ImageSidebar} />
+          <InlineSVG src={ImageIconSidebar} />
         </div>
         <Menu siteNameId={nameId}
               isSidebarOpened={nav.isSidebarVisible}

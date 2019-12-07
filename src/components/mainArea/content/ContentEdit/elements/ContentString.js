@@ -19,7 +19,7 @@ import * as ftps from 'models/ModelData';
 
 import styles from '../ContentEdit.sss';
 
-import ImageLink from 'assets/images/link.svg';
+import ImageIconLink from 'assets/images/icons/link.svg';
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -204,7 +204,7 @@ export default class ContentString extends ContentBase {
           <div styleName="field-title">
             {this.field.name}
             <div styleName="link" onClick={this.onShowWysiwygModal}>
-              <InlineSVG styleName="link-icon" src={ImageLink}/>
+              <InlineSVG styleName="link-icon" src={ImageIconLink}/>
             </div>
           </div>
         );
@@ -214,7 +214,7 @@ export default class ContentString extends ContentBase {
           <div styleName="field-title">
             {this.field.name}
             <div styleName="link" onClick={this.onShowMarkdownModal}>
-              <InlineSVG styleName="link-icon" src={ImageLink}/>
+              <InlineSVG styleName="link-icon" src={ImageIconLink}/>
             </div>
           </div>
         );

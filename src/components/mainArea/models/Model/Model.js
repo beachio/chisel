@@ -16,7 +16,7 @@ import {ModelFieldData} from 'models/ModelData';
 
 import styles from './Model.sss';
 
-import ImageIconDelete from 'assets/images/icon-delete.svg';
+import ImageIconDelete from 'assets/images/icons/delete.svg';
 
 
 const DragHandle = SortableHandle(({color}) =>

@@ -15,8 +15,8 @@ import styles from './ContentList.sss';
 
 import ImageEye from './eye.png';
 import ImageEyeGray from './eye-gray.png';
-import ImageIconEdit from 'assets/images/icon-edit.svg';
-import ImageIconDelete from 'assets/images/icon-delete.svg';
+import ImageIconEdit from 'assets/images/icons/edit.svg';
+import ImageIconDelete from 'assets/images/icons/delete.svg';
 
 
 const allStatuses = [STATUS_DRAFT, STATUS_PUBLISHED, STATUS_UPDATED, STATUS_ARCHIVED];

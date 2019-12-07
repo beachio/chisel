@@ -11,7 +11,7 @@ import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from 'components/modals/AlertModal
 
 import styles from './ModelsList.sss';
 
-import ImageIconDelete from 'assets/images/icon-delete.svg';
+import ImageIconDelete from 'assets/images/icons/delete.svg';
 
 
 @CSSModules(styles, {allowMultiple: true})

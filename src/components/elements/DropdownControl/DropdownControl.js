@@ -7,7 +7,7 @@ import InputControl from 'components/elements/InputControl/InputControl';
 
 import styles from './DropdownControl.sss';
 
-import ImageIconTriangularArrow from 'assets/images/icon-triangular-arrow.svg';
+import ImageArrowDownFull from 'assets/images/arrow-down-full.svg';
 import ImageArrows from 'assets/images/arrows.svg';
 
 
@@ -102,7 +102,7 @@ export default class DropdownControl extends Component {
       'arrow-rotated': this.state.listVis
     });
 
-    let icon = <InlineSVG styleName={arrowClasses} src={ImageIconTriangularArrow} />;
+    let icon = <InlineSVG styleName={arrowClasses} src={ImageArrowDownFull} />;
     if (type === 'big')
       icon = <InlineSVG styleName="arrows" src={ImageArrows} />;
 

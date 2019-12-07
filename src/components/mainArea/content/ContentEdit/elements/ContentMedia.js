@@ -15,7 +15,7 @@ import InputControl from "components/elements/InputControl/InputControl";
 
 import styles from '../ContentEdit.sss';
 
-import ImageIconDelete from 'assets/images/icon-delete.svg';
+import ImageIconDelete from 'assets/images/icons/delete.svg';
 
 
 const AUTOSAVE_TIMEOUT = 2000;
