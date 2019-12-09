@@ -4,65 +4,50 @@ import InputControl from "components/elements/InputControl/InputControl";
 
 
 export default class InputNumberControl extends Component {
-  state = {value: '0'};
-  valueParsed = 0;
-  parseFunc;
-  min;
-  max;
-  
-  
-  constructor(props) {
-    super(props);
-  
-    this.parseFunc = props.isInt ? parseInt : parseFloat;
-    this.min = props.min;
-    this.max = props.max;
-    
-    this.state.value = props.value;
-    this.valueParsed = this.parseValue(props.value);
+  state = {
+    value: this.props.value,
+    valueParsed: InputNumberControl.parseValue(this.props.value, this.props)
+  };
+
+
+  static getDerivedStateFromProps(props, state) {
+    const valueParsed = InputNumberControl.parseValue(props.value, props);
+    if (valueParsed === state.valueParsed)
+      return null;
+    return {value: valueParsed, valueParsed};
   }
   
-  componentWillReceiveProps(nextProps) {
-    const {value, min, max} = nextProps;
-  
-    this.min = min;
-    this.max = max;
-    
-    const valueParsed = this.parseValue(value);
-    if (valueParsed === this.valueParsed)
-      return;
-    this.valueParsed = valueParsed;
-    this.setState({value: valueParsed});
-  }
-  
-  parseValue(value) {
-    let num = this.parseFunc(value);
+  static parseValue(value, props) {
+    const {min, max, isInt} = props;
+
+    const parseFunc = isInt ? parseInt : parseFloat;
+    let num = parseFunc(value);
     if (isNaN(num))
       return undefined;
   
-    if (this.min !== undefined && this.min !== null && num < this.min)
-      num = this.min;
-    if (this.max !== undefined && this.max !== null && num > this.max)
-      num = this.max;
+    if (min !== undefined && min !== null && num < min)
+      num = min;
+    if (max !== undefined && max !== null && num > max)
+      num = max;
     
     return num;
   }
   
   onChange = value => {
-    value = value.replace(/[^\d\.,]/g, '');
+    value = value.replace(/[^\d.,]/g, '');
     value = value.replace(/,/g, '.');
     this.setState({value});
-    
-    const valueParsed = this.parseValue(value);
-    if (valueParsed === this.valueParsed)
+
+    const valueParsed = InputNumberControl.parseValue(value, this.props);
+    if (valueParsed === this.state.valueParsed)
       return;
-    this.valueParsed = valueParsed;
-  
+    this.setState({valueParsed});
+
     this.props.onChange(valueParsed);
   };
   
   onBlur = () => {
-    this.setState({value: this.valueParsed});
+    this.setState({value: this.state.valueParsed});
   };
   
   render() {

@@ -21,9 +21,9 @@ export class ContentEditContainer extends Component {
     this.setItem(props.params.item);
   }
   
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.params.item != this.props.params.item)
-      this.setItem(nextProps.params.item);
+  componentDidUpdate(prevProps) {
+    if (prevProps.params.item != this.props.params.item)
+      this.setItem(this.props.params.item);
   }
   
   // on mount / change item:

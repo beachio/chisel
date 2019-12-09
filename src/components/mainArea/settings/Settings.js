@@ -35,13 +35,13 @@ export default class Settings extends Component {
   downloadElm = null;
 
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      name:     nextProps.site.name,
-      domain:   nextProps.site.domain,
-      webhook:  nextProps.site.webhook,
-      icon:     nextProps.site.icon
-    });
+  static getDerivedStateFromProps(props, state) {
+    return {
+      name:     props.site.name,
+      domain:   props.site.domain,
+      webhook:  props.site.webhook,
+      icon:     props.site.icon
+    };
   }
 
   onChangeName = name => {

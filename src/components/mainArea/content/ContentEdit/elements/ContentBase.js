@@ -16,10 +16,8 @@ export default class ContentBase extends Component {
   field = this.props.field;
 
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      value: nextProps.value
-    });
+  static getDerivedStateFromProps(props, state) {
+    return {value: props.value};
   }
   
   setValue = (value, save) => {

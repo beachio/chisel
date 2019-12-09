@@ -17,32 +17,35 @@ import ImageIconDelete from 'assets/images/icons/delete.svg';
 @CSSModules(styles, {allowMultiple: true})
 export default class ModelsList extends Component {
   state = {
-    models: this.props.site.models.slice(),
-    modelName: ""
+    site: this.props.site,
+    modelName: "",
+    animate: true
   };
 
   activeInput = null;
   returnFocus = false;
 
-  animate = true;
 
 
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.alertShowing && this.returnFocus && this.activeInput) {
+  static getDerivedStateFromProps(props, state) {
+    if (props.site == state.site)
+      return null;
+
+    return {
+      modelName: "",
+      animate: false,
+      site: props.site
+    };
+  }
+
+  componentDidUpdate() {
+    if (!this.props.alertShowing && this.returnFocus && this.activeInput) {
       this.returnFocus = false;
       setTimeout(() => this.activeInput.focus(), 1);
     }
 
-    if (nextProps.site != this.props.site) {
-      this.animate = false;
-      this.setState({modelName: ""});
-    }
-
-    this.setState({models: nextProps.site.models.slice()});
-  }
-
-  componentDidUpdate() {
-    this.animate = true;
+    if (this.state.animate == false)
+      this.setState({animate: true});
   }
 
   onModelNameChange = name => {
@@ -108,6 +111,7 @@ export default class ModelsList extends Component {
 
   render() {
     const {isEditable} = this.props;
+    const {models} = this.state.site;
 
     return (
       <ContainerComponent title='Models'>
@@ -117,9 +121,9 @@ export default class ModelsList extends Component {
                       enterAnimation="accordionVertical"
                       leaveAnimation="accordionVertical"
                       maintainContainerHeight
-                      disableAllAnimations={!this.animate}
+                      disableAllAnimations={!this.state.animate}
                       easing="ease-out">
-              {this.state.models.length > 0 &&
+              {models.length > 0 &&
                 <div styleName="list-item list-header" key="header!">
                   <div styleName="colorLabel"></div>
                   <div styleName="name-head">Name</div>
@@ -127,7 +131,7 @@ export default class ModelsList extends Component {
                   <div styleName="updated">Updated</div>
                 </div>
               }
-              {this.state.models.map(model => {
+              {models.map(model => {
                 let updatedDate = model.origin.updatedAt;
                 if (!updatedDate)
                   updatedDate = new Date();

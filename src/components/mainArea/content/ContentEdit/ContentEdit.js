@@ -60,11 +60,12 @@ export default class ContentEdit extends Component {
     if (this.state.dirty)
       this.saveItem();
   }
-  
-  componentWillReceiveProps(nextProps) {
-    this.checkAddingItem(nextProps.lastItem);
-    if (nextProps.item.origin.id != this.item.origin.id)
-      this.updateItem(nextProps.item);
+
+  checkAddingItem(lastItem) {
+    if (this.addingItem && lastItem == this.addingItem) {
+      this.props.gotoItem(this.addingItem);
+      this.addingItem = null;
+    }
   }
   
   updateItem(item = this.item) {
@@ -82,6 +83,12 @@ export default class ContentEdit extends Component {
     this.waitSave = false;
   }
   
+  componentDidUpdate() {
+    this.checkAddingItem(this.props.lastItem);
+    if (this.props.item.origin.id != this.item.origin.id)
+      this.updateItem(this.props.item);
+  }
+
   saveItem() {
     this.props.updateItem(this.item);
   }
@@ -186,13 +193,6 @@ export default class ContentEdit extends Component {
     this.addingItem = item;
     this.props.addItem(item);
   };
-  
-  checkAddingItem(lastItem) {
-    if (this.addingItem && lastItem == this.addingItem) {
-      this.props.gotoItem(this.addingItem);
-      this.addingItem = null;
-    }
-  }
   
   onReferenceClick = newItem => {
     this.saveItem();

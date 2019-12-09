@@ -38,6 +38,7 @@ export class SharingContainer extends Component  {
                showAlert={showAlert}
                showModal={showModal}
                alertShowing={nav.alertShowing}
+               modalShowing={nav.modalShowing}
                isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
     </>;
   }

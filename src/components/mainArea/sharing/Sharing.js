@@ -27,13 +27,13 @@ export default class Sharing extends Component {
   returnFocus = false;
 
 
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.alertShowing && this.activeInput && this.returnFocus) {
+  componentDidUpdate(prevProps) {
+    if (!this.props.alertShowing && !this.props.modalShowing && this.activeInput && this.returnFocus) {
       this.returnFocus = false;
       setTimeout(() => this.activeInput.focus(), 1);
     }
 
-    if (nextProps.collaborations != this.props.collaborations)
+    if (prevProps.collaborations != this.props.collaborations)
       this.setState({input: ""});
   }
 
@@ -120,6 +120,7 @@ export default class Sharing extends Component {
         this.props.updateCollaboration(collab);
       }
     });
+    this.returnFocus = true;
   }
 
   onDeleteClick(event, collab) {

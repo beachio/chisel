@@ -67,9 +67,9 @@ export class UserProfile extends Component  {
     
     this.state.serverURL = config.serverURL;
   }
-  
-  componentWillReceiveProps(nextProps) {
-    const {user} = nextProps;
+
+  componentDidUpdate() {
+    const {user} = this.props;
     
     switch (this.lastChange) {
       case CHG_DATA:
@@ -100,6 +100,8 @@ export class UserProfile extends Component  {
         setTimeout(() => this.setState({successPassword: ``}), 2500);
         break;
     }
+
+    this.lastChange = null;
   }
   
   onSaveData = e => {

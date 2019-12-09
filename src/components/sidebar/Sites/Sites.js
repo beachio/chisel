@@ -14,11 +14,11 @@ import ImageIconLink from 'assets/images/icons/link.svg';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class Sites extends Component {
-  sitesLimit = 0;
+  state = {sitesLimit: 0};
 
 
-  componentWillReceiveProps(nextProps) {
-    this.sitesLimit = nextProps.payPlan ? nextProps.payPlan.limitSites : 0;
+  static getDerivedStateFromProps(props, state) {
+    return {sitesLimit: (props.payPlan ? props.payPlan.limitSites : 0)};
   }
 
   onClickSite = site => {
@@ -27,11 +27,13 @@ export default class Sites extends Component {
 
   onClickAdd = () => {
     const {sites, showPayUpgrade} = this.props;
-    if (this.sitesLimit && sites.length >= this.sitesLimit) {
+    const {sitesLimit} = this.state;
+
+    if (sitesLimit && sites.length >= sitesLimit) {
       const options = {
         title: `Warning`,
         type: ALERT_TYPE_ALERT,
-        description: `You can't add new site because you have exhausted your limit (${this.sitesLimit} ${this.sitesLimit == 1 ? 'site' : 'sites'}).`
+        description: `You can't add new site because you have exhausted your limit (${sitesLimit} ${sitesLimit == 1 ? 'site' : 'sites'}).`
       };
       if (showPayUpgrade) {
         options.type = ALERT_TYPE_CONFIRM;
@@ -52,8 +54,8 @@ export default class Sites extends Component {
       <div styleName="sites">
         <div styleName="header">
           <div styleName="title">Your sites</div>
-          {this.sitesLimit ?
-            <div styleName="counter">{sites.length}/{this.sitesLimit}</div>
+          {this.state.sitesLimit ?
+            <div styleName="counter">{sites.length}/{this.state.sitesLimit}</div>
           :
             <div styleName="counter">{sites.length}</div>
           }

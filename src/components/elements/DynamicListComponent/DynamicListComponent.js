@@ -13,12 +13,12 @@ export default class DynamicListComponent extends Component {
     values: this.props.values ? this.props.values : []
   };
   inputs = [];
-  
-  componentWillReceiveProps(nextProps) {
-    let {values} = nextProps;
+
+  static getDerivedStateFromProps(props, state) {
+    let {values} = props;
     if (!values)
       values = [];
-    this.setState({values});
+    return {values};
   }
   
   onKeyDown = (event, i) => {
@@ -48,11 +48,6 @@ export default class DynamicListComponent extends Component {
     let valuesLeft = values.slice(0, i + 1);
     let valuesRight = values.slice(i + 1);
     values = valuesLeft.concat('', valuesRight);
-
-    // this.setState(
-    //   {values},
-    //   () => this.inputs[i + 1].focus()
-    // );
 
     this.props.onChange(values);
   };

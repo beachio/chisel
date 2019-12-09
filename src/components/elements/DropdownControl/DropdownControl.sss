@@ -60,10 +60,7 @@
     background: #EFEFEF
 
 
-.suggestions-visible + .suggestions
-  display: block
-
-.suggestions
+.items
   position: absolute
   top: calc(100% - 2px)
   background: #fff
@@ -75,9 +72,7 @@
   overflow-y: scroll
   max-height: 160px
 
-  display: none
-
-  .suggestion
+  .item
     font-weight: 400
     line-height: 34px
     width: 100%
@@ -104,7 +99,7 @@
     &:focus
       border-color: #5CA6DC
 
-  .suggestions
+  .items
     background: #FCFCFC
     top: 28px
     left: -8px
@@ -113,7 +108,7 @@
     padding-top: 18px
     padding-bottom: 18px
 
-  .suggestion
+  .item
     padding-left: 15px
     font-weight: 600
     font-size: 13px

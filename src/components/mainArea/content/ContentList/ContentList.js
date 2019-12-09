@@ -36,8 +36,8 @@ export default class ContentList extends Component {
   returnFocus = false;
 
 
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.alertShowing && this.returnFocus && this.activeInput) {
+  componentDidUpdate() {
+    if (!this.props.alertShowing && this.returnFocus && this.activeInput) {
       this.returnFocus = false;
       setTimeout(() => this.activeInput.focus(), 1);
     }

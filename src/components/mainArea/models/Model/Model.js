@@ -83,20 +83,18 @@ export default class Model extends Component {
   titleActive = false;
 
 
-  //TODO вопрос: в какой ситуации понадобится обновлять модель? Не могу понять.
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.alertShowing && !nextProps.modalShowing) {
-      if (this.titleActive) {
-        this.titleActive = false;
-        this.controlTitle.onEditClick();
+  componentDidUpdate() {
+    if (this.props.alertShowing || this.props.modalShowing)
+      return;
 
-      } else if (this.activeInput && this.returnFocus) {
-        this.returnFocus = false;
-        setTimeout(() => this.activeInput.focus(), 1);
-      }
+    if (this.titleActive) {
+      this.titleActive = false;
+      this.controlTitle.onEditClick();
+
+    } else if (this.activeInput && this.returnFocus) {
+      this.returnFocus = false;
+      setTimeout(() => this.activeInput.focus(), 1);
     }
-
-    this.setState({fields: nextProps.model.fields});
   }
 
   onFieldNameChange = name => {
