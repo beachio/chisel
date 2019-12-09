@@ -18,14 +18,11 @@ export default class ValidationReference extends Component {
     }
   };
   
-  modelsAll;
   modelsSet = new Set();
   
   
   constructor(props) {
     super(props);
-    
-    this.modelsAll = props.models;
     
     Object.assign(this.state, props.validations);
     
@@ -78,7 +75,7 @@ export default class ValidationReference extends Component {
           {this.state.models.active &&
             <div>
               <div styleName="models">
-                {this.modelsAll.map(model =>
+                {this.props.models.map(model =>
                   <div styleName="model-checkbox"
                        key={model.nameId}>
                     <CheckboxControl title={model.name}

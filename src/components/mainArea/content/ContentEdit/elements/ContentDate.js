@@ -105,10 +105,11 @@ export default class ContentDate extends ContentBase {
   };
   
   getInput() {
+    const {isEditable} = this.props;
     let value = this.state.value;
     
     let styleWrapper = 'input-wrapper data-time-wrapper';
-    if (!this.state.isEditable)
+    if (!isEditable)
       styleWrapper += ' data-time-disabled';
   
     switch (this.field.appearance) {
@@ -118,7 +119,7 @@ export default class ContentDate extends ContentBase {
             <div styleName="date">
               <Flatpickr value={value}
                          options={{
-                           clickOpens: this.state.isEditable,
+                           clickOpens: isEditable,
                            altInput: true,
                            minDate: this.minDate,
                            maxDate: this.maxDate
@@ -128,7 +129,7 @@ export default class ContentDate extends ContentBase {
             <div styleName="time">
               <Flatpickr value={value}
                          options={{
-                           clickOpens: this.state.isEditable,
+                           clickOpens: isEditable,
                            altInput: true,
                            noCalendar: true,
                            enableTime: true,
@@ -147,7 +148,7 @@ export default class ContentDate extends ContentBase {
             <div styleName="date">
               <Flatpickr value={value}
                          options={{
-                           clickOpens: this.state.isEditable,
+                           clickOpens: isEditable,
                            altInput: true,
                            minDate: this.minDate,
                            maxDate: this.maxDate
@@ -163,7 +164,7 @@ export default class ContentDate extends ContentBase {
             <div styleName="time" onClick={this.onClickTime}>
               <Flatpickr value={value}
                          options={{
-                           clickOpens: this.state.isEditable,
+                           clickOpens: isEditable,
                            altInput: true,
                            noCalendar: true,
                            enableTime: true,

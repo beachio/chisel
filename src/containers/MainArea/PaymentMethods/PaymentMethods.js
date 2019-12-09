@@ -55,7 +55,7 @@ const countries = {
 @CSSModules(styles, {allowMultiple: true})
 class _PayCardElement extends Component {
   state = {
-    name: '',
+    name: this.props.userName,
     address: '',
     city: '',
     state: '',
@@ -68,12 +68,7 @@ class _PayCardElement extends Component {
     complete: false
   };
 
-  constructor(props) {
-    super(props);
 
-    this.state.name = props.userName;
-  }
-  
   submit = async e => {
     e.preventDefault();
     

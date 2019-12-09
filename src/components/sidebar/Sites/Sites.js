@@ -14,26 +14,14 @@ import ImageIconLink from 'assets/images/icons/link.svg';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class Sites extends Component {
-  state = {
-    site: null
-  };
-
   sitesLimit = 0;
 
 
-  constructor(props) {
-    super(props);
-  }
-
   componentWillReceiveProps(nextProps) {
-    this.setState({site: nextProps.currentSite});
-
-    const {payPlan} = nextProps;
-    this.sitesLimit = payPlan ? payPlan.limitSites : 0;
+    this.sitesLimit = nextProps.payPlan ? nextProps.payPlan.limitSites : 0;
   }
 
   onClickSite = site => {
-    this.setState({site});
     this.props.gotoSite(site);
   };
 
@@ -73,13 +61,13 @@ export default class Sites extends Component {
         <div styleName="list">
           {sites.map(site => {
             let style = "element";
-            if (this.state.site == site)
+            if (this.props.currentSite == site)
               style += " element-active";
 
             return (
               <div styleName={style}
                    onClick={() => this.onClickSite(site)}
-                   key={site.origin.id}>
+                   key={site.origin.id ? site.origin.id : Math.random()}>
 
                 {!!site.icon ?
                   <img styleName="icon-img"

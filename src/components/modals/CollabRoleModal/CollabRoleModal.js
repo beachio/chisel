@@ -25,37 +25,23 @@ const roles = [
 
 @CSSModules(styles, {allowMultiple: true})
 export class RoleControl extends Component {
-  state = {
-    checked: false
-  };
-  role = null;
-  
-  constructor(props) {
-    super(props);
-    
-    this.role = props.role;
-    this.state.checked = props.checked;
-  }
-  
-  componentWillReceiveProps({checked}) {
-    this.setState({checked});
-  }
-  
   onClick = () => {
-    this.props.onChange(this.role);
+    this.props.onChange(this.props.role);
   };
   
   render() {
+    const {role, checked} = this.props;
+
     let style = 'role-content';
-    if (this.state.checked)
+    if (checked)
       style += ' checked';
     
     return (
       <div styleName="RoleControl"
            onClick={this.onClick}>
         <div styleName={style}>
-          <div styleName="title">{this.role.role}</div>
-          <div styleName="description">{this.role.description}</div>
+          <div styleName="title">{role.role}</div>
+          <div styleName="description">{role.description}</div>
         </div>
       </div>
     );
@@ -65,18 +51,12 @@ export class RoleControl extends Component {
 @CSSModules(styles, {allowMultiple: true})
 export default class CollabRoleModal extends Component {
   state = {
-    role: null
+    role: this.props.params.role
   };
   
   active = false;
   focusElm = null;
   
-  
-  constructor(props) {
-    super(props);
-    
-    this.state.role = props.params.role;
-  }
   
   componentDidMount() {
     this.active = true;

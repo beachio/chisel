@@ -8,20 +8,7 @@ import styles from './RadioControl.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class DropdownControl extends Component {
-  state = {
-    value: false
-  };
   id = getUniqueId();
-  
-  constructor(props) {
-    super(props);
-    
-    this.state.value = props.value;
-  }
-  
-  componentWillReceiveProps (nextProps) {
-    this.setState({value: nextProps.value});
-  }
   
   onChange = e => {
     const {onChange, disabled, data} = this.props;
@@ -30,7 +17,7 @@ export default class DropdownControl extends Component {
   };
 
   render() {
-    const {data, name, label, disabled} = this.props;
+    const {data, name, label, disabled, value} = this.props;
     let style = `RadioControl`;
     if (disabled)
       style += ` disabled`;
@@ -42,7 +29,7 @@ export default class DropdownControl extends Component {
                id={this.id}
                name={name}
                value={data}
-               checked={this.state.value === data}
+               checked={value === data}
                onChange={this.onChange} />
         <label styleName="label" htmlFor={this.id}>{label}</label>
       </div>

@@ -14,26 +14,18 @@ import ImageCrossCircle from 'assets/images/cross-circle.svg';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentReference extends ContentBase {
-  item = null;
   addingItem = null;
   validModels = null;
   
   
   constructor(props) {
     super(props);
-    
-    this.item = this.props.item;
-  
+
     if (this.field.validations && this.field.validations.models && this.field.validations.models.active) {
       const modelsList = this.field.validations.models.modelsList;
       if (modelsList && modelsList.length)
         this.validModels = modelsList;
     }
-  }
-  
-  componentWillReceiveProps(nextProps) {
-    this.item = nextProps.item;
-    super.componentWillReceiveProps(nextProps);
   }
   
   getError () {
@@ -63,7 +55,7 @@ export default class ContentReference extends ContentBase {
   }
   
   onReferenceNew = () => {
-    if (!this.state.isEditable)
+    if (!this.props.isEditable)
       return;
     
     const callback = model => {
@@ -85,14 +77,14 @@ export default class ContentReference extends ContentBase {
   };
   
   onReferencesChoose = () => {
-    if (!this.state.isEditable)
+    if (!this.props.isEditable)
       return;
     let refers = this.state.value;
     if (!refers)
       refers = [];
     this.props.showModal(MODAL_TYPE_REFERENCE,
       {
-        currentItem: this.item,
+        currentItem: this.props.item,
         isMult: this.field.isList,
         existingItems: refers,
         validModels: this.validModels,
@@ -103,7 +95,7 @@ export default class ContentReference extends ContentBase {
   
   onReferenceClear = (event, item) => {
     event.stopPropagation();
-    if (!this.state.isEditable)
+    if (!this.props.isEditable)
       return;
     
     let refers = this.state.value;
@@ -149,7 +141,7 @@ export default class ContentReference extends ContentBase {
     };
   
     let btnStyle = `reference-button`;
-    if (!this.state.isEditable)
+    if (!this.props.isEditable)
       btnStyle += ` reference-button-disabled`;
     let addRefBlock = (
       <div styleName="reference-buttons">

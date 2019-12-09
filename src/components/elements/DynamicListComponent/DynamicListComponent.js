@@ -10,16 +10,9 @@ import styles from './DynamicListComponent.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class DynamicListComponent extends Component {
   state = {
-    values: []
+    values: this.props.values ? this.props.values : []
   };
   inputs = [];
-  
-  constructor(props) {
-    super(props);
-    
-    if (props.values)
-      this.state.values = props.values;
-  }
   
   componentWillReceiveProps(nextProps) {
     let {values} = nextProps;

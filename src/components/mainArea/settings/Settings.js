@@ -22,36 +22,25 @@ const ERROR_URL_EXIST  = "This domain URL is already exists";
 @CSSModules(styles, {allowMultiple: true})
 export default class Settings extends Component {
   state = {
-    name: '',
-    domain: '',
-    webhook: '',
+    name:     this.props.site.name,
+    domain:   this.props.site.domain,
+    webhook:  this.props.site.webhook,
+    icon:     this.props.site.icon,
+
     dirty: false,
     error: null,
-    icon: null,
     errorFile: null
   };
   
-  site = null;
   downloadElm = null;
 
 
-  constructor(props) {
-    super(props);
-
-    this.site = props.site;
-
-    this.state.name   = this.site.name;
-    this.state.domain = this.site.domain;
-    this.state.webhook= this.site.webhook;
-    this.state.icon   = this.site.icon;
-  }
-
   componentWillReceiveProps(nextProps) {
-    this.site = nextProps.site;
     this.setState({
-      name: this.site.name,
-      domain: this.site.domain,
-      webhook: this.site.webhook
+      name:     nextProps.site.name,
+      domain:   nextProps.site.domain,
+      webhook:  nextProps.site.webhook,
+      icon:     nextProps.site.icon
     });
   }
 
@@ -95,7 +84,7 @@ export default class Settings extends Component {
       return false;
     }
 
-    let domainStatus = checkSiteDomain(this.state.domain, this.site);
+    let domainStatus = checkSiteDomain(this.state.domain, this.props.site);
     if (domainStatus == DOMAIN_ERROR_SYNTAX) {
       this.setState({error: ERROR_URL_SYNTAX});
       return false;
@@ -109,7 +98,7 @@ export default class Settings extends Component {
       return false;
     }
 
-    if (checkSiteName(this.state.name, this.site)) {
+    if (checkSiteName(this.state.name, this.props.site)) {
       this.setState({error: ERROR_NAME_EXIST});
       return false;
     }
@@ -125,11 +114,13 @@ export default class Settings extends Component {
       return;
 
     this.setState({dirty: false});
-    this.site.name = this.state.name;
-    this.site.domain = this.state.domain;
-    this.site.webhook = this.state.webhook;
-    this.site.icon = this.state.icon;
-    this.props.updateSite(this.site);
+
+    const {site} = this.props;
+    site.name     = this.state.name;
+    site.domain   = this.state.domain;
+    site.webhook  = this.state.webhook;
+    site.icon     = this.state.icon;
+    this.props.updateSite(site);
   };
 
   onDelete = () => {
@@ -139,17 +130,18 @@ export default class Settings extends Component {
       type: ALERT_TYPE_CONFIRM,
       title: `Deleting ${this.state.name}`,
       description: "You are trying to remove the site with all content. This action cannot be undone. Are you sure?<br><br>Please, type site name to confirm:",
-      confirmString: this.site.name,
-      onConfirm: () => deleteSite(this.site)
+      confirmString: this.props.site.name,
+      onConfirm: () => deleteSite(this.props.site)
     };
     showAlert(params);
   };
   
   onExport = () => {
-    const json = JSON.stringify(this.site.models, null, 2);
+    const {site} = this.props;
+    const json = JSON.stringify(site.models, null, 2);
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(json);
     this.downloadElm.setAttribute("href", dataStr);
-    this.downloadElm.setAttribute("download", `${filterSpecials(this.site.name)}.json`);
+    this.downloadElm.setAttribute("download", `${filterSpecials(site.name)}.json`);
     this.downloadElm.click();
   };
 
@@ -234,7 +226,7 @@ export default class Settings extends Component {
               <InputControl type="big"
                             titled
                             label="Site ID"
-                            value={this.site.origin.id}
+                            value={this.props.site.origin.id}
                             readOnly={true} />
             </div>
           </div>

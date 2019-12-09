@@ -11,21 +11,12 @@ import ImageCrossCircle from 'assets/images/cross-circle.svg';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class MarkdownModal extends Component {
-  text = "";
-  onClose = null;
-  callback = null;
-  
-  constructor(props) {
-    super(props);
-    
-    this.onClose = props.onClose;
-    this.callback = props.params.callback;
-    this.text = props.params.text;
-  }
-  
+  text = this.props.params.text;
+
+
   onClosing = () => {
-    this.callback(this.text);
-    this.onClose();
+    this.props.params.callback(this.text);
+    this.props.onClose();
   };
   
   onChange = text => {

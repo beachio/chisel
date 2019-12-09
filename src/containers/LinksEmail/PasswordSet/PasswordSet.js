@@ -19,26 +19,20 @@ const MODE_DONE   = 'MODE_DONE';
 
 @CSSModules(styles, {allowMultiple: true})
 export class PasswordSet extends Component  {
+  urlParams = parseURLParams();
+
   state = {
     mode: MODE_SETUP,
     
     password: '',
     passwordConfirm: '',
     
-    error: null
+    error: this.urlParams.error
   };
   
-  urlParams = {};
   lock = false;
   
-  
-  constructor(props) {
-    super(props);
 
-    this.urlParams = parseURLParams();
-    this.state.error = this.urlParams.error;
-  }
-  
   isAvail() {
     return this.state.password &&
       this.state.password == this.state.passwordConfirm;
@@ -52,33 +46,33 @@ export class PasswordSet extends Component  {
     this.setState({passwordConfirm: event.target.value});
   };
   
-  onChange = event => {
+  onChange = async event => {
     event.preventDefault();
     
     if (!this.isAvail())
       return false;
     
-    let params = {
+    const params = {
       username: this.urlParams.username,
       token: this.urlParams.token,
       'utf-8': '✓',
       'new_password': this.state.password
     };
-    
-    fetch(config.serverURL + '/apps/' + this.urlParams['id'] + '/request_password_reset', {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: URLEncode(params)
-    })
-      .then(response => {
-        this.setState({mode: MODE_DONE});
-      })
-      .catch(error => {
-        this.setState({error});
+
+    try {
+      await fetch(config.serverURL + '/apps/' + this.urlParams['id'] + '/request_password_reset', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: URLEncode(params)
       });
+      this.setState({mode: MODE_DONE});
+
+    } catch (error) {
+      this.setState({error});
+    }
     
     return false;
   };
@@ -96,6 +90,7 @@ export class PasswordSet extends Component  {
   
   render() {
     let content, title;
+
     switch (this.state.mode) {
       case MODE_SETUP:
         title = `Please, type a new password for ${this.urlParams.username}:`;

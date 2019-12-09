@@ -24,12 +24,11 @@ const allStatuses = [STATUS_DRAFT, STATUS_PUBLISHED, STATUS_UPDATED, STATUS_ARCH
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentList extends Component {
   state = {
-    items: [],
     itemTitle: "",
 
     searchText: '',
 
-    currentModel: null
+    currentModel: this.props.models[0]
   };
 
   activeInput;
@@ -37,20 +36,11 @@ export default class ContentList extends Component {
   returnFocus = false;
 
 
-  constructor(props) {
-    super(props);
-
-    this.state.items = props.items;
-    this.state.currentModel = props.models[0];
-  }
-
   componentWillReceiveProps(nextProps) {
     if (!nextProps.alertShowing && this.returnFocus && this.activeInput) {
       this.returnFocus = false;
       setTimeout(() => this.activeInput.focus(), 1);
     }
-
-    this.setState({items: nextProps.items});
   }
 
   //TODO криво как-то
@@ -157,13 +147,12 @@ export default class ContentList extends Component {
   };
 
   render() {
-    const {isEditable, models, filteredModels, filteredStatuses} = this.props;
+    const {isEditable, models, filteredModels, filteredStatuses, items} = this.props;
 
     const eyeDisabled = <img styleName="eye" src={ImageEyeGray} />;
     const eyeEnabled = <img styleName="eye eye-active" src={ImageEye} />;
 
-    const visibleItems =
-      this.state.items
+    const visibleItems = items
         .filter(item => !filteredModels.size || filteredModels.has(item.model))
         .filter(item => !filteredStatuses.size || filteredStatuses.has(item.status))
         .filter(item => {

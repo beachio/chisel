@@ -13,30 +13,18 @@ export const LAYOUT_SPLIT = "horizontal";
 @CSSModules(styles, {allowMultiple: true})
 export default class MarkdownEditor extends Component {
   state = {
-    mdeState: {markdown: ""},
+    mdeState: {markdown: this.props.value ? this.props.value : ""},
   };
-  onChange;
-  layout = LAYOUT_TABS;
-  converter = null;
+  layout = this.props.layout ? this.props.layout : LAYOUT_TABS;
 
+  converter = new Showdown.Converter({
+    tables: true,
+    simplifiedAutoLink: true,
+    simpleLineBreaks: true,
+    tasklists: true,
+    strikethrough: true
+  });
 
-  constructor(props) {
-    super(props);
-
-    if (props.value)
-      this.state.mdeState.markdown = props.value;
-    this.onChange = props.onChange;
-    if (props.layout)
-      this.layout = props.layout;
-
-    this.converter = new Showdown.Converter({
-      tables: true,
-      simplifiedAutoLink: true,
-      simpleLineBreaks: true,
-      tasklists: true,
-      strikethrough: true
-    });
-  }
 
   componentWillReceiveProps(nextProps) {
     const {mdeState} = this.state;
@@ -52,7 +40,7 @@ export default class MarkdownEditor extends Component {
     const markdownOld = this.state.mdeState.markdown;
     this.setState({mdeState});
     if (mdeState.markdown != markdownOld)
-      this.onChange(mdeState.markdown);
+      this.props.onChange(mdeState.markdown);
   };
 
   genPreview = markdown =>

@@ -6,9 +6,8 @@ import styles from './JSONView.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class JSONView extends Component {
-
   render() {
-    let json = JSON.stringify(this.props.model, null, 2);
+    const json = JSON.stringify(this.props.model, null, 2);
 
     return (
       <pre styleName="json-wrapper">

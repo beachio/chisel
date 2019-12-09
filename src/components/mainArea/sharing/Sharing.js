@@ -20,7 +20,6 @@ import ImageCrossCircle from 'assets/images/cross-circle.svg';
 @CSSModules(styles, {allowMultiple: true})
 export default class Sharing extends Component {
   state = {
-    collaborations: [],
     input: ""
   };
 
@@ -28,23 +27,14 @@ export default class Sharing extends Component {
   returnFocus = false;
 
 
-  constructor(props) {
-    super(props);
-
-    this.state.collaborations = props.collaborations;
-  }
-
   componentWillReceiveProps(nextProps) {
     if (!nextProps.alertShowing && this.activeInput && this.returnFocus) {
       this.returnFocus = false;
       setTimeout(() => this.activeInput.focus(), 1);
     }
 
-    if (nextProps.collaborations != this.state.collaborations)
-      this.setState({
-        collaborations: nextProps.collaborations,
-        input: ""
-      });
+    if (nextProps.collaborations != this.props.collaborations)
+      this.setState({input: ""});
   }
 
   onInputChange = input => {
@@ -158,7 +148,7 @@ export default class Sharing extends Component {
   }
 
   render() {
-    const {owner, isEditable} = this.props;
+    const {owner, isEditable, collaborations} = this.props;
     const self = this.props.user;
 
     return (
@@ -183,7 +173,7 @@ export default class Sharing extends Component {
                         leaveAnimation="fade"
                         maintainContainerHeight
                         easing="ease-out">
-                {this.state.collaborations.map(collaboration => {
+                {collaborations.map(collaboration => {
                   let user = collaboration.user;
 
                   let localDelete = isEditable;

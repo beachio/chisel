@@ -24,15 +24,12 @@ export default class ValidationDate extends Component {
       isError: false
     }
   };
-  showDate;
-  showTime;
+  showDate = this.props.appearance == FIELD_APPEARANCE__DATE__DATE || this.props.appearance == FIELD_APPEARANCE__DATE__DATE_ONLY;
+  showTime = this.props.appearance == FIELD_APPEARANCE__DATE__DATE || this.props.appearance == FIELD_APPEARANCE__DATE__TIME_ONLY;
   
   
   constructor(props) {
     super(props);
-    
-    this.showDate = props.appearance == FIELD_APPEARANCE__DATE__DATE || props.appearance == FIELD_APPEARANCE__DATE__DATE_ONLY;
-    this.showTime = props.appearance == FIELD_APPEARANCE__DATE__DATE || props.appearance == FIELD_APPEARANCE__DATE__TIME_ONLY;
     
     Object.assign(this.state, props.validations);
   }

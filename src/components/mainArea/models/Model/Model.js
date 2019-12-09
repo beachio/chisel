@@ -73,22 +73,15 @@ const SortableList = SortableContainer(({fields, isEditable, onFieldClick, onRem
 @CSSModules(styles, {allowMultiple: true})
 export default class Model extends Component {
   state = {
-    fields: [],
+    fields: this.props.model.fields,
     fieldName: "",
     jsonVisibility: false
   };
 
-  model = null;
   activeInput = null;
   returnFocus = false;
   titleActive = false;
 
-  constructor(props) {
-    super(props);
-
-    this.model = props.model;
-    this.state.fields = props.model.fields;
-  }
 
   //TODO вопрос: в какой ситуации понадобится обновлять модель? Не могу понять.
   componentWillReceiveProps(nextProps) {
@@ -103,7 +96,6 @@ export default class Model extends Component {
       }
     }
 
-    this.model = nextProps.model;
     this.setState({fields: nextProps.model.fields});
   }
 
@@ -133,19 +125,20 @@ export default class Model extends Component {
 
     this.returnFocus = true;
 
+    const {showAlert, showModal, model} = this.props;
+
     const name = removeOddSpaces(this.state.fieldName);
-    let error = checkFieldName(name);
+    const error = checkFieldName(name);
     if (error) {
-      const {showAlert} = this.props;
       showAlert(getAlertForNameError(error));
       return;
     }
 
-    let field = new ModelFieldData();
-    field.model = this.model;
+    const field = new ModelFieldData();
+    field.model = model;
     field.name = name;
-    field.nameId = getNameId(name, this.model.fields);
-    this.props.showModal(MODAL_TYPE_FIELD, field);
+    field.nameId = getNameId(name, model.fields);
+    showModal(MODAL_TYPE_FIELD, field);
 
     this.setState({fieldName: ""});
   };
@@ -155,7 +148,7 @@ export default class Model extends Component {
 
     let params;
 
-    const contentCount = getContentForModel(this.model).length;
+    const contentCount = getContentForModel(this.props.model).length;
     if (field.isDisabled || !contentCount) {
       params = {
         title: `Deleting <strong>${field.name}</strong> field`,
@@ -190,12 +183,14 @@ export default class Model extends Component {
   };
 
   renderTitle() {
-    if (this.model.name)
+    const {name} = this.props.model;
+
+    if (name)
       return (
         <span>
           <span styleName="back-link" onClick={browserHistory.goBack}>Models</span>
           <span> / </span>
-          <span styleName="model-title">{this.model.name}</span>
+          <span styleName="model-title">{name}</span>
         </span>
       );
 
@@ -203,31 +198,35 @@ export default class Model extends Component {
   }
 
   updateModelName = (name, callback, silent) => {
-    if (name == this.model.name)
+    const {model, showAlert, updateModel} = this.props;
+
+    if (name == model.name)
       return;
 
-    let error = checkModelName(name);
+    const error = checkModelName(name);
     if (!error) {
-      this.model.name = name;
-      this.props.updateModel(this.model);
+      model.name = name;
+      updateModel(model);
 
     } else if (error != NAME_ERROR_OTHER) {
       if (!silent) {
         this.returnFocus = true;
-        this.props.showAlert(getAlertForNameError(error));
+        showAlert(getAlertForNameError(error));
         this.titleActive = true;
       } else if (callback != undefined) {
-        callback(this.model.name);
+        callback(model.name);
       }
     }
   };
 
   updateModelDescription = description => {
-    if (description == this.model.description)
+    const {model} = this.props;
+
+    if (description == model.description)
       return;
 
-    this.model.description = description;
-    this.props.updateModel(this.model);
+    model.description = description;
+    this.props.updateModel(model);
   };
 
   onSortEnd = ({oldIndex, newIndex}) => {
@@ -245,11 +244,11 @@ export default class Model extends Component {
   };
 
   render() {
-    const {onClose, isEditable, alertShowing} = this.props;
+    const {model, isEditable, alertShowing} = this.props;
 
     let content;
     if (this.state.jsonVisibility) {
-      content = <JSONView model={this.model} />;
+      content = <JSONView model={model} />;
 
     } else {
       content = (
@@ -287,13 +286,13 @@ export default class Model extends Component {
 
     let titles = (
       <div>
-        <EditableTitleControl text={this.model.name}
+        <EditableTitleControl text={model.name}
                               ref={cmp => this.controlTitle = cmp}
                               placeholder={"Model name"}
                               alertShowing={alertShowing}
                               required
                               update={isEditable ? this.updateModelName : null} />
-        {/* <EditableTitleControl text={this.model.description}
+        {/* <EditableTitleControl text={model.description}
                               placeholder={"Model description"}
                               isSmall={true}
                               alertShowing={alertShowing}

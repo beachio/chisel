@@ -14,37 +14,26 @@ import ImageArrows from 'assets/images/arrows.svg';
 @CSSModules(styles, {allowMultiple: true})
 export default class DropdownControl extends Component {
   state = {
+    list: this.props.list ? this.props.list : [],
     value: '',
-    listVis: false,
-    disabled: false
+    listVis: false
   };
-  list = [];
-  onSuggest = null;
-
 
   constructor(props) {
     super(props);
 
-    const {list, onSuggest, current, disabled} = props;
-    this.onSuggest = onSuggest;
-    if (list)
-      this.list = list;
-
-    this.state.disabled = disabled;
-
-    if (this.list.indexOf(current) != -1 || current === undefined)
+    const {current} = props;
+    if (this.state.list.indexOf(current) != -1 || current === undefined)
       this.state.value = current;
   }
 
   componentWillReceiveProps(nextProps) {
-    const {list, current, disabled} = nextProps;
-
-    this.list = list;
+    const {list, current} = nextProps;
 
     if (list.indexOf(current) != -1 || current === undefined)
-      this.setState({value: current, disabled});
+      this.setState({value: current, list});
     else
-      this.setState({value: '', disabled});
+      this.setState({value: '', list});
   }
 
   onSuggestionClick = item => {
@@ -52,7 +41,7 @@ export default class DropdownControl extends Component {
       value: item,
       listVis: false
     });
-    this.onSuggest(item);
+    this.props.onSuggest(item);
   };
 
   onInputClick = () => {
@@ -76,7 +65,7 @@ export default class DropdownControl extends Component {
     else if (!value)
       value = '(undefined)';
 
-    if (this.state.disabled)
+    if (this.props.disabled)
       return <InputControl label={label}
                            icon="lock"
                            value={value}
@@ -118,7 +107,7 @@ export default class DropdownControl extends Component {
                  onClick={this.onInputClick}
                  readOnly />
           <div styleName="suggestions">
-            {this.list.map(item => {
+            {this.state.list.map(item => {
               const styleName = classNames({
                 'suggestion': true,
                 'empty': !item

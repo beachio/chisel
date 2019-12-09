@@ -3,7 +3,6 @@ import CSSModules from 'react-css-modules';
 
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
-import EditableTitleControl from 'components/elements/EditableTitleControl/EditableTitleControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {STATUS_ARCHIVED, STATUS_PUBLISHED, STATUS_DRAFT, STATUS_UPDATED} from 'models/ContentData';
 import {ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
@@ -33,8 +32,8 @@ export default class ContentEdit extends Component {
     errors: false
   };
   
-  item = null;
-  fieldsArchive = new Map();
+  item = this.props.item;
+  fieldsArchive = new Map(this.item.fields);
   addingItem = null;
   
   wait = false;
@@ -47,8 +46,6 @@ export default class ContentEdit extends Component {
   constructor(props) {
     super(props);
 
-    this.item = props.item;
-
     const draft = this.item.draft ? this.item.draft : this.item;
     this.state = {
       title:  draft.title,
@@ -57,8 +54,6 @@ export default class ContentEdit extends Component {
       dirty:  false,
       errors: false
     };
-
-    this.fieldsArchive = new Map(this.item.fields);
   }
 
   componentWillUnmount() {
@@ -137,7 +132,7 @@ export default class ContentEdit extends Component {
   };
   
   onDelete = () => {
-    const {showAlert, deleteItem, onClose} = this.props;
+    const {showAlert, deleteItem} = this.props;
     const title = this.item.title ? this.item.title : 'content item';
   
     showAlert({
@@ -348,25 +343,10 @@ export default class ContentEdit extends Component {
   }
 
   render() {
-    const {isEditable} = this.props;
-
-    let content = this.generateContent();
-
-    let titles = (
-      <div>
-        <EditableTitleControl text={this.state.title}
-                              placeholder={"Item title"}
-                              update={isEditable ? this.updateItemTitle : null}
-                              disabled={!this.item.model.getTitle()} />
-        <EditableTitleControl text={this.item.model.name}
-                              isSmall={true} />
-      </div>
-    );
-
     return (
       <ContainerComponent hasTitle2={true}
                           title={this.renderTitle()}>
-        {content}
+        {this.generateContent()}
       </ContainerComponent>
     );
   }

@@ -29,33 +29,33 @@ const TAB_VALIDATIONS = 'TAB_VALIDATIONS';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class FieldModal extends Component {
+  field = this.props.params;
+
   state = {
-    name: '',
-    nameId: '',
-    type: '',
-    appearance: '',
-    boolTextYes: '',
-    boolTextNo: '',
-    validValues: [],
-    isRequired: false,
-    isTitle: false,
-    isList: false,
-    isDisabled: false,
-    isUnique: false,
+    name:         this.field.name,
+    nameId:       this.field.nameId,
+    type:         this.field.type,
+    appearance:   this.field.appearance,
+    boolTextYes:  this.field.boolTextYes,
+    boolTextNo:   this.field.boolTextNo,
+    validValues:  this.field.validValues,
+    isRequired:   this.field.isRequired,
+    isTitle:      this.field.isTitle,
+    isList:       this.field.isList,
+    isDisabled:   this.field.isDisabled,
+    isUnique:     this.field.isUnique,
 
     errorName: false,
 
-    appList: [],
+    appList: FIELD_TYPES.get(this.field.type),
 
     tab: TAB_SETTINGS
   };
 
   active = false;
   typeList = Array.from(FIELD_TYPES.keys());
-  field = null;
-  updating = false;
-  validations = null;
-  models = null;
+  updating = !!this.field.origin;
+  validations = this.field.validations;
   validValuesList = null;
   focusElm = null;
 
@@ -65,28 +65,6 @@ export default class FieldModal extends Component {
 
   constructor(props) {
     super(props);
-
-    this.models = props.models;
-
-    this.field = props.params;
-    this.updating = !!this.field.origin;
-
-    this.state.name         = this.field.name;
-    this.state.nameId       = this.field.nameId;
-    this.state.type         = this.field.type;
-    this.state.appearance   = this.field.appearance;
-    this.state.boolTextYes  = this.field.boolTextYes;
-    this.state.boolTextNo   = this.field.boolTextNo;
-    this.state.validValues  = this.field.validValues;
-    this.state.isRequired   = this.field.isRequired;
-    this.state.isTitle      = this.field.isTitle;
-    this.state.isList       = this.field.isList;
-    this.state.isDisabled   = this.field.isDisabled;
-    this.state.isUnique     = this.field.isUnique;
-
-    this.validations        = this.field.validations;
-
-    this.state.appList = FIELD_TYPES.get(this.field.type);
 
     if (!this.updating && canBeTitle(this.state) && !this.field.model.getTitle()) {
       this.state.isTitle = true;
@@ -587,7 +565,7 @@ export default class FieldModal extends Component {
 
           case ftps.FIELD_TYPE_REFERENCE:
             validations = <ValidationReference validations={this.validations}
-                                               models={this.models}
+                                               models={this.props.models}
                                                update={this.onUpdateValidations} />;
             break;
 

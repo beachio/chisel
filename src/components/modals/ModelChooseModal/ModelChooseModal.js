@@ -12,8 +12,6 @@ export default class ModelChooseModal extends Component {
     selectedModel: null,
   };
   
-  isMult = false;
-  callback = null;
   models = [];
   focusElm = null;
   active = false;
@@ -21,8 +19,6 @@ export default class ModelChooseModal extends Component {
   
   constructor(props) {
     super(props);
-    
-    this.callback = props.params.callback;
     
     const {validModels} = props.params;
     if (validModels)
@@ -64,7 +60,7 @@ export default class ModelChooseModal extends Component {
     if (!this.state.selectedModel || !this.active)
       return;
     
-    this.callback(this.state.selectedModel);
+    this.props.params.callback(this.state.selectedModel);
     this.close();
   };
 

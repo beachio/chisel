@@ -14,8 +14,6 @@ export default class ReferenceModal extends Component {
     searchText: ''
   };
   
-  isMult = false;
-  callback = null;
   items = [];
   focusElm = null;
   active = false;
@@ -23,9 +21,6 @@ export default class ReferenceModal extends Component {
   
   constructor(props) {
     super(props);
-    
-    this.isMult = props.params.isMult;
-    this.callback = props.params.callback;
     
     const {currentItem, existingItems, validModels} = props.params;
     const {contentItems, currentSite} = props;
@@ -82,7 +77,7 @@ export default class ReferenceModal extends Component {
   }
   
   onSelect = (item) => {
-    if (this.isMult) {
+    if (this.props.params.isMult) {
       let items = this.state.selectedItems;
       let ind = items.indexOf(item);
       if (ind == -1)
@@ -104,7 +99,7 @@ export default class ReferenceModal extends Component {
     if (!this.state.selectedItems.length || !this.active)
       return;
     
-    this.callback(this.isMult ?
+    this.props.params.callback(this.props.params.isMult ?
       this.state.selectedItems :
       this.state.selectedItems[0]);
     this.close();

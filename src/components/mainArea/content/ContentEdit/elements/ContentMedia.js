@@ -23,14 +23,12 @@ const AUTOSAVE_TIMEOUT = 2000;
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentMedia extends ContentBase {
-  site = null;
+  site = this.props.site;
   mediaTimeouts = [];
   
   
   constructor (props) {
     super(props);
-    
-    this.site = props.site;
     
     this.state.loading = false;
   }
@@ -135,7 +133,7 @@ export default class ContentMedia extends ContentBase {
   }
   
   onMediaChoose = () => {
-    if (!this.state.isEditable)
+    if (!this.props.isEditable)
       return;
     
     this.props.showModal(MODAL_TYPE_MEDIA, {
@@ -235,6 +233,7 @@ export default class ContentMedia extends ContentBase {
   }
   
   getInput() {
+    const {isEditable} = this.props;
     let value = this.state.value;
     
     let oneMediaBlock = item => {
@@ -242,14 +241,13 @@ export default class ContentMedia extends ContentBase {
         <div styleName="media-item" key={item.key}>
           <div styleName="media-header">
             <InputControl placeholder="File name"
-                          readOnly={!this.state.isEditable}
+                          readOnly={!isEditable}
                           onChange={e => this.onMediaNameChange(e, item)}
                           value={item.name} />
-            {
-              this.state.isEditable &&
-                <InlineSVG styleName="media-cross"
-                           src={ImageIconDelete}
-                           onClick={() => this.onMediaClear(item)}/>
+            {isEditable &&
+              <InlineSVG styleName="media-cross"
+                         src={ImageIconDelete}
+                         onClick={() => this.onMediaClear(item)}/>
             }
           </div>
           <MediaView item={item} />
@@ -258,7 +256,7 @@ export default class ContentMedia extends ContentBase {
     };
   
     let btnStyle = `media-button`;
-    if (!this.state.isEditable)
+    if (!isEditable)
       btnStyle += ` media-button-disabled`;
   
     let addMediaBlock;
@@ -275,7 +273,7 @@ export default class ContentMedia extends ContentBase {
             Upload New
             <input styleName="media-hidden"
                    type="file"
-                   disabled={!this.state.isEditable}
+                   disabled={!isEditable}
                    onChange={this.onMediaNew}/>
           </div>
           <div styleName={btnStyle + ` media-insert`}

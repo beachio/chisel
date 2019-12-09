@@ -14,17 +14,11 @@ import ImageTemplateEmpty from "assets/images/template-empty.png";
 
 @CSSModules(styles, {allowMultiple: true})
 export class TemplateControl extends Component {
-  state = {
-    checked: false
-  };
-  template = null;
+  template = this.props.template;
   templateEmpty = false;
 
   constructor(props) {
     super(props);
-
-    this.template = props.template;
-    this.state.checked = props.checked;
 
     if (!this.template) {
       this.templateEmpty = true;
@@ -36,17 +30,13 @@ export class TemplateControl extends Component {
     }
   }
 
-  componentWillReceiveProps({checked}) {
-    this.setState({checked});
-  }
-
   onClick = () => {
     this.props.onChange(this.templateEmpty ? null : this.template);
   };
 
   render() {
     let style = 'template-content';
-    if (this.state.checked)
+    if (this.props.checked)
       style += ' checked';
 
     return (
@@ -74,18 +64,10 @@ export default class SiteCreationModal extends Component {
     errorName: false
   };
 
-  templates = [];
-  site = null;
+  site = new SiteData();
   active = false;
   focusElm = null;
 
-
-  constructor(props) {
-    super(props);
-
-    this.templates = props.templates;
-    this.site = new SiteData();
-  }
 
   componentDidMount() {
     this.active = true;
@@ -160,13 +142,13 @@ export default class SiteCreationModal extends Component {
               <div styleName="error-same-name">This name is already in use.</div>
             }
 
-            {this.templates.length &&
+            {this.props.templates.length &&
               <div>
                 <div styleName="label">Choose template:</div>
                 <div>
                   <TemplateControl checked={!this.state.template}
                                    onChange={this.onChangeTemplate}/>
-                  {this.templates.map(template =>
+                  {this.props.templates.map(template =>
                     <TemplateControl template={template}
                                      key={template.origin.id}
                                      checked={this.state.template == template}

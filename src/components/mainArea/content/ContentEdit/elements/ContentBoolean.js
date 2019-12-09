@@ -13,6 +13,7 @@ import styles from '../ContentEdit.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentBoolean extends ContentBase {
   getInput() {
+    const {isEditable} = this.props;
     let value = this.state.value;
     
     switch (this.field.appearance) {
@@ -25,16 +26,16 @@ export default class ContentBoolean extends ContentBase {
             <RadioControl name={this.field.nameId}
                           data={true}
                           value={value}
-                          disabled={!this.state.isEditable}
+                          disabled={!isEditable}
                           label={textYes}
                           onChange={this.setValue} />
             <RadioControl name={this.field.nameId}
                           data={false}
                           value={value}
-                          disabled={!this.state.isEditable}
+                          disabled={!isEditable}
                           label={textNo}
                           onChange={this.setValue} />
-            {this.state.isEditable &&
+            {isEditable &&
               <div styleName="clear"
                    onClick={() => this.setValue(undefined)}>
                 Reset
@@ -48,10 +49,10 @@ export default class ContentBoolean extends ContentBase {
           <div styleName="switch">
             <div styleName="switch-wrapper">
               <SwitchControl checked={value}
-                             disabled={!this.state.isEditable}
+                             disabled={!isEditable}
                              onChange={this.setValue} />
             </div>
-            {this.state.isEditable &&
+            {isEditable &&
               <div styleName="clear"
                    onClick={() => this.setValue(undefined)}>
                 Reset

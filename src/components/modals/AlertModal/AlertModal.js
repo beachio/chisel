@@ -18,19 +18,11 @@ export default class AlertModal extends Component {
   };
 
   active = false;
-  type = ALERT_TYPE_ALERT;
-  confirmString = '';
+  type = this.props.params.type ? this.props.params.type : ALERT_TYPE_ALERT;
+  confirmString = this.props.params.confirmString;
   focusElm = null;
   focusBtn = null;
 
-
-  constructor(props) {
-    super(props);
-
-    this.confirmString = props.params.confirmString;
-    if (props.params.type)
-      this.type = props.params.type;
-  }
 
   componentDidMount() {
     this.active = true;

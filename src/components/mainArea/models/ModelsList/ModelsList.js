@@ -17,23 +17,15 @@ import ImageIconDelete from 'assets/images/icons/delete.svg';
 @CSSModules(styles, {allowMultiple: true})
 export default class ModelsList extends Component {
   state = {
-    models: [],
+    models: this.props.site.models.slice(),
     modelName: ""
   };
-
-  site = null;
 
   activeInput = null;
   returnFocus = false;
 
   animate = true;
 
-  constructor(props) {
-    super(props);
-
-    this.site = props.site;
-    this.state.models = this.site.models.slice();
-  }
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.alertShowing && this.returnFocus && this.activeInput) {
@@ -41,13 +33,12 @@ export default class ModelsList extends Component {
       setTimeout(() => this.activeInput.focus(), 1);
     }
 
-    if (nextProps.site != this.site) {
-      this.site = nextProps.site;
+    if (nextProps.site != this.props.site) {
       this.animate = false;
       this.setState({modelName: ""});
     }
 
-    this.setState({models: this.site.models.slice()});
+    this.setState({models: nextProps.site.models.slice()});
   }
 
   componentDidUpdate() {

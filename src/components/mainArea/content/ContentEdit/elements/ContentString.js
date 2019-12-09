@@ -229,6 +229,7 @@ export default class ContentString extends ContentBase {
   }
   
   getInput() {
+    const {isEditable} = this.props;
     let value = this.state.value;
     
     switch (this.field.type) {
@@ -243,12 +244,12 @@ export default class ContentString extends ContentBase {
               inner = <DynamicListComponent values={value}
                                             onChange={this.onChangeList}
                                             titled={!!this.field.name}
-                                            readOnly={!this.state.isEditable} />;
+                                            readOnly={!isEditable} />;
             } else {
               inner = <InputControl type="big"
                                     value={value}
                                     titled={!!this.field.name}
-                                    readOnly={!this.state.isEditable}
+                                    readOnly={!isEditable}
                                     onChange={this.onChange} />;
             }
         
@@ -264,7 +265,7 @@ export default class ContentString extends ContentBase {
                 <InputControl type="big"
                               value={value}
                               titled={!!this.field.name}
-                              readOnly={!this.state.isEditable}
+                              readOnly={!isEditable}
                               onChange={this.onChange} />
               </div>
             );
@@ -274,7 +275,7 @@ export default class ContentString extends ContentBase {
               <div styleName="input-wrapper url">
                 <InputControl type="big"
                               value={value}
-                              readOnly={!this.state.isEditable}
+                              readOnly={!isEditable}
                               titled={!!this.field.name}
                               onChange={this.onChange} />
               </div>
@@ -284,13 +285,13 @@ export default class ContentString extends ContentBase {
             const getElement = (v, i) => (
               <div styleName="dropdown-wrapper" key={i}>
                 <div styleName="dropdown">
-                  <DropdownControl disabled={!this.state.isEditable}
+                  <DropdownControl disabled={!isEditable}
                                    list={this.field.validValues}
                                    titled={!!this.field.name}
                                    onSuggest={_v => this.onChangeDropdown(_v, i)}
                                    current={v}/>
                 </div>
-                {this.state.isEditable &&
+                {isEditable &&
                   <div styleName="clear"
                        style={{visibility: v === undefined ? 'hidden' : 'visible'}}
                        onClick={() => this.onChangeDropdown(undefined, i)}>
@@ -324,7 +325,7 @@ export default class ContentString extends ContentBase {
               <div styleName="input-wrapper">
                 <InputControl type="big"
                               value={value}
-                              readOnly={!this.state.isEditable}
+                              readOnly={!isEditable}
                               onChange={this.onChange} />
               </div>
             );
@@ -333,8 +334,8 @@ export default class ContentString extends ContentBase {
             return (
               <textarea styleName="textarea"
                         value={value}
-                        ref={elm => addElectronContextMenu(elm, !this.state.isEditable)}
-                        readOnly={!this.state.isEditable}
+                        ref={elm => addElectronContextMenu(elm, !isEditable)}
+                        readOnly={!isEditable}
                         onChange={this.onChangeTextarea} />
             );
       
@@ -345,7 +346,7 @@ export default class ContentString extends ContentBase {
                       onChange={this.onChangeWysiwyg}
                       options={{
                         placeholder: false,
-                        disableEditing: !this.state.isEditable
+                        disableEditing: !isEditable
                       }} />
             );
 
@@ -353,7 +354,7 @@ export default class ContentString extends ContentBase {
             return (
               <MarkdownEditor styleName="markdown"
                               value={value}
-                              readOnly={!this.state.isEditable}
+                              readOnly={!isEditable}
                               onChange={this.onChangeMarkdown} />
             );
         }

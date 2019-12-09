@@ -17,25 +17,12 @@ export default class MediaModal extends Component {
     selectedItems: [],
     searchText: ''
   };
-  
-  isMult = false;
-  filters = null;
+
+  items = store.getState().media.items;
   active = false;
-  callback = null;
-  items = [];
   focusElm = null;
 
 
-  constructor(props) {
-    super(props);
-    
-    this.isMult = props.params.isMult;
-    this.filters = props.params.filters;
-    this.callback = props.params.callback;
-    
-    this.items = store.getState().media.items;
-  }
-  
   componentDidMount() {
     this.active = true;
     document.addEventListener('keydown', this.onKeyDown);
@@ -77,7 +64,7 @@ export default class MediaModal extends Component {
   }
 
   onSelect = (item) => {
-    if (this.isMult) {
+    if (this.props.params.isMult) {
       let items = this.state.selectedItems;
       let ind = items.indexOf(item);
       if (ind == -1)
@@ -99,7 +86,7 @@ export default class MediaModal extends Component {
     if (!this.state.selectedItems.length || !this.active)
       return;
   
-    this.callback(this.state.selectedItems);
+    this.props.params.callback(this.state.selectedItems);
     this.close();
   };
 
@@ -109,10 +96,11 @@ export default class MediaModal extends Component {
   };
 
   filterSize = item => {
-    if (!item.size || !this.filters)
+    const {filters} = this.props.params;
+    if (!item.size || !filters)
       return true;
   
-    const {fileSize} = this.filters;
+    const {fileSize} = filters;
     if (!fileSize || !fileSize.active)
       return true;
     
@@ -127,10 +115,11 @@ export default class MediaModal extends Component {
   };
   
   filterType = item => {
-    if (!item.type || !this.filters)
+    const {filters} = this.props.params;
+    if (!item.type || !filters)
       return true;
   
-    const {fileTypes} = this.filters;
+    const {fileTypes} = filters;
     if (!fileTypes || !fileTypes.active || !fileTypes.types || !fileTypes.types.length)
       return true;
   

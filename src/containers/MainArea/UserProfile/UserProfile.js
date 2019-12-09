@@ -24,14 +24,16 @@ const CHG_SERVER    = `CHG_SERVER`;
 
 @CSSModules(styles, {allowMultiple: true})
 export class UserProfile extends Component  {
+  userData = this.props.user.userData;
+
   state = {
-    firstName: '',
-    lastName: '',
+    firstName: this.userData.firstName,
+    lastName: this.userData.lastName,
     dirtyData: false,
     errorData: null,
     successData: ``,
     
-    email: '',
+    email: this.userData.email,
     emailNew: '',
     dirtyEmail: false,
     errorEmail: null,
@@ -49,20 +51,12 @@ export class UserProfile extends Component  {
     errorServer: null,
     successServer: ``
   };
-  userData = null;
+
   lastChange = null;
   
   
   constructor(props) {
     super(props);
-    
-    const {user} = props;
-    
-    this.userData = user.userData;
-    
-    this.state.firstName = this.userData.firstName;
-    this.state.lastName = this.userData.lastName;
-    this.state.email = this.userData.email;
     
     if (this.userData.emailNew) {
       this.state.emailNew = this.userData.emailNew;

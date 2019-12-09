@@ -18,17 +18,8 @@ export default class EditableTitleControl extends Component {
   
   testTextElm = null;
   minTextWidth = 0;
-  editable = false;
-  
-  startText = undefined;
+  editable = !this.props.disabled && !!this.props.update;
 
-
-  constructor(props) {
-    super(props);
-
-    this.startText = props.text;
-    this.editable = !props.disabled && !!props.update;
-  }
 
   setText(text) {
     text = text ? text : '';
@@ -70,12 +61,10 @@ export default class EditableTitleControl extends Component {
   componentWillReceiveProps(nextProps) {
     const {text} = nextProps;
 
-    //костыль для React 16.3.0
-    if (this.startText == text)
+    if (this.props.text == text)
       return;
 
     this.setText(text);
-    this.startText = text;
     this.editable = !nextProps.disabled && !!nextProps.update;
   }
 
@@ -105,7 +94,7 @@ export default class EditableTitleControl extends Component {
       this.setState({editing: false});
       this.props.update(this.state.text, t => this.setText(t), true);
     } else if (this.props.required) {
-      this.setText(this.startText);
+      this.setText(this.props.text);
     }
   };
 
@@ -124,7 +113,7 @@ export default class EditableTitleControl extends Component {
     //Esc pressed
     } else if (event.keyCode == 27) {
       this.setState({editing: false});
-      this.setText(this.startText);
+      this.setText(this.props.text);
     }
   };
 

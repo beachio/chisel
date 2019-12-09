@@ -111,6 +111,7 @@ export default class ContentNumber extends ContentBase {
   };
   
   getInput() {
+    const {isEditable} = this.props;
     let value = this.state.value;
     
     switch (this.field.type) {
@@ -126,14 +127,14 @@ export default class ContentNumber extends ContentBase {
             if (this.field.isList) {
               inner = <DynamicListComponent values={value}
                                             onChange={this.onChange}
-                                            readOnly={!this.state.isEditable}
+                                            readOnly={!isEditable}
                                             numeric
                                             numericInt={this.field.type == ftps.FIELD_TYPE_INTEGER} />;
             } else {
               inner = <InputNumberControl type="big"
                                           isInt={this.field.type == ftps.FIELD_TYPE_INTEGER}
                                           value={value}
-                                          readOnly={!this.state.isEditable}
+                                          readOnly={!isEditable}
                                           onChange={this.onChange} />;
             }
         
@@ -151,10 +152,10 @@ export default class ContentNumber extends ContentBase {
                 <ReactStars value={value}
                             onChange={this.onChangeRating}
                             size={32}
-                            edit={this.state.isEditable}
+                            edit={isEditable}
                             color1={'#87878d'}
                             color2={'#8a5ebe'} />
-                {this.state.isEditable &&
+                {isEditable &&
                   <div styleName="clear"
                        onClick={() => this.setValue(undefined)}>
                     Reset
@@ -168,12 +169,12 @@ export default class ContentNumber extends ContentBase {
             const getElement = (v, i) => (
               <div styleName="dropdown-wrapper" key={i}>
                 <div styleName="dropdown">
-                  <DropdownControl disabled={!this.state.isEditable}
+                  <DropdownControl disabled={!isEditable}
                                    list={this.field.validValues}
                                    onSuggest={_v => this.onChangeDropdown(_v, i)}
                                    current={v}/>
                 </div>
-                {this.state.isEditable &&
+                {isEditable &&
                   <div styleName="clear"
                        style={{visibility: v === undefined ? 'hidden' : 'visible'}}
                        onClick={() => this.onChangeDropdown(undefined, i)}>

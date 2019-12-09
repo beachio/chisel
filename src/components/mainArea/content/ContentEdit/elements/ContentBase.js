@@ -10,24 +10,14 @@ import styles from '../ContentEdit.sss';
 export default class ContentBase extends Component {
   state = {
     error: null,
-    value: null,
-    isEditable: false
+    value: this.props.value
   };
   
-  field = null;
+  field = this.props.field;
 
-  constructor (props) {
-    super(props);
-    
-    this.field = props.field;
-    
-    this.state.isEditable = props.isEditable;
-    this.state.value = props.value;
-  }
-  
+
   componentWillReceiveProps(nextProps) {
     this.setState({
-      isEditable: nextProps.isEditable,
       value: nextProps.value
     });
   }
