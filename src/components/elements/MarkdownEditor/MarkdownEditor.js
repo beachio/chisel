@@ -26,14 +26,17 @@ export default class MarkdownEditor extends Component {
   });
 
 
-  componentWillReceiveProps(nextProps) {
+  async componentDidUpdate(prevProps) {
+    if (this.props == prevProps)
+      return;
+
     const {mdeState} = this.state;
-    let value = nextProps.value ? nextProps.value : '';
+    const value = this.props.value ? this.props.value : '';
     if (value == mdeState.markdown)
       return;
 
-    DraftUtil.buildNewMdeState(mdeState, this.genPreview, value)
-      .then(newState => this.setState({mdeState: newState}));
+    const newState = await DraftUtil.buildNewMdeState(mdeState, this.genPreview, value);
+    this.setState({mdeState: newState});
   }
 
   onChangeMde = mdeState => {

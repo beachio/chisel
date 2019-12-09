@@ -15,10 +15,11 @@ export default class ContentBase extends Component {
   
   field = this.props.field;
 
-
+/*
   static getDerivedStateFromProps(props, state) {
     return {value: props.value};
-  }
+  }  
+*/
   
   setValue = (value, save) => {
     this.setState({
