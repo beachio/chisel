@@ -192,7 +192,7 @@ export default class ContentString extends ContentBase {
       {
         text: this.state.value,
         callback: text => this.setValue(text, true),
-        readOnly: !this.state.isEditable
+        readOnly: !this.props.isEditable
       }
     );
   };
