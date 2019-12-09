@@ -58,7 +58,7 @@ const SortableList = SortableContainer(({fields, isEditable, onFieldClick, onRem
   return (
     <div>
       {fields.map((field, index) => (
-        <SortableItem key={field.origin.id}
+        <SortableItem key={field.origin.id ? field.origin.id : Math.random()}
                       index={index}
                       field={field}
                       isEditable={isEditable}
