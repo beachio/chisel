@@ -16,7 +16,7 @@ export default class ContentNumber extends ContentBase {
   constructor (props) {
     super(props);
     
-    if (!this.state.value && this.field.isList)
+    if (!this.state.value && this.state.field.isList)
       this.state.value = [];
   }
   
@@ -25,15 +25,15 @@ export default class ContentNumber extends ContentBase {
     if (baseError)
       return baseError;
     
-    let value = this.state.value;
+    let {value, field} = this.state;
     
     const checkRangeValidation = () => {
-      if (!this.field.validations)
+      if (!field.validations)
         return null;
-      if (!this.field.validations.range || !this.field.validations.range.active)
+      if (!field.validations.range || !field.validations.range.active)
         return null;
       
-      const range = this.field.validations.range;
+      const range = field.validations.range;
       
       const checkRange = value => {
         if (range.minActive && value < range.min ||
@@ -45,7 +45,7 @@ export default class ContentNumber extends ContentBase {
         }
       };
       
-      if (this.field.isList) {
+      if (field.isList) {
         for (let itemValue of value) {
           let error = checkRange(itemValue);
           if (error)
@@ -58,9 +58,9 @@ export default class ContentNumber extends ContentBase {
       }
     };
     
-    switch (this.field.type) {
+    switch (field.type) {
       case ftps.FIELD_TYPE_FLOAT:
-        switch (this.field.appearance) {
+        switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
             let error = checkRangeValidation();
             if (error)
@@ -70,7 +70,7 @@ export default class ContentNumber extends ContentBase {
         break;
   
       case ftps.FIELD_TYPE_INTEGER:
-        switch (this.field.appearance) {
+        switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
             let error = checkRangeValidation();
             if (error)
@@ -112,27 +112,27 @@ export default class ContentNumber extends ContentBase {
   
   getInput() {
     const {isEditable} = this.props;
-    let value = this.state.value;
+    let {value, field} = this.state;
     
-    switch (this.field.type) {
+    switch (field.type) {
       case ftps.FIELD_TYPE_FLOAT:
       case ftps.FIELD_TYPE_INTEGER:
         
-        switch (this.field.appearance) {
+        switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
           case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
             
             let inner;
         
-            if (this.field.isList) {
+            if (field.isList) {
               inner = <DynamicListComponent values={value}
                                             onChange={this.onChange}
                                             readOnly={!isEditable}
                                             numeric
-                                            numericInt={this.field.type == ftps.FIELD_TYPE_INTEGER} />;
+                                            numericInt={field.type == ftps.FIELD_TYPE_INTEGER} />;
             } else {
               inner = <InputNumberControl type="big"
-                                          isInt={this.field.type == ftps.FIELD_TYPE_INTEGER}
+                                          isInt={field.type == ftps.FIELD_TYPE_INTEGER}
                                           value={value}
                                           readOnly={!isEditable}
                                           onChange={this.onChange} />;
@@ -170,7 +170,7 @@ export default class ContentNumber extends ContentBase {
               <div styleName="dropdown-wrapper" key={i}>
                 <div styleName="dropdown">
                   <DropdownControl disabled={!isEditable}
-                                   list={this.field.validValues}
+                                   list={field.validValues}
                                    onSuggest={_v => this.onChangeDropdown(_v, i)}
                                    current={v}/>
                 </div>
@@ -184,7 +184,7 @@ export default class ContentNumber extends ContentBase {
               </div>
             );
     
-            if (!this.field.isList)
+            if (!field.isList)
               return getElement(value);
             
             if (!value)

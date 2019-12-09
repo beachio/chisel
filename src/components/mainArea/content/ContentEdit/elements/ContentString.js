@@ -27,7 +27,7 @@ export default class ContentString extends ContentBase {
   constructor (props) {
     super(props);
     
-    if (!this.state.value && this.field.isList)
+    if (!this.state.value && this.state.field.isList)
       this.state.value = [];
   }
   
@@ -35,12 +35,13 @@ export default class ContentString extends ContentBase {
     const baseError = super.getError();
     if (baseError)
       return baseError;
-  
-    if (this.field.isRequired && !this.state.value)
+
+    const {field} = this.state;
+    if (field.isRequired && !this.state.value)
       return 'This field is required!';
   
     const checkRange = value => {
-      const range = this.field.validations.range;
+      const {range} = field.validations;
       if (range.minActive && value.length < range.min ||
           range.maxActive && value.length > range.max) {
         let error = range.errorMsg;
@@ -50,7 +51,7 @@ export default class ContentString extends ContentBase {
       }
     };
     const checkPattern = value => {
-      const pattern = this.field.validations.pattern;
+      const {pattern} = field.validations;
       const regexp = new RegExp('^' + pattern.pattern + '$', pattern.flags);
       if (!value.match(regexp)) {
         let error = pattern.errorMsg;
@@ -61,16 +62,17 @@ export default class ContentString extends ContentBase {
     };
   
     const checkMainValidations = value => {
-      if (!this.field.validations)
+      const {validations} = field;
+      if (!validations)
         return null;
       
       let error;
-      if (this.field.validations.range && this.field.validations.range.active) {
+      if (validations.range && validations.range.active) {
         error = checkRange(value);
         if (error)
           return error;
       }
-      if (this.field.validations.pattern && this.field.validations.pattern.active) {
+      if (validations.pattern && validations.pattern.active) {
         error = checkPattern(value);
         if (error)
           return error;
@@ -80,14 +82,14 @@ export default class ContentString extends ContentBase {
     
     let value = this.state.value;
     
-    switch (this.field.type) {
+    switch (field.type) {
       case ftps.FIELD_TYPE_SHORT_TEXT:
-        switch (this.field.appearance) {
+        switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
-            if (!this.field.validations)
+            if (!field.validations)
               break;
   
-            if (this.field.isList) {
+            if (field.isList) {
               for (let itemValue of value) {
                 let error = checkMainValidations(itemValue);
                 if (error)
@@ -126,7 +128,7 @@ export default class ContentString extends ContentBase {
         break;
         
       case ftps.FIELD_TYPE_LONG_TEXT:
-        switch (this.field.appearance) {
+        switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
           case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
             let error = checkMainValidations(value);
@@ -142,7 +144,7 @@ export default class ContentString extends ContentBase {
   
   onChange = value => {
     this.setValue(value);
-    if (this.field.isTitle)
+    if (this.state.field.isTitle)
       this.props.updateItemTitle(value);
   };
 
@@ -198,11 +200,13 @@ export default class ContentString extends ContentBase {
   };
   
   getTitle() {
-    switch (this.field.appearance) {
+    const {field} = this.state;
+
+    switch (field.appearance) {
       case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
         return (
           <div styleName="field-title">
-            {this.field.name}
+            {field.name}
             <div styleName="link" onClick={this.onShowWysiwygModal}>
               <InlineSVG styleName="link-icon" src={ImageIconLink}/>
             </div>
@@ -212,7 +216,7 @@ export default class ContentString extends ContentBase {
       case ftps.FIELD_APPEARANCE__LONG_TEXT__MARKDOWN:
         return (
           <div styleName="field-title">
-            {this.field.name}
+            {field.name}
             <div styleName="link" onClick={this.onShowMarkdownModal}>
               <InlineSVG styleName="link-icon" src={ImageIconLink}/>
             </div>
@@ -222,7 +226,7 @@ export default class ContentString extends ContentBase {
       default:
         return (
           <div styleName="field-title">
-            {this.field.name}
+            {field.name}
           </div>
         );
     }
@@ -230,25 +234,25 @@ export default class ContentString extends ContentBase {
   
   getInput() {
     const {isEditable} = this.props;
-    let value = this.state.value;
-    
-    switch (this.field.type) {
+    const {value, field} = this.state;
+
+    switch (field.type) {
 
       case ftps.FIELD_TYPE_SHORT_TEXT:
 
-        switch (this.field.appearance) {
+        switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
             let inner;
         
-            if (this.field.isList) {
+            if (field.isList) {
               inner = <DynamicListComponent values={value}
                                             onChange={this.onChangeList}
-                                            titled={!!this.field.name}
+                                            titled={!!field.name}
                                             readOnly={!isEditable} />;
             } else {
               inner = <InputControl type="big"
                                     value={value}
-                                    titled={!!this.field.name}
+                                    titled={!!field.name}
                                     readOnly={!isEditable}
                                     onChange={this.onChange} />;
             }
@@ -264,7 +268,7 @@ export default class ContentString extends ContentBase {
               <div styleName="input-wrapper">
                 <InputControl type="big"
                               value={value}
-                              titled={!!this.field.name}
+                              titled={!!field.name}
                               readOnly={!isEditable}
                               onChange={this.onChange} />
               </div>
@@ -276,7 +280,7 @@ export default class ContentString extends ContentBase {
                 <InputControl type="big"
                               value={value}
                               readOnly={!isEditable}
-                              titled={!!this.field.name}
+                              titled={!!field.name}
                               onChange={this.onChange} />
               </div>
             );
@@ -286,8 +290,8 @@ export default class ContentString extends ContentBase {
               <div styleName="dropdown-wrapper" key={i}>
                 <div styleName="dropdown">
                   <DropdownControl disabled={!isEditable}
-                                   list={this.field.validValues}
-                                   titled={!!this.field.name}
+                                   list={field.validValues}
+                                   titled={!!field.name}
                                    onSuggest={_v => this.onChangeDropdown(_v, i)}
                                    current={v}/>
                 </div>
@@ -301,7 +305,7 @@ export default class ContentString extends ContentBase {
               </div>
             );
   
-            if (!this.field.isList)
+            if (!field.isList)
               return getElement(value);
   
             if (!value)
@@ -319,7 +323,7 @@ export default class ContentString extends ContentBase {
 
       case ftps.FIELD_TYPE_LONG_TEXT:
 
-        switch (this.field.appearance) {
+        switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
             return (
               <div styleName="input-wrapper">

@@ -14,22 +14,22 @@ import styles from '../ContentEdit.sss';
 export default class ContentBoolean extends ContentBase {
   getInput() {
     const {isEditable} = this.props;
-    let value = this.state.value;
+    const {value, field} = this.state;
     
-    switch (this.field.appearance) {
+    switch (field.appearance) {
       case ftps.FIELD_APPEARANCE__BOOLEAN__RADIO:
-        const textYes = this.field.boolTextYes  ?  this.field.boolTextYes : 'Yes';
-        const textNo  = this.field.boolTextNo   ?  this.field.boolTextNo  : 'No';
+        const textYes = field.boolTextYes ? field.boolTextYes : 'Yes';
+        const textNo  = field.boolTextNo  ? field.boolTextNo  : 'No';
   
         return (
           <div styleName="radio">
-            <RadioControl name={this.field.nameId}
+            <RadioControl name={field.nameId}
                           data={true}
                           value={value}
                           disabled={!isEditable}
                           label={textYes}
                           onChange={this.setValue} />
-            <RadioControl name={this.field.nameId}
+            <RadioControl name={field.nameId}
                           data={false}
                           value={value}
                           disabled={!isEditable}

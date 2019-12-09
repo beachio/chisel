@@ -21,8 +21,9 @@ export default class ContentReference extends ContentBase {
   constructor(props) {
     super(props);
 
-    if (this.field.validations && this.field.validations.models && this.field.validations.models.active) {
-      const modelsList = this.field.validations.models.modelsList;
+    const {validations} = this.state.field;
+    if (validations && validations.models && validations.models.active) {
+      const modelsList = validations.models.modelsList;
       if (modelsList && modelsList.length)
         this.validModels = modelsList;
     }
@@ -32,10 +33,11 @@ export default class ContentReference extends ContentBase {
     const baseError = super.getError();
     if (baseError)
       return baseError;
-  
-    let value = this.state.value;
+
+    const {value, field} = this.state;
+
     if (!value || !value.length) {
-      if (this.field.isRequired)
+      if (field.isRequired)
         return 'This field is required!';
       return;
     }
@@ -47,8 +49,8 @@ export default class ContentReference extends ContentBase {
       
       const modelId = item.model.nameId;
       if (this.validModels && this.validModels.indexOf(modelId) == -1) {
-        if (this.field.validations.models.errorMsg)
-          return this.field.validations.models.errorMsg;
+        if (field.validations.models.errorMsg)
+          return field.validations.models.errorMsg;
         return 'The referred content item has an illegal model!';
       }
     }
@@ -85,7 +87,7 @@ export default class ContentReference extends ContentBase {
     this.props.showModal(MODAL_TYPE_REFERENCE,
       {
         currentItem: this.props.item,
-        isMult: this.field.isList,
+        isMult: this.state.field.isList,
         existingItems: refers,
         validModels: this.validModels,
         callback: items => this.setValue(refers.concat(items), true)
@@ -99,7 +101,7 @@ export default class ContentReference extends ContentBase {
       return;
     
     let refers = this.state.value;
-    if (this.field.isList)
+    if (this.state.field.isList)
       refers.splice(refers.indexOf(item), 1);
     else
       refers = undefined;
@@ -156,7 +158,7 @@ export default class ContentReference extends ContentBase {
   
     let refInner = addRefBlock;
   
-    if (this.field.isList) {
+    if (this.state.field.isList) {
       if (value && value.length)
         refInner = (
           <div>

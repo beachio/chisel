@@ -39,9 +39,11 @@ export default class ContentMedia extends ContentBase {
     
     let max = FILE_SIZE_MAX;
     let fileSizeValid;
+
+    const {validations} = this.state.field;
     
-    if (this.field.validations && this.field.validations.fileSize && this.field.validations.fileSize.active) {
-      fileSizeValid = this.field.validations.fileSize;
+    if (validations && validations.fileSize && validations.fileSize.active) {
+      fileSizeValid = validations.fileSize;
   
       let min = 0;
       if (fileSizeValid.minActive)
@@ -80,10 +82,10 @@ export default class ContentMedia extends ContentBase {
   };
   
   checkType = type => {
-    if (!type || !this.field.validations)
+    if (!type || !this.state.field.validations)
       return;
     
-    const {fileTypes} = this.field.validations;
+    const {fileTypes} = this.state.field.validations;
     if (!fileTypes || !fileTypes.active || !fileTypes.types || !fileTypes.types.length)
       return;
     
@@ -120,7 +122,7 @@ export default class ContentMedia extends ContentBase {
     };
   
     const value = this.state.value;
-    if (this.field.isList) {
+    if (this.state.field.isList) {
       for (let itemValue of value) {
         let error = checkValidations(itemValue);
         if (error)
@@ -135,10 +137,12 @@ export default class ContentMedia extends ContentBase {
   onMediaChoose = () => {
     if (!this.props.isEditable)
       return;
-    
+
+    const {field} = this.state;
+
     this.props.showModal(MODAL_TYPE_MEDIA, {
-      isMult: this.field.isList,
-      filters: this.field.validations,
+      isMult: field.isList,
+      filters: field.validations,
       
       callback: itemsSrc => {
         let newItems = [];
@@ -148,7 +152,7 @@ export default class ContentMedia extends ContentBase {
           newItems.push(item);
         }
         
-        if (this.field.isList) {
+        if (field.isList) {
           let items = this.state.value;
           if (!items)
             items = [];
@@ -197,7 +201,7 @@ export default class ContentMedia extends ContentBase {
       item.assigned = true;
       addMediaItem(item);
       
-      if (this.field.isList) {
+      if (this.state.field.isList) {
         let items = this.state.value;
         if (!items)
           items = [];
@@ -211,7 +215,7 @@ export default class ContentMedia extends ContentBase {
   onMediaClear(item) {
     this.props.removeMediaItem(item);
     
-    if (this.field.isList) {
+    if (this.state.field.isList) {
       let items = this.state.value;
       items.splice(items.indexOf(item), 1);
       this.setValue(items, true);
@@ -285,7 +289,7 @@ export default class ContentMedia extends ContentBase {
     }
   
     let mediaInner = addMediaBlock;
-    if (this.field.isList) {
+    if (this.state.field.isList) {
       if (value && value.length)
         mediaInner = (
           <div>

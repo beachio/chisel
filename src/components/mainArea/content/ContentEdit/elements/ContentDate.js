@@ -27,14 +27,16 @@ export default class ContentDate extends ContentBase {
   
     this.minTime.setHours(0, 0, 0, 0);
     this.maxTime.setHours(23, 59, 59, 999);
+
+    const {field} = this.state;
     
-    if (this.field.validations && this.field.validations.rangeDate && this.field.validations.rangeDate.active) {
-      this.validations = this.field.validations.rangeDate;
+    if (field.validations && field.validations.rangeDate && field.validations.rangeDate.active) {
+      this.validations = field.validations.rangeDate;
   
       if (this.validations.minActive) {
         this.minDateFull = new Date(this.validations.min);
         
-        if (this.field.appearance == FIELD_APPEARANCE__DATE__TIME_ONLY) {
+        if (field.appearance == FIELD_APPEARANCE__DATE__TIME_ONLY) {
           this.minTime.setHours(this.minDateFull.getHours(), this.minDateFull.getMinutes());
         } else {
           this.minDate = new Date(this.minDateFull);
@@ -44,7 +46,7 @@ export default class ContentDate extends ContentBase {
       if (this.validations.maxActive) {
         this.maxDateFull = new Date(this.validations.max);
   
-        if (this.field.appearance == FIELD_APPEARANCE__DATE__TIME_ONLY) {
+        if (field.appearance == FIELD_APPEARANCE__DATE__TIME_ONLY) {
           this.maxTime.setHours(this.maxDateFull.getHours(), this.maxDateFull.getMinutes());
         } else {
           this.maxDate = new Date(this.maxDateFull);
@@ -66,7 +68,7 @@ export default class ContentDate extends ContentBase {
     if (!this.validations)
       return;
     
-    switch (this.field.appearance) {
+    switch (this.state.field.appearance) {
       case FIELD_APPEARANCE__DATE__TIME_ONLY:
         if (value < this.minTime || value > this.maxTime) {
           if (this.validations.errorMsg)
@@ -74,6 +76,7 @@ export default class ContentDate extends ContentBase {
           return 'The time is out of range!';
         }
         break;
+
       default:
         if (this.validations.minActive && value < this.minDateFull ||
             this.validations.maxActive && value > this.maxDateFull) {
@@ -112,7 +115,7 @@ export default class ContentDate extends ContentBase {
     if (!isEditable)
       styleWrapper += ' data-time-disabled';
   
-    switch (this.field.appearance) {
+    switch (this.state.field.appearance) {
       case FIELD_APPEARANCE__DATE__DATE:
         return(
           <div styleName={styleWrapper}>

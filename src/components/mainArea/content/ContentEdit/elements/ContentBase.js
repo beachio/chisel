@@ -9,32 +9,37 @@ import styles from '../ContentEdit.sss';
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentBase extends Component {
   state = {
-    error: null,
-    value: this.props.value
+    item:  this.props.item,
+    field: this.props.field,
+    value: this.props.value,
+    error: null
   };
-  
-  field = this.props.field;
 
-/*
+
   static getDerivedStateFromProps(props, state) {
-    return {value: props.value};
-  }  
-*/
+    if (props.field != state.field || props.item != state.item)
+      return {
+        item:  props.item,
+        field: props.field,
+        value: props.value
+      };
+    return null;
+  }
   
   setValue = (value, save) => {
     this.setState({
       value,
       error: null
     });
-    this.props.setFieldValue(this.field, value, save);
+    this.props.setFieldValue(this.state.field, value, save);
   };
   
   getError() {
-    if (this.field.isRequired && this.state.value === undefined)
+    if (this.state.field.isRequired && this.state.value === undefined)
       return 'This field is required!';
     
-    if (this.field.isUnique) {
-      const item = checkUniqueFieldValue(this.field, this.props.item);
+    if (this.state.field.isUnique) {
+      const item = checkUniqueFieldValue(this.state.field, this.props.item);
       if (item) {
         if (item.title)
           return `This field value must be unique! The "${item.title}" item has same value.`;
@@ -55,7 +60,7 @@ export default class ContentBase extends Component {
   getTitle() {
     return (
       <div styleName="field-title">
-        {this.field.name}
+        {this.state.field.name}
       </div>
     );
   }
