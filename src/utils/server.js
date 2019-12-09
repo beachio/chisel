@@ -4,6 +4,7 @@ import {setServerProblemA, setServerProblemB} from "ducks/nav";
 
 export const PARSE_ERROR_CODE__CONNECTION_FAILED      = 100;
 export const PARSE_ERROR_CODE__OBJECT_NOT_FOUND       = 101;
+export const PARSE_ERROR_CODE__WRONG_EMAIL_FORMAT     = 125;
 export const PARSE_ERROR_CODE__CLOUD_FAIL             = 141;
 export const PARSE_ERROR_CODE__USERNAME_TAKEN         = 202;
 export const PARSE_ERROR_CODE__EMAIL_TAKEN            = 203;

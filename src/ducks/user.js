@@ -6,7 +6,7 @@ import {config} from 'utils/initialize';
 import {setTimeout64, isElectron} from 'utils/common';
 import {getPayPlan, getPayPlanFree} from 'utils/data';
 import {send, PARSE_ERROR_CODE__USERNAME_TAKEN, PARSE_ERROR_CODE__OBJECT_NOT_FOUND, PARSE_ERROR_CODE__EMAIL_NOT_FOUND,
-  PARSE_ERROR_CODE__EMAIL_TAKEN} from 'utils/server';
+  PARSE_ERROR_CODE__EMAIL_TAKEN, PARSE_ERROR_CODE__WRONG_EMAIL_FORMAT} from 'utils/server';
 import {UPDATE_SUBSCRIPTION} from "ducks/pay";
 
 
@@ -24,11 +24,12 @@ export const RESET_STATUS       = 'app/user/RESET_STATUS';
 export const CHANGE_PAY_PLAN    = 'app/user/CHANGE_PAY_PLAN';
 export const CHECK_PAY_PLAN     = 'app/user/CHECK_PAY_PLAN';
 
-export const ERROR_USER_EXISTS  = 'app/user/ERROR_USER_EXISTS';
-export const ERROR_WRONG_PASS   = 'app/user/ERROR_WRONG_PASS';
-export const ERROR_UNVERIF      = 'app/user/ERROR_UNVERIF';
-export const ERROR_OTHER        = 'app/user/ERROR_OTHER';
-export const OK                 = 'app/user/OK';
+export const ERROR_USER_EXISTS        = 'app/user/ERROR_USER_EXISTS';
+export const ERROR_WRONG_EMAIL_FORMAT = 'app/user/ERROR_WRONG_EMAIL_FORMAT';
+export const ERROR_WRONG_PASS         = 'app/user/ERROR_WRONG_PASS';
+export const ERROR_UNVERIF            = 'app/user/ERROR_UNVERIF';
+export const ERROR_OTHER              = 'app/user/ERROR_OTHER';
+export const OK                       = 'app/user/OK';
 
 
 const LOCAL_STORAGE_KEY = 'chisel-servers-list';
@@ -60,6 +61,9 @@ export function register(email, password) {
       .catch(error => {
         let status = ERROR_OTHER;
         switch (error.code) {
+          case PARSE_ERROR_CODE__WRONG_EMAIL_FORMAT:
+            status = ERROR_WRONG_EMAIL_FORMAT; break;
+
           case PARSE_ERROR_CODE__USERNAME_TAKEN:
           case PARSE_ERROR_CODE__EMAIL_TAKEN:
             status = ERROR_USER_EXISTS; break;

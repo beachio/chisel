@@ -8,7 +8,7 @@ import CheckboxControl from 'components/elements/CheckboxControl/CheckboxControl
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {login, register, restorePassword, resendVerEmail, resetStatus,
-  ERROR_USER_EXISTS, ERROR_WRONG_PASS, ERROR_UNVERIF, ERROR_OTHER, OK} from 'ducks/user';
+  ERROR_USER_EXISTS, ERROR_WRONG_PASS, ERROR_UNVERIF, ERROR_OTHER, ERROR_WRONG_EMAIL_FORMAT, OK} from 'ducks/user';
 import {parseURLParams} from 'utils/strings';
 
 import styles from './Sign.sss';
@@ -277,6 +277,21 @@ export class Sign extends Component  {
         break;
 
       case MODE_REG:
+        let errorElm = null;
+        switch (this.state.error) {
+          case ERROR_USER_EXISTS:
+            errorElm = <div styleName="error">This email is already in use!</div>;
+            break;
+
+          case ERROR_WRONG_EMAIL_FORMAT:
+            errorElm = <div styleName="error">Wrong email format!</div>;
+            break;
+
+          case ERROR_OTHER:
+            errorElm = <div styleName="error">There is something wrong. Try again later.</div>;
+            break;
+        }
+
         content = (
           <form styleName="form" onSubmit={this.onReg}>
             {this.elmEmail}
@@ -291,10 +306,7 @@ export class Sign extends Component  {
             </div>
 
             <div styleName="errors">
-              {
-                this.state.error ==  ERROR_USER_EXISTS &&
-                  <div styleName="error">This email is already in use!</div>
-              }
+              {errorElm}
             </div>
           </form>
         );
