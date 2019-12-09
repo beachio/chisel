@@ -57,23 +57,22 @@ export class Sign extends Component  {
     props.userActions.resetStatus();
   }
 
-  componentWillReceiveProps(nextProps) {
-    const {user, nav} = nextProps;
+  static getDerivedStateFromProps(props, state) {
+    const {user, nav} = props;
 
     if (nav.serverProblemB) {
-      this.setState({
+      return {
         error: null,
         lock: false,
         mode: MODE_SERVER_DOWN
-      });
-      return;
+      };
     }
 
     const status = user.status;
     if (!status)
-      return;
+      return null;
 
-    let mode = this.state.mode;
+    let mode = state.mode;
     if (mode == MODE_REG && status == OK)
       mode = MODE_REG_MAIL;
     else if (mode == MODE_FORGOT && status == OK)
@@ -81,12 +80,16 @@ export class Sign extends Component  {
     else if (mode == MODE_LOGIN && status == ERROR_UNVERIF)
       mode = MODE_UNVERIF;
 
-    this.props.userActions.resetStatus();
-    this.setState({
+    return {
       error: status,
       lock: !status,
       mode
-    });
+    };
+  }
+
+  componentDidUpdate() {
+    if (this.props.user.status)
+      this.props.userActions.resetStatus();
   }
 
   onEmailChange = event => {
