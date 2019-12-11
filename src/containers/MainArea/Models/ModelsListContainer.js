@@ -8,7 +8,7 @@ import ModelsList from 'components/mainArea/models/ModelsList/ModelsList';
 import {addModel, deleteModel} from 'ducks/models';
 import {showAlert, URL_USERSPACE, URL_SITE, URL_MODELS, URL_MODEL} from 'ducks/nav';
 import {ROLE_ADMIN, ROLE_OWNER} from 'models/UserData';
-import {NoRights} from "components/mainArea/common/NoRights";
+import NoRights from "components/mainArea/common/NoRights";
 
 
 export class ModelsListContainer extends Component {

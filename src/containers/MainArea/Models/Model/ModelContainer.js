@@ -9,7 +9,7 @@ import {setCurrentModel, updateModel, updateField, deleteField} from 'ducks/mode
 import {showAlert, showModal, URL_USERSPACE, URL_SITE, URL_MODELS, URL_MODEL} from 'ducks/nav';
 import {getModelByNameId} from 'utils/data';
 import {ROLE_ADMIN, ROLE_OWNER} from 'models/UserData';
-import {NoRights} from "components/mainArea/common/NoRights";
+import NoRights from "components/mainArea/common/NoRights";
 
 
 export class ModelContainer extends Component  {

@@ -1,47 +1,41 @@
-import React, {Component} from 'react';
-import CSSModules from 'react-css-modules';
+import React from 'react';
 
 import LoaderComponent from "components/elements/LoaderComponent/LoaderComponent";
 
 import styles from './ContainerComponent.sss';
 
 
-@CSSModules(styles, {allowMultiple: true})
-export default class ContainerComponent extends Component {
-  render() {
-    const {haveTitle2, title, titles, children, onClickRlink, rLinkTitle, showLoader} = this.props;
+export default ({haveTitle2, title, titles, children, onClickRlink, rLinkTitle, showLoader}) => {
+  let headerStyles = styles['header'];
+  if (haveTitle2)
+    headerStyles += ' ' + styles['header-double'];
 
-    let headerStyles = 'header';
-    if (haveTitle2)
-      headerStyles += ' header-double';
-  
-    let titlesCmp = titles;
-    if (title)
-      titlesCmp = <div styleName="title">{title}</div>;
+  let titlesCmp = titles;
+  if (title)
+    titlesCmp = <div className={styles.title}>{title}</div>;
 
-    let contentStyles = 'content';
-    if (showLoader)
-      contentStyles += ' loader-active';
-    
-    return (
-      <div styleName='ContainerComponent'>
-        {showLoader &&
-          <div styleName="loader-wrapper">
-            <LoaderComponent/>
+  let contentStyles = styles['content'];
+  if (showLoader)
+    contentStyles += ' ' + styles['loader-active'];
+
+  return (
+    <div className={styles.ContainerComponent}>
+      {showLoader &&
+        <div className={styles["loader-wrapper"]}>
+          <LoaderComponent/>
+        </div>
+      }
+      <div className={headerStyles}>
+        {titlesCmp}
+        {(!!rLinkTitle && !!onClickRlink) &&
+          <div className={styles["json-fields"]} onClick={onClickRlink}>
+            {rLinkTitle}
           </div>
         }
-        <div styleName={headerStyles}>
-          {titlesCmp}
-          {(!!rLinkTitle && !!onClickRlink) &&
-            <div styleName="json-fields" onClick={onClickRlink}>
-              {rLinkTitle}
-            </div>
-          }
-        </div>
-        <div styleName={contentStyles}>
-          {children}
-        </div>
       </div>
-    );
-  }
+      <div className={contentStyles}>
+        {children}
+      </div>
+    </div>
+  );
 }

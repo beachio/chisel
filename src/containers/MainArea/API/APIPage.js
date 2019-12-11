@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Helmet} from "react-helmet-async";
 
 import {ROLE_EDITOR} from 'models/UserData';
-import {NoRights} from "components/mainArea/common/NoRights";
+import NoRights from "components/mainArea/common/NoRights";
 
 import ImageHammer from 'assets/images/hammer.svg';
 
