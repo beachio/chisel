@@ -20,7 +20,7 @@ export class Sidebar extends Component {
   render() {
     const {models, isSidebarVisible} = this.props;
     const {userData} = this.props.user;
-    const {stripeInitError, payPlans} = this.props.pay;
+    const {stripeInitError} = this.props.pay;
     const {showModal, showAlert} = this.props.navActions;
   
     const gotoSite = site => {

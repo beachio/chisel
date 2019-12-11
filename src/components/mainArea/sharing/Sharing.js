@@ -264,8 +264,8 @@ export default class Sharing extends Component {
             </div>
           </div>
         </ContainerComponent>
-        {
-          false && isEditable &&
+        {/*
+          isEditable &&
             <div styleName="import">
               <div styleName="title">
                 Import Contacts
@@ -283,7 +283,7 @@ export default class Sharing extends Component {
                 </div>
               </div>
             </div>
-        }
+        */}
       </div>
     );
   }
