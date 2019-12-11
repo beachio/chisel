@@ -6,12 +6,14 @@ module.exports = ({file, options, env}) => {
       require('autoprefixer')
     ]
   };
-/*
+
   if (env == 'production')
     res.plugins.unshift(require('cssnano')({
-      preset: 'default',
+      preset: ['default', {
+        mergeRules: false
+      }]
     }));
-*/
+
 
   if (file.extname === '.sss') {
     res.parser = 'sugarss';
