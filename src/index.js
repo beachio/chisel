@@ -54,37 +54,41 @@ class Root extends Component {
   }
   
   render () {
-    return <StripeProvider stripe={this.state.stripe}>
-      <Provider store={store}>
-        <HelmetProvider>
-          <Router history={history} render={applyRouterMiddleware(useScroll(() => [0,0]))}>
-            <Route path='/' component={App}>
-              <Route path="/email-verify" component={EmailVerify} />
-              <Route path="/password-set-success" component={PasswordSet} />
-              <Route path="/password-set" component={PasswordSet} />
-              <Route path="/invalid-link" component={InvalidLink} />
-              <Route path="/sign" component={Sign} />
-              <Route path="/userspace" component={MainArea} >
-                <Route path="/userspace/profile"              component={UserProfile}           onEnter={() => SCP(PAGE_PROFILE)} />
-                <Route path="/userspace/pay-plans"            component={PayPlans}              onEnter={() => SCP(PAGE_PAY_PLANS)} />
-                <Route path="/userspace/payment-methods"      component={PaymentMethods}        onEnter={() => SCP(PAGE_PAYMENT_METHODS)} />
-                <Route path="/userspace/:site/models"         component={ModelsListContainer}   onEnter={() => SCP(PAGE_MODELS)} />
-                <Route path="/userspace/:site/models/:model"  component={ModelContainer}        onEnter={() => SCP(PAGE_MODELS_ITEM)} />
-                <Route path="/userspace/:site/content"        component={ContentListContainer}  onEnter={() => SCP(PAGE_CONTENT)} />
-                <Route path="/userspace/:site/content/:item"  component={ContentEditContainer}  onEnter={() => SCP(PAGE_CONTENT_ITEM)} />
-                <Route path="/userspace/:site/api"            component={APIPage}               onEnter={() => SCP(PAGE_API)} />
-                <Route path="/userspace/:site/settings"       component={SettingsContainer}     onEnter={() => SCP(PAGE_SETTINGS)} />
-                <Route path="/userspace/:site/sharing"        component={SharingContainer}      onEnter={() => SCP(PAGE_SHARING)} />
-                <Redirect from='/userspace/:site' to='/userspace/:site/models' />
-              </Route>
-              <IndexRedirect to='/userspace' />
-              <Redirect from='/**/index.html' to='/' />
-              <Redirect from='/*' to='/invalid-link' />
-            </Route>
-          </Router>
-        </HelmetProvider>
-      </Provider>
-    </StripeProvider>
+    return (
+    //  <React.StrictMode>
+        <StripeProvider stripe={this.state.stripe}>
+          <Provider store={store}>
+            <HelmetProvider>
+              <Router history={history} render={applyRouterMiddleware(useScroll(() => [0,0]))}>
+                <Route path='/' component={App}>
+                  <Route path="/email-verify" component={EmailVerify} />
+                  <Route path="/password-set-success" component={PasswordSet} />
+                  <Route path="/password-set" component={PasswordSet} />
+                  <Route path="/invalid-link" component={InvalidLink} />
+                  <Route path="/sign" component={Sign} />
+                  <Route path="/userspace" component={MainArea} >
+                    <Route path="/userspace/profile"              component={UserProfile}           onEnter={() => SCP(PAGE_PROFILE)} />
+                    <Route path="/userspace/pay-plans"            component={PayPlans}              onEnter={() => SCP(PAGE_PAY_PLANS)} />
+                    <Route path="/userspace/payment-methods"      component={PaymentMethods}        onEnter={() => SCP(PAGE_PAYMENT_METHODS)} />
+                    <Route path="/userspace/:site/models"         component={ModelsListContainer}   onEnter={() => SCP(PAGE_MODELS)} />
+                    <Route path="/userspace/:site/models/:model"  component={ModelContainer}        onEnter={() => SCP(PAGE_MODELS_ITEM)} />
+                    <Route path="/userspace/:site/content"        component={ContentListContainer}  onEnter={() => SCP(PAGE_CONTENT)} />
+                    <Route path="/userspace/:site/content/:item"  component={ContentEditContainer}  onEnter={() => SCP(PAGE_CONTENT_ITEM)} />
+                    <Route path="/userspace/:site/api"            component={APIPage}               onEnter={() => SCP(PAGE_API)} />
+                    <Route path="/userspace/:site/settings"       component={SettingsContainer}     onEnter={() => SCP(PAGE_SETTINGS)} />
+                    <Route path="/userspace/:site/sharing"        component={SharingContainer}      onEnter={() => SCP(PAGE_SHARING)} />
+                    <Redirect from='/userspace/:site' to='/userspace/:site/models' />
+                  </Route>
+                  <IndexRedirect to='/userspace' />
+                  <Redirect from='/**/index.html' to='/' />
+                  <Redirect from='/*' to='/invalid-link' />
+                </Route>
+              </Router>
+            </HelmetProvider>
+          </Provider>
+        </StripeProvider>
+    //  </React.StrictMode>
+    );
   }
 }
 
