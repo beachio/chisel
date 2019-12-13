@@ -11,9 +11,6 @@ process.env.NODE_ENV = 'development';
 module.exports = merge(baseWebpackConfig, {
   mode: 'development',
   devtool: 'source-map',
-  output: {
-    publicPath: './'
-  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: '[name].min.css'
