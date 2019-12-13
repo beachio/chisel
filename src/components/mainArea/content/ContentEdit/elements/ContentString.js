@@ -30,6 +30,16 @@ export default class ContentString extends ContentBase {
     if (!this.state.value && this.state.field.isList)
       this.state.value = [];
   }
+
+  static getDerivedStateFromProps(props, state) {
+    if (state.field.appearance == ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG)
+      return {
+        item:  props.item,
+        field: props.field,
+        value: props.value
+      };
+    return ContentBase.getDerivedStateFromProps(props, state);
+  }
   
   getError () {
     const baseError = super.getError();
