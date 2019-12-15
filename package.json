@@ -12,7 +12,8 @@
   "bugs": {
     "url": "https://github.com/beachio/chisel/issues"
   },
-  "main": "electron/electron.js",
+
+  "browser": "dist/main.js",
   "files": [
     "bin",
     "build",
