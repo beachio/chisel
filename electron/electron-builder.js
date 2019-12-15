@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const pkgMain = require('../package.json');
 
 module.exports = {
@@ -41,6 +43,10 @@ module.exports = {
   nsis: {
     oneClick: false,
     allowToChangeInstallationDirectory: true
+  },
+  publish: {
+    provider: 'github',
+    releaseType: 'draft'
   },
   asar: true
 };
