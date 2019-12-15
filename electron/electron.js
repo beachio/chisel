@@ -1,7 +1,10 @@
-const {app, BrowserWindow, Menu, MenuItem, shell, autoUpdater, ipcMain, dialog} = require('electron');
 const path = require('path');
 const url = require('url');
+
+const {app, BrowserWindow, Menu, MenuItem, shell, ipcMain, dialog} = require('electron');
 const isDev = require('electron-is-dev');
+const {autoUpdater} = require("electron-updater");
+const log = require('electron-log');
 
 
 let selectorWindow;
@@ -217,6 +220,10 @@ app.on('ready', () => {
   Menu.setApplicationMenu(menu);
 
   createSelectorWindow(true);
+
+  log.transports.file.level = "debug";
+  autoUpdater.logger = log;
+  autoUpdater.checkForUpdatesAndNotify();
 });
 
 app.on('browser-window-created', (event, win) => {
