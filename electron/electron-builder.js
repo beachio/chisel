@@ -3,8 +3,9 @@ require('dotenv').config();
 const pkgMain = require('../package.json');
 
 module.exports = {
-  appId: "com.beachio.chisel-cms",
+  appId: "io.beach.chisel-cms",
   productName: "Chisel CMS",
+  copyright: "Copyright © 2019, Beach.io",
   files: [
     "package.json",
     "dist",
