@@ -1,6 +1,6 @@
 {
   "name": "chisel-cms",
-  "version": "0.12.10",
+  "version": "0.12.11",
   "description": "API-first headless CMS running on Parse Server",
   "author": "Beach.io (beach.io)",
   "license": "BSD-3-Clause",
