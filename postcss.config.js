@@ -15,7 +15,11 @@ module.exports = ({file, options, env}) => {
   );
 
   if (env == 'production')
-    res.plugins.push(require('cssnano'));
+    res.plugins.push(require('cssnano')({
+      preset: ['default', {
+        discardEmpty: false,
+      }]
+    }));
 
   return res;
 };
