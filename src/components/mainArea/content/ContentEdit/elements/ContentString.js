@@ -286,7 +286,7 @@ export default class ContentString extends ContentBase {
       
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__URL:
             return (
-              <div styleName="input-wrapper url">
+              <div styleName="input-wrapper">
                 <InputControl type="big"
                               value={value}
                               readOnly={!isEditable}
