@@ -38,7 +38,7 @@ export class ContentEditContainer extends Component {
     if (!modelNameId || !itemId)
       return;
 
-    const {setCurrentItem} = this.props.contentActions;
+    const {setCurrentItem} = this.props.contentActions;
     const {content} = this.props;
     this.item = content.currentItem;
   
@@ -52,8 +52,8 @@ export class ContentEditContainer extends Component {
   render() {
     const {models, content} = this.props;
     const {addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem} = this.props.contentActions;
-    const {showModal, showAlert} = this.props.navActions;
-    const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
+    const {showModal, showAlert} = this.props.navActions;
+    const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
     
     const site = models.currentSite;
     const item = this.item;

@@ -6,7 +6,7 @@ import {init as init_pay,       INIT_END as INIT_END_pay}       from 'ducks/pay'
 import {initEnd} from 'ducks/nav';
 
 
-export const initialization = store => next => action => {
+export const initialization = store => next => action => {
   next(action);
 
   if ((action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) &&

@@ -184,15 +184,15 @@ function findReopenMenuItem() {
 }
 
 
-ipcMain.on('server-select--dialog-on-remove', async event => {
-  const options = {
-    type: 'info',
-    title: 'Removing server',
-    message: "Are you sure?",
-    buttons: ['Yes', 'No']
+ipcMain.on('server-select--dialog-on-remove', async event => {
+  const options = {
+    type: 'info',
+    title: 'Removing server',
+    message: "Are you sure?",
+    buttons: ['Yes', 'No']
   };
   const res = await dialog.showMessageBox(options);
-  event.sender.send('server-select--dialog-on-remove-answer', res.response);
+  event.sender.send('server-select--dialog-on-remove-answer', res.response);
 });
 
 ipcMain.on('server-select--select', (event, server) => {

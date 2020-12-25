@@ -13,9 +13,9 @@ import {showAlert, showModal} from 'ducks/nav';
 export class SharingContainer extends Component  {
   render() {
     const {models, nav, user} = this.props;
-    const {addCollaboration, addInviteCollaboration, updateCollaboration, deleteCollaboration, deleteSelfCollaboration} = 
+    const {addCollaboration, addInviteCollaboration, updateCollaboration, deleteCollaboration, deleteSelfCollaboration} = 
       this.props.modelsActions;
-    const {showAlert, showModal} = this.props.navActions;
+    const {showAlert, showModal} = this.props.navActions;
     
     let site = models.currentSite;
     if (!site)

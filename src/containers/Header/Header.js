@@ -19,8 +19,8 @@ export class Header extends Component  {
   render() {
     const {models, nav} = this.props;
     const {userData} = this.props.user;
-    const {logout} = this.props.userActions;
-    const {toggleSidebar} = this.props.sidebarActions;
+    const {logout} = this.props.userActions;
+    const {toggleSidebar} = this.props.sidebarActions;
 
     let nameId = models.currentSite ? models.currentSite.nameId : null;
 

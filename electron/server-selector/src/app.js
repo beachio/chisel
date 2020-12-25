@@ -171,8 +171,8 @@ export default class App extends Component {
 
   onRemoveServer = () => {
     ipcRenderer.send('server-select--dialog-on-remove');
-    ipcRenderer.on('server-select--dialog-on-remove-answer', (event, index) => {
-      if (index !== 0)
+    ipcRenderer.on('server-select--dialog-on-remove-answer', (event, index) => {
+      if (index !== 0)
         return;
 
       this.servers.splice(this.servers.indexOf(this.state.server), 1);

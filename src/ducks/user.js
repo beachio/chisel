@@ -350,7 +350,7 @@ export function checkPayPlan() {
   };
 }
 
-const initialState = {
+const initialState = {
   localStorageReady: false,
 
   authorized: false,

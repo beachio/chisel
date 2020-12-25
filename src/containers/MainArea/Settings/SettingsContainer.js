@@ -13,8 +13,8 @@ import {showAlert, URL_USERSPACE} from 'ducks/nav';
 export class SettingsContainer extends Component  {
   render() {
     const {models} = this.props;
-    const {updateSite, deleteSite} = this.props.modelsActions;
-    const {showAlert} = this.props.navActions;
+    const {updateSite, deleteSite} = this.props.modelsActions;
+    const {showAlert} = this.props.navActions;
     
     const site = models.currentSite;
     if (!site)

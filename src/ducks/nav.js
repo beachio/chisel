@@ -129,7 +129,7 @@ export function setServerProblemB (value = true) {
   };
 }
 
-const initialState = {
+const initialState = {
   initEnded: false,
 
   isSidebarVisible: true,

@@ -11,14 +11,14 @@ program.option('--port [port]', 'the port to run Chisel');
 
 program.parse(process.argv);
 
-const port            = program.port || process.env.PORT || 9000;
+const port            = program.port || process.env.PORT || 9000;
 const configServerURL = program.serverURL;
 const configAppId     = program.appId;
 const configJSkey     = program.JSkey;
 const configRESTkey   = program.RESTkey;
 
 
-const server = new express();
+const server = new express();
 
 server.use('/', express.static(path.resolve(__dirname, '../dist')));
 
@@ -31,9 +31,9 @@ server.get('*', (req, res) =>
   res.sendFile(path.resolve(__dirname, '../dist/index.html'))
 );
 
-server.listen(port, error => {
-  if (error)
+server.listen(port, error => {
+  if (error)
     console.error(error);
   else
-    console.info(`==> Listening at http://localhost:${port}/`);
+    console.info(`==> Listening at http://localhost:${port}/`);
 });

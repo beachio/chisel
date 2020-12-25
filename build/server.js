@@ -1,14 +1,14 @@
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
+const webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
 const path = require('path');
 const {exec} = require('child_process');
 
-const config = require('./webpack.dev.config');
+const config = require('./webpack.dev.config');
 
 
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 9000;
 
-const server = new WebpackDevServer(
+const server = new WebpackDevServer(
   webpack(config),
   {
     contentBase: path.join(__dirname, '../static/'),
@@ -22,8 +22,8 @@ const server = new WebpackDevServer(
   }
 );
 
-server.listen(port, 'localhost', error => {
-  if (error) {
+server.listen(port, 'localhost', error => {
+  if (error) {
     console.error(error);
     return;
   }

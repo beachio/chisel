@@ -221,7 +221,7 @@ export function filterStatus(status) {
   };
 }
 
-const initialState = {
+const initialState = {
   items: [],
   itemsDraft: [],
 

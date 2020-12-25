@@ -42,7 +42,7 @@ let isEmailURL = URL => {
   return false;
 };
 
-export const routing = store => next => action => {
+export const routing = store => next => action => {
   if ((action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) &&
       !action.authorized && !isEmailURL(URL) && URL.indexOf(URL_SIGN) == -1)
     browserHistory.push(`/${URL_SIGN}`);

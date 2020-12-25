@@ -501,7 +501,7 @@ export function deleteField(field) {
   };
 }
 
-const initialState = {
+const initialState = {
   templates: [],
   sites: [],
   currentSite: null,

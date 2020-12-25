@@ -90,7 +90,7 @@ export function updateDefaultSource(sourceId) {
 }
 
 
-const initialState = {
+const initialState = {
   payPlans: [],
   stripeData: {},
   stripeInitError: false

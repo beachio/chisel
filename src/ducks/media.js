@@ -75,7 +75,7 @@ export function removeMediaItem(item) {
   };
 }
 
-const initialState = {
+const initialState = {
   items: []
 };
 

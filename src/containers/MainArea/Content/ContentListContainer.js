@@ -17,7 +17,7 @@ export class ContentListContainer extends Component {
   render() {
     const {models, content, nav} = this.props;
     const {addItem, deleteItem, filterModel, filterStatus} = this.props.contentActions;
-    const {showAlert} = this.props.navActions;
+    const {showAlert} = this.props.navActions;
     
     let cmpContent = (
       <div className="start-working">

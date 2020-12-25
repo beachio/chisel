@@ -14,8 +14,8 @@ import NoRights from "components/mainArea/common/NoRights";
 export class ModelsListContainer extends Component {
   render() {
     const {models, nav} = this.props;
-    const {addModel, deleteModel} = this.props.modelsActions;
-    const {showAlert} = this.props.navActions;
+    const {addModel, deleteModel} = this.props.modelsActions;
+    const {showAlert} = this.props.navActions;
     
     let title = `Chisel`;
     let content = <NoRights />;

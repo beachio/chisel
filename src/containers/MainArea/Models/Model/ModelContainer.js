@@ -26,7 +26,7 @@ export class ModelContainer extends Component  {
   
     modelId = modelId.slice(URL_MODEL.length);
   
-    const {setCurrentModel} = props.modelsActions;
+    const {setCurrentModel} = props.modelsActions;
     const {models} = props;
     this.model = models.currentModel;
     
@@ -39,8 +39,8 @@ export class ModelContainer extends Component  {
   
   render() {
     const {models, nav} = this.props;
-    const {updateModel, updateField, deleteField} = this.props.modelsActions;
-    const {showAlert, showModal} = this.props.navActions;
+    const {updateModel, updateField, deleteField} = this.props.modelsActions;
+    const {showAlert, showModal} = this.props.navActions;
     
     let title = `Chisel`;
     let content = <NoRights />;
