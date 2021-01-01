@@ -5,7 +5,6 @@ export class UserData {
   origin = null;
   
   email = "";
-  emailNew = "";
   firstName = "";
   lastName = "";
   avatar = null;
@@ -22,7 +21,6 @@ export class UserData {
     if (origin.get('email'))      this.email      = origin.get('email');
       if (!this.email)            this.email      = origin.get('username');
     
-    if (origin.get('emailNew'))   this.emailNew   = origin.get('emailNew');
     if (origin.get('firstName'))  this.firstName  = origin.get('firstName');
     if (origin.get('lastName'))   this.lastName   = origin.get('lastName');
     if (origin.get('avatar'))     this.avatar     = origin.get('avatar');
@@ -33,6 +31,7 @@ export class UserData {
   }
 
   updateOrigin() {
+    this.origin.set("email",      this.email);
     this.origin.set("firstName",  this.firstName);
     this.origin.set("lastName",   this.lastName);
     this.origin.set("avatar",     this.avatar);

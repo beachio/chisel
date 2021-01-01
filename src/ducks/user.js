@@ -16,7 +16,6 @@ export const REGISTER_REQUEST   = 'app/user/REGISTER_REQUEST';
 export const REGISTER_RESPONSE  = 'app/user/REGISTER_RESPONSE';
 export const LOGOUT             = 'app/user/LOGOUT';
 export const UPDATE             = 'app/user/UPDATE';
-export const UPDATE_EMAIL       = 'app/user/UPDATE_EMAIL';
 export const UPDATE_PASSWORD    = 'app/user/UPDATE_PASSWORD';
 export const RESTORE_PASSWORD   = 'app/user/RESTORE_PASSWORD';
 export const RESEND_VERIF       = 'app/user/RESEND_VERIF';
@@ -194,36 +193,6 @@ export function update(data) {
   };
 }
 
-export function updateEmail(email) {
-  if (!email)
-    return null;
-  
-  return dispatch => {
-    const userData = Parse.User.current();
-    send(userData.requestEmailChange(email))
-      .then(() => {
-        dispatch({
-          type: UPDATE_EMAIL,
-          status: OK,
-          email
-        });
-      })
-      .catch(error => {
-        let status = ERROR_OTHER;
-        switch (error.code) {
-          case PARSE_ERROR_CODE__USERNAME_TAKEN:
-          case PARSE_ERROR_CODE__EMAIL_TAKEN:
-            status = ERROR_USER_EXISTS;
-            break;
-        }
-        dispatch({
-          type: UPDATE_EMAIL,
-          status
-        });
-      });
-  };
-}
-
 export function updatePassword(password) {
   if (!password)
     return null;
@@ -260,14 +229,9 @@ export function restorePassword(email) {
 }
 
 export function resendVerEmail(email) {
-  if (!email) {
-    let userData = store.getState().user.userData;
-    if (userData && userData.emailNew)
-      email = userData.emailNew;
-    else
-      return null;
-  }
-  
+  if (!email)
+    return null;
+
   return dispatch => {
     send(fetch(config.serverURL + '/verificationEmailRequest', {
       method: 'POST',
@@ -435,15 +399,6 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         userData: action.data
-      };
-  
-    case UPDATE_EMAIL:
-      if (action.email)
-        userData.emailNew = action.email;
-      return {
-        ...state,
-        userData,
-        status: action.status
       };
       
     case RESTORE_PASSWORD:

@@ -8,7 +8,7 @@ import CSSModules from 'react-css-modules';
 import InputControl from 'components/elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
-import {update, updateEmail, updatePassword, resendVerEmail, ERROR_USER_EXISTS, ERROR_OTHER} from 'ducks/user';
+import {update, updatePassword, ERROR_USER_EXISTS, ERROR_OTHER} from 'ducks/user';
 import {URL_PAY_PLANS, URL_USERSPACE, URL_PAYMENT_METHODS} from "ducks/nav";
 import {config, changeServerURL} from 'utils/initialize';
 import {checkURL, checkEmail, getTextDate} from 'utils/strings';
@@ -34,10 +34,9 @@ export class UserProfile extends Component  {
     successData: ``,
     
     email: this.userData.email,
-    emailNew: '',
     dirtyEmail: false,
     errorEmail: null,
-    successEmailState: false,
+    successEmail: ``,
     
     passwordOld: ``,
     password: '',
@@ -57,14 +56,6 @@ export class UserProfile extends Component  {
   
   constructor(props) {
     super(props);
-    
-    if (this.userData.emailNew) {
-      this.state.emailNew = this.userData.emailNew;
-      this.state.successEmailState = true;
-    } else {
-      this.state.emailNew = this.userData.email;
-    }
-    
     this.state.serverURL = config.serverURL;
   }
 
@@ -85,12 +76,10 @@ export class UserProfile extends Component  {
         }
         
         if (errorEmail) {
-          this.setState({
-            emailNew: this.userData.emailNew ? this.userData.emailNew : this.userData.email,
-            errorEmail
-          });
+          this.setState({errorEmail});
         } else {
-          this.setState({successEmailState: true});
+          this.setState({successEmail: `Email was successfully changed!`});
+          setTimeout(() => this.setState({successEmail: ``}), 2500);
         }
         
         break;
@@ -131,9 +120,11 @@ export class UserProfile extends Component  {
     if (this.validateEmail()) {
       this.setState({dirtyEmail: false});
       this.lastChange = CHG_EMAIL;
-      
-      const {updateEmail} = this.props.userActions;
-      updateEmail(this.state.emailNew);
+
+      this.userData.email = this.state.email;
+
+      const {update} = this.props.userActions;
+      update(this.userData);
     }
   };
   
@@ -176,7 +167,7 @@ export class UserProfile extends Component  {
   }
   
   validateEmail() {
-    if (!checkEmail(this.state.emailNew)) {
+    if (!checkEmail(this.state.email)) {
       this.setState({errorEmail: `Invalid email!`});
       return false;
     }
@@ -214,10 +205,10 @@ export class UserProfile extends Component  {
     this.setState({lastName, dirtyData: true, errorData: null});
   };
   
-  onChangeEmail = emailNew => {
+  onChangeEmail = email => {
     this.setState({
-      emailNew,
-      dirtyEmail: emailNew != this.userData.emailNew,
+      email,
+      dirtyEmail: email != this.userData.email,
       errorEmail: null
     });
   };
@@ -239,11 +230,6 @@ export class UserProfile extends Component  {
   
   onChangeServerURL = serverURL => {
     this.setState({serverURL, dirtyServer: true, errorServer: null});
-  };
-  
-  resendVerification = e => {
-    const {resendVerEmail} = this.props.userActions;
-    resendVerEmail();
   };
   
   onChangePayPlan = () => {
@@ -320,7 +306,7 @@ export class UserProfile extends Component  {
               <div styleName="input-wrapper">
                 <InputControl type="big"
                               label="Email"
-                              value={this.state.emailNew}
+                              value={this.state.email}
                               titled
                               onChange={this.onChangeEmail} />
               </div>
@@ -332,15 +318,8 @@ export class UserProfile extends Component  {
                                disabled={!this.state.dirtyEmail || this.state.errorEmail}
                                value="Change Email"/>
               </div>
-              {this.state.successEmailState &&
-                <div styleName="field-success">
-                  <div>
-                    Your email was changed. We've sent to your new email a link to confirm it. You can use your old email <b>{this.state.email}</b> before confirmation.
-                  </div>
-                  <div styleName="field-success-resend" onClick={this.resendVerification}>
-                    Resend confirmation email
-                  </div>
-                </div>
+              {this.state.successEmail &&
+                <div styleName="field-success">{this.state.successEmail}</div>
               }
               {this.state.errorEmail &&
                 <div styleName="field-error">{this.state.errorEmail}</div>
@@ -483,7 +462,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators({update, updateEmail, updatePassword, resendVerEmail}, dispatch)
+    userActions: bindActionCreators({update, updatePassword}, dispatch)
   };
 }
 
