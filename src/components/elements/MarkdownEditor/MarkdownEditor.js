@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import ReactMde, {DraftUtil} from "react-mde";
+//import ReactMde, {DraftUtil} from "react-mde";
 import * as Showdown from "showdown";
 import CSSModules from 'react-css-modules';
 import styles from './MarkdownEditor.sss';
-import 'react-mde/lib/styles/css/react-mde-all.css';
+//import 'react-mde/lib/styles/css/react-mde-all.css';
 
 
 export const LAYOUT_TABS  = "tabbed";
@@ -51,14 +51,16 @@ export default class MarkdownEditor extends Component {
 
   render () {
     const {readOnly} = this.props;
-    
-    return (
+
+/*    return (
       <ReactMde className={this.props.className}
                 onChange={this.onChangeMde}
                 editorState={this.state.mdeState}
                 generateMarkdownPreview={this.genPreview}
                 layout={this.layout}
                 readOnly={readOnly} />
-    );
+    );*/
+
+    return null;
   }
 }

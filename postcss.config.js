@@ -3,7 +3,13 @@ module.exports = ({file, options, env}) => {
     plugins: []
   };
 
-  if (file.extname === '.sss') {
+  let extname;
+  if (file.extname)
+    extname = file.extname;
+  else
+    extname = file.substring(file.lastIndexOf('.'));
+
+  if (extname === '.sss') {
     res.parser = 'sugarss';
     res.plugins.push(require('precss'));
   }

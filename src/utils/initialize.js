@@ -6,15 +6,18 @@ import {config as _config} from 'ConnectConstants';
 import {send} from 'utils/server';
 
 
-export const config = {};
+// loading config from ConnectConstants
+export const config = {..._config};
 
 
 async function requestConfig() {
   //try to load config from process.env
-  config.serverURL  = process.env.REACT_APP_SERVER_URL  || _config.serverURL;
-  config.appId      = process.env.REACT_APP_APP_ID      || _config.appId;
-  config.JSkey      = process.env.JS_KEY                || _config.JSkey;
-  config.RESTkey    = process.env.REST_KEY              || _config.RESTkey;
+  if (process) {
+    config.serverURL  = process.env.REACT_APP_SERVER_URL  || config.serverURL;
+    config.appId      = process.env.REACT_APP_APP_ID      || config.appId;
+    config.JSkey      = process.env.JS_KEY                || config.JSkey;
+    config.RESTkey    = process.env.REST_KEY              || config.RESTkey;
+  }
 
   //try to load config from local running
   try {

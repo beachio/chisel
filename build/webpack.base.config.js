@@ -6,13 +6,16 @@ module.exports = {
   entry: ['index'],
   output: {
     path: path.join(__dirname, '../dist/'),
-    filename: '[name].js',
     publicPath: '/'
   },
   target: 'web',
   resolve: {
     modules: ['src', 'node_modules'],
-    extensions: ['.js']
+    extensions: ['.js'],
+    alias: {
+      crypto: "crypto-browserify",
+      stream: "stream-browserify"
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -40,7 +43,8 @@ module.exports = {
         options: {
           limit: 3000,
           name: 'assets/images/[name].[ext]'
-        }
+        },
+        type: 'javascript/auto'
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -48,8 +52,13 @@ module.exports = {
         options: {
           limit: 3000,
           name: 'assets/fonts/[name].[hash:7].[ext]'
-        }
+        },
+        type: 'javascript/auto'
       }
     ]
+  },
+  stats: {
+    colors: true,
+    chunks: false
   }
 };

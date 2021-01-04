@@ -9,7 +9,7 @@ import Sites from 'components/sidebar/Sites/Sites';
 import {showModal, showAlert, URL_USERSPACE, URL_SITE, URL_PAY_PLANS} from 'ducks/nav';
 import {isPayPlanTop} from 'utils/data';
 
-import styles, {sidebarHidden} from './Sidebar.sss';
+import styles from './Sidebar.sss';
 
 import ImageQuestion from './question.svg';
 
@@ -33,7 +33,7 @@ export class Sidebar extends Component {
 
     return (
       <div styleName="sidebar"
-           className={isSidebarVisible ? `sidebar-visible` : sidebarHidden}>
+           className={isSidebarVisible ? `sidebar-visible` : styles.sidebarHidden}>
         <Link styleName="header" to="/">
           Chisel
         </Link>

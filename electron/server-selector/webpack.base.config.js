@@ -6,7 +6,6 @@ module.exports = {
   entry: ['index'],
   output: {
     path: path.join(__dirname, './build'),
-    filename: '[name].js',
   },
   resolve: {
     modules: ['electron/server-selector/src', 'src', 'node_modules'],
@@ -38,7 +37,8 @@ module.exports = {
         options: {
           limit: 3000,
           name: 'assets/images/[name].[ext]'
-        }
+        },
+        type: 'javascript/auto'
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -46,8 +46,13 @@ module.exports = {
         options: {
           limit: 3000,
           name: 'assets/fonts/[name].[hash:7].[ext]'
-        }
+        },
+        type: 'javascript/auto'
       }
     ]
+  },
+  stats: {
+    colors: true,
+    chunks: false
   }
 };

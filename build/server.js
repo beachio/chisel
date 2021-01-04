@@ -11,13 +11,10 @@ const port = process.env.PORT || 9000;
 const server = new WebpackDevServer(
   webpack(config),
   {
-    contentBase: path.join(__dirname, '../static/'),
+    static: path.join(__dirname, '../static/'),
     historyApiFallback: true,
-    hot: true,
-    publicPath: config.output.publicPath,
-    stats: {
-      colors: true,
-      chunks: false
+    dev: {
+      publicPath: config.output.publicPath
     }
   }
 );

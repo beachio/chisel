@@ -6,7 +6,7 @@ import {PAGE_MODELS, PAGE_MODELS_ITEM, PAGE_CONTENT, PAGE_CONTENT_ITEM, PAGE_API
   URL_USERSPACE, URL_SITE, URL_MODELS, URL_CONTENT, URL_API, URL_SETTINGS, URL_SHARING} from 'ducks/nav';
 import {throttle} from 'utils/common';
 
-import styles, {activeItem} from './Menu.sss';
+import styles from './Menu.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -39,7 +39,7 @@ export default class Menu extends Component  {
     if (!this.caretRef)
       return;
 
-    const input = this.menuRef.getElementsByClassName(activeItem)[0];
+    const input = this.menuRef.getElementsByClassName(styles.activeItem)[0];
 
     if (input) {
       const l = input.offsetLeft;
@@ -64,31 +64,31 @@ export default class Menu extends Component  {
            ref={el => this.menuRef = el}>
         <Link to={prefix + URL_MODELS}>
           <div styleName="button"
-               className={openedPage == PAGE_MODELS || openedPage == PAGE_MODELS_ITEM ? activeItem : ''}>
+               className={openedPage == PAGE_MODELS || openedPage == PAGE_MODELS_ITEM ? styles.activeItem : ''}>
             Models
           </div>
         </Link>
         <Link to={prefix + URL_CONTENT}>
           <div styleName="button"
-               className={openedPage == PAGE_CONTENT || openedPage == PAGE_CONTENT_ITEM ? activeItem : ''}>
+               className={openedPage == PAGE_CONTENT || openedPage == PAGE_CONTENT_ITEM ? styles.activeItem : ''}>
             Content
           </div>
         </Link>
         <Link to={prefix + URL_API}>
           <div styleName="button"
-               className={openedPage == PAGE_API ? activeItem : ''}>
+               className={openedPage == PAGE_API ? styles.activeItem : ''}>
             API
           </div>
         </Link>
         <Link to={prefix + URL_SHARING}>
           <div styleName="button"
-               className={openedPage == PAGE_SHARING ? activeItem : ''}>
+               className={openedPage == PAGE_SHARING ? styles.activeItem : ''}>
             Sharing
           </div>
         </Link>
         <Link to={prefix + URL_SETTINGS}>
           <div styleName="button"
-               className={openedPage == PAGE_SETTINGS ? activeItem : ''}>
+               className={openedPage == PAGE_SETTINGS ? styles.activeItem : ''}>
             Settings
           </div>
         </Link>
