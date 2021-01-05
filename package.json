@@ -85,8 +85,6 @@
     "@babel/runtime": "^7.12.5",
     "classnames": "^2.2.6",
     "core-js": "^3.8.1",
-    "crypto-browserify": "^3.12.0",
-    "draft-js": "^0.10.5",
     "electron-is-dev": "^1.2.0",
     "electron-log": "^4.3.1",
     "electron-updater": "^4.3.5",
@@ -114,7 +112,6 @@
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.7",
     "showdown": "^1.9.1",
-    "stream-browserify": "^3.0.0",
     "svg-inline-react": "^3.2.0",
     "webpack-hot-middleware": "^2.25.0",
     "whatwg-fetch": "^3.5.0"

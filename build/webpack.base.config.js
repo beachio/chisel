@@ -12,9 +12,8 @@ module.exports = {
   resolve: {
     modules: ['src', 'node_modules'],
     extensions: ['.js'],
-    alias: {
-      crypto: "crypto-browserify",
-      stream: "stream-browserify"
+    fallback: {
+      crypto: false
     }
   },
   plugins: [
