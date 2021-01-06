@@ -22,7 +22,8 @@ function createSelectorWindow(onStart = false) {
     height: 760,
     webPreferences: {
       additionalArguments,
-      nodeIntegration: true
+      nodeIntegration: true,
+      enableRemoteModule: true
     }
   });
   selectorWindow.loadURL(isDev ? 'http://localhost:9900' : `file://${path.join(__dirname, '../server-selector/index.html')}`);
@@ -30,76 +31,77 @@ function createSelectorWindow(onStart = false) {
 }
 
 function constructMenu() {
-  let menuTemplate = [{
-    label: 'Edit',
-    submenu: [
-      {role: 'undo'},
-      {role: 'redo'},
-      {type: 'separator'},
-      {role: 'cut'},
-      {role: 'copy'},
-      {role: 'paste'},
-      {role: 'selectall'}
-    ]
-  }, {
-    label: 'View',
-    submenu: [{
-      label: 'Reload',
-      accelerator: 'CmdOrCtrl+R',
-      click: (item, focusedWindow) => {
-        if (focusedWindow) {
-          // при перезагрузке закрываем второстепенные окна
-          if (focusedWindow.id === 1)
-            BrowserWindow.getAllWindows().forEach(win => {
-              if (win.id > 1)
-                win.close();
-            });
-          focusedWindow.reload();
-        }
-      }
-    }, {
-      label: 'Toggle Full Screen',
-      accelerator: process.platform === 'darwin' ? 'Ctrl+Command+F' : 'F11',
-      click: (item, focusedWindow) => {
-        if (focusedWindow)
-          focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
-      }
-    }, {
-      label: 'Toggle Developer Tools',
-      accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-      click: (item, focusedWindow) => {
-        if (focusedWindow)
-          focusedWindow.toggleDevTools();
-      }
-    }, {
-      label: 'Show Server Select window',
-      click: (item, focusedWindow) => {
-        if (selectorWindow)
-          selectorWindow.focus();
-        else
-          createSelectorWindow();
-      }
-    }]
-  }, {
-    role: 'window',
-    submenu: [
-      {role: 'minimize'},
-      {role: 'close'},
-      {type: 'separator'},
+  const isMac = process.platform === 'darwin';
+
+  let menuTemplate = [
     {
-      label: 'Reopen Window',
-      accelerator: 'CmdOrCtrl+Shift+T',
-      enabled: false,
-      key: 'reopenMenuItem',
-      click: () => app.emit('activate')
-    }]
-  }, {
-    role: 'help',
-    submenu: [{
-      label: 'Learn More',
-      click: () => shell.openExternal('http://electron.atom.io')
-    }]
-  }];
+      label: 'Edit',
+      submenu: [
+        {role: 'undo'},
+        {role: 'redo'},
+        {type: 'separator'},
+        {role: 'cut'},
+        {role: 'copy'},
+        {role: 'paste'},
+        ...(isMac ? [
+          {role: 'delete'},
+          {role: 'selectAll'},
+          {type: 'separator'},
+          {
+            label: 'Speech',
+            submenu: [
+              {role: 'startSpeaking'},
+              {role: 'stopSpeaking'}
+            ]
+          }
+        ] : [
+          {role: 'delete'},
+          {type: 'separator'},
+          {role: 'selectAll'}
+        ])
+      ]
+    },
+    {
+      label: 'View',
+      submenu: [
+        {
+          label: 'Show Server Select window',
+          click: (item, focusedWindow) => {
+            if (selectorWindow)
+              selectorWindow.focus();
+            else
+              createSelectorWindow();
+          }
+        },
+        {type: 'separator'},
+        {role: 'reload'},
+        {role: 'toggleDevTools'},
+        {role: 'togglefullscreen'}
+      ]
+    },
+    {
+      role: 'window',
+      submenu: [
+        {role: 'minimize'},
+        {role: 'zoom'},
+        ...(isMac ? [
+          {type: 'separator'},
+          {role: 'front'},
+          {type: 'separator'},
+          {role: 'window'}
+        ] : [
+          {role: 'close'}
+        ])
+      ]
+    },
+    {
+      role: 'help',
+      submenu: [{
+        label: 'Learn More',
+        click: () => shell.openExternal('http://chiselcms.com')
+      }]
+    }
+  ];
 
 
   function addUpdateMenuItems(items, position) {
@@ -107,25 +109,30 @@ function constructMenu() {
       return;
 
     const version = app.getVersion();
-    const updateItems = [{
-      label: `Version ${version}`,
-      enabled: false
-    }, {
-      label: 'Checking for Update',
-      enabled: false,
-      key: 'checkingForUpdate'
-    }, {
-      label: 'Check for Update',
-      visible: false,
-      key: 'checkForUpdate',
-      click: () => autoUpdater.checkForUpdates()
-    }, {
-      label: 'Restart and Install Update',
-      enabled: true,
-      visible: false,
-      key: 'restartToUpdate',
-      click: () => autoUpdater.quitAndInstall()
-    }];
+    const updateItems = [
+      {
+        label: `Version ${version}`,
+        enabled: false
+      },
+      {
+        label: 'Checking for Update',
+        enabled: false,
+        key: 'checkingForUpdate'
+      },
+      {
+        label: 'Check for Update',
+        visible: false,
+        key: 'checkForUpdate',
+        click: () => autoUpdater.checkForUpdates()
+      },
+      {
+        label: 'Restart and Install Update',
+        enabled: true,
+        visible: false,
+        key: 'restartToUpdate',
+        click: () => autoUpdater.quitAndInstall()
+      }
+    ];
 
     items.splice.apply(items, [position, 0].concat(updateItems));
   }
@@ -147,12 +154,6 @@ function constructMenu() {
           {role: 'quit'}
         ]
       });
-
-      // Window menu.
-      menuTemplate[3].submenu.push(
-        {type: 'separator'},
-        {role: 'front'}
-      );
 
       //addUpdateMenuItems(menuTemplate[0].submenu, 1);
 
@@ -201,7 +202,8 @@ ipcMain.on('server-select--select', (event, server) => {
     height: 800,
     webPreferences: {
       additionalArguments: ['--chisel-server=' + JSON.stringify(server)],
-      nodeIntegration: true
+      nodeIntegration: true,
+      enableRemoteModule: true
     }
   });
   window.loadURL(isDev ? 'http://localhost:9000' : `file://${path.join(__dirname, '../dist/index.html')}`);
