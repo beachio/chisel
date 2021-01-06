@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: ['index'],
   output: {
-    path: path.join(__dirname, './build'),
+    path: path.join(__dirname, './dist'),
   },
   resolve: {
     modules: ['electron/server-selector/src', 'src', 'node_modules'],

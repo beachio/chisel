@@ -14,7 +14,7 @@ module.exports = {
       to: "electron"
     },
     {
-      from: "server-selector/build",
+      from: "server-selector/dist",
       to: "server-selector"
     }
   ],

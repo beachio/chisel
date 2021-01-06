@@ -9,7 +9,7 @@ const webpackConfig = require('./webpack.prod.config');
 let spinner = ora('building for production...');
 spinner.start();
 
-let destPath = path.resolve(__dirname, './build');
+let destPath = path.resolve(__dirname, './dist');
 rm('-rf', destPath);
 mkdir('-p', destPath);
 
