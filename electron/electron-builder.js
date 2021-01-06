@@ -5,7 +5,7 @@ const pkgMain = require('../package.json');
 module.exports = {
   appId: "io.beach.chisel-cms",
   productName: "Chisel CMS",
-  copyright: "Copyright © 2019, Beach.io",
+  copyright: "Copyright © 2021, Beach.io",
   files: [
     "package.json",
     "dist",
