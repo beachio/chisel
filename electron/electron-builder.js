@@ -6,23 +6,6 @@ module.exports = {
   appId: "io.beach.chisel-cms",
   productName: "Chisel CMS",
   copyright: "Copyright © 2021, Beach.io",
-  files: [
-    "package.json",
-    "dist",
-    {
-      filter: "electron.js",
-      to: "electron"
-    },
-    {
-      from: "server-selector/dist",
-      to: "server-selector"
-    }
-  ],
-  directories: {
-    output: 'electron/bin',
-    buildResources: 'electron/build-resources',
-    app: "electron"
-  },
   extraMetadata: {
     name:        pkgMain.name,
     version:     pkgMain.version,
@@ -35,8 +18,32 @@ module.exports = {
 
     main: "electron/electron.js"
   },
+  directories: {
+    output: 'electron/bin',
+    buildResources: 'electron/build-resources',
+    app: "electron"
+  },
+  files: [
+    "package.json",
+    "dist",
+    {
+      filter: "electron.js",
+      to: "electron"
+    },
+    {
+      from: "server-selector/dist",
+      to: "server-selector"
+    }
+  ],
   mac: {
-    category: "public.app-category.developer-tools"
+    category: "public.app-category.developer-tools",
+    hardenedRuntime: true,
+    gatekeeperAssess: false,
+    entitlements: "electron/build-resources/entitlements.mac.plist",
+    entitlementsInherit: "electron/build-resources/entitlements.mac.plist"
+  },
+  dmg: {
+    sign: false
   },
   linux: {
     category: "Network"
@@ -49,5 +56,6 @@ module.exports = {
     provider: 'github',
     releaseType: 'draft'
   },
-  asar: true
+  asar: true,
+  afterSign: "electron/notarize.js"
 };
