@@ -21,8 +21,6 @@ object-assign
 
 /*! @source http://purl.eligrey.com/github/classList.js/blob/master/classList.js */
 
-/*! showdown v 1.9.1 - 02-11-2019 */
-
 /** @license React v0.19.1
  * scheduler.production.min.js
  *
