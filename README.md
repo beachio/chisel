@@ -35,12 +35,9 @@ Then run:
 
 ```
 # serve development build with hot reload at localhost:9000
-npm run start_dev
+npm run start
 
 # executes production build with minification, used by NPM method
-npm local_run
-
-# serve build for production
 npm run build
 ```
 
@@ -94,7 +91,7 @@ If you are running Chisel from a cloned repository, you can
 npm run build
 ```
 
-This will output a Build folder, which can be uploaded to a Forge site.
+This will output a `dist` folder, which can be uploaded to a Forge site.
 
 You could also fork Chisel and link the Github repo to your Forge site and auto-deploy from Github.
 
