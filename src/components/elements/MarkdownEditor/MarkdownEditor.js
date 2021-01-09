@@ -1,66 +1,55 @@
 import React, {Component} from 'react';
-//import ReactMde, {DraftUtil} from "react-mde";
-import * as Showdown from "showdown";
 import CSSModules from 'react-css-modules';
+import MdEditor, { Plugins } from 'react-markdown-editor-lite';
+import 'react-markdown-editor-lite/lib/index.css';
+import MarkdownIt from 'markdown-it';
+
 import styles from './MarkdownEditor.sss';
-//import 'react-mde/lib/styles/css/react-mde-all.css';
 
-
-export const LAYOUT_TABS  = "tabbed";
-export const LAYOUT_SPLIT = "horizontal";
 
 
 @CSSModules(styles, {allowMultiple: true})
 export default class MarkdownEditor extends Component {
-  state = {
-    mdeState: {markdown: this.props.value ? this.props.value : ""},
-  };
-  layout = this.props.layout ? this.props.layout : LAYOUT_TABS;
+  mdParser = new MarkdownIt();
 
-  converter = new Showdown.Converter({
-    tables: true,
-    simplifiedAutoLink: true,
-    simpleLineBreaks: true,
-    tasklists: true,
-    strikethrough: true
-  });
+  constructor(props) {
+    super();
 
+    MdEditor.unuse(Plugins.FullScreen);
 
-  async componentDidUpdate(prevProps) {
-    if (this.props == prevProps)
-      return;
+    MdEditor.use(Plugins.TabInsert, {
+      tabMapValue: 2,
+    });
 
-    const {mdeState} = this.state;
-    const value = this.props.value ? this.props.value : '';
-    if (value == mdeState.markdown)
-      return;
-
-    const newState = await DraftUtil.buildNewMdeState(mdeState, this.genPreview, value);
-    this.setState({mdeState: newState});
+/*    if (!props.fullHeight)
+      MdEditor.use(Plugins.AutoResize, {
+        min: 200, // min height
+        max: 400
+      });*/
   }
 
-  onChangeMde = mdeState => {
-    const markdownOld = this.state.mdeState.markdown;
-    this.setState({mdeState});
-    if (mdeState.markdown != markdownOld)
-      this.props.onChange(mdeState.markdown);
+  onChange = ({html, text}) => {
+    const {onChange} = this.props;
+    onChange(text);
   };
 
-  genPreview = markdown =>
-    Promise.resolve(this.converter.makeHtml(markdown));
-
   render () {
-    const {readOnly} = this.props;
+    const {readOnly, value, fullHeight} = this.props;
 
-/*    return (
-      <ReactMde className={this.props.className}
-                onChange={this.onChangeMde}
-                editorState={this.state.mdeState}
-                generateMarkdownPreview={this.genPreview}
-                layout={this.layout}
-                readOnly={readOnly} />
-    );*/
+    const style = {};
+    if (fullHeight)
+      style.height = '100%';
+    else
+      style.height = '250px';
 
-    return null;
+    return (
+      <MdEditor
+        style={style}
+        value={value}
+        readOnly={readOnly}
+        renderHTML={text => this.mdParser.render(text)}
+        onChange={this.onChange}
+      />
+    );
   }
 }

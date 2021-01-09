@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 
-import MarkdownEditor, {LAYOUT_SPLIT} from 'components/elements/MarkdownEditor/MarkdownEditor';
+import MarkdownEditor from 'components/elements/MarkdownEditor/MarkdownEditor';
 
 import styles from './MarkdownModal.sss';
 
@@ -32,7 +32,7 @@ export default class MarkdownModal extends Component {
           <InlineSVG styleName="cross"
                      src={ImageCrossCircle} />
         </div>
-        <MarkdownEditor layout={LAYOUT_SPLIT}
+        <MarkdownEditor fullHeight
                         value={this.text}
                         readOnly={readOnly}
                         onChange={this.onChange} />

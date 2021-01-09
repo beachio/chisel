@@ -90,6 +90,7 @@
     "electron-is-dev": "^1.2.0",
     "electron-log": "^4.3.1",
     "electron-updater": "^4.3.5",
+    "markdown-it": "^12.0.4",
     "normalize.css": "^8.0.1",
     "parse": "^2.19.0",
     "react": "^16.14.0",
@@ -99,6 +100,7 @@
     "react-flip-move": "^3.0.4",
     "react-gravatar": "^2.6.3",
     "react-helmet-async": "^1.0.7",
+    "react-markdown-editor-lite": "^1.2.4",
     "react-medium-editor": "github:Nes-si/react-medium-editor",
     "react-redux": "^7.2.2",
     "react-router": "^3.2.6",
@@ -112,7 +114,6 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.7",
-    "showdown": "^1.9.1",
     "svg-inline-react": "^3.2.0",
     "webpack-hot-middleware": "^2.25.0",
     "whatwg-fetch": "^3.5.0"
