@@ -15,8 +15,6 @@ export default class MarkdownEditor extends Component {
   constructor(props) {
     super();
 
-    MdEditor.unuse(Plugins.FullScreen);
-
     MdEditor.use(Plugins.TabInsert, {
       tabMapValue: 2,
     });
@@ -28,9 +26,28 @@ export default class MarkdownEditor extends Component {
       });*/
   }
 
+  renderHTML = text => {
+    return this.mdParser.render(text);
+  };
+
   onChange = ({html, text}) => {
     const {onChange} = this.props;
     onChange(text);
+  };
+
+  onImageUpload = (file) => {
+    if (file.size > 50000)
+      return new Promise(resolve => {
+        setTimeout(() => resolve('THE FILE IS TOO LARGE!'), 10);
+      });
+
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = data => {
+        resolve(data.target.result);
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   render () {
@@ -42,13 +59,20 @@ export default class MarkdownEditor extends Component {
     else
       style.height = '250px';
 
+    const config = {
+      view: { menu: true, md: true, html: !!fullHeight },
+      canView: {fullScreen: false}
+    };
+
     return (
       <MdEditor
         style={style}
+        config={config}
         value={value}
         readOnly={readOnly}
-        renderHTML={text => this.mdParser.render(text)}
+        renderHTML={this.renderHTML}
         onChange={this.onChange}
+        onImageUpload={this.onImageUpload}
       />
     );
   }
