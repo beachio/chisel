@@ -19,11 +19,13 @@ export default class MarkdownEditor extends Component {
       tabMapValue: 2,
     });
 
-/*    if (!props.fullHeight)
+    if (props.fullHeight)
+      MdEditor.unuse(Plugins.AutoResize);
+    else
       MdEditor.use(Plugins.AutoResize, {
-        min: 200, // min height
+        min: 200,
         max: 400
-      });*/
+      });
   }
 
   renderHTML = text => {
@@ -56,8 +58,6 @@ export default class MarkdownEditor extends Component {
     const style = {};
     if (fullHeight)
       style.height = '100%';
-    else
-      style.height = '250px';
 
     const config = {
       view: { menu: true, md: true, html: !!fullHeight },
