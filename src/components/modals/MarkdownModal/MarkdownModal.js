@@ -11,16 +11,18 @@ import ImageCrossCircle from 'assets/images/cross-circle.svg';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class MarkdownModal extends Component {
-  text = this.props.params.text;
+  state = {
+    text: this.props.params.text
+  };
 
 
   onClosing = () => {
-    this.props.params.callback(this.text);
+    this.props.params.callback(this.state.text);
     this.props.onClose();
   };
   
   onChange = text => {
-    this.text = text;
+    this.setState({text});
   };
   
   render() {
@@ -33,7 +35,7 @@ export default class MarkdownModal extends Component {
                      src={ImageCrossCircle} />
         </div>
         <MarkdownEditor fullHeight
-                        value={this.text}
+                        value={this.state.text}
                         readOnly={readOnly}
                         onChange={this.onChange} />
       </div>
