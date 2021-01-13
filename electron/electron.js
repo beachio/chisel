@@ -34,6 +34,30 @@ function constructMenu() {
   const isMac = process.platform === 'darwin';
 
   let menuTemplate = [
+    ...(isMac ? [{
+      label: app.name,
+      submenu: [
+        {role: 'about'},
+        {type: 'separator'},
+        {
+          label: 'Check for Update',
+          click: () => autoUpdater.checkForUpdates()
+        },
+        {type: 'separator'},
+        {role: 'services'},
+        {type: 'separator'},
+        {role: 'hide'},
+        {role: 'hideothers'},
+        {role: 'unhide'},
+        {type: 'separator'},
+        {role: 'quit'}
+      ]
+    }] : [{
+      label: 'file',
+      submenu: [
+        {role: 'quit'}
+      ]
+    }]),
     {
       label: 'Edit',
       submenu: [
@@ -43,8 +67,8 @@ function constructMenu() {
         {role: 'cut'},
         {role: 'copy'},
         {role: 'paste'},
+        {role: 'delete'},
         ...(isMac ? [
-          {role: 'delete'},
           {role: 'selectAll'},
           {type: 'separator'},
           {
@@ -55,7 +79,6 @@ function constructMenu() {
             ]
           }
         ] : [
-          {role: 'delete'},
           {type: 'separator'},
           {role: 'selectAll'}
         ])
@@ -96,74 +119,21 @@ function constructMenu() {
     },
     {
       role: 'help',
-      submenu: [{
-        label: 'Learn More',
-        click: () => shell.openExternal('http://chiselcms.com')
-      }]
+      submenu: [
+        ...(isMac ? []: [
+          {role: 'about'},
+          {
+            label: 'Check for Update',
+            click: () => autoUpdater.checkForUpdates()
+          }
+        ]),
+        {
+          label: 'Learn More',
+          click: () => shell.openExternal('http://chiselcms.com')
+        }
+      ]
     }
   ];
-
-
-  function addUpdateMenuItems(items, position) {
-    if (process.mas)
-      return;
-
-    const version = app.getVersion();
-    const updateItems = [
-      {
-        label: `Version ${version}`,
-        enabled: false
-      },
-      {
-        label: 'Checking for Update',
-        enabled: false,
-        key: 'checkingForUpdate'
-      },
-      {
-        label: 'Check for Update',
-        visible: false,
-        key: 'checkForUpdate',
-        click: () => autoUpdater.checkForUpdates()
-      },
-      {
-        label: 'Restart and Install Update',
-        enabled: true,
-        visible: false,
-        key: 'restartToUpdate',
-        click: () => autoUpdater.quitAndInstall()
-      }
-    ];
-
-    items.splice.apply(items, [position, 0].concat(updateItems));
-  }
-
-  switch (process.platform) {
-    case 'darwin':
-      const name = app.name;
-      menuTemplate.unshift({
-        label: name,
-        submenu: [
-          {role: 'about'},
-          {type: 'separator'},
-          {role: 'services'},
-          {type: 'separator'},
-          {role: 'hide'},
-          {role: 'hideothers'},
-          {role: 'unhide'},
-          {type: 'separator'},
-          {role: 'quit'}
-        ]
-      });
-
-      //addUpdateMenuItems(menuTemplate[0].submenu, 1);
-
-      break;
-
-    case 'win32':
-      const helpMenu = menuTemplate[menuTemplate.length - 1].submenu;
-      //addUpdateMenuItems(helpMenu, 0);
-      break;
-  }
 
   return menuTemplate;
 }
@@ -224,7 +194,9 @@ app.on('ready', () => {
   createSelectorWindow(true);
 
   log.transports.file.level = "debug";
+  log.info('App ready.');
   autoUpdater.logger = log;
+
   autoUpdater.checkForUpdatesAndNotify();
 });
 
@@ -249,3 +221,6 @@ app.on('activate', () => {
   //if (mainWindow === null)
     //createWindow();
 });
+
+
+
