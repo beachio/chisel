@@ -30,8 +30,16 @@ function createSelectorWindow(onStart = false) {
   selectorWindow.on('closed', () => selectorWindow = null);
 }
 
+
+checkForUpdatesManually = false;
+
 function constructMenu() {
   const isMac = process.platform === 'darwin';
+
+  checkForUpdates = () => {
+    checkForUpdatesManually = true;
+    autoUpdater.checkForUpdates();
+  };
 
   let menuTemplate = [
     ...(isMac ? [{
@@ -41,7 +49,7 @@ function constructMenu() {
         {type: 'separator'},
         {
           label: 'Check for Update',
-          click: () => autoUpdater.checkForUpdates()
+          click: checkForUpdates
         },
         {type: 'separator'},
         {role: 'services'},
@@ -124,7 +132,7 @@ function constructMenu() {
           {role: 'about'},
           {
             label: 'Check for Update',
-            click: () => autoUpdater.checkForUpdates()
+            click: checkForUpdates
           }
         ]),
         {
@@ -185,10 +193,11 @@ ipcMain.on('server-select--select', (event, server) => {
 
 //======electron updater events
 
-autoUpdater.on('update-available', (info) => {
-  autoUpdater.downloadUpdate();
-})
 autoUpdater.on('update-not-available', (info) => {
+  if (!checkForUpdatesManually)
+    return;
+  checkForUpdatesManually = false;
+
   const notif = new Notification({
     title: 'Update not available',
     body: 'You are using the latest version of Chisel CMS.'
@@ -197,9 +206,9 @@ autoUpdater.on('update-not-available', (info) => {
   notif.addListener('click', notif.close);
 })
 autoUpdater.on('download-progress', (progressObj) => {
-  let logMessage = "Download speed: " + progressObj.bytesPerSecond;
-  logMessage = logMessage + ' - Downloaded ' + progressObj.percent + '%';
-  logMessage = logMessage + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+  const mbs = (progressObj.bytesPerSecond / 1024 / 1024).toFixed(1);
+  let logMessage = "Download speed: " + mbs + ' MB/s';
+  logMessage = logMessage + ' - Downloaded ' + Math.round(progressObj.percent) + '%';
   log.info(logMessage);
 })
 autoUpdater.on('update-downloaded', (info) => {
@@ -212,7 +221,7 @@ autoUpdater.on('update-downloaded', (info) => {
     }]
   });
   notif.show();
-  notif.addListener('action', autoUpdater.quitAndInstall);
+  notif.addListener('action', () => autoUpdater.quitAndInstall());
 });
 
 
