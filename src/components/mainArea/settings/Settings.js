@@ -2,15 +2,17 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import {Parse} from 'parse';
 
+import {filterSpecials, checkURL} from 'utils/strings';
+import {checkSiteName, checkSiteDomain, DOMAIN_ERROR_EXIST, DOMAIN_ERROR_SYNTAX} from 'utils/data';
+import {triggerSiteWebhook} from 'utils/server';
 import InputControl from 'components/elements/InputControl/InputControl';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
+import SwitchControl from "components/elements/SwitchControl/SwitchControl";
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
-import {checkSiteName, checkSiteDomain, DOMAIN_ERROR_EXIST, DOMAIN_ERROR_SYNTAX} from 'utils/data';
 import {ALERT_TYPE_CONFIRM} from 'components/modals/AlertModal/AlertModal';
-import {filterSpecials, checkURL} from 'utils/strings';
-
 
 import styles from './Settings.sss';
+
 
 const ERROR_BLANK_NAME = "The name is required!";
 const ERROR_URL_SYNTAX  = "The domain URL is wrong!";
@@ -22,10 +24,11 @@ const ERROR_URL_EXIST  = "This domain URL is already exists";
 @CSSModules(styles, {allowMultiple: true})
 export default class Settings extends Component {
   state = {
-    name:     this.props.site.name,
-    domain:   this.props.site.domain,
-    webhook:  this.props.site.webhook,
-    icon:     this.props.site.icon,
+    name:             this.props.site.name,
+    domain:           this.props.site.domain,
+    webhook:          this.props.site.webhook,
+    webhookDisabled:  this.props.site.webhookDisabled,
+    icon:             this.props.site.icon,
 
     dirty: false,
     error: null,
@@ -45,6 +48,10 @@ export default class Settings extends Component {
 
   onChangeWebhook = webhook => {
     this.setState({webhook, dirty: true, error: null});
+  };
+
+  onChangeWebhookDisabled = webhookDisabled => {
+    this.setState({webhookDisabled, dirty: true, error: null});
   };
 
   onChangeIcon = async event => {
@@ -67,6 +74,17 @@ export default class Settings extends Component {
     const parseFile = new Parse.File(filterSpecials(file.name), file, file.type);
     await parseFile.save();
     this.setState({dirty: true, icon: parseFile});
+  };
+
+  onTriggerWebhook = () => {
+    const {webhook} = this.state;
+    if (!webhook)
+      return;
+
+    if (checkURL(webhook))
+      triggerSiteWebhook(webhook);
+    else
+      this.setState({error: ERROR_WEBHOOK_SYNTAX});
   };
 
   validate() {
@@ -107,10 +125,11 @@ export default class Settings extends Component {
     this.setState({dirty: false});
 
     const {site} = this.props;
-    site.name     = this.state.name;
-    site.domain   = this.state.domain;
-    site.webhook  = this.state.webhook;
-    site.icon     = this.state.icon;
+    site.name             = this.state.name;
+    site.domain           = this.state.domain;
+    site.webhook          = this.state.webhook;
+    site.webhookDisabled  = this.state.webhookDisabled;
+    site.icon             = this.state.icon;
     this.props.updateSite(site);
   };
 
@@ -211,6 +230,19 @@ export default class Settings extends Component {
                             readOnly={!isEditable}
                             onChange={this.onChangeWebhook} />
             </div>
+          </div>
+          <div styleName="field">
+            <div styleName="input-wrapper">
+              <SwitchControl label="Do not trigger webhook automatically"
+                             checked={this.state.webhookDisabled}
+                             onChange={this.onChangeWebhookDisabled} />
+            </div>
+          </div>
+          <div styleName="field button-wrapper">
+            <ButtonControl color="purple"
+                           disabled={!this.state.webhook}
+                           value="Trigger webhook"
+                           onClick={this.onTriggerWebhook} />
           </div>
           <div styleName="field">
             <div styleName="input-wrapper">

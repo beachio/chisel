@@ -1,3 +1,5 @@
+import {Parse} from "parse";
+
 import {store} from 'index';
 import {setServerProblemA, setServerProblemB} from "ducks/nav";
 
@@ -103,4 +105,8 @@ export function getAllObjects (query) {
   };
   
   return getObjects();
+}
+
+export function triggerSiteWebhook (URL) {
+  send(Parse.Cloud.run('onContentModify', {URL}));
 }
