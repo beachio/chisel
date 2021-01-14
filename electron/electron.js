@@ -31,13 +31,16 @@ function createSelectorWindow(onStart = false) {
 }
 
 
-checkForUpdatesManually = false;
+checkingForUpdatesManually = false;
+downloadingUpdate = false;
 
 function constructMenu() {
   const isMac = process.platform === 'darwin';
 
   checkForUpdates = () => {
-    checkForUpdatesManually = true;
+    if (downloadingUpdate)
+      return;
+    checkingForUpdatesManually = true;
     autoUpdater.checkForUpdates();
   };
 
@@ -47,10 +50,10 @@ function constructMenu() {
       submenu: [
         {role: 'about'},
         {type: 'separator'},
-        {
+        ...(process.mas ? [] : [{
           label: 'Check for Update',
           click: checkForUpdates
-        },
+        }]),
         {type: 'separator'},
         {role: 'services'},
         {type: 'separator'},
@@ -130,10 +133,10 @@ function constructMenu() {
       submenu: [
         ...(isMac ? []: [
           {role: 'about'},
-          {
+          ...(process.windowsStore ? []: [{
             label: 'Check for Update',
             click: checkForUpdates
-          }
+          }]),
         ]),
         {
           label: 'Learn More',
@@ -194,9 +197,9 @@ ipcMain.on('server-select--select', (event, server) => {
 //======electron updater events
 
 autoUpdater.on('update-not-available', (info) => {
-  if (!checkForUpdatesManually)
+  if (!checkingForUpdatesManually)
     return;
-  checkForUpdatesManually = false;
+  checkingForUpdatesManually = false;
 
   const notif = new Notification({
     title: 'Update not available',
@@ -204,14 +207,18 @@ autoUpdater.on('update-not-available', (info) => {
   });
   notif.show();
   notif.addListener('click', notif.close);
-})
+});
+autoUpdater.on('update-available', () => {
+  downloadingUpdate = true;
+});
 autoUpdater.on('download-progress', (progressObj) => {
   const mbs = (progressObj.bytesPerSecond / 1024 / 1024).toFixed(1);
   let logMessage = "Download speed: " + mbs + ' MB/s';
   logMessage = logMessage + ' - Downloaded ' + Math.round(progressObj.percent) + '%';
   log.info(logMessage);
-})
+});
 autoUpdater.on('update-downloaded', (info) => {
+  downloadingUpdate = false;
   const notif = new Notification({
     title: 'Update was downloaded',
     body: 'Restart Chisel CMS app to install update.',
@@ -265,5 +272,4 @@ app.on('activate', () => {
 
 
 app.setName('Chisel CMS');
-
 app.setAppUserModelId(process.execPath);
