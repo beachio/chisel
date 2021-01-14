@@ -40,7 +40,10 @@ module.exports = {
     hardenedRuntime: true,
     gatekeeperAssess: false,
     entitlements: "electron/build-resources/entitlements.mac.plist",
-    entitlementsInherit: "electron/build-resources/entitlements.mac.plist"
+    entitlementsInherit: "electron/build-resources/entitlements.mac.plist",
+    extendInfo: {
+      'NSUserNotificationAlertStyle': 'alert'
+    }
   },
   dmg: {
     sign: false

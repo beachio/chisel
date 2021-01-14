@@ -1,7 +1,7 @@
 const path = require('path');
 const url = require('url');
 
-const {app, BrowserWindow, Menu, MenuItem, shell, ipcMain, dialog} = require('electron');
+const {app, BrowserWindow, Menu, MenuItem, shell, ipcMain, dialog, Notification, NotificationAction} = require('electron');
 const isDev = require('electron-is-dev');
 const {autoUpdater} = require("electron-updater");
 const log = require('electron-log');
@@ -53,7 +53,7 @@ function constructMenu() {
         {role: 'quit'}
       ]
     }] : [{
-      label: 'file',
+      label: 'File',
       submenu: [
         {role: 'quit'}
       ]
@@ -183,6 +183,46 @@ ipcMain.on('server-select--select', (event, server) => {
 
 
 
+//======electron updater events
+
+autoUpdater.on('checking-for-update', () => {
+  log.info('Checking for update');
+})
+autoUpdater.on('update-available', (info) => {
+  log.info('Update available.');
+  appUpdater.downloadUpdate();
+})
+autoUpdater.on('update-not-available', (info) => {
+  log.info('Update not available.');
+  const notif = new Notification({
+    title: 'Update not available',
+    body: 'You are using the latest version of Chisel CMS.'
+  });
+  notif.show();
+  notif.addListener('click', notif.close);
+})
+autoUpdater.on('error', (err) => {
+  log.warn('Error in auto-updater. ' + err);
+})
+autoUpdater.on('download-progress', (progressObj) => {
+  let logMessage = "Download speed: " + progressObj.bytesPerSecond;
+  logMessage = logMessage + ' - Downloaded ' + progressObj.percent + '%';
+  logMessage = logMessage + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+  log.info(logMessage);
+})
+autoUpdater.on('update-downloaded', (info) => {
+  log.info('update downloaded');
+  const notif = new Notification({
+    title: 'Update was downloaded',
+    body: 'Restart Chisel CMS app to install update.',
+    actions: [{
+      type: 'button',
+      text: 'Restart'
+    }]
+  });
+  notif.show();
+  notif.addListener('action', autoUpdater.quitAndInstall)
+});
 
 
 //================== app hooks==========
@@ -197,7 +237,7 @@ app.on('ready', () => {
   log.info('App ready.');
   autoUpdater.logger = log;
 
-  autoUpdater.checkForUpdatesAndNotify();
+  autoUpdater.checkForUpdates();
 });
 
 app.on('browser-window-created', (event, win) => {
@@ -224,3 +264,6 @@ app.on('activate', () => {
 
 
 
+app.setName('Chisel CMS');
+
+app.setAppUserModelId(process.execPath);
