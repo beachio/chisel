@@ -185,24 +185,16 @@ ipcMain.on('server-select--select', (event, server) => {
 
 //======electron updater events
 
-autoUpdater.on('checking-for-update', () => {
-  log.info('Checking for update');
-})
 autoUpdater.on('update-available', (info) => {
-  log.info('Update available.');
-  appUpdater.downloadUpdate();
+  autoUpdater.downloadUpdate();
 })
 autoUpdater.on('update-not-available', (info) => {
-  log.info('Update not available.');
   const notif = new Notification({
     title: 'Update not available',
     body: 'You are using the latest version of Chisel CMS.'
   });
   notif.show();
   notif.addListener('click', notif.close);
-})
-autoUpdater.on('error', (err) => {
-  log.warn('Error in auto-updater. ' + err);
 })
 autoUpdater.on('download-progress', (progressObj) => {
   let logMessage = "Download speed: " + progressObj.bytesPerSecond;
@@ -211,7 +203,6 @@ autoUpdater.on('download-progress', (progressObj) => {
   log.info(logMessage);
 })
 autoUpdater.on('update-downloaded', (info) => {
-  log.info('update downloaded');
   const notif = new Notification({
     title: 'Update was downloaded',
     body: 'Restart Chisel CMS app to install update.',
@@ -221,7 +212,7 @@ autoUpdater.on('update-downloaded', (info) => {
     }]
   });
   notif.show();
-  notif.addListener('action', autoUpdater.quitAndInstall)
+  notif.addListener('action', autoUpdater.quitAndInstall);
 });
 
 
