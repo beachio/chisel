@@ -7,7 +7,7 @@ import {UserData, CollaborationData, ROLE_OWNER} from 'models/UserData';
 import {canBeTitle, FIELD_NAMES_RESERVED, ModelData, ModelFieldData, SiteData, TemplateData} from 'models/ModelData';
 import {getRandomColor} from 'utils/common';
 import {filterSpecials} from 'utils/strings';
-import {getNameId, getRole} from 'utils/data';
+import {getSite, getModelFromAnySite, getNameId, getRole} from 'utils/data';
 
 
 export const INIT_END                   = 'app/models/INIT_END';
@@ -162,6 +162,144 @@ function requestFields(models_o, models) {
     });
 }
 
+async function subscribeToSites() {
+  const query = new Parse.Query(SiteData.OriginClass);
+  const subscription = await query.subscribe();
+
+  subscription.on('create', (site_o) => {
+    console.log(site_o);
+  });
+
+  subscription.on('update', (site_o) => {
+    const site = getSite(site_o.id);
+    if (!site)
+      return;
+
+    const siteNew = new SiteData().setOrigin(site_o);
+    const siteNewData = siteNew.toJSON();
+    const siteData = site.toJSON();
+    if (JSON.stringify(siteNewData) == JSON.stringify(siteData))
+      return;
+
+    Object.assign(site, siteNewData);
+    store.dispatch(updateSiteFromServer(site));
+  });
+
+  subscription.on('delete', (site_o) => {
+    const site = getSite(site_o.id);
+    if (!site)
+      return;
+
+    store.dispatch(deleteSiteFromServer(site_o));
+  });
+}
+
+async function subscribeToModels() {
+  const query = new Parse.Query(ModelData.OriginClass);
+  const subscription = await query.subscribe();
+
+  subscription.on('create', (model_o) => {
+    const site_o = model_o.get('site');
+    const site = getSite(site_o.id);
+    if (site && site.models.find(m => m.nameId == model_o.get('nameId')))
+      return;
+
+    if (!site)
+      return;
+
+    const model = new ModelData().setOrigin(model_o);
+    model.site = site;
+    store.dispatch(addModelFromServer(model));
+  });
+
+  subscription.on('update', (model_o) => {
+    const site_o = model_o.get('site');
+    const site = getSite(site_o.id);
+    if (!site)
+      return;
+
+    const model = site.models.find(m => m.origin.id == model_o.id);
+    if (!model)
+      return;
+
+    const modelNew = new ModelData().setOrigin(model_o);
+    const modelNewData = modelNew.toJSON();
+    delete modelNewData.fields;
+    const modelData = model.toJSON();
+    delete modelData.fields;
+    if (JSON.stringify(modelNewData) == JSON.stringify(modelData))
+      return;
+
+    Object.assign(model, modelNewData);
+    store.dispatch(updateModelFromServer(model));
+  });
+
+  subscription.on('delete', (model_o) => {
+    const site_o = model_o.get('site');
+    const site = getSite(site_o.id);
+    if (!site)
+      return;
+
+    const model = site.models.find(m => m.origin.id == model_o.id);
+    if (!model)
+      return;
+
+    store.dispatch(deleteModelFromServer(model));
+  });
+}
+
+async function subscribeToFields() {
+  const query = new Parse.Query(ModelFieldData.OriginClass);
+  const subscription = await query.subscribe();
+
+  subscription.on('create', (field_o) => {
+    const model_o = field_o.get('model');
+    const model = getModelFromAnySite(model_o.id);
+    if (model && model.fields.find(f => f.nameId == field_o.get('nameId')))
+      return;
+
+    if (!model)
+      return;
+
+    const field = new ModelFieldData().setOrigin(field_o);
+    field.model = model;
+    store.dispatch(addFieldFromServer(field));
+  });
+
+  subscription.on('update', (field_o) => {
+    const model_o = field_o.get('model');
+    const model = getModelFromAnySite(model_o.id);
+    if (!model)
+      return;
+
+    const field = model.fields.find(f => f.origin.id == field_o.id);
+    if (!field)
+      return;
+
+    const fieldNew = new ModelFieldData().setOrigin(field_o);
+    const fieldNewData = fieldNew.toJSON();
+    const fieldData = field.toJSON();
+    if (JSON.stringify(fieldNewData) == JSON.stringify(fieldData))
+      return;
+
+    Object.assign(field, fieldNewData);
+    store.dispatch(updateFieldFromServer(field));
+  });
+
+  subscription.on('delete', (field_o) => {
+    const model_o = field_o.get('model');
+    const model = getModelFromAnySite(model_o.id);
+    if (!model)
+      return;
+
+    const field = model.fields.find(f => f.origin.id == field_o.id);
+    if (!field)
+      return;
+
+    store.dispatch(deleteFieldFromServer(field));
+  });
+}
+
 export function init() {
   return dispatch => {
     let templates_o = [];
@@ -186,9 +324,7 @@ export function init() {
           let site = new SiteData().setOrigin(site_o);
   
           promises.push(
-            send(
-              site_o.get('owner').fetch()
-            )
+            send(site_o.get('owner').fetch())
               .then(owner_o =>
                 site.owner = new UserData().setOrigin(owner_o)
               )
@@ -216,13 +352,17 @@ export function init() {
           })
       ]))
   
-      .then(() =>
+      .then(() => {
+        subscribeToSites();
+        subscribeToModels();
+        subscribeToFields();
+
         dispatch({
           type: INIT_END,
           templates,
           sites
-        })
-      );
+        });
+      });
   }
 }
 
@@ -319,9 +459,22 @@ export function updateSite(site) {
   };
 }
 
+export function updateSiteFromServer(site) {
+  return {
+    type: SITE_UPDATE
+  };
+}
+
 export function deleteSite(site) {
   send(site.origin.destroy());
   
+  return {
+    type: SITE_DELETE,
+    site
+  };
+}
+
+export function deleteSiteFromServer(site) {
   return {
     type: SITE_DELETE,
     site
@@ -419,11 +572,25 @@ export function addModel(name) {
   };
 }
 
+export function addModelFromServer(model) {
+  return {
+    type: MODEL_ADD,
+    model
+  };
+}
+
 export function updateModel(model) {
   model.updateOrigin();
   send(model.origin.save());
   
-  return{
+  return {
+    type: MODEL_UPDATE,
+    model
+  };
+}
+
+export function updateModelFromServer(model) {
+  return {
     type: MODEL_UPDATE,
     model
   };
@@ -439,6 +606,13 @@ export function setCurrentModel(currentModel) {
 export function deleteModel(model) {
   send(model.origin.destroy());
   
+  return {
+    type: MODEL_DELETE,
+    model
+  };
+}
+
+export function deleteModelFromServer(model) {
   return {
     type: MODEL_DELETE,
     model
@@ -478,6 +652,13 @@ export function addField(field) {
   };
 }
 
+export function addFieldFromServer(field) {
+  return {
+    type: FIELD_ADD,
+    field
+  };
+}
+
 export function updateField(field) {
   checkNewTitle(field);
 
@@ -485,6 +666,13 @@ export function updateField(field) {
   send(field.origin.save());
   send(field.model.origin.save());
   
+  return {
+    type: FIELD_UPDATE,
+    field
+  };
+}
+
+export function updateFieldFromServer(field) {
   return {
     type: FIELD_UPDATE,
     field
@@ -501,6 +689,13 @@ export function deleteField(field) {
   };
 }
 
+export function deleteFieldFromServer(field) {
+  return {
+    type: FIELD_DELETE,
+    field
+  };
+}
+
 const initialState = {
   templates: [],
   sites: [],
@@ -511,7 +706,7 @@ const initialState = {
 };
 
 export default function modelsReducer(state = initialState, action) {
-  let sites, currentSite, currentModel, collabs;
+  let sites, currentSite, collabs, models, fields;
   
   switch (action.type) {
     case INIT_END:
@@ -585,39 +780,31 @@ export default function modelsReducer(state = initialState, action) {
       };
   
     case MODEL_ADD:
-      currentSite = state.currentSite;
-      currentSite.models.push(action.model);
+      action.model.site.models.push(action.model);
       return {
-        ...state,
-        currentSite
+        ...state
       };
       
     case MODEL_DELETE:
-      currentSite = state.currentSite;
-      let models = currentSite.models;
+      models = action.model.site.models;
       models.splice(models.indexOf(action.model), 1);
       return {
-        ...state,
-        currentSite
+        ...state
       };
   
     case FIELD_ADD:
-      currentModel = state.currentModel;
-      currentModel.fields.push(action.field);
+      action.field.model.fields.push(action.field);
       return {
-        ...state,
-        currentModel
+        ...state
       };
   
     case FIELD_DELETE:
-      currentModel = state.currentModel;
-      let fields = currentModel.fields;
+      fields = action.field.model.fields;
       fields.splice(fields.indexOf(action.field), 1);
       return {
-        ...state,
-        currentModel
+        ...state
       };
-  
+
     case SITE_UPDATE:
     case COLLABORATION_UPDATE:
     case MODEL_UPDATE:

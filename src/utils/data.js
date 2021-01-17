@@ -165,6 +165,17 @@ export function getModelByNameId(nameId) {
   return null;
 }
 
+export function getModelFromAnySite(id) {
+  let sites = store.getState().models.sites;
+  for (let site of sites) {
+    for (let model of site.models) {
+      if (model.origin.id == id)
+        return model;
+    }
+  }
+  return null;
+}
+
 //============ fields ===========
 
 export function checkFieldName(name) {
