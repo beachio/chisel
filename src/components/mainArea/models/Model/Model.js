@@ -46,7 +46,7 @@ const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemove
         <div className={styles.controls}>
           <div className={styles.controlIcon} onClick={event => onRemoveClick(event, field)}>
             <InlineSVG className={styles.cross}
-                      src={ImageIconDelete}/>
+                       src={ImageIconDelete} />
           </div>
         </div>
       }
@@ -252,7 +252,7 @@ export default class Model extends Component {
       content = (
         <div>
           <div styleName="list">
-            <div styleName="head">
+            <div styleName="head listItem">
               <div styleName="listItemName">Name</div>
               <div styleName="listItemType">Type</div>
             </div>
