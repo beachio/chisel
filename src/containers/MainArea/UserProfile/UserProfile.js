@@ -32,19 +32,19 @@ export class UserProfile extends Component  {
     dirtyData: false,
     errorData: null,
     successData: ``,
-    
+
     email: this.userData.email,
     dirtyEmail: false,
     errorEmail: null,
     successEmail: ``,
-    
+
     passwordOld: ``,
     password: '',
     passwordConfirm: '',
     dirtyPassword: false,
     errorPassword: null,
     successPassword: ``,
-    
+
     serverURL: '',
     dirtyServer: false,
     errorServer: null,
@@ -52,8 +52,8 @@ export class UserProfile extends Component  {
   };
 
   lastChange = null;
-  
-  
+
+
   constructor(props) {
     super(props);
     this.state.serverURL = config.serverURL;
@@ -61,29 +61,29 @@ export class UserProfile extends Component  {
 
   componentDidUpdate() {
     const {user} = this.props;
-    
+
     switch (this.lastChange) {
       case CHG_DATA:
         this.setState({successData: `Data was successfully changed!`});
         setTimeout(() => this.setState({successData: ``}), 2500);
         break;
-        
+
       case CHG_EMAIL:
         let errorEmail = null;
         switch (user.error) {
           case ERROR_USER_EXISTS: errorEmail = 'The user with this email also exists!'; break;
           case ERROR_OTHER:       errorEmail = 'Unknown error!';                        break;
         }
-        
+
         if (errorEmail) {
           this.setState({errorEmail});
         } else {
           this.setState({successEmail: `Email was successfully changed!`});
           setTimeout(() => this.setState({successEmail: ``}), 2500);
         }
-        
+
         break;
-        
+
       case CHG_PASSWORD:
         this.setState({successPassword: `Password was successfully changed!`});
         setTimeout(() => this.setState({successPassword: ``}), 2500);
@@ -92,31 +92,31 @@ export class UserProfile extends Component  {
 
     this.lastChange = null;
   }
-  
+
   onSaveData = e => {
     e.preventDefault();
-    
+
     if (!this.state.dirtyData || this.state.errorData)
       return;
-    
+
     if (this.validateData()) {
       this.setState({dirtyData: false});
       this.lastChange = CHG_DATA;
-      
+
       this.userData.firstName = this.state.firstName;
       this.userData.lastName = this.state.lastName;
-      
+
       const {update} = this.props.userActions;
       update(this.userData);
     }
   };
-  
+
   onSaveEmail = e => {
     e.preventDefault();
-    
+
     if (!this.state.dirtyEmail || this.state.errorEmail)
       return;
-    
+
     if (this.validateEmail()) {
       this.setState({dirtyEmail: false});
       this.lastChange = CHG_EMAIL;
@@ -127,84 +127,84 @@ export class UserProfile extends Component  {
       update(this.userData);
     }
   };
-  
+
   onSavePassword = e => {
     e.preventDefault();
-    
+
     if (!this.state.dirtyPassword || this.state.errorPassword)
       return;
-    
+
     this.validatePassword()
       .then(() => {
         const {updatePassword} = this.props.userActions;
         updatePassword(this.state.password);
         this.lastChange = CHG_PASSWORD;
-    
+
         this.setState({passwordOld: ``, password: '', passwordConfirm: '', dirtyPassword: false});
       })
       .catch(() => {});
   };
-  
+
   onSaveServer = e => {
     e.preventDefault();
-    
+
     if (!this.state.dirtyServer || this.state.errorServer)
       return;
-    
+
     if (this.validateServer()) {
       this.setState({dirtyServer: false});
       this.lastChange = CHG_SERVER;
-      
+
       changeServerURL(this.state.serverURL);
-      
+
       this.setState({successServer: `Server was successfully changed!`});
       setTimeout(() => this.setState({successServer: ``}), 2500);
     }
   };
-  
+
   validateData() {
     return true;
   }
-  
+
   validateEmail() {
     if (!checkEmail(this.state.email)) {
       this.setState({errorEmail: `Invalid email!`});
       return false;
     }
-  
+
     return true;
   }
-  
+
   validatePassword() {
     if (this.state.password != this.state.passwordConfirm) {
       this.setState({errorPassword: `Passwords don't match!`});
       return Promise.reject();
     }
-    
+
     return checkPassword(this.state.passwordOld)
       .catch(e => {
         this.setState({errorPassword: `Wrong old password!`});
         return Promise.reject();
       });
   }
-  
+
   validateServer() {
     if (!checkURL(this.state.serverURL)) {
       this.setState({errorServer: `Invalid URL!`});
       return false;
     }
-    
+
     return true;
   }
-  
+
   onChangeFirstName = firstName => {
     this.setState({firstName, dirtyData: true, errorData: null});
   };
-  
+
   onChangeLastName = lastName => {
     this.setState({lastName, dirtyData: true, errorData: null});
   };
-  
+
   onChangeEmail = email => {
     this.setState({
       email,
@@ -212,34 +212,34 @@ export class UserProfile extends Component  {
       errorEmail: null
     });
   };
-  
+
   onChangePasswordOld = passwordOld => {
     const dirtyPassword = !!passwordOld || !!this.state.password || !!this.state.passwordConfirm;
     this.setState({passwordOld, dirtyPassword, errorPassword: null});
   };
-  
+
   onChangePassword = password => {
     const dirtyPassword = !!password || !!this.state.passwordOld || !!this.state.passwordConfirm;
     this.setState({password, dirtyPassword, errorPassword: null});
   };
-  
+
   onChangePasswordConfirm = passwordConfirm => {
     const dirtyPassword = !!passwordConfirm || !!this.state.passwordOld || !!this.state.password;
     this.setState({passwordConfirm, dirtyPassword, errorPassword: null});
   };
-  
+
   onChangeServerURL = serverURL => {
     this.setState({serverURL, dirtyServer: true, errorServer: null});
   };
-  
+
   onChangePayPlan = () => {
     browserHistory.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
   };
-  
+
   onChangePayMethods = () => {
     browserHistory.push(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`);
   };
-  
+
   render() {
     let dateSubEnd, cancelSub;
     const {stripeInitError} = this.props.pay;
@@ -252,7 +252,7 @@ export class UserProfile extends Component  {
         cancelSub = subscription.cancel_at_period_end;
       }
     }
-    
+
     return <>
       <Helmet>
         <title>User profile - Chisel</title>
