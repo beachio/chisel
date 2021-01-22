@@ -45,13 +45,13 @@ export function init() {
     let items = [];
     let itemsDraft = [];
     let promises = [];
-    
+
     for (let site of sites) {
       for (let model of site.models) {
         promises.push(requestContentItems(model, items, itemsDraft));
       }
     }
-  
+
     Promise.all(promises)
       .then(() => {
         dispatch({
@@ -67,7 +67,7 @@ export function init() {
 export function addItem(item) {
   return dispatch => {
     item.color = getRandomColor();
-  
+
     item.updateOrigin();
     send(item.origin.save())
       .then(() => {
@@ -83,17 +83,17 @@ export function updateItem(item) {
   if (item.draft) {
     item.draft.updateOrigin();
     send(item.draft.origin.save());
-    
+
     if (item.status == STATUS_ARCHIVED)
       item.fields = new Map(item.draft.fields);
   }
-  
+
   if (item.status == STATUS_PUBLISHED)
     item.status = STATUS_UPDATED;
-  
+
   item.updateOrigin();
   send(item.origin.save());
-  
+
   return {
     type: ITEM_UPDATE,
     item
@@ -110,26 +110,26 @@ export function publishItem(item) {
     itemD.color = item.color;
     itemD.fields = new Map(item.fields);
     itemD.owner = item;
-  
+
     itemD.updateOrigin();
-    
+
     item.draft = itemD;
-    
+
   } else {
     item.fields = new Map(itemD.fields);
   }
-  
+
   item.status = STATUS_PUBLISHED;
-  
+
   item.updateOrigin();
-  
+
   send(itemD.origin.save())
     .then(() => send(item.origin.save()))
     .then(() => {
       if (!item.model.site.webhookDisabled)
         send(Parse.Cloud.run('onContentModify', {URL: item.model.site.webhook}));
     });
-  
+
   return {
     type: ITEM_PUBLISH,
     item,
@@ -140,16 +140,16 @@ export function publishItem(item) {
 export function discardItem(item) {
   if (item.status == STATUS_UPDATED)
     item.status = STATUS_PUBLISHED;
-  
+
   item.updateOrigin();
   send(item.origin.save());
-  
+
   if (item.draft) {
     item.draft.fields = new Map(item.fields);
     item.draft.updateOrigin();
     send(item.draft.origin.save());
   }
-  
+
   return {
     type: ITEM_DISCARD,
     item
@@ -159,17 +159,17 @@ export function discardItem(item) {
 export function archiveItem(item) {
   let callWebhook = item.status == STATUS_PUBLISHED  &&  !item.model.site.webhookDisabled;
   item.status = STATUS_ARCHIVED;
-  
+
   if (item.draft)
     item.fields = new Map(item.draft.fields);
-  
+
   item.updateOrigin();
   send(item.origin.save())
     .then(() => {
       if (callWebhook)
         send(Parse.Cloud.run('onContentModify', {URL: item.model.site.webhook}));
     });
-  
+
   return {
     type: ITEM_ARCHIVE,
     item
@@ -178,10 +178,10 @@ export function archiveItem(item) {
 
 export function restoreItem(item) {
   item.status = STATUS_DRAFT;
-  
+
   item.updateOrigin();
   send(item.origin.save());
-  
+
   return {
     type: ITEM_RESTORE,
     item
@@ -197,7 +197,7 @@ export function setCurrentItem(currentItem) {
 
 export function deleteItem(item) {
   //item.origin.destroy();
-  
+
   send(Parse.Cloud.run('deleteContentItem', {
     tableName: item.model.tableName,
     itemId: item.origin.id,
@@ -206,7 +206,7 @@ export function deleteItem(item) {
       if (!item.model.site.webhookDisabled)
         send(Parse.Cloud.run('onContentModify', {URL: item.model.site.webhook}));
     });
-  
+
   return {
     type: ITEM_DELETE,
     item
@@ -233,7 +233,7 @@ const initialState = {
 
   filteredModels: new Set(),
   filteredStatuses: new Set(),
-  
+
   currentItem: null
 };
 
@@ -243,12 +243,12 @@ export default function contentReducer(state = initialState, action) {
     case INIT_END:
       items = action.items;
       itemsDraft = action.itemsDraft;
-      
+
       for (let item of items)
         item.postInit(items);
       for (let item of itemsDraft)
         item.postInit(items);
-  
+
       for (let itemD of itemsDraft) {
         let item_o = itemD.origin.get('t__owner');
         for (let item of items) {
@@ -259,19 +259,19 @@ export default function contentReducer(state = initialState, action) {
           }
         }
       }
-      
+
       return {
         ...state,
         items,
         itemsDraft
       };
-  
+
     case SET_CURRENT_ITEM:
       return {
         ...state,
         currentItem: action.currentItem,
       };
-  
+
     case ITEM_ADD:
       items = state.items;
       items.push(action.item);
@@ -279,7 +279,7 @@ export default function contentReducer(state = initialState, action) {
         ...state,
         items
       };
-      
+
     case ITEM_UPDATE:
     case ITEM_DISCARD:
     case ITEM_ARCHIVE:
@@ -302,11 +302,11 @@ export default function contentReducer(state = initialState, action) {
       let item = action.item;
       items = state.items;
       itemsDraft = state.itemsDraft;
-      
+
       items.splice(items.indexOf(item), 1);
       if (item.draft)
         itemsDraft.splice(itemsDraft.indexOf(item.draft), 1);
-      
+
       return {
         ...state,
         items,
@@ -336,47 +336,47 @@ export default function contentReducer(state = initialState, action) {
         ...state,
         filteredStatuses: newFS
       };
-  
+
     case MODEL_DELETE:
       items = state.items;
       itemsDraft = state.itemsDraft;
-      
+
       delItems = getContentForModel(action.model, items);
       for (let item of delItems) {
         items.splice(items.indexOf(item), 1);
         if (item.draft)
           itemsDraft.splice(itemsDraft.indexOf(item.draft), 1);
       }
-      
+
       return {
         ...state,
         items,
         itemsDraft
       };
-  
+
     case SITE_DELETE:
       items = state.items;
       itemsDraft = state.itemsDraft;
-      
+
       delItems = getContentForSite(action.site, items);
       for (let item of delItems) {
         items.splice(items.indexOf(item), 1);
         if (item.draft)
           itemsDraft.splice(itemsDraft.indexOf(item.draft), 1);
       }
-    
+
       return {
         ...state,
         items,
         itemsDraft
       };
-      
+
     case FIELD_ADD:
     case FIELD_UPDATE:
     case FIELD_DELETE:
       items = state.items;
       itemsDraft = state.itemsDraft;
-      
+
       let model = action.field.model;
       for (let item of items) {
         if (item.model == model)
@@ -386,7 +386,7 @@ export default function contentReducer(state = initialState, action) {
         if (item.model == model)
           item.model = model;   //updating model: this is a setter
       }
-  
+
       return {
         ...state,
         items,
@@ -398,7 +398,7 @@ export default function contentReducer(state = initialState, action) {
         ...state,
         currentItem: null
       };
-      
+
     default:
       return state;
   }

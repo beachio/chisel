@@ -133,9 +133,9 @@ const initialState = {
   initEnded: false,
 
   isSidebarVisible: true,
-  
+
   openedPage: PAGE_MODELS,
-  
+
   alertShowing: false,
   alertParams: null,
 
@@ -191,7 +191,7 @@ export default function navReducer(state = initialState, action) {
         openedPage: PAGE_MODELS,
         initEnded: false
       };
-    
+
     case RETURN_HOME:
       return {
         ...state,
@@ -203,14 +203,14 @@ export default function navReducer(state = initialState, action) {
         ...state,
         openedPage: action.openedPage
       };
-  
+
     case SHOW_ALERT:
       return {
         ...state,
         alertShowing: true,
         alertParams: action.params
       };
-  
+
     case CLOSE_ALERT:
       return {
         ...state,

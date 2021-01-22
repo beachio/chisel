@@ -31,7 +31,7 @@ class App extends React.Component {
     const {nav, user, content, models} = this.props;
     const {closeAlert, closeModal} = this.props.navActions;
     const {addSite, addField, updateField} = this.props.modelActions;
-  
+
     const getAlarm = () => {
       if (nav.serverProblemA && !nav.serverProblemB)
         return (
@@ -45,7 +45,7 @@ class App extends React.Component {
     const getModal = () => {
       if (nav.alertShowing)
         return <AlertModal params={nav.alertParams} onClose={closeAlert}/>;
-    
+
       if (!nav.modalShowing) {
         if (!nav.serverProblemB || !nav.initEnded)
           return null;
@@ -59,31 +59,31 @@ class App extends React.Component {
         return <AlertModal params={params}
                            onClose={() => window.location = '/'}/>;
       }
-    
+
       switch (nav.modalType) {
         case MODAL_TYPE_SITE:
           return <SiteCreationModal params={nav.modalParams}
                                     templates={models.templates}
                                     addSite={addSite}
                                     onClose={closeModal} />;
-                             
+
         case MODAL_TYPE_FIELD:
           return <FieldModal params={nav.modalParams}
                              onClose={closeModal}
                              addField={addField}
                              models={models.currentSite.models}
                              updateField={updateField}/>;
-      
+
         case MODAL_TYPE_MEDIA:
           return <MediaModal params={nav.modalParams}
                              onClose={closeModal}/>;
-      
+
         case MODAL_TYPE_REFERENCE:
           return <ReferenceModal params={nav.modalParams}
                                  currentSite={models.currentSite}
                                  contentItems={content.items}
                                  onClose={closeModal}/>;
-      
+
         case MODAL_TYPE_WYSIWYG:
           return <WysiwygModal params={nav.modalParams}
                                onClose={closeModal}/>;
@@ -91,12 +91,12 @@ class App extends React.Component {
         case MODAL_TYPE_MARKDOWN:
           return <MarkdownModal params={nav.modalParams}
                                 onClose={closeModal}/>;
-  
+
         case MODAL_TYPE_MODEL_CHOOSE:
           return <ModelChooseModal params={nav.modalParams}
                                    models={models.currentSite.models}
                                    onClose={closeModal}/>;
-      
+
         case MODAL_TYPE_ROLE:
           return <CollabRoleModal params={nav.modalParams}
                                   onClose={closeModal} />;
@@ -114,7 +114,7 @@ class App extends React.Component {
     const modal = getModal();
     if (modal)
       this.lastModal = modal;
-    
+
     const showModalLoader =
       (user.pending || user.authorized && !nav.initEnded) &&
       !nav.serverProblemB;
@@ -135,10 +135,10 @@ class App extends React.Component {
         {getAlarm()}
       </div>
     );
-    
+
     if (!user.localStorageReady)
       res = <SiteLoader />;
-    
+
     return res;
   }
 }

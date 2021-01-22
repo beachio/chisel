@@ -37,7 +37,7 @@ function requestTemplates(templates_o, templates) {
   ))
     .then(_templates_o => {
       Array.prototype.push.apply(templates_o, _templates_o);
-      
+
       for (let template_o of templates_o)
         templates.push(new TemplateData().setOrigin(template_o));
     });
@@ -103,7 +103,7 @@ function requestModels(templates_o, templates, sites_o, sites, models_o, models)
   ))
     .then(_models_o => {
       Array.prototype.push.apply(models_o, _models_o);
-  
+
       for (let model_o of _models_o) {
         const model = new ModelData().setOrigin(model_o);
         const site_o = model_o.get("site");
@@ -116,17 +116,17 @@ function requestModels(templates_o, templates, sites_o, sites, models_o, models)
           }
         }
       }
-  
+
       return send(getAllObjects(
         new Parse.Query(ModelData.OriginClass)
           .equalTo("site", undefined)
           .containedIn("template", templates_o)
       ));
     })
-    
+
     .then(_models_o => {
       Array.prototype.push.apply(models_o, _models_o);
-      
+
       for (let model_o of _models_o) {
         const model = new ModelData().setOrigin(model_o);
         const template_o = model_o.get("template");
@@ -304,41 +304,41 @@ export function init() {
   return dispatch => {
     let templates_o = [];
     let templates = [];
-    
+
     let sites_o = [];
     let sites = [];
-    
+
     let models_o = [];
     let models = [];
-  
+
     requestTemplates(templates_o, templates)
-      
+
       .then(() => requestCollaborationsPre(sites_o))
-      
+
       .then(requestUserSites)
-      
+
       .then(sitesUser_o => {
         sites_o = sites_o.concat(sitesUser_o);
         let promises = [];
         for (let site_o of sites_o) {
           let site = new SiteData().setOrigin(site_o);
-  
+
           promises.push(
             send(site_o.get('owner').fetch())
               .then(owner_o =>
                 site.owner = new UserData().setOrigin(owner_o)
               )
           );
-          
+
           sites.push(site);
         }
-  
+
         return Promise.all(promises);
       })
-      
+
       .then(() => Promise.all([
         requestCollaborationsPost(sites_o, sites),
-        
+
         requestModels(templates_o, templates, sites_o, sites, models_o, models)
           .then(() => requestFields(models_o, models))
           .then(() => {
@@ -351,7 +351,7 @@ export function init() {
             }
           })
       ]))
-  
+
       .then(() => {
         subscribeToSites();
         subscribeToModels();
@@ -372,7 +372,7 @@ export function setCurrentSite(currentSite) {
       type: SET_CURRENT_SITE,
       currentSite: null
     };
-  
+
   const role = getRole(currentSite);
   return {
     type: SET_CURRENT_SITE,
@@ -453,7 +453,7 @@ export function addSite(site, template = null) {
 export function updateSite(site) {
   site.updateOrigin();
   send(site.origin.save());
-  
+
   return {
     type: SITE_UPDATE
   };
@@ -467,7 +467,7 @@ export function updateSiteFromServer(site) {
 
 export function deleteSite(site) {
   send(site.origin.destroy());
-  
+
   return {
     type: SITE_DELETE,
     site
@@ -485,15 +485,15 @@ export function addCollaboration(user, email) {
   let collab = new CollaborationData();
   collab.user = user;
   collab.email = email;
-  
+
   let currentSite = store.getState().models.currentSite;
   collab.site = currentSite;
-  
+
   collab.updateOrigin();
-  
+
   collab.origin.setACL(new Parse.ACL(currentSite.owner.origin));
   send(collab.origin.save());
-  
+
   return {
     type: COLLABORATION_ADD,
     collab
@@ -503,12 +503,12 @@ export function addCollaboration(user, email) {
 export function addInviteCollaboration(email) {
   let collab = new CollaborationData();
   collab.email = email;
-  
+
   let currentSite = store.getState().models.currentSite;
   collab.site = currentSite;
-  
+
   collab.updateOrigin();
-  
+
   collab.origin.setACL(new Parse.ACL(currentSite.owner.origin));
   send(collab.origin.save());
 
@@ -518,7 +518,7 @@ export function addInviteCollaboration(email) {
       siteName: currentSite.name
     })
   );
-  
+
   return {
     type: COLLABORATION_ADD,
     collab
@@ -528,7 +528,7 @@ export function addInviteCollaboration(email) {
 export function updateCollaboration(collab) {
   collab.updateOrigin();
   send(collab.origin.save());
-  
+
   return {
     type: COLLABORATION_UPDATE,
     collab
@@ -537,7 +537,7 @@ export function updateCollaboration(collab) {
 
 export function deleteCollaboration(collab) {
   send(collab.origin.destroy());
-  
+
   return {
     type: COLLABORATION_DELETE,
     collab
@@ -555,14 +555,14 @@ export function deleteSelfCollaboration(collab) {
 
 export function addModel(name) {
   let currentSite = store.getState().models.currentSite;
-  
+
   let model = new ModelData();
   model.name = name;
   model.nameId = getNameId(name, currentSite.models);
   model.color = getRandomColor();
   model.site = currentSite;
   model.setTableName();
-  
+
   model.updateOrigin();
   send(model.origin.save());
 
@@ -582,7 +582,7 @@ export function addModelFromServer(model) {
 export function updateModel(model) {
   model.updateOrigin();
   send(model.origin.save());
-  
+
   return {
     type: MODEL_UPDATE,
     model
@@ -605,7 +605,7 @@ export function setCurrentModel(currentModel) {
 
 export function deleteModel(model) {
   send(model.origin.destroy());
-  
+
   return {
     type: MODEL_DELETE,
     model
@@ -645,7 +645,7 @@ export function addField(field) {
   field.updateOrigin();
   send(field.origin.save());
   send(field.model.origin.save());
-  
+
   return {
     type: FIELD_ADD,
     field
@@ -665,7 +665,7 @@ export function updateField(field) {
   field.updateOrigin();
   send(field.origin.save());
   send(field.model.origin.save());
-  
+
   return {
     type: FIELD_UPDATE,
     field
@@ -682,7 +682,7 @@ export function updateFieldFromServer(field) {
 export function deleteField(field) {
   send(field.origin.destroy());
   send(field.model.origin.save());
-  
+
   return {
     type: FIELD_DELETE,
     field
@@ -707,7 +707,7 @@ const initialState = {
 
 export default function modelsReducer(state = initialState, action) {
   let sites, currentSite, collabs, models, fields;
-  
+
   switch (action.type) {
     case INIT_END:
       return {
@@ -715,7 +715,7 @@ export default function modelsReducer(state = initialState, action) {
         templates: action.templates,
         sites: action.sites
       };
-      
+
     case SET_CURRENT_SITE:
       return {
         ...state,
@@ -728,7 +728,7 @@ export default function modelsReducer(state = initialState, action) {
         ...state,
         currentModel: action.currentModel
       };
-  
+
     case SITE_ADD:
       sites = state.sites;
       sites.push(action.site);
@@ -738,17 +738,17 @@ export default function modelsReducer(state = initialState, action) {
         currentSite: action.site,
         role: ROLE_OWNER
       };
-      
+
     case SITE_DELETE:
       sites = state.sites;
       sites.splice(sites.indexOf(action.site), 1);
-      
+
       return {
         ...state,
         sites,
         currentSite: null
       };
-  
+
     case COLLABORATION_ADD:
       currentSite = state.currentSite;
       currentSite.collaborations.push(action.collab);
@@ -756,7 +756,7 @@ export default function modelsReducer(state = initialState, action) {
         ...state,
         currentSite
       };
-  
+
     case COLLABORATION_DELETE:
       currentSite = state.currentSite;
       collabs = currentSite.collaborations;
@@ -765,39 +765,39 @@ export default function modelsReducer(state = initialState, action) {
         ...state,
         currentSite
       };
-  
+
     case COLLABORATION_SELF_DELETE:
       currentSite = state.currentSite;
       collabs = currentSite.collaborations;
       collabs.splice(collabs.indexOf(action.collab), 1);
-      
+
       sites = state.sites;
       sites.splice(sites.indexOf(currentSite), 1);
-    
+
       return {
         ...state,
         currentSite: sites[0]
       };
-  
+
     case MODEL_ADD:
       action.model.site.models.push(action.model);
       return {
         ...state
       };
-      
+
     case MODEL_DELETE:
       models = action.model.site.models;
       models.splice(models.indexOf(action.model), 1);
       return {
         ...state
       };
-  
+
     case FIELD_ADD:
       action.field.model.fields.push(action.field);
       return {
         ...state
       };
-  
+
     case FIELD_DELETE:
       fields = action.field.model.fields;
       fields.splice(fields.indexOf(action.field), 1);
@@ -817,7 +817,7 @@ export default function modelsReducer(state = initialState, action) {
         return -1;
       });
       return {...state};
-    
+
     case LOGOUT:
       return {
         ...state,
@@ -825,7 +825,7 @@ export default function modelsReducer(state = initialState, action) {
         currentSite: null,
         role: null
       };
-    
+
     default:
       return state;
   }

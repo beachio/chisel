@@ -500,7 +500,7 @@ export default class FieldModal extends Component {
             </div>
             {inner}
           </div>
-          
+
         );
 
         break;
@@ -596,7 +596,7 @@ export default class FieldModal extends Component {
             }
             {validations}
           </div>
-          
+
         );
 
         break;
