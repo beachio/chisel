@@ -414,8 +414,13 @@ export class UserProfile extends Component  {
           <div styleName="section">
             <div styleName="section-header">Session</div>
             <div styleName="field">
-              <div styleName="field-title">User session token:</div>
-              <div styleName="field-value">{this.userData.origin.id}</div>
+              <div styleName="input-wrapper">
+                <InputControl type="big"
+                              titled
+                              label="User session token:"
+                              readOnly={true}
+                              value={this.userData.origin.id} />
+              </div>
             </div>
           </div>
 
@@ -424,6 +429,7 @@ export class UserProfile extends Component  {
             <div styleName="field">
               <div styleName="input-wrapper">
                 <InputControl type="big"
+                              titled
                               label="Server URL"
                               value={this.state.serverURL}
                               onChange={this.onChangeServerURL} />
