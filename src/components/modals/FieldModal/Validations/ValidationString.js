@@ -27,13 +27,13 @@ export default class ValidationString extends Component {
       errorMsg: ''
     }
   };
-  
+
   constructor(props) {
     super(props);
-  
+
     Object.assign(this.state, props.validations);
   }
-  
+
   onRangeActive = value => {
     this.setState({range: {
         ...this.state.range,
@@ -41,7 +41,7 @@ export default class ValidationString extends Component {
         isError: false
     }}, this.update);
   };
-  
+
   onRangeMin = value => {
     this.setState({range: {
         ...this.state.range,
@@ -49,7 +49,7 @@ export default class ValidationString extends Component {
         isError: false
     }}, this.update);
   };
-  
+
   onRangeMax = value => {
     this.setState({range: {
         ...this.state.range,
@@ -57,7 +57,7 @@ export default class ValidationString extends Component {
         isError: false
     }}, this.update);
   };
-  
+
   onRangeMinActive = value => {
     let {maxActive} = this.state.range;
     if (!value)
@@ -69,7 +69,7 @@ export default class ValidationString extends Component {
         isError: false
     }}, this.update);
   };
-  
+
   onRangeMaxActive = value => {
     let {minActive} = this.state.range;
     if (!value)
@@ -81,46 +81,46 @@ export default class ValidationString extends Component {
         isError: false
     }}, this.update);
   };
-  
+
   onRangeErrorMsg = value => {
     this.setState({range: {
         ...this.state.range,
         errorMsg: value
     }}, this.update);
   };
-  
+
   onPatternActive = value => {
     this.setState({pattern: {
         ...this.state.pattern,
         active: value
       }}, this.update);
   };
-  
+
   onPatternPattern = value => {
     this.setState({pattern: {
         ...this.state.pattern,
         pattern: value
       }}, this.update);
   };
-  
+
   onPatternFlags = value => {
     this.setState({pattern: {
         ...this.state.pattern,
         flags: value
       }}, this.update);
   };
-  
+
   onPatternErrorMsg = value => {
     this.setState({pattern: {
         ...this.state.pattern,
         errorMsg: value
       }}, this.update);
   };
-  
+
   update = () => {
     this.props.update(this.state);
   };
-  
+
   render() {
     return (
       <div>
@@ -164,7 +164,7 @@ export default class ValidationString extends Component {
             </div>
           }
         </div>
-        
+
         <div styleName="validation">
           <div styleName="active">
             <CheckboxControl title="Match a specific pattern"

@@ -34,23 +34,23 @@ export default class ValidationMedia extends Component {
       isError: false
     }
   };
-  
+
   maxForMin = FILE_SIZE_MAX;
   maxForMax = FILE_SIZE_MAX;
-  
+
   typesSet = new Set();
-  
-  
+
+
   constructor(props) {
     super(props);
-    
+
     Object.assign(this.state, props.validations);
-  
+
     const types = this.state.fileTypes.types;
     if (types && typeof types[Symbol.iterator] === 'function')
       this.typesSet = new Set(types);
   }
-  
+
   onSizeActive = value => {
     this.setState({fileSize: {
         ...this.state.fileSize,
@@ -58,7 +58,7 @@ export default class ValidationMedia extends Component {
         isError: false
       }}, this.update);
   };
-  
+
   onSizeMin = value => {
     this.setState({fileSize: {
         ...this.state.fileSize,
@@ -66,7 +66,7 @@ export default class ValidationMedia extends Component {
         isError: false
       }}, this.update);
   };
-  
+
   onSizeMax = value => {
     this.setState({fileSize: {
         ...this.state.fileSize,
@@ -74,7 +74,7 @@ export default class ValidationMedia extends Component {
         isError: false
       }}, this.update);
   };
-  
+
   onSizeMinActive = value => {
     let {maxActive} = this.state.fileSize;
     if (!value)
@@ -86,7 +86,7 @@ export default class ValidationMedia extends Component {
         isError: false
       }}, this.update);
   };
-  
+
   onSizeMaxActive = value => {
     let {minActive} = this.state.fileSize;
     if (!value)
@@ -98,13 +98,13 @@ export default class ValidationMedia extends Component {
         isError: false
       }}, this.update);
   };
-  
+
   onSizeMinUnit = newMinUnit => {
     let {min, minUnit} = this.state.fileSize;
-    
+
     min = convertDataUnits(min, minUnit, newMinUnit);
     this.maxForMin = convertDataUnits(FILE_SIZE_MAX, BYTES, newMinUnit);
-    
+
     this.setState({fileSize: {
         ...this.state.fileSize,
         min,
@@ -112,13 +112,13 @@ export default class ValidationMedia extends Component {
         isError: false
       }}, this.update);
   };
-  
+
   onSizeMaxUnit = newMaxUnit => {
     let {max, maxUnit} = this.state.fileSize;
-  
+
     max = convertDataUnits(max, maxUnit, newMaxUnit);
     this.maxForMax = convertDataUnits(FILE_SIZE_MAX, BYTES, newMaxUnit);
-    
+
     this.setState({fileSize: {
         ...this.state.fileSize,
         max,
@@ -126,14 +126,14 @@ export default class ValidationMedia extends Component {
         isError: false
       }}, this.update);
   };
-  
+
   onSizeErrorMsg = value => {
     this.setState({fileSize: {
         ...this.state.fileSize,
         errorMsg: value
       }}, this.update);
   };
-  
+
   onTypesActive = value => {
     this.setState({fileTypes: {
         ...this.state.fileTypes,
@@ -141,31 +141,31 @@ export default class ValidationMedia extends Component {
         isError: false
       }}, this.update);
   };
-  
+
   onTypesErrorMsg = value => {
     this.setState({fileTypes: {
         ...this.state.fileTypes,
         errorMsg: value
       }}, this.update);
   };
-  
+
   onTypeChange = (type, value) => {
     if (value)
       this.typesSet.add(type);
     else
       this.typesSet.delete(type);
-    
+
     this.setState({fileTypes: {
         ...this.state.fileTypes,
         types: Array.from(this.typesSet),
         isError: false
       }}, this.update);
   };
-  
+
   update = () => {
     this.props.update(this.state);
   };
-  
+
   render() {
     return (
       <div>
@@ -196,7 +196,7 @@ export default class ValidationMedia extends Component {
                                    onSuggest={this.onSizeMinUnit}
                                    current={this.state.fileSize.minUnit}/>
                 </div>
-        
+
                 <CheckboxControl title="Max"
                                  checked={this.state.fileSize.maxActive}
                                  onChange={this.onSizeMaxActive}
@@ -228,7 +228,7 @@ export default class ValidationMedia extends Component {
             </div>
           }
         </div>
-  
+
         <div styleName="validation">
           <div styleName="active">
             <CheckboxControl title="Accept only specified file types"

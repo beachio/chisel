@@ -21,13 +21,13 @@ export default class ValidationNumber extends Component {
       isError: false
     }
   };
-  
+
   constructor(props) {
     super(props);
-  
+
     Object.assign(this.state, props.validations);
   }
-  
+
   onRangeActive = value => {
     this.setState({range: {
         ...this.state.range,
@@ -35,7 +35,7 @@ export default class ValidationNumber extends Component {
         isError: false
     }}, this.update);
   };
-  
+
   onRangeMin = value => {
     this.setState({range: {
         ...this.state.range,
@@ -43,7 +43,7 @@ export default class ValidationNumber extends Component {
         isError: false
     }}, this.update);
   };
-  
+
   onRangeMax = value => {
     this.setState({range: {
         ...this.state.range,
@@ -51,7 +51,7 @@ export default class ValidationNumber extends Component {
         isError: false
     }}, this.update);
   };
-  
+
   onRangeMinActive = value => {
     let {maxActive} = this.state.range;
     if (!value)
@@ -63,7 +63,7 @@ export default class ValidationNumber extends Component {
         isError: false
     }}, this.update);
   };
-  
+
   onRangeMaxActive = value => {
     let {minActive} = this.state.range;
     if (!value)
@@ -75,18 +75,18 @@ export default class ValidationNumber extends Component {
         isError: false
     }}, this.update);
   };
-  
+
   onRangeErrorMsg = value => {
     this.setState({range: {
         ...this.state.range,
         errorMsg: value
     }}, this.update);
   };
-  
+
   update = () => {
     this.props.update(this.state);
   };
-  
+
   render() {
     return (
       <div>
