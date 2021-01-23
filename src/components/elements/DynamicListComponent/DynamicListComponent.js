@@ -20,30 +20,30 @@ export default class DynamicListComponent extends Component {
       values = [];
     return {values};
   }
-  
+
   onKeyDown = (event, i) => {
     event.stopPropagation();
-  
+
     const code = event.keyCode;
-    
+
     //Enter or down pressed
     if (code == 13 || code == 40) {
       if (this.inputs[i + 1])
         this.inputs[i + 1].focus();
       else
         this.onPlus(i);
-      
+
     //Up pressed
     } else if (code == 38) {
       if (i)
         this.inputs[--i].focus();
     }
   };
-  
+
   onPlus = (i = 0) => {
     if (this.props.readOnly)
       return;
-    
+
     let values = this.state.values ? this.state.values : [''];
     let valuesLeft = values.slice(0, i + 1);
     let valuesRight = values.slice(i + 1);
@@ -51,11 +51,11 @@ export default class DynamicListComponent extends Component {
 
     this.props.onChange(values);
   };
-  
+
   onMinus = i => {
     if (this.props.readOnly)
       return;
-    
+
     let values = this.state.values.slice();
     values.splice(i, 1);
     this.setState({values});
@@ -76,19 +76,19 @@ export default class DynamicListComponent extends Component {
     }
     return false;
   }
-  
+
   render() {
     const {disableEmpty, readOnly, numeric, numericInt, titled} = this.props;
-    
+
     let values = disableEmpty ? [''] : [];
     if (this.state.values.length)
       values = this.state.values;
-  
+
     this.inputs = [];
-    
+
     if (values.length) {
       const elements = [];
-      
+
       for (let i = 0; i < values.length; i++) {
         let input;
         if (numeric)
@@ -108,7 +108,7 @@ export default class DynamicListComponent extends Component {
                                 DOMRef={inp => this.inputs[i] = inp}
                                 onChange={v => this.onChange(v, i)}
                                 onKeyDown={e => this.onKeyDown(e, i)}/>;
-        
+
         elements.push(
           <div styleName="item"
                key={i}>
@@ -128,9 +128,9 @@ export default class DynamicListComponent extends Component {
           </div>
         );
       }
-      
+
       return <div>{elements}</div>;
-    
+
     } else {
       return (
         <div>
