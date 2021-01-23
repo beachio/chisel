@@ -10,22 +10,23 @@ import styles from './InputControl.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class InputControl extends Component {
+  ref = React.createRef();
+
   onChange = e => {
     const {onChange} = this.props;
     if (onChange)
       onChange(e.target.value);
   };
 
-  ref = elm => {
-    const {DOMRef, readOnly} = this.props;
-    addElectronContextMenu(elm, readOnly);
-    if (DOMRef && elm)
-      DOMRef(elm);
+  setRef = ref => {
+    const {readOnly} = this.props;
+    addElectronContextMenu(ref.current, readOnly);
+    this.ref = ref;
   };
 
   render() {
     let {label, type, value, placeholder, onChange, readOnly, autoFocus, onKeyDown, onBlur, icon,
-      onIconClick, inputType, dropdown, titled, red} = this.props;
+      onIconClick, inputType, dropdown, titled, red, DOMRef} = this.props;
 
     if (!onChange)
       readOnly = true;
@@ -55,6 +56,9 @@ export default class InputControl extends Component {
         <div onClick={onIconClick} styleName={'icon ' + icon}>
           <IconsComponent icon={icon} />
         </div>);
+
+    if (DOMRef)
+      DOMRef(this.ref.current);
 
     return (
       <div styleName="InputControl">
