@@ -44,7 +44,7 @@ export default class InputControl extends Component {
       inputStyles += ' input-readOnly';
     if (dropdown)
       inputStyles += ' input-disabled';
-    if (titled)
+    if (label || titled)
       inputStyles += ' input-titled';
     if (red)
       inputStyles += ' input-red';
@@ -62,7 +62,9 @@ export default class InputControl extends Component {
 
     return (
       <div styleName="InputControl">
-        <label styleName="label"> {label} </label>
+        {!!label &&
+          <label styleName="label">{label}</label>
+        }
         <div styleName="input-wrapper">
           {iconEl}
           <input type={inputType}

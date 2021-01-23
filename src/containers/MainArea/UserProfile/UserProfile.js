@@ -268,7 +268,6 @@ export class UserProfile extends Component  {
                 <div styleName="input-wrapper">
                   <InputControl type="big"
                                 label="First Name"
-                                titled
                                 value={this.state.firstName}
                                 onChange={this.onChangeFirstName} />
                 </div>
@@ -277,7 +276,6 @@ export class UserProfile extends Component  {
                 <div styleName="input-wrapper">
                   <InputControl type="big"
                                 label="Last Name"
-                                titled
                                 value={this.state.lastName}
                                 onChange={this.onChangeLastName} />
               </div>
@@ -307,7 +305,6 @@ export class UserProfile extends Component  {
                 <InputControl type="big"
                               label="Email"
                               value={this.state.email}
-                              titled
                               onChange={this.onChangeEmail} />
               </div>
             </div>
@@ -335,7 +332,6 @@ export class UserProfile extends Component  {
                 <InputControl type="big"
                               label="Enter old password"
                               inputType="password"
-                              titled
                               value={this.state.passwordOld}
                               onChange={this.onChangePasswordOld} />
               </div>
@@ -345,7 +341,6 @@ export class UserProfile extends Component  {
                 <InputControl type="big"
                               label="Enter new password"
                               inputType="password"
-                              titled
                               value={this.state.password}
                               onChange={this.onChangePassword} />
               </div>
@@ -355,7 +350,6 @@ export class UserProfile extends Component  {
                 <InputControl type="big"
                               label="Confirm new password"
                               inputType="password"
-                              titled
                               value={this.state.passwordConfirm}
                               onChange={this.onChangePasswordConfirm} />
               </div>
@@ -416,7 +410,6 @@ export class UserProfile extends Component  {
             <div styleName="field">
               <div styleName="input-wrapper">
                 <InputControl type="big"
-                              titled
                               label="User session token:"
                               readOnly={true}
                               value={this.userData.origin.id} />
@@ -429,7 +422,6 @@ export class UserProfile extends Component  {
             <div styleName="field">
               <div styleName="input-wrapper">
                 <InputControl type="big"
-                              titled
                               label="Server URL"
                               value={this.state.serverURL}
                               onChange={this.onChangeServerURL} />

@@ -86,7 +86,7 @@ export default class DropdownControl extends Component {
     const inputClasses = classNames({
       'input': true,
       'empty': !this.state.value,
-      'input-titled': titled
+      'input-titled': titled || !!label
     });
 
     const arrowClasses = classNames({

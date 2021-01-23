@@ -206,7 +206,6 @@ export default class Settings extends Component {
               <InputControl type="big"
                             value={this.state.name}
                             label="Site Name"
-                            titled
                             readOnly={!isEditable}
                             onChange={this.onChangeName} />
             </div>
@@ -216,7 +215,6 @@ export default class Settings extends Component {
               <InputControl type="big"
                             value={this.state.domain}
                             label="Site Domain URL"
-                            titled
                             readOnly={!isEditable}
                             onChange={this.onChangeDomain} />
             </div>
@@ -225,7 +223,6 @@ export default class Settings extends Component {
             <div styleName="input-wrapper">
               <InputControl type="big"
                             value={this.state.webhook}
-                            titled
                             label="Webhook URL"
                             readOnly={!isEditable}
                             onChange={this.onChangeWebhook} />
@@ -247,7 +244,6 @@ export default class Settings extends Component {
           <div styleName="field">
             <div styleName="input-wrapper">
               <InputControl type="big"
-                            titled
                             label="Site ID"
                             value={this.props.site.origin.id}
                             readOnly={true} />

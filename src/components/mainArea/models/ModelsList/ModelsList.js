@@ -172,7 +172,6 @@ export default class ModelsList extends Component {
                                 DOMRef={c => this.activeInput = c}
                                 icon="plus"
                                 autoFocus
-                                titled
                                 onIconClick={this.onAddModel} />
                 </div>
               </div>
