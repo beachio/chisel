@@ -17,11 +17,15 @@ export default ({value, color, onClick, type, disabled, DOMRef, showLoader}) => 
     buttonControlClasses += ' ' + styles[`ButtonControl-${color}`];
   }
 
+  let ref = React.createRef();
+  if (DOMRef)
+    DOMRef(ref.current);
+
   return (
     <button className={buttonControlClasses}
             onClick={onClick}
             type={type}
-            ref={DOMRef}>
+            ref={ref}>
       {value}
       {showLoader &&
         <div className={styles["loader-wrapper"]}>
