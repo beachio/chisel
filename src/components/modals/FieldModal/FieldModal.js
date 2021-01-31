@@ -46,17 +46,21 @@ export default class FieldModal extends Component {
     isDisabled:   this.field.isDisabled,
     isUnique:     this.field.isUnique,
 
+    validations:  this.field.validations,
+
     errorName: false,
 
     appList: FIELD_TYPES.get(this.field.type),
 
-    tab: TAB_SETTINGS
+    tab: TAB_SETTINGS,
+
+    newData: false,
+    oldFieldData: JSON.stringify(this.props.params)
   };
 
   active = false;
   typeList = Array.from(FIELD_TYPES.keys());
   updating = !!this.field.origin;
-  validations = this.field.validations;
   validValuesList = null;
   focusElm = null;
 
@@ -88,6 +92,15 @@ export default class FieldModal extends Component {
     document.removeEventListener('keydown', this.onKeyDown);
     window.removeEventListener('resize', this.onResize);
   }
+
+  static getDerivedStateFromProps(props, state) {
+    const field = props.params;
+    if (JSON.stringify(field) != state.oldFieldData) {
+      return {newData: true};
+    }
+    return null;
+  }
+
 
   onResize = () => {
     throttle(this.calcCaretPos, 500)();
@@ -122,7 +135,7 @@ export default class FieldModal extends Component {
       type,
       appList: FIELD_TYPES.get(type),
       appearance: FIELD_TYPES.get(type)[0]
-    }, this.checkControls);
+    }, this.resetControls);
   };
 
   onChangeBoolTextYes = boolTextYes => {
@@ -134,7 +147,7 @@ export default class FieldModal extends Component {
   };
 
   onChangeAppearance = appearance => {
-    this.setState({appearance}, this.checkControls);
+    this.setState({appearance}, this.resetControls);
   };
 
   onChangeIsTitle = isTitle => {
@@ -142,11 +155,11 @@ export default class FieldModal extends Component {
   };
 
   onChangeIsList = isList => {
-    this.setState({isList}, this.checkSwitches);
+    this.setState({isList}, this.resetSwitches);
   };
 
   onChangeIsDisabled = isDisabled => {
-    this.setState({isDisabled}, this.checkSwitches);
+    this.setState({isDisabled}, this.resetSwitches);
   };
 
   onChangeIsRequired = isRequired => {
@@ -201,7 +214,7 @@ export default class FieldModal extends Component {
     }
     this.field.validValues  = values;
 
-    this.field.validations  = this.validations;
+    this.field.validations  = this.state.validations;
 
     const {addField, updateField} = this.props;
     if (this.updating)
@@ -216,12 +229,12 @@ export default class FieldModal extends Component {
     this.props.onClose();
   };
 
-  checkControls() {
-    this.validations = null;
-    this.checkSwitches();
+  resetControls() {
+    this.setState({validations: null});
+    this.resetSwitches();
   }
 
-  checkSwitches() {
+  resetSwitches() {
     let can = canBeTitle(this.state);
     if (can && !this.field.model.getTitle())
       this.setState({isTitle: true});
@@ -233,7 +246,7 @@ export default class FieldModal extends Component {
   }
 
   checkValidErrors() {
-    if (!this.validations)
+    if (!this.state.validations)
       return false;
 
     let error = false;
@@ -243,7 +256,7 @@ export default class FieldModal extends Component {
         switch (this.state.appearance) {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
-            const {range} = this.validations;
+            const {range} = this.state.validations;
             error = range && range.active && range.minActive && range.maxActive && range.min > range.max;
             range.isError = error;
             break;
@@ -254,7 +267,7 @@ export default class FieldModal extends Component {
         switch (this.state.appearance) {
           case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
           case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
-            const {range} = this.validations;
+            const {range} = this.state.validations;
             error = range && range.active && range.minActive && range.maxActive && range.min > range.max;
             range.isError = error;
             break;
@@ -264,7 +277,7 @@ export default class FieldModal extends Component {
       case ftps.FIELD_TYPE_INTEGER:
         switch (this.state.appearance) {
           case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
-            const {range} = this.validations;
+            const {range} = this.state.validations;
             error = range && range.active && range.minActive && range.maxActive && range.min > range.max;
             range.isError = error;
             break;
@@ -277,7 +290,7 @@ export default class FieldModal extends Component {
       case ftps.FIELD_TYPE_FLOAT:
         switch (this.state.appearance) {
           case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
-            const {range} = this.validations;
+            const {range} = this.state.validations;
             error = range && range.active && range.minActive && range.maxActive && range.min > range.max;
             range.isError = error;
             break;
@@ -289,7 +302,7 @@ export default class FieldModal extends Component {
           case ftps.FIELD_APPEARANCE__DATE__DATE:
           case ftps.FIELD_APPEARANCE__DATE__DATE_ONLY:
           case ftps.FIELD_APPEARANCE__DATE__TIME_ONLY:
-            const {rangeDate} = this.validations;
+            const {rangeDate} = this.state.validations;
             if (rangeDate && rangeDate.active && rangeDate.minActive && rangeDate.maxActive) {
               const dateMin = new Date(rangeDate.min);
               const dateMax = new Date(rangeDate.max);
@@ -301,14 +314,14 @@ export default class FieldModal extends Component {
         break;
 
       case ftps.FIELD_TYPE_REFERENCE:
-        const {models} = this.validations;
+        const {models} = this.state.validations;
         if (models && models.active && !models.modelsList.length)
           error = true;
         models.isError = error;
         break;
 
       case ftps.FIELD_TYPE_MEDIA:
-        const {fileSize} = this.validations;
+        const {fileSize, fileTypes} = this.state.validations;
         let error1 = false;
         if (fileSize && fileSize.active && fileSize.minActive && fileSize.maxActive) {
           const min = convertDataUnits(fileSize.min, fileSize.minUnit, BYTES);
@@ -317,7 +330,6 @@ export default class FieldModal extends Component {
         }
         fileSize.isError = error1;
 
-        const {fileTypes} = this.validations;
         let error2 = false;
         if (fileTypes && fileTypes.active && !fileTypes.types.length)
           error2 = true;
@@ -331,7 +343,7 @@ export default class FieldModal extends Component {
   }
 
   onUpdateValidations = validations => {
-    this.validations = validations;
+    this.setState({validations});
   };
 
 
@@ -345,6 +357,38 @@ export default class FieldModal extends Component {
     this.calcCaretPos();
   };
 
+  onLoadNewData = () => {
+    const field = this.props.params;
+    this.setState({
+      name:         field.name,
+      appearance:   field.appearance,
+      boolTextYes:  field.boolTextYes,
+      boolTextNo:   field.boolTextNo,
+      validValues:  field.validValues,
+      isRequired:   field.isRequired,
+      isTitle:      field.isTitle,
+      isList:       field.isList,
+      isDisabled:   field.isDisabled,
+      isUnique:     field.isUnique,
+
+      validations:  field.validations,
+
+      errorName: false,
+
+      newData: false,
+      oldFieldData: JSON.stringify(field)
+    });
+  };
+
+  onCancelNewData = () => {
+    const field = this.props.params;
+    this.setState({
+      newData: false,
+      oldFieldData: JSON.stringify(field)
+    });
+  };
+
+  // calculates position of caret on top menu (settings / appearance / validations)
   calcCaretPos = () => {
     if (!this.caretRef)
       return;
@@ -510,14 +554,14 @@ export default class FieldModal extends Component {
       case TAB_VALIDATIONS:
         tabValidStyle += ' active';
 
-        let validations = null;
+        let validationsComponent = null;
         switch (this.state.type) {
           case ftps.FIELD_TYPE_SHORT_TEXT:
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
               case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
-                validations = <ValidationString validations={this.validations}
-                                                update={this.onUpdateValidations} />;
+                validationsComponent = <ValidationString validations={this.state.validations}
+                                                         update={this.onUpdateValidations} />;
                 break;
             }
             break;
@@ -526,8 +570,8 @@ export default class FieldModal extends Component {
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
               case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
-                validations = <ValidationString validations={this.validations}
-                                                update={this.onUpdateValidations} />;
+                validationsComponent = <ValidationString validations={this.state.validations}
+                                                         update={this.onUpdateValidations} />;
                 break;
             }
             break;
@@ -535,8 +579,8 @@ export default class FieldModal extends Component {
           case ftps.FIELD_TYPE_INTEGER:
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__INTEGER__DECIMAL:
-                validations = <ValidationNumber validations={this.validations}
-                                                update={this.onUpdateValidations }/>;
+                validationsComponent = <ValidationNumber validations={this.state.validations}
+                                                         update={this.onUpdateValidations }/>;
                 break;
 
               case ftps.FIELD_APPEARANCE__INTEGER__RATING:
@@ -547,8 +591,8 @@ export default class FieldModal extends Component {
           case ftps.FIELD_TYPE_FLOAT:
             switch (this.state.appearance) {
               case ftps.FIELD_APPEARANCE__FLOAT__DECIMAL:
-                validations = <ValidationNumber validations={this.validations}
-                                                update={this.onUpdateValidations} />;
+                validationsComponent = <ValidationNumber validations={this.state.validations}
+                                                         update={this.onUpdateValidations} />;
                 break;
             }
             break;
@@ -558,22 +602,22 @@ export default class FieldModal extends Component {
               case ftps.FIELD_APPEARANCE__DATE__DATE:
               case ftps.FIELD_APPEARANCE__DATE__DATE_ONLY:
               case ftps.FIELD_APPEARANCE__DATE__TIME_ONLY:
-                validations = <ValidationDate appearance={this.state.appearance}
-                                              validations={this.validations}
-                                              update={this.onUpdateValidations} />;
+                validationsComponent = <ValidationDate appearance={this.state.appearance}
+                                                       validations={this.state.validations}
+                                                       update={this.onUpdateValidations} />;
                 break;
             }
             break;
 
           case ftps.FIELD_TYPE_REFERENCE:
-            validations = <ValidationReference validations={this.validations}
-                                               models={this.props.models}
-                                               update={this.onUpdateValidations} />;
+            validationsComponent = <ValidationReference validations={this.state.validations}
+                                                        models={this.props.models}
+                                                        update={this.onUpdateValidations} />;
             break;
 
           case ftps.FIELD_TYPE_MEDIA:
-            validations = <ValidationMedia validations={this.validations}
-                                           update={this.onUpdateValidations} />;
+            validationsComponent = <ValidationMedia validations={this.state.validations}
+                                                    update={this.onUpdateValidations} />;
             break;
         }
 
@@ -596,7 +640,7 @@ export default class FieldModal extends Component {
                 </div>
               </div>
             }
-            {validations}
+            {validationsComponent}
           </div>
 
         );
@@ -627,6 +671,15 @@ export default class FieldModal extends Component {
           <div styleName="content">
             <form>
               {content}
+
+              {this.state.newData &&
+                <div styleName="notification">
+                  <div>There are some changes. What do you want to do?</div>
+                  <div styleName="button" onClick={this.onLoadNewData}>Load new data</div>
+                  <div styleName="button" onClick={this.onCancelNewData}>Keep my data</div>
+                </div>
+              }
+
               <div styleName="input-wrapper buttons-wrapper">
                 <div styleName="buttons-inner">
                   <ButtonControl color="black"
