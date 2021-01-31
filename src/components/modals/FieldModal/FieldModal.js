@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
+import classNames from "classnames";
 
 import SwitchControl from 'components/elements/SwitchControl/SwitchControl';
 import CheckboxControl from 'components/elements/CheckboxControl/CheckboxControl';
@@ -375,50 +376,46 @@ export default class FieldModal extends Component {
                             placeholder="Main Title"
                             DOMRef={inp => this.focusElm = inp}
                             onChange={this.onChangeName}
-                            titled
                             value={this.state.name} />
+              {this.state.errorName &&
+                <div styleName="error-same-name">This name is already in use.</div>
+              }
             </div>
-
-            {this.state.errorName &&
-              <div styleName="error-same-name">This name is already in use.</div>
-            }
 
             <div styleName="input-wrapper">
               <InputControl label="Field ID"
                             icon="lock"
                             value={this.state.nameId}
-                            titled
                             readOnly={true} />
             </div>
 
             <div styleName="input-wrapper">
               <DropdownControl label="Type"
-                              disabled={this.updating || this.state.isTitle}
-                              list={this.typeList}
-                              onSuggest={this.onChangeType}
-                              titled
-                              current={this.state.type} />
+                               disabled={this.updating || this.state.isTitle}
+                               list={this.typeList}
+                               onSuggest={this.onChangeType}
+                               current={this.state.type} />
             </div>
 
-            <div styleName="input-wrapper">
+            <div styleName="input-wrapper switch-first">
               <SwitchControl label="List (keeping multiple values instead of one)"
-                            checked={this.state.isList}
-                            onChange={this.onChangeIsList}
-                            disabled={!canBeList(this.state) || this.updating} />
+                             checked={this.state.isList}
+                             onChange={this.onChangeIsList}
+                             disabled={!canBeList(this.state) || this.updating} />
             </div>
 
             <div styleName="input-wrapper">
               <SwitchControl label="Entry Title"
-                            checked={this.state.isTitle}
-                            onChange={this.onChangeIsTitle}
-                            disabled={!canBeTitle(this.state)} />
+                             checked={this.state.isTitle}
+                             onChange={this.onChangeIsTitle}
+                             disabled={!canBeTitle(this.state)} />
             </div>
 
             <div styleName="input-wrapper">
               <SwitchControl label="Disabled"
-                            checked={this.state.isDisabled}
-                            onChange={this.onChangeIsDisabled}
-                            disabled={this.state.isTitle} />
+                             checked={this.state.isDisabled}
+                             onChange={this.onChangeIsDisabled}
+                             disabled={this.state.isTitle} />
             </div>
           </div>
         );
@@ -489,14 +486,19 @@ export default class FieldModal extends Component {
             break;
         }
 
+        const dropdownStyleName = classNames({
+          'input-wrapper': true,
+          'bottom-margin': !inner
+        });
+
         content = (
           <div>
-            <div styleName="input-wrapper">
+            <div styleName={dropdownStyleName}>
               <DropdownControl label="Appearance"
-                              disabled={this.state.isTitle}
-                              list={this.state.appList}
-                              onSuggest={this.onChangeAppearance}
-                              current={this.state.appearance} />
+                               disabled={this.state.isTitle}
+                               list={this.state.appList}
+                               onSuggest={this.onChangeAppearance}
+                               current={this.state.appearance} />
             </div>
             {inner}
           </div>
@@ -577,20 +579,20 @@ export default class FieldModal extends Component {
 
         content = (
           <div>
-            <div styleName="validation">
+            <div styleName="validation validation-first">
               <div styleName="switch">
                 <CheckboxControl title="Required"
-                                checked={this.state.isRequired}
-                                onChange={this.onChangeIsRequired}
-                                disabled={this.state.isTitle} />
+                                 checked={this.state.isRequired}
+                                 onChange={this.onChangeIsRequired}
+                                 disabled={this.state.isTitle} />
               </div>
             </div>
             {canBeUnique(this.state) &&
               <div styleName="validation">
                 <div styleName="switch">
                   <CheckboxControl title="Unique value"
-                                  checked={this.state.isUnique}
-                                  onChange={this.onChangeIsUnique} />
+                                   checked={this.state.isUnique}
+                                   onChange={this.onChangeIsUnique} />
                 </div>
               </div>
             }
