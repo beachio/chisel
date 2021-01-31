@@ -13,6 +13,7 @@ export const SHOW_ALERT           = 'app/nav/SHOW_ALERT';
 export const CLOSE_ALERT          = 'app/nav/CLOSE_ALERT';
 export const SHOW_MODAL           = 'app/nav/SHOW_MODAL';
 export const CLOSE_MODAL          = 'app/nav/CLOSE_MODAL';
+export const SHOW_NOTIFICATION    = 'app/nav/SHOW_NOTIFICATION';
 export const RETURN_HOME          = 'app/nav/RETURN_HOME';
 export const SET_CURRENT_PAGE     = 'app/nav/SET_CURRENT_PAGE';
 export const TOGGLE_SIDEBAR       = 'app/nav/TOGGLE_SIDEBAR';
@@ -145,6 +146,12 @@ const initialState = {
 
   showUnpaidSub: false,
 
+  notification: {
+    text: 'There are some changes. What do you want to do?',
+    confirmLabel: 'Load new data',
+    cancelLabel: 'Keep my data',
+  },
+
   serverProblemA: false,
   serverProblemB: false
 };
@@ -225,6 +232,15 @@ export default function navReducer(state = initialState, action) {
         modalParams: action.params
       };
 
+    case CLOSE_MODAL:
+      return {...state, modalShowing: false};
+
+    case SHOW_NOTIFICATION:
+      return {
+        ...state,
+        notification: action.notification
+      };
+
     case LOCATION_CHANGE:
       return {
         ...state,
@@ -232,8 +248,6 @@ export default function navReducer(state = initialState, action) {
         modalShowing: false
       };
 
-    case CLOSE_MODAL:
-      return {...state, modalShowing: false};
 
     case SET_SERVER_PROBLEM_A:
       return {...state, serverProblemA: action.value};

@@ -6,6 +6,7 @@ import {ScrollContainer} from 'react-router-scroll';
 
 import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
+import Notification from 'components/mainArea/common/Notification/Notification';
 import {PAGE_PROFILE, PAGE_PAY_PLANS, PAGE_PAYMENT_METHODS} from 'ducks/nav';
 
 import styles from './MainArea.sss';
@@ -49,6 +50,7 @@ export class MainArea extends Component {
               {content}
             </div>
           </ScrollContainer>
+          <Notification notification={nav.notification} />
         </div>
       </div>
     );
