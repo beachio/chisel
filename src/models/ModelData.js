@@ -5,23 +5,23 @@ import {removeOddSpaces, filterSpecials} from 'utils/strings';
 
 export class TemplateData {
   static get OriginClass() {return Parse.Object.extend("Template");}
-  
+
   origin = null;
-  
+
   name = '';
   description = '';
   icon = null;
-  
+
   //children
   models = [];
-  
+
   setOrigin(origin) {
     this.origin = origin;
-    
+
     if (origin.get('name'))         this.name         = origin.get('name');
     if (origin.get('description'))  this.description  = origin.get('description');
     if (origin.get('icon'))         this.icon         = origin.get('icon');
-    
+
     return this;
   }
 }
@@ -83,7 +83,7 @@ export class SiteData {
 
     this.origin.set("owner",  this.owner.origin);
   }
-  
+
   toJSON() {
     return {
       name:             this.name,
@@ -167,7 +167,7 @@ export class ModelData {
       fields:       this.fields
     };
   }
-  
+
   getTitle() {
     for (let field of this.fields) {
       if (field.isTitle)
@@ -359,7 +359,7 @@ export class ModelFieldData {
     if (origin.get('isUnique'))     this.isUnique     = true;
 
     if (origin.get('validations'))  this.validations  = origin.get('validations');
-    
+
     if (origin.get('order') || origin.get('order') === 0)  this.order = origin.get('order');
 
     return this;
@@ -368,7 +368,7 @@ export class ModelFieldData {
   updateOrigin() {
     if (!this.origin)
       this.origin = new ModelFieldData.OriginClass;
-    
+
     this.origin.set("name",       this.name);
     this.origin.set("nameId",     this.nameId);
     this.origin.set("type",       this.type);
@@ -383,7 +383,7 @@ export class ModelFieldData {
     this.origin.set("isDisabled", this.isDisabled);
     this.origin.set("isUnique",   this.isUnique);
     this.origin.set("order",      this.order);
-  
+
     this.origin.set("validations",this.validations);
     
     this.origin.set("model",      this.model ? this.model.origin : undefined);
