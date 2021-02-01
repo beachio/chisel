@@ -15,12 +15,12 @@ export default class ContentBoolean extends ContentBase {
   getInput() {
     const {isEditable} = this.props;
     const {value, field} = this.state;
-    
+
     switch (field.appearance) {
       case ftps.FIELD_APPEARANCE__BOOLEAN__RADIO:
         const textYes = field.boolTextYes ? field.boolTextYes : 'Yes';
         const textNo  = field.boolTextNo  ? field.boolTextNo  : 'No';
-  
+
         return (
           <div styleName="radio">
             <RadioControl name={field.nameId}
@@ -43,7 +43,7 @@ export default class ContentBoolean extends ContentBase {
             }
           </div>
         );
-    
+
       case ftps.FIELD_APPEARANCE__BOOLEAN__SWITCH:
         return (
           <div styleName="switch">
