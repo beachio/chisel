@@ -136,6 +136,8 @@ export class ContentItemData {
         this.origin.set(field.nameId, refOrigins);
       } else if (field.type == FIELD_TYPE_MEDIA && value) {
         this.origin.set(field.nameId, value.origin);
+      } else if (value === undefined) {
+        this.origin.unset(field.nameId);
       } else {
         this.origin.set(field.nameId, value);
       }
