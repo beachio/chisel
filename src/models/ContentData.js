@@ -85,6 +85,7 @@ export class ContentItemData {
     return this;
   }
 
+  // setting links for values of reference and media fields type
   postInit(items) {
     for (let field of this.model.fields) {
       if (field.type == FIELD_TYPE_REFERENCE) {
@@ -146,5 +147,26 @@ export class ContentItemData {
     this.origin.set("t__model",  this.model.origin);
     if (this.owner)
       this.origin.set("t__owner",  this.owner.origin);
+  }
+
+  toJSON() {
+    const fields = {};
+    for (let [field, _value] of this.fields) {
+      const {id} = field.origin;
+      let value = _value;
+      if (value) {
+        if (field.type == FIELD_TYPE_REFERENCE || field.type == FIELD_TYPE_MEDIA && field.isList)
+          value = value.map(ref => ref.origin.id);
+        else if (field.type == FIELD_TYPE_MEDIA)
+          value = value.origin.id;
+      }
+      fields[id] = value;
+    }
+
+    return {
+      color:  this.color,
+      status: this.status,
+      fields
+    };
   }
 }

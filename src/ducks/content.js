@@ -2,10 +2,16 @@ import {Parse} from 'parse';
 
 import {store} from '../index';
 import {ContentItemData, STATUS_ARCHIVED, STATUS_UPDATED, STATUS_PUBLISHED, STATUS_DRAFT} from 'models/ContentData';
-import {SITE_DELETE, MODEL_DELETE, FIELD_ADD, FIELD_UPDATE, FIELD_DELETE} from 'ducks/models';
+import {
+  SITE_DELETE,
+  MODEL_DELETE,
+  FIELD_ADD,
+  FIELD_UPDATE,
+  FIELD_DELETE,
+} from 'ducks/models';
 import {LOGOUT} from './user';
 import {getRandomColor} from 'utils/common';
-import {getContentForModel, getContentForSite} from 'utils/data';
+import {getContentForModel, getContentForSite, getModelFromAnySite} from 'utils/data';
 import {send, getAllObjects} from 'utils/server';
 
 
@@ -39,6 +45,58 @@ function requestContentItems(model, items, itemsDraft) {
     .catch(() => {});
 }
 
+async function subscribeToContentItem(model) {
+  const query = new Parse.Query(Parse.Object.extend(model.tableName));
+  const subscription = await query.subscribe();
+
+  subscription.on('create', (item_o) => {
+    const {items} = store.getState().content;
+    if (items.find(i => i.origin.id == item_o.id))
+      return;
+
+    const model_o = item_o.get('t__model');
+    const model = getModelFromAnySite(model_o.id);
+
+    let item = new ContentItemData();
+    item.model = model;
+    item.setOrigin(item_o);
+    store.dispatch(addItemFromServer(item));
+  });
+
+  subscription.on('update', (item_o) => {
+    const {items} = store.getState().content;
+    const item = items.find(i => i.origin.id == item_o.id);
+    if (!item)
+      return;
+
+    const itemNew = new ContentItemData();
+    itemNew.model = item.model;
+    itemNew.setOrigin(item_o);
+    itemNew.postInit(items);
+
+    const itemNewData = itemNew.toJSON();
+    const itemData = item.toJSON();
+
+    if (JSON.stringify(itemNewData) == JSON.stringify(itemData))
+      return;
+
+    item.color = itemNew.color;
+    item.status = itemNew.status;
+    item.fields = itemNew.fields;
+
+    store.dispatch(updateItemFromServer(item));
+  });
+
+  subscription.on('delete', (item_o) => {
+    const {items} = store.getState().content;
+    const item = items.find(i => i.origin.id == item_o.id);
+    if (!item)
+      return;
+
+    store.dispatch(deleteItemFromServer(item));
+  });
+}
+
 export function init() {
   return dispatch => {
     let sites = store.getState().models.sites;
@@ -49,6 +107,7 @@ export function init() {
     for (let site of sites) {
       for (let model of site.models) {
         promises.push(requestContentItems(model, items, itemsDraft));
+        subscribeToContentItem(model);
       }
     }
 
@@ -79,6 +138,13 @@ export function addItem(item) {
   }
 }
 
+export function addItemFromServer(item) {
+  return {
+    type: ITEM_ADD,
+    item
+  };
+}
+
 export function updateItem(item) {
   if (item.draft) {
     item.draft.updateOrigin();
@@ -94,6 +160,13 @@ export function updateItem(item) {
   item.updateOrigin();
   send(item.origin.save());
 
+  return {
+    type: ITEM_UPDATE,
+    item
+  };
+}
+
+export function updateItemFromServer(item) {
   return {
     type: ITEM_UPDATE,
     item
@@ -207,6 +280,13 @@ export function deleteItem(item) {
         send(Parse.Cloud.run('onContentModify', {URL: item.model.site.webhook}));
     });
 
+  return {
+    type: ITEM_DELETE,
+    item
+  };
+}
+
+function deleteItemFromServer(item) {
   return {
     type: ITEM_DELETE,
     item
