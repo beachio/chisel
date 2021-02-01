@@ -45,7 +45,7 @@ function requestContentItems(model, items, itemsDraft) {
     .catch(() => {});
 }
 
-async function subscribeToContentItem(model) {
+export async function subscribeToContentItem(model) {
   const query = new Parse.Query(Parse.Object.extend(model.tableName));
   const subscription = await query.subscribe();
 

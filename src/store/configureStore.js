@@ -3,14 +3,14 @@ import {createLogger} from 'redux-logger';
 import thunk from 'redux-thunk';
 
 import rootReducer from 'ducks';
-import {initialization} from 'middleware/initialization';
+import {initialization, subscribeToNewModelContent} from 'middleware/initialization';
 import {routing} from 'middleware/routing';
 
 
 export default function configureStore(initialState) {
   const logger = createLogger();
   
-  const middleware = [initialization, routing, thunk];
+  const middleware = [initialization, routing, subscribeToNewModelContent, thunk];
   if (process.env.NODE_ENV == 'development')
     middleware.push(logger);
 
