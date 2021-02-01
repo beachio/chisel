@@ -16,8 +16,8 @@ import ImageCrossCircle from 'assets/images/cross-circle.svg';
 export default class ContentReference extends ContentBase {
   addingItem = null;
   validModels = null;
-  
-  
+
+
   constructor(props) {
     super(props);
 
@@ -28,7 +28,7 @@ export default class ContentReference extends ContentBase {
         this.validModels = modelsList;
     }
   }
-  
+
   getError () {
     const baseError = super.getError();
     if (baseError)
@@ -46,7 +46,7 @@ export default class ContentReference extends ContentBase {
       const exist = checkContentExistense(item);
       if (!exist)
         return 'The referred content item is not exists!';
-      
+
       const modelId = item.model.nameId;
       if (this.validModels && this.validModels.indexOf(modelId) == -1) {
         if (field.validations.models.errorMsg)
@@ -55,29 +55,29 @@ export default class ContentReference extends ContentBase {
       }
     }
   }
-  
+
   onReferenceNew = () => {
     if (!this.props.isEditable)
       return;
-    
+
     const callback = model => {
       this.addingItem = new ContentItemData();
       this.addingItem.model = model;
       this.props.addItem(this.addingItem);
-  
+
       let refers = this.state.value;
       if (!refers)
         refers = [];
-  
+
       this.setValue(refers.concat(this.addingItem), true);
     };
-    
+
     this.props.showModal(MODAL_TYPE_MODEL_CHOOSE, {
       callback,
       validModels: this.validModels
     });
   };
-  
+
   onReferencesChoose = () => {
     if (!this.props.isEditable)
       return;
@@ -94,12 +94,12 @@ export default class ContentReference extends ContentBase {
       }
     );
   };
-  
+
   onReferenceClear = (event, item) => {
     event.stopPropagation();
     if (!this.props.isEditable)
       return;
-    
+
     let refers = this.state.value;
     if (this.state.field.isList)
       refers.splice(refers.indexOf(item), 1);
@@ -107,20 +107,20 @@ export default class ContentReference extends ContentBase {
       refers = undefined;
     this.setValue(refers, true);
   };
-  
+
   getInput() {
     let value = this.state.value;
-    
+
     let oneRefBlock = item => {
       let exist = checkContentExistense(item);
       if (this.addingItem == item)
         exist = true;
       let key = item.origin && item.origin.id ? item.origin.id : Math.random();
-    
+
       if (exist) {
         let title = item.title ? item.title : "Untitled";
         let titleStyle = item.title ? '' : 'untitled';
-      
+
         return (
           <div styleName="reference-item" key={key} onClick={() => this.props.onReferenceClick(item)}>
             <span styleName="reference-title">
@@ -132,7 +132,7 @@ export default class ContentReference extends ContentBase {
                        onClick={e => this.onReferenceClear(e, item)} />
           </div>
         );
-      
+
       } else {
         return (
           <div styleName="reference-item" key={key} onClick={e => this.onReferenceClear(e, item)}>
@@ -141,7 +141,7 @@ export default class ContentReference extends ContentBase {
         );
       }
     };
-  
+
     let btnStyle = `reference-button`;
     if (!this.props.isEditable)
       btnStyle += ` reference-button-disabled`;
@@ -155,9 +155,9 @@ export default class ContentReference extends ContentBase {
         </div>
       </div>
     );
-  
+
     let refInner = addRefBlock;
-  
+
     if (this.state.field.isList) {
       if (value && value.length)
         refInner = (
@@ -166,17 +166,17 @@ export default class ContentReference extends ContentBase {
             {addRefBlock}
           </div>
         );
-    
+
     } else {
       if (value && value.length)
         refInner = oneRefBlock(value[0]);
     }
-  
+
     return (
       <div styleName="reference">
         {refInner}
       </div>
     );
   }
-  
+
 }

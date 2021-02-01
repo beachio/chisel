@@ -26,7 +26,7 @@ import ImageIconLink from 'assets/images/icons/link.svg';
 export default class ContentString extends ContentBase {
   constructor (props) {
     super(props);
-    
+
     if (!this.state.value && this.state.field.isList)
       this.state.value = [];
   }
@@ -40,7 +40,7 @@ export default class ContentString extends ContentBase {
       };
     return ContentBase.getDerivedStateFromProps(props, state);
   }
-  
+
   getError () {
     const baseError = super.getError();
     if (baseError)
@@ -49,7 +49,7 @@ export default class ContentString extends ContentBase {
     const {field} = this.state;
     if (field.isRequired && !this.state.value)
       return 'This field is required!';
-  
+
     const checkRange = value => {
       const {range} = field.validations;
       if (range.minActive && value.length < range.min ||
@@ -70,12 +70,12 @@ export default class ContentString extends ContentBase {
         return error;
       }
     };
-  
+
     const checkMainValidations = value => {
       const {validations} = field;
       if (!validations)
         return null;
-      
+
       let error;
       if (validations.range && validations.range.active) {
         error = checkRange(value);
@@ -88,17 +88,17 @@ export default class ContentString extends ContentBase {
           return error;
       }
     };
-  
-    
+
+
     let value = this.state.value;
-    
+
     switch (field.type) {
       case ftps.FIELD_TYPE_SHORT_TEXT:
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
             if (!field.validations)
               break;
-  
+
             if (field.isList) {
               for (let itemValue of value) {
                 let error = checkMainValidations(itemValue);
@@ -110,33 +110,33 @@ export default class ContentString extends ContentBase {
               if (error)
                 return error;
             }
-            
+
             break;
-          
+
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
             if (!value)
               break;
-            
+
             let slug = filterSpecialsAndCapital(value, "-");
             if (slug !== value)
               return "Slug must not contain special symbols and capital letters!";
-  
+
             let error = checkMainValidations(value);
             if (error)
               return error;
-            
+
             break;
-          
+
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__URL:
             if (!value)
               break;
-            
+
             if (!checkURL(value))
               return "The URL is invalid!";
             break;
         }
         break;
-        
+
       case ftps.FIELD_TYPE_LONG_TEXT:
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
@@ -144,14 +144,14 @@ export default class ContentString extends ContentBase {
             let error = checkMainValidations(value);
             if (error)
               return error;
-            
+
             break;
         }
     }
-    
+
     return null;
   }
-  
+
   onChange = value => {
     this.setValue(value);
     if (this.state.field.isTitle)
@@ -161,15 +161,15 @@ export default class ContentString extends ContentBase {
   onChangeTextarea = event => {
     this.setValue(event.target.value);
   };
-  
+
   onChangeList = values => {
     this.setValue(values);
   };
-  
+
   onChangeDropdown = (v, i) => {
     if (i === undefined) {
       this.setValue(v);
-    
+
     } else {
       let list = this.state.value ? this.state.value : [];
       if (v === undefined)
@@ -179,7 +179,7 @@ export default class ContentString extends ContentBase {
       this.setValue(list);
     }
   };
-  
+
   onChangeWysiwyg = text => {
     this.setValue(text);
   };
@@ -187,7 +187,7 @@ export default class ContentString extends ContentBase {
   onChangeMarkdown = text => {
     this.setValue(text);
   };
-  
+
   onShowWysiwygModal = () => {
     this.props.showModal(
       MODAL_TYPE_WYSIWYG,
@@ -208,7 +208,7 @@ export default class ContentString extends ContentBase {
       }
     );
   };
-  
+
   getTitle() {
     const {field} = this.state;
 
@@ -222,7 +222,7 @@ export default class ContentString extends ContentBase {
             </div>
           </div>
         );
-        
+
       case ftps.FIELD_APPEARANCE__LONG_TEXT__MARKDOWN:
         return (
           <div styleName="field-title">
@@ -232,7 +232,7 @@ export default class ContentString extends ContentBase {
             </div>
           </div>
         );
-        
+
       default:
         return (
           <div styleName="field-title">
@@ -241,7 +241,7 @@ export default class ContentString extends ContentBase {
         );
     }
   }
-  
+
   getInput() {
     const {isEditable} = this.props;
     const {value, field} = this.state;
@@ -253,7 +253,7 @@ export default class ContentString extends ContentBase {
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SINGLE:
             let inner;
-        
+
             if (field.isList) {
               inner = <DynamicListComponent values={value}
                                             onChange={this.onChangeList}
@@ -266,13 +266,13 @@ export default class ContentString extends ContentBase {
                                     readOnly={!isEditable}
                                     onChange={this.onChange} />;
             }
-        
+
             return (
               <div styleName="input-wrapper">
                 {inner}
               </div>
             );
-      
+
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG:
             return (
               <div styleName="input-wrapper">
@@ -283,7 +283,7 @@ export default class ContentString extends ContentBase {
                               onChange={this.onChange} />
               </div>
             );
-      
+
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__URL:
             return (
               <div styleName="input-wrapper">
@@ -294,7 +294,7 @@ export default class ContentString extends ContentBase {
                               onChange={this.onChange} />
               </div>
             );
-  
+
           case ftps.FIELD_APPEARANCE__SHORT_TEXT__DROPDOWN:
             const getElement = (v, i) => (
               <div styleName="dropdown-wrapper" key={i}>
@@ -314,13 +314,13 @@ export default class ContentString extends ContentBase {
                 }
               </div>
             );
-  
+
             if (!field.isList)
               return getElement(value);
-  
+
             if (!value)
               return getElement(undefined, 0);
-  
+
             return (
               <div>
                 {value.map(getElement)}
@@ -329,7 +329,7 @@ export default class ContentString extends ContentBase {
             );
         }
         break;
-  
+
 
       case ftps.FIELD_TYPE_LONG_TEXT:
 
@@ -343,7 +343,7 @@ export default class ContentString extends ContentBase {
                               onChange={this.onChange} />
               </div>
             );
-      
+
           case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
             return (
               <textarea styleName="textarea"
@@ -352,7 +352,7 @@ export default class ContentString extends ContentBase {
                         readOnly={!isEditable}
                         onChange={this.onChangeTextarea} />
             );
-      
+
           case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
             return (
               <Editor styleName="wysiwig"
