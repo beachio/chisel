@@ -25,7 +25,7 @@ export default class ContentBase extends Component {
       };
     return null;
   }
-  
+
   setValue = (value, save) => {
     this.setState({
       value,
@@ -33,11 +33,11 @@ export default class ContentBase extends Component {
     });
     this.props.setFieldValue(this.state.field, value, save);
   };
-  
+
   getError() {
     if (this.state.field.isRequired && this.state.value === undefined)
       return 'This field is required!';
-    
+
     if (this.state.field.isUnique) {
       const item = checkUniqueFieldValue(this.state.field, this.props.item);
       if (item) {
@@ -47,16 +47,16 @@ export default class ContentBase extends Component {
           return `This field value must be unique! There is an untitled item with same value.`;
       }
     }
-    
+
     return null;
   }
-  
+
   validate () {
     let error = this.getError();
     this.setState({error});
     return !error;
   }
-  
+
   getTitle() {
     return (
       <div styleName="field-title">
@@ -64,12 +64,12 @@ export default class ContentBase extends Component {
       </div>
     );
   }
-  
+
   //must be overriden
   getInput() {
     return null;
   }
-  
+
   render() {
     return (
       <div styleName="field">
