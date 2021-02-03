@@ -164,6 +164,7 @@ export class ContentItemData {
     }
 
     return {
+      id:     this.origin.id,
       color:  this.color,
       status: this.status,
       fields
