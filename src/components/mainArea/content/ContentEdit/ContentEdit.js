@@ -21,7 +21,7 @@ import styles from './ContentEdit.sss';
 
 const AUTOSAVE_TIMEOUT = 2000;
 
-  
+
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentEdit extends Component {
   state = {
@@ -35,13 +35,13 @@ export default class ContentEdit extends Component {
   item = this.props.item;
   fieldsArchive = new Map(this.item.fields);
   addingItem = null;
-  
+
   wait = false;
   waitSave = false;
-  
+
   fieldElements = [];
   fieldElementRefs = [];
-  
+
 
   constructor(props) {
     super(props);
@@ -67,10 +67,10 @@ export default class ContentEdit extends Component {
       this.addingItem = null;
     }
   }
-  
+
   updateItem(item = this.item) {
     this.item = item;
-    
+
     let draft = item.draft ? item.draft : item;
     this.setState({
       title:  draft.title,
@@ -79,10 +79,10 @@ export default class ContentEdit extends Component {
       dirty:  false,
       errors: false
     });
-    
+
     this.waitSave = false;
   }
-  
+
   componentDidUpdate() {
     this.checkAddingItem(this.props.lastItem);
     if (this.props.item.origin.id != this.item.origin.id)
@@ -114,7 +114,7 @@ export default class ContentEdit extends Component {
   onDiscard = () => {
     if (this.item.status == STATUS_DRAFT || this.item.status == STATUS_ARCHIVED)
       this.item.fields = new Map(this.fieldsArchive);
-    
+
     this.props.discardItem(this.item);
     this.updateItem();
   };
@@ -123,25 +123,25 @@ export default class ContentEdit extends Component {
     this.setState({dirty: false});
     if (!this.validate())
       return;
-  
+
     this.props.publishItem(this.item);
     this.updateItem();
   };
-  
+
   onArchive = () => {
     this.props.archiveItem(this.item);
     this.updateItem();
   };
-  
+
   onRestore = () => {
     this.props.restoreItem(this.item);
     this.updateItem();
   };
-  
+
   onDelete = () => {
     const {showAlert, deleteItem} = this.props;
     const title = this.item.title ? this.item.title : 'content item';
-  
+
     showAlert({
       type: ALERT_TYPE_CONFIRM,
       title: `Deleting <strong>${title}</strong>`,
@@ -152,23 +152,23 @@ export default class ContentEdit extends Component {
       }
     });
   };
-  
+
   setFieldValue = (field, value, save = false) => {
     let fields = this.state.fields;
     this.setState({fields: fields.set(field, value), dirty: true});
-    
+
     if (save || !this.wait) {
       this.saveItem();
       this.wait = true;
-      
+
       setTimeout(() => {
         if (this.waitSave)
           this.saveItem();
         this.waitSave = false;
         this.wait = false;
-      
+
         }, AUTOSAVE_TIMEOUT);
-    
+
     } else {
       this.waitSave = true;
     }
@@ -184,18 +184,18 @@ export default class ContentEdit extends Component {
     this.setState({errors});
     return !errors;
   };
-  
+
   updateItemTitle = title => {
     let draft = this.item.draft ? this.item.draft : this.item;
     draft.title = title;
     this.setState({title});
   };
-  
+
   addItem = item => {
     this.addingItem = item;
     this.props.addItem(item);
   };
-  
+
   onReferenceClick = newItem => {
     this.saveItem();
     this.props.gotoItem(newItem);
@@ -246,7 +246,7 @@ export default class ContentEdit extends Component {
                             value={value}
                             isEditable={isEditable}
                             setFieldValue={this.setFieldValue} />;
-  
+
       case ftps.FIELD_TYPE_MEDIA:
         return <ContentMedia ref={ref}
                              field={field}

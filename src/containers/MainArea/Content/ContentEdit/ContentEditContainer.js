@@ -20,18 +20,18 @@ export class ContentEditContainer extends Component {
     super(props);
     this.setItem(props.params.item);
   }
-  
+
   componentDidUpdate(prevProps) {
     if (prevProps.params.item != this.props.params.item)
       this.setItem(this.props.params.item);
   }
-  
+
   // on mount / change item:
   // get item ID from URL, then send action "setCurrentItem"
   setItem(nameId) {
     if (nameId.indexOf(URL_ITEM) != 0)
       return;
-  
+
     nameId = nameId.slice(URL_ITEM.length);
     const modelNameId = nameId.slice(0, nameId.indexOf('~'));
     const itemId = nameId.slice(nameId.indexOf('~') + 1);
@@ -41,40 +41,40 @@ export class ContentEditContainer extends Component {
     const {setCurrentItem} = this.props.contentActions;
     const {content} = this.props;
     this.item = content.currentItem;
-  
+
     const item = getContentByModelAndId(modelNameId, itemId);
     if (item && item != this.item) {
       this.item = item;
       setCurrentItem(item);
     }
   }
-  
+
   render() {
     const {models, content} = this.props;
     const {addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem} = this.props.contentActions;
     const {showModal, showAlert} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
-    
+
     const site = models.currentSite;
     const item = this.item;
     if (!site || !item)
       return null;
-    
+
     const basePath = `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_CONTENT}`;
-    
+
     const closeItem = () => browserHistory.push(basePath);
-  
+
     const gotoItem = item => {
       let modelId = item.model.nameId;
       let itemId = item.origin.id;
       browserHistory.push(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
     };
-  
+
     const lastItem = content.items[content.items.length - 1];
-  
+
     const itemTitle = item.title ? item.title : 'Untitled';
     const title = `Item: ${itemTitle} - Site: ${site.name} - Chisel`;
-    
+
     return <>
       <Helmet>
         <title>{title}</title>
