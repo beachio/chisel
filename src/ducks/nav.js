@@ -14,6 +14,7 @@ export const CLOSE_ALERT          = 'app/nav/CLOSE_ALERT';
 export const SHOW_MODAL           = 'app/nav/SHOW_MODAL';
 export const CLOSE_MODAL          = 'app/nav/CLOSE_MODAL';
 export const SHOW_NOTIFICATION    = 'app/nav/SHOW_NOTIFICATION';
+export const CLOSE_NOTIFICATION   = 'app/nav/CLOSE_NOTIFICATION';
 export const RETURN_HOME          = 'app/nav/RETURN_HOME';
 export const SET_CURRENT_PAGE     = 'app/nav/SET_CURRENT_PAGE';
 export const TOGGLE_SIDEBAR       = 'app/nav/TOGGLE_SIDEBAR';
@@ -101,6 +102,19 @@ export function closeModal() {
   };
 }
 
+export function showNotification(notification) {
+  return {
+    type: SHOW_NOTIFICATION,
+    notification
+  };
+}
+
+export function closeNotification() {
+  return {
+    type: CLOSE_NOTIFICATION
+  };
+}
+
 export function returnHome() {
   browserHistory.push(`/${URL_USERSPACE}`);
 
@@ -146,11 +160,7 @@ const initialState = {
 
   showUnpaidSub: false,
 
-  notification: {
-    text: 'There are some changes. What do you want to do?',
-    confirmLabel: 'Load new data',
-    cancelLabel: 'Keep my data',
-  },
+  notification: null,
 
   serverProblemA: false,
   serverProblemB: false
@@ -239,6 +249,12 @@ export default function navReducer(state = initialState, action) {
       return {
         ...state,
         notification: action.notification
+      };
+
+    case CLOSE_NOTIFICATION:
+      return {
+        ...state,
+        notification: null
       };
 
     case LOCATION_CHANGE:

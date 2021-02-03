@@ -6,13 +6,15 @@ import styles from './Notification.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class Notification extends Component {
-
   onConfirm = () => {
-
+    const {onConfirm} = this.props.notification;
+    if (onConfirm)
+      onConfirm();
+    this.onCancel();
   };
 
   onCancel = () => {
-
+    this.props.closeNotification();
   };
 
   render() {

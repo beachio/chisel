@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
@@ -7,7 +8,7 @@ import {ScrollContainer} from 'react-router-scroll';
 import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
 import Notification from 'components/mainArea/common/Notification/Notification';
-import {PAGE_PROFILE, PAGE_PAY_PLANS, PAGE_PAYMENT_METHODS} from 'ducks/nav';
+import {PAGE_PROFILE, PAGE_PAY_PLANS, PAGE_PAYMENT_METHODS, closeNotification} from 'ducks/nav';
 
 import styles from './MainArea.sss';
 
@@ -26,6 +27,7 @@ export class MainArea extends Component {
 
   render() {
     const {models, nav} = this.props;
+    const {closeNotification} = this.props.navActions;
 
     let content = null;
 
@@ -50,7 +52,10 @@ export class MainArea extends Component {
               {content}
             </div>
           </ScrollContainer>
-          <Notification notification={nav.notification} />
+          {!!nav.notification &&
+            <Notification notification={nav.notification}
+                          closeNotification={closeNotification} />
+          }
         </div>
       </div>
     );
@@ -64,4 +69,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(MainArea);
+function mapDispatchToProps(dispatch) {
+  return {
+    navActions: bindActionCreators({closeNotification}, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainArea);
