@@ -50,8 +50,9 @@ export async function subscribeToContentItem(model) {
   const subscription = await query.subscribe();
 
   subscription.on('create', (item_o) => {
-    const {items} = store.getState().content;
-    if (items.find(i => i.origin.id == item_o.id))
+    const {items, itemsDraft} = store.getState().content;
+    if (items.find(i => i.origin.id == item_o.id)
+      || itemsDraft.find(i => i.origin.id == item_o.id))
       return;
 
     const model_o = item_o.get('t__model');
@@ -60,24 +61,33 @@ export async function subscribeToContentItem(model) {
     let item = new ContentItemData();
     item.model = model;
     item.setOrigin(item_o);
-    store.dispatch(addItemFromServer(item));
+    item.postInit(items);
+
+    const owner_o = item_o.get('t__owner');
+    if (owner_o) {
+      const owner = items.find(i => i.origin.id == owner_o.id);
+      if (owner) {
+        owner.draft = item;
+        item.owner = owner;
+      }
+    }
+    store.dispatch(addItemFromServer(item, !!owner_o));
   });
 
-  subscription.on('update', (item_o) => {
-    const {items} = store.getState().content;
-    const item = items.find(i => i.origin.id == item_o.id);
+  subscription.on('update', (itemNew_o) => {
+    const {items, itemsDraft} = store.getState().content;
+    let item = items.find(i => i.origin.id == itemNew_o.id);
+    if (!item)
+      item = itemsDraft.find(i => i.origin.id == itemNew_o.id);
     if (!item)
       return;
 
     const itemNew = new ContentItemData();
     itemNew.model = item.model;
-    itemNew.setOrigin(item_o);
+    itemNew.setOrigin(itemNew_o);
     itemNew.postInit(items);
 
-    const itemNewData = itemNew.toJSON();
-    const itemData = item.toJSON();
-
-    if (JSON.stringify(itemNewData) == JSON.stringify(itemData))
+    if (JSON.stringify(itemNew) == JSON.stringify(item))
       return;
 
     item.color = itemNew.color;
@@ -138,10 +148,11 @@ export function addItem(item) {
   }
 }
 
-export function addItemFromServer(item) {
+export function addItemFromServer(item, isDraft) {
   return {
     type: ITEM_ADD,
-    item
+    item,
+    isDraft
   };
 }
 
@@ -269,8 +280,6 @@ export function setCurrentItem(currentItem) {
 }
 
 export function deleteItem(item) {
-  //item.origin.destroy();
-
   send(Parse.Cloud.run('deleteContentItem', {
     tableName: item.model.tableName,
     itemId: item.origin.id,
@@ -330,13 +339,11 @@ export default function contentReducer(state = initialState, action) {
         item.postInit(items);
 
       for (let itemD of itemsDraft) {
-        let item_o = itemD.origin.get('t__owner');
-        for (let item of items) {
-          if (item.origin.id == item_o.id) {
-            item.draft = itemD;
-            itemD.owner = item;
-            break;
-          }
+        const item_o = itemD.origin.get('t__owner');
+        const item = items.find(i => i.origin.id == item_o.id);
+        if (item) {
+          item.draft = itemD;
+          itemD.owner = item;
         }
       }
 
@@ -353,7 +360,10 @@ export default function contentReducer(state = initialState, action) {
       };
 
     case ITEM_ADD:
-      items = state.items;
+      if (action.isDraft)
+        items = state.itemsDraft;
+      else
+        items = state.items;
       items.push(action.item);
       return {
         ...state,
