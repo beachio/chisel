@@ -23,15 +23,20 @@ const AUTOSAVE_TIMEOUT = 2000;
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentEdit extends Component {
+  item = this.props.item;
+
   state = {
     title: "",
     color: "rgba(0, 0, 0, 1)",
     fields: new Map(),
     dirty: false,
-    errors: false
+    errors: false,
+
+    newData: false,
+    oldItemData: null,
+    oldItemId: null
   };
-  
-  item = this.props.item;
+
   fieldsArchive = new Map(this.item.fields);
   addingItem = null;
 
@@ -49,13 +54,27 @@ export default class ContentEdit extends Component {
     this.state = {
       title:  draft.title,
       color:  draft.color,
-      fields: draft.fields,
+      fields: new Map(draft.fields),
       dirty:  false,
-      errors: false
+      errors: false,
+      oldItemData: draft.toJSON(),
+      oldItemId: draft.origin.id
     };
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const {item} = props;
+    const {oldItemData, oldItemId} = state;
+    const draft = item.draft ? item.draft : item;
+    const sameId = oldItemId == item.origin.id || oldItemId == draft.origin.id;
+    if (JSON.stringify(draft) != JSON.stringify(oldItemData) && sameId) {
+      return {newData: true};
+    }
+    return null;
+  }
+
   componentWillUnmount() {
+    this.props.closeNotification();
     if (this.state.dirty)
       this.saveItem();
   }
@@ -74,22 +93,48 @@ export default class ContentEdit extends Component {
     this.setState({
       title:  draft.title,
       color:  draft.color,
-      fields: draft.fields,
+      fields: new Map(draft.fields),
       dirty:  false,
-      errors: false
+      errors: false,
+
+      oldItemData: draft.toJSON(),
+      oldItemId: draft.origin.id,
+      newData: false
     });
 
     this.waitSave = false;
   }
 
   componentDidUpdate() {
-    this.checkAddingItem(this.props.lastItem);
-    if (this.props.item.origin.id != this.item.origin.id)
-      this.updateItem(this.props.item);
+    const {item, lastItem, showNotification} = this.props;
+    this.checkAddingItem(lastItem);
+    if (item.origin.id != this.item.origin.id)
+      this.updateItem(item);
+
+    if (this.state.newData) {
+      showNotification({
+        text: 'There are some changes. What do you want to do?',
+        confirmLabel: 'Load new data',
+        cancelLabel: 'Keep my data',
+        onConfirm: this.loadNewData
+      });
+    }
   }
 
+  loadNewData = () => {
+    this.updateItem(this.props.item);
+  };
+
   saveItem() {
-    this.props.updateItem(this.item);
+    const draft = this.item.draft ? this.item.draft : this.item;
+    draft.fields = new Map(this.state.fields);
+    draft.title = this.state.title;
+    this.setState({
+      oldItemData: draft.toJSON(),
+      oldItemId: draft.origin.id
+    }, () => {
+      this.props.updateItem(this.item);
+    });
   }
 
   renderTitle = () => {
@@ -150,24 +195,25 @@ export default class ContentEdit extends Component {
   };
 
   setFieldValue = (field, value, save = false) => {
-    let fields = this.state.fields;
-    this.setState({fields: fields.set(field, value), dirty: true});
+    const fields = new Map(this.state.fields);
+    fields.set(field, value);
+    this.setState({fields, dirty: true}, () => {
+      if (save || !this.wait) {
+        this.saveItem();
+        this.wait = true;
 
-    if (save || !this.wait) {
-      this.saveItem();
-      this.wait = true;
+        setTimeout(() => {
+          if (this.waitSave)
+            this.saveItem();
+          this.waitSave = false;
+          this.wait = false;
 
-      setTimeout(() => {
-        if (this.waitSave)
-          this.saveItem();
-        this.waitSave = false;
-        this.wait = false;
+          }, AUTOSAVE_TIMEOUT);
 
-        }, AUTOSAVE_TIMEOUT);
-
-    } else {
-      this.waitSave = true;
-    }
+      } else {
+        this.waitSave = true;
+      }
+    });
   };
 
   validate() {
@@ -182,8 +228,6 @@ export default class ContentEdit extends Component {
   };
 
   updateItemTitle = title => {
-    let draft = this.item.draft ? this.item.draft : this.item;
-    draft.title = title;
     this.setState({title});
   };
 

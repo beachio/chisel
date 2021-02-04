@@ -159,12 +159,11 @@ export class ContentItemData {
           value = value.map(ref => ref.origin.id);
         else if (field.type == FIELD_TYPE_MEDIA)
           value = value.origin.id;
+        fields[id] = value;
       }
-      fields[id] = value;
     }
 
     return {
-      id:     this.origin.id,
       color:  this.color,
       status: this.status,
       fields

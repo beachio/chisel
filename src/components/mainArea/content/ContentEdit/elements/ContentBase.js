@@ -17,7 +17,7 @@ export default class ContentBase extends Component {
 
 
   static getDerivedStateFromProps(props, state) {
-    if (props.field != state.field || props.item != state.item)
+    //if (props.field != state.field || props.item != state.item)
       return {
         item:  props.item,
         field: props.field,

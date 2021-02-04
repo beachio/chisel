@@ -8,7 +8,16 @@ import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import {ROLE_DEVELOPER} from 'models/UserData';
 import {setCurrentItem, addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem} from 'ducks/content';
 import {addMediaItem, updateMediaItem, removeMediaItem} from 'ducks/media';
-import {showModal, showAlert, URL_CONTENT, URL_ITEM, URL_USERSPACE, URL_SITE} from 'ducks/nav';
+import {
+  showModal,
+  showAlert,
+  showNotification,
+  closeNotification,
+  URL_CONTENT,
+  URL_ITEM,
+  URL_USERSPACE,
+  URL_SITE
+} from 'ducks/nav';
 import {getContentByModelAndId} from 'utils/data';
 
 
@@ -52,7 +61,7 @@ export class ContentEditContainer extends Component {
   render() {
     const {models, content} = this.props;
     const {addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem} = this.props.contentActions;
-    const {showModal, showAlert} = this.props.navActions;
+    const {showModal, showAlert, showNotification, closeNotification} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
 
     const site = models.currentSite;
@@ -98,6 +107,8 @@ export class ContentEditContainer extends Component {
                    lastItem={lastItem}
                    showAlert={showAlert}
                    showModal={showModal}
+                   showNotification={showNotification}
+                   closeNotification={closeNotification}
                    isEditable={models.role != ROLE_DEVELOPER} />
     </>;
   }
@@ -114,7 +125,7 @@ function mapDispatchToProps(dispatch) {
   return {
     contentActions: bindActionCreators({setCurrentItem, addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem}, dispatch),
     mediaActions:   bindActionCreators({addMediaItem, updateMediaItem, removeMediaItem}, dispatch),
-    navActions:     bindActionCreators({showModal, showAlert}, dispatch)
+    navActions:     bindActionCreators({showModal, showAlert, showNotification, closeNotification}, dispatch)
   };
 }
 
