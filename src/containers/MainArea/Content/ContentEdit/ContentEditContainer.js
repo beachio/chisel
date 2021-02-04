@@ -69,6 +69,8 @@ export class ContentEditContainer extends Component {
       let itemId = item.origin.id;
       browserHistory.push(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
     };
+    const gotoList = () =>
+      browserHistory.push(basePath);
 
     const lastItem = content.items[content.items.length - 1];
 
@@ -82,6 +84,7 @@ export class ContentEditContainer extends Component {
       <ContentEdit item={item}
                    onClose={closeItem}
                    gotoItem={gotoItem}
+                   gotoList={gotoList}
                    addItem={addItem}
                    updateItem={updateItem}
                    publishItem={publishItem}

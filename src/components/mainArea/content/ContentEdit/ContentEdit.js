@@ -14,7 +14,6 @@ import ContentBoolean from './elements/ContentBoolean';
 import ContentDate from './elements/ContentDate';
 import ContentReference from './elements/ContentReference';
 import ContentMedia from './elements/ContentMedia';
-import { browserHistory } from 'react-router';
 
 import styles from './ContentEdit.sss';
 
@@ -93,14 +92,11 @@ export default class ContentEdit extends Component {
     this.props.updateItem(this.item);
   }
 
-  goBack() {
-    browserHistory.goBack();
-  }
-
   renderTitle = () => {
+    const {gotoList} = this.props;
     return (
       <span>
-        <span styleName="back-link" onClick={this.goBack}>Content</span>
+        <span styleName="back-link" onClick={gotoList}>Content</span>
         <span> / </span>
         <span styleName="item-title">{this.state.title || 'Untitled'}</span>
       </span>

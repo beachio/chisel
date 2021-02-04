@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
-import {browserHistory} from 'react-router';
 
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
@@ -181,12 +180,13 @@ export default class Model extends Component {
   };
 
   renderTitle() {
+    const {gotoList} = this.props;
     const {name} = this.props.model;
 
     if (name)
       return (
         <span>
-          <span styleName="back-link" onClick={browserHistory.goBack}>Models</span>
+          <span styleName="back-link" onClick={gotoList}>Models</span>
           <span> / </span>
           <span styleName="model-title">{name}</span>
         </span>

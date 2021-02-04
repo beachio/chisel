@@ -23,40 +23,40 @@ export class ModelContainer extends Component  {
     let modelId = props.params.model;
     if (modelId.indexOf(URL_MODEL) != 0)
       return;
-  
+
     modelId = modelId.slice(URL_MODEL.length);
-  
+
     const {setCurrentModel} = props.modelsActions;
     const {models} = props;
     this.model = models.currentModel;
-    
+
     const model = getModelByNameId(modelId);
     if (model && model != this.model) {
       this.model = model;
       setCurrentModel(model);
     }
   }
-  
+
   render() {
     const {models, nav} = this.props;
     const {updateModel, updateField, deleteField} = this.props.modelsActions;
     const {showAlert, showModal} = this.props.navActions;
-    
+
     let title = `Chisel`;
     let content = <NoRights />;
 
     const site = models.currentSite;
     const model = this.model;
-    
+
     if (site && model && (models.role == ROLE_ADMIN || models.role == ROLE_OWNER)) {
       title = `Model: ${model.name} - Site: ${site.name} - Chisel`;
 
-      const closeModel = () => browserHistory.push(
+      const gotoList = () => browserHistory.push(
         `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}`);
 
       content = (
         <Model model={model}
-               onClose={closeModel}
+               gotoList={gotoList}
                updateModel={updateModel}
                updateField={updateField}
                deleteField={deleteField}
@@ -67,7 +67,7 @@ export class ModelContainer extends Component  {
                isEditable={true}/>
       );
     }
-    
+
     return <>
       <Helmet>
         <title>{title}</title>
