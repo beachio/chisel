@@ -142,7 +142,7 @@ export default class SiteCreationModal extends Component {
               <div styleName="error-same-name">This name is already in use.</div>
             }
 
-            {this.props.templates.length &&
+            {!!this.props.templates.length &&
               <div>
                 <div styleName="label">Choose template:</div>
                 <div>
