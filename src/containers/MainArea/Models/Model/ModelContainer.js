@@ -51,12 +51,12 @@ export class ModelContainer extends Component  {
     if (site && model && (models.role == ROLE_ADMIN || models.role == ROLE_OWNER)) {
       title = `Model: ${model.name} - Site: ${site.name} - Chisel`;
 
-      const closeModel = () => browserHistory.push(
+      const gotoList = () => browserHistory.push(
         `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}`);
 
       content = (
         <Model model={model}
-               onClose={closeModel}
+               gotoList={gotoList}
                updateModel={updateModel}
                updateField={updateField}
                deleteField={deleteField}
