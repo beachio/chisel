@@ -185,40 +185,44 @@ export function updateItemFromServer(item) {
 }
 
 export function publishItem(item) {
-  let itemD = item.draft;
-  let isNewDraft = !itemD;
-  if (isNewDraft) {
-    itemD = new ContentItemData();
-    itemD.model = item.model;
-    itemD.title = item.title;
-    itemD.color = item.color;
-    itemD.fields = new Map(item.fields);
-    itemD.owner = item;
+  return dispatch => {
+    let itemD = item.draft;
+    let isNewDraft = !itemD;
+    if (isNewDraft) {
+      itemD = new ContentItemData();
+      itemD.model = item.model;
+      itemD.title = item.title;
+      itemD.color = item.color;
+      itemD.fields = new Map(item.fields);
+      itemD.owner = item;
 
-    itemD.updateOrigin();
+      itemD.updateOrigin();
 
-    item.draft = itemD;
+      item.draft = itemD;
 
-  } else {
-    item.fields = new Map(itemD.fields);
+    } else {
+      item.fields = new Map(itemD.fields);
+    }
+
+    item.status = STATUS_PUBLISHED;
+
+    item.updateOrigin();
+
+    send(itemD.origin.save())
+      .then(() => {
+        dispatch({
+          type: ITEM_PUBLISH,
+          item,
+          isNewDraft
+        });
+        send(item.origin.save());
+
+      })
+      .then(() => {
+        if (!item.model.site.webhookDisabled)
+          send(Parse.Cloud.run('onContentModify', {URL: item.model.site.webhook}));
+      });
   }
-
-  item.status = STATUS_PUBLISHED;
-
-  item.updateOrigin();
-
-  send(itemD.origin.save())
-    .then(() => send(item.origin.save()))
-    .then(() => {
-      if (!item.model.site.webhookDisabled)
-        send(Parse.Cloud.run('onContentModify', {URL: item.model.site.webhook}));
-    });
-
-  return {
-    type: ITEM_PUBLISH,
-    item,
-    isNewDraft
-  };
 }
 
 export function discardItem(item) {
@@ -327,7 +331,7 @@ const initialState = {
 };
 
 export default function contentReducer(state = initialState, action) {
-  let items, itemsDraft, delItems;
+  let item, items, itemsDraft, delItems;
   switch (action.type) {
     case INIT_END:
       items = action.items;
@@ -364,11 +368,20 @@ export default function contentReducer(state = initialState, action) {
         items = state.itemsDraft;
       else
         items = state.items;
-      items.push(action.item);
-      return {
-        ...state,
-        items
-      };
+
+      if (!items.find(i => i.origin.id == action.item.origin.id))
+        items.push(action.item);
+
+      if (action.isDraft)
+        return {
+          ...state,
+          itemsDraft: items
+        };
+      else
+        return {
+          ...state,
+          items
+        };
 
     case ITEM_UPDATE:
     case ITEM_DISCARD:
@@ -389,7 +402,7 @@ export default function contentReducer(state = initialState, action) {
       };
 
     case ITEM_DELETE:
-      let item = action.item;
+      item = action.item;
       items = state.items;
       itemsDraft = state.itemsDraft;
 
