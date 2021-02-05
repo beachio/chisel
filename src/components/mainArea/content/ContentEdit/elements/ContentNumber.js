@@ -127,6 +127,7 @@ export default class ContentNumber extends ContentBase {
             if (field.isList) {
               inner = <DynamicListComponent values={value}
                                             onChange={this.onChange}
+                                            titled={!!field.name}
                                             readOnly={!isEditable}
                                             numeric
                                             numericInt={field.type == ftps.FIELD_TYPE_INTEGER} />;
@@ -134,6 +135,7 @@ export default class ContentNumber extends ContentBase {
               inner = <InputNumberControl type="big"
                                           isInt={field.type == ftps.FIELD_TYPE_INTEGER}
                                           value={value}
+                                          titled={!!field.name}
                                           readOnly={!isEditable}
                                           onChange={this.onChange} />;
             }
