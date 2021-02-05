@@ -33,8 +33,7 @@ function requestContentItems(model, items, itemsDraft) {
   ))
     .then(items_o => {
       for (let item_o of items_o) {
-        let item = new ContentItemData();
-        item.model = model;
+        let item = new ContentItemData(model);
         item.setOrigin(item_o);
         if (item_o.get('t__owner'))
           itemsDraft.push(item);
@@ -58,8 +57,7 @@ export async function subscribeToContentItem(model) {
     const model_o = item_o.get('t__model');
     const model = getModelFromAnySite(model_o.id);
 
-    let item = new ContentItemData();
-    item.model = model;
+    let item = new ContentItemData(model);
     item.setOrigin(item_o);
     item.postInit(items);
 
@@ -82,8 +80,7 @@ export async function subscribeToContentItem(model) {
     if (!item)
       return;
 
-    const itemNew = new ContentItemData();
-    itemNew.model = item.model;
+    const itemNew = new ContentItemData(model);
     itemNew.setOrigin(itemNew_o);
     itemNew.postInit(items);
 
@@ -189,8 +186,7 @@ export function publishItem(item) {
     let itemD = item.draft;
     let isNewDraft = !itemD;
     if (isNewDraft) {
-      itemD = new ContentItemData();
-      itemD.model = item.model;
+      itemD = new ContentItemData(model);
       itemD.title = item.title;
       itemD.color = item.color;
       itemD.fields = new Map(item.fields);
@@ -447,13 +443,13 @@ export default function contentReducer(state = initialState, action) {
       itemsDraft = state.itemsDraft;
 
       let model = action.field.model;
-      for (let item of items) {
+      for (item of items) {
         if (item.model == model)
-          item.model = model;   //updating model: this is a setter
+          item.updateModel();
       }
-      for (let item of itemsDraft) {
+      for (item of itemsDraft) {
         if (item.model == model)
-          item.model = model;   //updating model: this is a setter
+          item.updateModel();
       }
 
       return {

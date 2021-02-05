@@ -90,8 +90,7 @@ export default class ContentList extends Component {
 
     this.returnFocus = true;
 
-    let item = new ContentItemData();
-    item.model = this.state.currentModel;
+    let item = new ContentItemData(this.state.currentModel);
     item.title = this.state.itemTitle;
 
     let titleField = this.state.currentModel.getTitle();

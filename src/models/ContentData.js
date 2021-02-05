@@ -22,7 +22,7 @@ export class ContentItemData {
   _titleField = null;
 
   //links
-  _model = null;
+  model = null;
   draft = null;
   //when it's draft, owner — its original content item
   owner = null;
@@ -44,25 +44,27 @@ export class ContentItemData {
     }
   }
 
-  get model() {return this._model;}
-  set model(model) {
-    this._model = model;
+  get OriginClass() {
+    if (this.model)
+      return Parse.Object.extend(this.model.tableName);
+    return null;
+  }
 
-    let oldFields = this.fields;
+  constructor(model) {
+    this.model = model;
+    this.updateModel();
+  }
+
+  updateModel() {
+    const oldFields = this.fields;
     this.fields = new Map();
     for (let field of this.model.fields) {
-      let oldValue = oldFields.get(field);
+      const oldValue = oldFields.get(field);
       this.fields.set(field, oldValue);
 
       if (field.isTitle)
         this._titleField = field;
     }
-  }
-
-  get OriginClass() {
-    if (this.model)
-      return Parse.Object.extend(this.model.tableName);
-    return null;
   }
 
   setOrigin(origin) {

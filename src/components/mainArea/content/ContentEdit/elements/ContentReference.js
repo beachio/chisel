@@ -61,8 +61,7 @@ export default class ContentReference extends ContentBase {
       return;
 
     const callback = model => {
-      this.addingItem = new ContentItemData();
-      this.addingItem.model = model;
+      this.addingItem = new ContentItemData(model);
       this.props.addItem(this.addingItem);
 
       let refers = this.state.value;
