@@ -15,18 +15,18 @@ export class SettingsContainer extends Component  {
     const {models} = this.props;
     const {updateSite, deleteSite} = this.props.modelsActions;
     const {showAlert} = this.props.navActions;
-    
+
     const site = models.currentSite;
     if (!site)
       return null;
-    
+
     const title = `Settings - Site: ${site.name} - Chisel`;
     
     const onDeleteSite = site => {
       deleteSite(site);
       browserHistory.push(`/${URL_USERSPACE}`);
     };
-    
+
     return <>
       <Helmet>
         <title>{title}</title>
