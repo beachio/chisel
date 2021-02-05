@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
 import {Helmet} from "react-helmet-async";
 
 import Settings from 'components/mainArea/settings/Settings';
 import {ROLE_OWNER, ROLE_ADMIN} from 'models/UserData';
 import {updateSite, deleteSite} from 'ducks/models';
-import {showAlert, URL_USERSPACE} from 'ducks/nav';
+import {showAlert} from 'ducks/nav';
 
 
 export class SettingsContainer extends Component  {
@@ -21,11 +20,6 @@ export class SettingsContainer extends Component  {
       return null;
 
     const title = `Settings - Site: ${site.name} - Chisel`;
-    
-    const onDeleteSite = site => {
-      deleteSite(site);
-      browserHistory.push(`/${URL_USERSPACE}`);
-    };
 
     return <>
       <Helmet>
@@ -33,7 +27,7 @@ export class SettingsContainer extends Component  {
       </Helmet>
       <Settings site={site}
                 updateSite={updateSite}
-                deleteSite={onDeleteSite}
+                deleteSite={deleteSite}
                 showAlert={showAlert}
                 isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
     </>;

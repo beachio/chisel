@@ -440,40 +440,6 @@ export default function contentReducer(state = initialState, action) {
         filteredStatuses: newFS
       };
 
-    case MODEL_DELETE:
-      items = state.items;
-      itemsDraft = state.itemsDraft;
-
-      delItems = getContentForModel(action.model, items);
-      for (let item of delItems) {
-        items.splice(items.indexOf(item), 1);
-        if (item.draft)
-          itemsDraft.splice(itemsDraft.indexOf(item.draft), 1);
-      }
-
-      return {
-        ...state,
-        items,
-        itemsDraft
-      };
-
-    case SITE_DELETE:
-      items = state.items;
-      itemsDraft = state.itemsDraft;
-
-      delItems = getContentForSite(action.site, items);
-      for (let item of delItems) {
-        items.splice(items.indexOf(item), 1);
-        if (item.draft)
-          itemsDraft.splice(itemsDraft.indexOf(item.draft), 1);
-      }
-
-      return {
-        ...state,
-        items,
-        itemsDraft
-      };
-
     case FIELD_ADD:
     case FIELD_UPDATE:
     case FIELD_DELETE:

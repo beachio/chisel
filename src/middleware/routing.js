@@ -2,7 +2,7 @@ import {browserHistory} from 'react-router';
 import {LOCATION_CHANGE} from 'react-router-redux';
 
 import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';
-import {setCurrentSite, SITE_ADD} from 'ducks/models';
+import {setCurrentSite, SITE_ADD, SITE_DELETE} from 'ducks/models';
 import {getSiteByNameId} from 'utils/data';
 import {
   INIT_END,
@@ -121,6 +121,10 @@ export const routing = store => next => action => {
       browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${action.site.nameId}`);
       break;
 
+    case SITE_DELETE:
+      browserHistory.push(`/${URL_USERSPACE}`);
+      break;
+      
     case LOGOUT:
       browserHistory.push(`/${URL_SIGN}`);
       break;
