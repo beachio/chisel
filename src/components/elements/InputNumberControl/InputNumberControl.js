@@ -16,7 +16,7 @@ export default class InputNumberControl extends Component {
       return null;
     return {value: valueParsed, valueParsed};
   }
-  
+
   static parseValue(value, props) {
     const {min, max, isInt} = props;
 
@@ -24,15 +24,15 @@ export default class InputNumberControl extends Component {
     let num = parseFunc(value);
     if (isNaN(num))
       return undefined;
-  
+
     if (min !== undefined && min !== null && num < min)
       num = min;
     if (max !== undefined && max !== null && num > max)
       num = max;
-    
+
     return num;
   }
-  
+
   onChange = value => {
     value = value.replace(/[^\d.,]/g, '');
     value = value.replace(/,/g, '.');
@@ -45,14 +45,14 @@ export default class InputNumberControl extends Component {
 
     this.props.onChange(valueParsed);
   };
-  
+
   onBlur = () => {
     this.setState({value: this.state.valueParsed});
   };
-  
+
   render() {
     let {type, label, placeholder, readOnly, autoFocus, onKeyDown, DOMRef, icon} = this.props;
-    
+
     return <InputControl value={this.state.value}
                          onChange={this.onChange}
                          onBlur={this.onBlur}
