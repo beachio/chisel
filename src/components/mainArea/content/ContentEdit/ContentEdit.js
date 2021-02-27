@@ -7,6 +7,7 @@ import ContainerComponent from 'components/elements/ContainerComponent/Container
 import {STATUS_ARCHIVED, STATUS_PUBLISHED, STATUS_DRAFT, STATUS_UPDATED} from 'models/ContentData';
 import {ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 import * as ftps from 'models/ModelData';
+import {filterSpecialsAndCapital, removeOddSpaces} from "utils/strings";
 
 import ContentString from './elements/ContentString';
 import ContentNumber from './elements/ContentNumber';
@@ -29,6 +30,7 @@ export default class ContentEdit extends Component {
     title: "",
     color: "rgba(0, 0, 0, 1)",
     fields: new Map(),
+    fieldsToUpdate: new Map(),
     dirty: false,
     errors: false,
 
@@ -94,6 +96,7 @@ export default class ContentEdit extends Component {
       title:  draft.title,
       color:  draft.color,
       fields: new Map(draft.fields),
+      fieldsToUpdate: new Map(),
       dirty:  false,
       errors: false,
 
@@ -126,14 +129,24 @@ export default class ContentEdit extends Component {
   };
 
   saveItem() {
-    const draft = this.item.draft ? this.item.draft : this.item;
-    draft.fields = new Map(this.state.fields);
-    draft.title = this.state.title;
+    const {item} = this.props;
+    const draft = item.draft ? item.draft : item;
+
+    const fields = new Map(draft.fields);
+    for (let [field, value] of this.state.fieldsToUpdate) {
+      if (field.isTitle)
+        fields.set(field, removeOddSpaces(value));
+      else
+        fields.set(field, value);
+    }
+    draft.fields = fields;
+
     this.setState({
+      fieldsToUpdate: new Map(),
       oldItemData: draft.toJSON(),
       oldItemId: draft.origin.id
     }, () => {
-      this.props.updateItem(this.item);
+      this.props.updateItem(item);
     });
   }
 
@@ -197,7 +210,11 @@ export default class ContentEdit extends Component {
   setFieldValue = (field, value, save = false) => {
     const fields = new Map(this.state.fields);
     fields.set(field, value);
-    this.setState({fields, dirty: true}, () => {
+
+    const fieldsToUpdate = new Map(this.state.fieldsToUpdate);
+    fieldsToUpdate.set(field, value);
+
+    this.setState({fields, fieldsToUpdate, dirty: true}, () => {
       if (save || !this.wait) {
         this.saveItem();
         this.wait = true;
@@ -228,6 +245,14 @@ export default class ContentEdit extends Component {
   };
 
   updateItemTitle = title => {
+    let slug = removeOddSpaces(title);
+    slug = filterSpecialsAndCapital(slug, '-');
+    for (let [field, value2] of this.state.fields) {
+      if (field.appearance == ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG) {
+        this.setFieldValue(field, slug);
+      }
+    }
+
     this.setState({title});
   };
 
