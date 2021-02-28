@@ -47,7 +47,7 @@ export default class AlertModal extends Component {
     if (event.keyCode == 13)
       setTimeout(this.onConfirm, 1);
     else if (event.keyCode == 27)
-      setTimeout(this.close, 1);
+      setTimeout(this.onCancel, 1);
   };
 
   onChangeString = confirmString => {
@@ -68,6 +68,13 @@ export default class AlertModal extends Component {
     }
   };
 
+  onCancel = () => {
+    const {onCancel} = this.props.params;
+    if (onCancel)
+      onCancel();
+    this.close();
+  }
+
   close = () => {
     const {callback} = this.props.params;
     this.active = false;
@@ -83,7 +90,7 @@ export default class AlertModal extends Component {
     const descriptionHTML = {__html: description || ''};
 
     return (
-      <div styleName="Modal" onClick={this.close}>
+      <div styleName="Modal" onClick={this.onCancel}>
 
         <div styleName="modal-inner" onClick={e => e.stopPropagation()}>
           <div styleName="modal-header">
@@ -106,7 +113,7 @@ export default class AlertModal extends Component {
                 <ButtonControl color="purple"
                                value={confirmLabel ? confirmLabel : "OK"}
                                DOMRef={btn => this.focusBtn = btn}
-                               onClick={this.close} />
+                               onClick={this.onCancel} />
               </div>
             }
             {this.type == ALERT_TYPE_CONFIRM &&
@@ -121,7 +128,7 @@ export default class AlertModal extends Component {
                 <div styleName="buttons-inner">
                   <ButtonControl color="gray"
                                  value={cancelLabel ? cancelLabel : "No"}
-                                 onClick={this.close} />
+                                 onClick={this.onCancel} />
                 </div>
               </div>
             }
