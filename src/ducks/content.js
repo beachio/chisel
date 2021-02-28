@@ -80,7 +80,7 @@ export async function subscribeToContentItem(model) {
     if (!item)
       return;
 
-    const itemNew = new ContentItemData(model);
+    const itemNew = new ContentItemData(item.model);
     itemNew.setOrigin(itemNew_o);
     itemNew.postInit(items);
 
@@ -186,7 +186,7 @@ export function publishItem(item) {
     let itemD = item.draft;
     let isNewDraft = !itemD;
     if (isNewDraft) {
-      itemD = new ContentItemData(model);
+      itemD = new ContentItemData(item.model);
       itemD.title = item.title;
       itemD.color = item.color;
       itemD.fields = new Map(item.fields);
