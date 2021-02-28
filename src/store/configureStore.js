@@ -11,7 +11,7 @@ import {subscribeToNewModelContent, controlRemoving} from 'middleware/liveUpdate
 export default function configureStore(initialState) {
   const logger = createLogger();
 
-  const middleware = [initialization, routing, subscribeToNewModelContent, controlRemoving, thunk];
+  const middleware = [initialization, subscribeToNewModelContent, controlRemoving, routing, thunk];
   if (process.env.NODE_ENV == 'development')
     middleware.push(logger);
 

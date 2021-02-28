@@ -190,7 +190,7 @@ async function subscribeToSites() {
     if (!site)
       return;
 
-    store.dispatch(deleteSiteFromServer(site_o));
+    store.dispatch(deleteSiteFromServer(site));
   });
 }
 
@@ -477,7 +477,8 @@ export function deleteSite(site) {
 export function deleteSiteFromServer(site) {
   return {
     type: SITE_DELETE,
-    site
+    site,
+    fromServer: true
   };
 }
 
