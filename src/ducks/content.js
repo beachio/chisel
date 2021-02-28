@@ -296,6 +296,8 @@ export function deleteItem(item) {
 }
 
 function deleteItemFromServer(item) {
+  item.deleted = true;
+
   return {
     type: ITEM_DELETE,
     item

@@ -4,7 +4,7 @@ import CSSModules from 'react-css-modules';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
-import {STATUS_ARCHIVED, STATUS_PUBLISHED, STATUS_DRAFT, STATUS_UPDATED} from 'models/ContentData';
+import {STATUS_ARCHIVED, STATUS_PUBLISHED, STATUS_DRAFT, STATUS_UPDATED, ContentItemData} from 'models/ContentData';
 import {ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 import * as ftps from 'models/ModelData';
 import {filterSpecialsAndCapital, removeOddSpaces} from "utils/strings";
@@ -36,7 +36,8 @@ export default class ContentEdit extends Component {
 
     newData: false,
     oldItemData: null,
-    oldItemId: null
+    oldItemId: null,
+    deleted: false
   };
 
   fieldsArchive = new Map(this.item.fields);
@@ -59,7 +60,7 @@ export default class ContentEdit extends Component {
       fields: new Map(draft.fields),
       dirty:  false,
       errors: false,
-      oldItemData: draft.toJSON(),
+      oldItemData: draft.toJSON(true),
       oldItemId: draft.origin.id
     };
   }
@@ -69,9 +70,12 @@ export default class ContentEdit extends Component {
     const {oldItemData, oldItemId} = state;
     const draft = item.draft ? item.draft : item;
     const sameId = oldItemId == item.origin.id || oldItemId == draft.origin.id;
-    if (JSON.stringify(draft) != JSON.stringify(oldItemData) && sameId) {
+    if (!sameId)
+      return null;
+    if (item.deleted)
+      return {deleted: true};
+    if (JSON.stringify(draft.toJSON(true)) != JSON.stringify(oldItemData))
       return {newData: true};
-    }
     return null;
   }
 
@@ -79,13 +83,6 @@ export default class ContentEdit extends Component {
     this.props.closeNotification();
     if (this.state.dirty)
       this.saveItem();
-  }
-
-  checkAddingItem(lastItem) {
-    if (this.addingItem && lastItem == this.addingItem) {
-      this.props.gotoItem(this.addingItem);
-      this.addingItem = null;
-    }
   }
 
   updateItem(item = this.item) {
@@ -100,17 +97,23 @@ export default class ContentEdit extends Component {
       dirty:  false,
       errors: false,
 
-      oldItemData: draft.toJSON(),
+      oldItemData: draft.toJSON(true),
       oldItemId: draft.origin.id,
-      newData: false
+      newData: false,
+      deleted: false
     });
 
     this.waitSave = false;
   }
 
   componentDidUpdate() {
-    const {item, lastItem, showNotification} = this.props;
-    this.checkAddingItem(lastItem);
+    const {item, lastItem, showNotification, showAlert} = this.props;
+
+    if (this.addingItem && lastItem.origin.id == this.addingItem.origin.id) {
+      this.props.gotoItem(this.addingItem);
+      this.addingItem = null;
+    }
+
     if (item.origin.id != this.item.origin.id)
       this.updateItem(item);
 
@@ -119,14 +122,19 @@ export default class ContentEdit extends Component {
         text: 'There are some changes. What do you want to do?',
         confirmLabel: 'Load new data',
         cancelLabel: 'Keep my data',
-        onConfirm: this.loadNewData
+        onConfirm: () => this.updateItem(item)
+      });
+    }
+    if (this.state.deleted) {
+      showAlert({
+        type: ALERT_TYPE_CONFIRM,
+        title: `Current content item was deleted`,
+        description: "Someone just deleted the current content item. Do you want to restore it?",
+        onConfirm: this.restoreItem,
+        onCancel: this.onClose
       });
     }
   }
-
-  loadNewData = () => {
-    this.updateItem(this.props.item);
-  };
 
   saveItem() {
     const {item} = this.props;
@@ -143,12 +151,27 @@ export default class ContentEdit extends Component {
 
     this.setState({
       fieldsToUpdate: new Map(),
-      oldItemData: draft.toJSON(),
+      oldItemData: draft.toJSON(true),
       oldItemId: draft.origin.id
     }, () => {
       this.props.updateItem(item);
     });
   }
+
+  restoreItem = () => {
+    this.setState({
+      oldItemId: null,
+      deleted: false
+    });
+
+    let draft = this.item.draft ? this.item.draft : this.item;
+
+    const item = new ContentItemData(this.item.model);
+    item.fields = new Map(draft.fields);
+    item.title = this.state.title;
+
+    this.addItem(item);
+  };
 
   renderTitle = () => {
     const {gotoList} = this.props;

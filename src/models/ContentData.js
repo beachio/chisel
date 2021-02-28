@@ -18,6 +18,8 @@ export class ContentItemData {
   status = STATUS_DRAFT;
   fields = new Map();
 
+  deleted = false;
+
   //setter
   _titleField = null;
 
@@ -151,7 +153,7 @@ export class ContentItemData {
       this.origin.set("t__owner",  this.owner.origin);
   }
 
-  toJSON() {
+  toJSON(withouStatus = false) {
     const fields = {};
     for (let [field, _value] of this.fields) {
       const {id} = field.origin;
@@ -167,7 +169,7 @@ export class ContentItemData {
 
     return {
       color:  this.color,
-      status: this.status,
+      status: withouStatus ? undefined : this.status,
       fields
     };
   }
