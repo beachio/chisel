@@ -162,12 +162,121 @@ function requestFields(models_o, models) {
     });
 }
 
+async function subscribeToCollaborations() {
+  const query = new Parse.Query(CollaborationData.OriginClass);
+  const subscription = await query.subscribe();
+
+  const onCreate = async (collab_o) => {
+    const site_o = collab_o.get('site');
+    const site = getSite(site_o.id);
+    if (site && site.collaborations.find(c => c.email == collab_o.get('email')))
+      return;
+    if (!site)
+      return;
+
+    const collab = new CollaborationData().setOrigin(collab_o);
+    collab.site = site;
+    let user_o = collab_o.get('user');
+    if (user_o) {
+      try {
+        user_o = await send(user_o.fetch());
+        collab.user = new UserData().setOrigin(user_o);
+      } catch (e) {}
+    }
+    store.dispatch(addCollaborationFromServer(collab));
+  };
+  subscription.on('create', onCreate);
+  subscription.on('enter', onCreate);
+
+  subscription.on('update', async (collab_o) => {
+    const site_o = collab_o.get('site');
+    const site = getSite(site_o.id);
+    if (!site)
+      return;
+
+    const collab = site.collaborations.find(c => c.origin.id == collab_o.id);
+    if (!collab)
+      return;
+
+    let user_o = collab_o.get('user');
+    const userAppearing = collab_o.get('user') && !collab.user;
+    if (!userAppearing && collab_o.get('role') == collab.role)
+      return;
+
+    collab.role = collab_o.get('role');
+    if (userAppearing) {
+      try {
+        user_o = await send(user_o.fetch());
+        collab.user = new UserData().setOrigin(user_o);
+      } catch (e) {}
+    }
+    store.dispatch(updateCollaborationFromServer(collab));
+  });
+
+  const onDelete = (collab_o) => {
+    const site_o = collab_o.get('site');
+    const site = getSite(site_o.id);
+    if (!site)
+      return;
+
+    const collab = site.collaborations.find(c => c.origin.id == collab_o.id);
+    if (!collab)
+      return;
+
+    store.dispatch(deleteCollaborationFromServer(collab));
+  };
+  subscription.on('delete', onDelete);
+  subscription.on('leave', onDelete);
+}
+
 async function subscribeToSites() {
   const query = new Parse.Query(SiteData.OriginClass);
   const subscription = await query.subscribe();
 
-  subscription.on('create', (site_o) => {
-    console.log(site_o);
+  subscription.on('enter', async (site_o) => {
+    let site = getSite(site_o.id);
+    if (site)
+      return;
+
+    site = new SiteData().setOrigin(site_o);
+
+    const owner_o = await send(site_o.get('owner').fetch());
+    site.owner = new UserData().setOrigin(owner_o);
+
+    // getting collaborations for site
+    const collabs_o = await send(getAllObjects(
+      new Parse.Query(CollaborationData.OriginClass)
+        .equalTo("site", site_o)
+    ));
+    for (let collab_o of collabs_o) {
+      const collab = new CollaborationData().setOrigin(collab_o);
+      let user_o = collab_o.get('user');
+      if (user_o) {
+        try {
+          user_o = await send(user_o.fetch());
+          collab.user = new UserData().setOrigin(user_o);
+        } catch(e) {}
+      }
+
+      collab.site = site;
+      site.collaborations.push(collab);
+    }
+
+    // getting models for site
+    const models_o = await send(getAllObjects(
+      new Parse.Query(ModelData.OriginClass)
+        .equalTo("site", site_o)
+    ));
+    for (let model_o of models_o) {
+      const model = new ModelData().setOrigin(model_o);
+      model.site = site;
+      site.models.push(model);
+    }
+
+    //getting fields
+    await requestFields(models_o, site.models);
+
+    store.dispatch(addSiteFromServer(site));
   });
 
   subscription.on('update', (site_o) => {
@@ -191,6 +300,14 @@ async function subscribeToSites() {
       return;
 
     store.dispatch(deleteSiteFromServer(site));
+  });
+
+  subscription.on('leave', (site_o) => {
+    const site = getSite(site_o.id);
+    if (!site)
+      return;
+
+    store.dispatch(deleteSiteFromServer(site, true));
   });
 }
 
@@ -353,6 +470,7 @@ export function init() {
       ]))
 
       .then(() => {
+        subscribeToCollaborations();
         subscribeToSites();
         subscribeToModels();
         subscribeToFields();
@@ -450,6 +568,15 @@ export function addSite(site, template = null) {
   }
 }
 
+export function addSiteFromServer(site) {
+  return {
+    type: SITE_ADD,
+    site,
+    fromServer: true
+  };
+}
+
+
 export function updateSite(site) {
   site.updateOrigin();
   send(site.origin.save());
@@ -474,11 +601,12 @@ export function deleteSite(site) {
   };
 }
 
-export function deleteSiteFromServer(site) {
+export function deleteSiteFromServer(site, isLeave = false) {
   return {
     type: SITE_DELETE,
     site,
-    fromServer: true
+    fromServer: true,
+    isLeave
   };
 }
 
@@ -495,6 +623,13 @@ export function addCollaboration(user, email) {
   collab.origin.setACL(new Parse.ACL(currentSite.owner.origin));
   send(collab.origin.save());
 
+  return {
+    type: COLLABORATION_ADD,
+    collab
+  };
+}
+
+export function addCollaborationFromServer(collab) {
   return {
     type: COLLABORATION_ADD,
     collab
@@ -536,9 +671,26 @@ export function updateCollaboration(collab) {
   };
 }
 
+export function updateCollaborationFromServer(collab) {
+  const {currentSite} = store.getState().models;
+  const role = getRole(currentSite);
+  return {
+    type: COLLABORATION_UPDATE,
+    collab,
+    role
+  };
+}
+
 export function deleteCollaboration(collab) {
   send(collab.origin.destroy());
 
+  return {
+    type: COLLABORATION_DELETE,
+    collab
+  };
+}
+
+export function deleteCollaborationFromServer(collab) {
   return {
     type: COLLABORATION_DELETE,
     collab
@@ -733,12 +885,19 @@ export default function modelsReducer(state = initialState, action) {
     case SITE_ADD:
       sites = state.sites;
       sites.push(action.site);
-      return {
-        ...state,
-        sites,
-        currentSite: action.site,
-        role: ROLE_OWNER
-      };
+
+      if (action.fromServer)
+        return {
+          ...state,
+          sites
+        };
+      else
+        return {
+          ...state,
+          sites,
+          currentSite: action.site,
+          role: ROLE_OWNER
+        };
 
     case SITE_DELETE:
       sites = state.sites;
@@ -751,25 +910,30 @@ export default function modelsReducer(state = initialState, action) {
       };
 
     case COLLABORATION_ADD:
-      currentSite = state.currentSite;
-      currentSite.collaborations.push(action.collab);
+      collabs = action.collab.site.collaborations;
+      collabs.push(action.collab);
       return {
-        ...state,
-        currentSite
+        ...state
       };
 
+    case COLLABORATION_UPDATE:
+      if (action.role)
+        return {
+        ...state,
+        role: action.role
+      };
+      else
+        return {...state};
+
     case COLLABORATION_DELETE:
-      currentSite = state.currentSite;
-      collabs = currentSite.collaborations;
+      collabs = action.collab.site.collaborations;
       collabs.splice(collabs.indexOf(action.collab), 1);
       return {
-        ...state,
-        currentSite
+        ...state
       };
 
     case COLLABORATION_SELF_DELETE:
-      currentSite = state.currentSite;
-      collabs = currentSite.collaborations;
+      collabs = action.collab.site.collaborations;
       collabs.splice(collabs.indexOf(action.collab), 1);
 
       sites = state.sites;
@@ -777,7 +941,8 @@ export default function modelsReducer(state = initialState, action) {
 
       return {
         ...state,
-        currentSite: sites[0]
+        currentSite: sites[0],
+        sites
       };
 
     case MODEL_ADD:
@@ -807,7 +972,6 @@ export default function modelsReducer(state = initialState, action) {
       };
 
     case SITE_UPDATE:
-    case COLLABORATION_UPDATE:
     case MODEL_UPDATE:
       return {...state};
 

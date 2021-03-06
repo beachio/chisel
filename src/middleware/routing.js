@@ -118,13 +118,14 @@ export const routing = store => next => action => {
       break;
 
     case SITE_ADD:
-      browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${action.site.nameId}`);
+      if (!action.fromServer)
+        browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${action.site.nameId}`);
       break;
 
     case SITE_DELETE:
       browserHistory.push(`/${URL_USERSPACE}`);
       break;
-      
+
     case LOGOUT:
       browserHistory.push(`/${URL_SIGN}`);
       break;

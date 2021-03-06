@@ -15,17 +15,18 @@ import {getContentForModel, getContentForSite, getModelFromAnySite} from 'utils/
 import {send, getAllObjects} from 'utils/server';
 
 
-export const INIT_END           = 'app/content/INIT_END';
-export const ITEM_ADD           = 'app/content/ITEM_ADD';
-export const ITEM_UPDATE        = 'app/content/ITEM_UPDATE';
-export const ITEM_PUBLISH       = 'app/content/ITEM_PUBLISH';
-export const ITEM_DISCARD       = 'app/content/ITEM_DISCARD';
-export const ITEM_ARCHIVE       = 'app/content/ITEM_ARCHIVE';
-export const ITEM_RESTORE       = 'app/content/ITEM_RESTORE';
-export const ITEM_DELETE        = 'app/content/ITEM_DELETE';
-export const SET_CURRENT_ITEM   = 'app/content/SET_CURRENT_ITEM';
-export const FILTER_MODEL       = 'app/content/FILTER_MODEL';
-export const FILTER_STATUS      = 'app/content/FILTER_STATUS';
+export const INIT_END             = 'app/content/INIT_END';
+export const LOAD_NEW_SITE_ITEMS  = 'app/content/LOAD_NEW_SITE_ITEMS';
+export const ITEM_ADD             = 'app/content/ITEM_ADD';
+export const ITEM_UPDATE          = 'app/content/ITEM_UPDATE';
+export const ITEM_PUBLISH         = 'app/content/ITEM_PUBLISH';
+export const ITEM_DISCARD         = 'app/content/ITEM_DISCARD';
+export const ITEM_ARCHIVE         = 'app/content/ITEM_ARCHIVE';
+export const ITEM_RESTORE         = 'app/content/ITEM_RESTORE';
+export const ITEM_DELETE          = 'app/content/ITEM_DELETE';
+export const SET_CURRENT_ITEM     = 'app/content/SET_CURRENT_ITEM';
+export const FILTER_MODEL         = 'app/content/FILTER_MODEL';
+export const FILTER_STATUS        = 'app/content/FILTER_STATUS';
 
 function requestContentItems(model, items, itemsDraft) {
   return send(getAllObjects(
@@ -102,6 +103,27 @@ export async function subscribeToContentItem(model) {
 
     store.dispatch(deleteItemFromServer(item));
   });
+}
+
+export function loadNewSiteItems(site) {
+  return dispatch => {
+    let promises = [];
+    let items = [];
+    let itemsDraft = [];
+    for (let model of site.models) {
+      promises.push(requestContentItems(model, items, itemsDraft));
+      subscribeToContentItem(model);
+    }
+
+    Promise.all(promises)
+      .then(() => {
+        dispatch({
+          type: LOAD_NEW_SITE_ITEMS,
+          items,
+          itemsDraft
+        });
+      });
+  }
 }
 
 export function init() {
@@ -332,15 +354,19 @@ export default function contentReducer(state = initialState, action) {
   let item, items, itemsDraft, delItems;
   switch (action.type) {
     case INIT_END:
-      items = action.items;
-      itemsDraft = action.itemsDraft;
+    case LOAD_NEW_SITE_ITEMS:
+      items = state.items;
+      itemsDraft = state.itemsDraft;
 
-      for (let item of items)
+      items.push(...action.items);
+      itemsDraft.push(...action.itemsDraft);
+
+      for (let item of action.items)
         item.postInit(items);
-      for (let item of itemsDraft)
+      for (let item of action.itemsDraft)
         item.postInit(items);
 
-      for (let itemD of itemsDraft) {
+      for (let itemD of action.itemsDraft) {
         const item_o = itemD.origin.get('t__owner');
         const item = items.find(i => i.origin.id == item_o.id);
         if (item) {

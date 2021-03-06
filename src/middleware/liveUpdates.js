@@ -1,12 +1,12 @@
 import {browserHistory} from "react-router";
 
-import {FIELD_DELETE, MODEL_ADD, MODEL_DELETE, SITE_DELETE} from "ducks/models";
-import {subscribeToContentItem} from "ducks/content";
+import {FIELD_DELETE, MODEL_ADD, MODEL_DELETE, SITE_ADD, SITE_DELETE} from "ducks/models";
+import {subscribeToContentItem, loadNewSiteItems} from "ducks/content";
 import {closeModal, showAlert, URL_SITE, URL_USERSPACE, MODAL_TYPE_FIELD} from "ducks/nav";
 import {ALERT_TYPE_ALERT} from "components/modals/AlertModal/AlertModal";
 
 
-export const subscribeToNewModelContent = store => next => action => {
+const subscribeToNewModelContent = store => next => action => {
   next(action);
 
   if (action.type == MODEL_ADD) {
@@ -14,14 +14,30 @@ export const subscribeToNewModelContent = store => next => action => {
   }
 };
 
-export const controlRemoving = store => next => action => {
+const loadNewSiteContent = store => next => action => {
+  next(action);
+
+  if (action.type == SITE_ADD && action.fromServer) {
+    next(loadNewSiteItems(action.site));
+  }
+};
+
+const controlRemoving = store => next => action => {
   if (action.type == SITE_DELETE &&
       action.fromServer &&
       store.getState().models.currentSite == action.site) {
+
+    const title = action.isLeave ?
+      `The site <strong>${action.site.name}</strong> is no longer available` :
+      `The site <strong>${action.site.name}</strong> was deleted`;
+    const description = action.isLeave ?
+      `You just excluded from the collaborators list of the site. Press OK to go to another site.` :
+      `Someone just deleted the current site. Press OK to go to another site.`;
+
     next(showAlert({
-      title: `The site <strong>${action.site.name}</strong> was deleted`,
       type: ALERT_TYPE_ALERT,
-      description: "Someone just deleted the current site. Press OK to go to another site.",
+      title,
+      description,
       callback: () => next(action)
     }));
   } else {
@@ -54,3 +70,5 @@ export const controlRemoving = store => next => action => {
     }
   }
 };
+
+export default [subscribeToNewModelContent, loadNewSiteContent, controlRemoving];
