@@ -289,7 +289,7 @@ export function getRole(site) {
   if (site.owner.origin.id == userID)
     return ROLE_OWNER;
   for (let collab of site.collaborations) {
-    if (collab.user.origin.id == userID)
+    if (collab.user && collab.user.origin.id == userID)
       return collab.role;
   }
   return null;
