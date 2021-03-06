@@ -19,7 +19,7 @@ export function getAlertForNameError(error) {
       title: "Warning",
       description: "This name is already using. Please, select another one."
     };
-    
+
     default: return {
       title: "Error",
       description: "Unknown error."
@@ -32,7 +32,7 @@ export function getAlertForNameError(error) {
 export function getUser(email) {
   if (!email)
     return Promise.reject();
-  
+
   return send(
     new Parse.Query(Parse.User)
       .equalTo("email", email)
@@ -51,15 +51,15 @@ export function getUser(email) {
 export function checkSiteName(name, curSite) {
   if (!name)
     return NAME_ERROR_OTHER;
-  
+
   name = removeOddSpaces(name);
-  
+
   let sites = store.getState().models.sites;
   for (let site of sites) {
     if (site != curSite && site.name == name)
       return NAME_ERROR_NAME_EXIST;
   }
-  
+
   return NAME_CORRECT;
 }
 
@@ -71,16 +71,16 @@ export const DOMAIN_ERROR_OTHER   = 3;
 export function checkSiteDomain(domain, curSite) {
   if (!domain)
     return DOMAIN_ERROR_OTHER;
-  
+
   if (!checkURL(domain))
     return DOMAIN_ERROR_SYNTAX;
-  
+
   let sites = store.getState().models.sites;
   for (let site of sites) {
     if (site != curSite && site.domain == domain)
       return DOMAIN_ERROR_EXIST;
   }
-  
+
   return DOMAIN_CORRECT;
 }
 
@@ -111,16 +111,16 @@ export const COLLAB_ERROR_SELF  = 2;
 export function checkCollaboration(user) {
   if (!user)
     return COLLAB_ERROR_EXIST;
-  
+
   if (user.email == Parse.User.current().get('email'))
     return COLLAB_ERROR_SELF;
-  
+
   let collabs = store.getState().models.currentSite.collaborations;
   for (let collab of collabs) {
     if (collab.email == user.email)
       return COLLAB_ERROR_EXIST;
   }
-  
+
   return COLLAB_CORRECT;
 }
 
@@ -129,15 +129,15 @@ export function checkCollaboration(user) {
 export function checkModelName(name, curModel) {
   if (!name || !store.getState().models.currentSite)
     return NAME_ERROR_OTHER;
-  
+
   name = removeOddSpaces(name);
-  
+
   let models = store.getState().models.currentSite.models;
   for (let model of models) {
     if (model != curModel && model.name == name)
       return NAME_ERROR_NAME_EXIST;
   }
-  
+
   return NAME_CORRECT;
 }
 
@@ -181,14 +181,14 @@ export function getModelFromAnySite(id) {
 export function checkFieldName(name) {
   if (!name || !store.getState().models.currentModel)
     return NAME_ERROR_OTHER;
-  
+
   //name already exists
   let fields = store.getState().models.currentModel.fields;
   for (let field of fields) {
     if (field.name == name)
       return NAME_ERROR_NAME_EXIST;
   }
-  
+
   return NAME_CORRECT;
 }
 
@@ -230,7 +230,7 @@ export function getContentByModelAndId(modelNameId, id, items) {
 export function getContentByO(origin, items) {
   if (!origin)
     return null;
-  
+
   if (!items)
     items = store.getState().content.items;
   for (let item of items) {
@@ -253,14 +253,14 @@ export function checkContentExistense(item, items) {
 export function checkUniqueFieldValue(field, item) {
   const draft = item.draft ? item.draft : item;
   const value = draft.fields.get(field);
-  
+
   const items = store.getState().content.items
     .filter(_item => _item.model == field.model)
     .filter(_item => _item != item);
-  
+
   for (let _item of items) {
     const _value = _item.fields.get(field);
-    
+
     if (value === _value)
       return _item;
   }
@@ -304,23 +304,23 @@ export function checkPassword(password) {
 export function getNameId(name, objects, reserved = []) {
   if (!name)
     return null;
-  
+
   let nameId = filterSpecials(name);
-  
+
   let getNameIdInc = (inc = 0) => {
     let newNameId = inc ? `${nameId}_${inc}` : nameId;
-    
+
     if (reserved.indexOf(newNameId) != -1)
       return getNameIdInc(++inc);
-    
+
     for (let obj of objects) {
       if (obj.nameId == newNameId)
         return getNameIdInc(++inc);
     }
-    
+
     return newNameId;
   };
-  
+
   return getNameIdInc();
 }
 
@@ -358,7 +358,7 @@ export function getPayMethod(id) {
   const {stripeData} = store.getState().pay;
   if (!stripeData || !stripeData.sources || !id)
     return null;
-  
+
   for (let method of stripeData.sources) {
     if (method.id == id)
       return method;
