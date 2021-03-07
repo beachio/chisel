@@ -148,6 +148,7 @@ export default class ContentMedia extends ContentBase {
         let newItems = [];
         for (let itemSrc of itemsSrc) {
           let item = itemSrc.clone();
+          item.assigned = true;
           this.props.addMediaItem(item);
           newItems.push(item);
         }
