@@ -17,7 +17,7 @@ function requestMedia() {
   let sites_o = [];
   for (let site of sites)
     sites_o.push(site.origin);
-  
+
   return send(getAllObjects(
     new Parse.Query(MediaItemData.OriginClass)
       .containedIn("site", sites_o)
@@ -59,7 +59,7 @@ export function addMediaItem(item) {
 export function updateMediaItem(item) {
   item.updateOrigin();
   send(item.origin.save());
-  
+
   return {
     type: ITEM_UPDATE,
     item
@@ -68,7 +68,7 @@ export function updateMediaItem(item) {
 
 export function removeMediaItem(item) {
   send(item.origin.destroy());
-  
+
   return {
     type: ITEM_DELETE,
     item
@@ -81,31 +81,31 @@ const initialState = {
 
 export default function mediaReducer(state = initialState, action) {
   let items = state.items;
-  
+
   switch (action.type) {
     case INIT_END:
       return {
         ...state,
         items: action.items
       };
-  
+
     case ITEM_ADD:
       items.push(action.item);
       return {
         ...state,
         items
       };
-  
+
     case ITEM_DELETE:
       items.splice(items.indexOf(action.item), 1);
       return {
         ...state,
         items
       };
-  
+
     case ITEM_UPDATE:
       return {...state};
-      
+
     default:
       return state;
   }
