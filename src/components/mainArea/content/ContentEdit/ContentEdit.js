@@ -19,7 +19,7 @@ import ContentMedia from './elements/ContentMedia';
 import styles from './ContentEdit.sss';
 
 
-const AUTOSAVE_TIMEOUT = 2000;
+const AUTOSAVE_TIMEOUT = 500;
 
 
 @CSSModules(styles, {allowMultiple: true})
