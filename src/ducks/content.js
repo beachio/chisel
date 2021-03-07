@@ -105,7 +105,7 @@ export async function subscribeToContentItem(model) {
   });
 }
 
-export function loadNewSiteItems(site) {
+export function loadNewSiteContentItems(site) {
   return dispatch => {
     let promises = [];
     let items = [];

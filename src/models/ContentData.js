@@ -161,8 +161,8 @@ export class ContentItemData {
       if (value) {
         if (field.type == FIELD_TYPE_REFERENCE || field.type == FIELD_TYPE_MEDIA && field.isList)
           value = value.map(ref => ref.origin.id);
-        else if (field.type == FIELD_TYPE_MEDIA)
-          value = value.origin.id;
+        else if (field.type == FIELD_TYPE_MEDIA && value.file)
+          value = value.file.url();
         fields[id] = value;
       }
     }

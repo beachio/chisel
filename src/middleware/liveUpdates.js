@@ -1,7 +1,8 @@
 import {browserHistory} from "react-router";
 
 import {FIELD_DELETE, MODEL_ADD, MODEL_DELETE, SITE_ADD, SITE_DELETE} from "ducks/models";
-import {subscribeToContentItem, loadNewSiteItems} from "ducks/content";
+import {subscribeToContentItem, loadNewSiteContentItems} from "ducks/content";
+import {LOAD_NEW_SITE_ITEMS as LOAD_NEW_SITE_ITEMS_media, loadNewSiteMediaItems} from "ducks/media";
 import {closeModal, showAlert, URL_SITE, URL_USERSPACE, MODAL_TYPE_FIELD} from "ducks/nav";
 import {ALERT_TYPE_ALERT} from "components/modals/AlertModal/AlertModal";
 
@@ -18,7 +19,11 @@ const loadNewSiteContent = store => next => action => {
   next(action);
 
   if (action.type == SITE_ADD && action.fromServer) {
-    next(loadNewSiteItems(action.site));
+    next(loadNewSiteMediaItems(action.site));
+  }
+
+  if (action.type == LOAD_NEW_SITE_ITEMS_media) {
+    next(loadNewSiteContentItems(action.site));
   }
 };
 
