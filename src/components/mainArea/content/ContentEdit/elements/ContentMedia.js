@@ -25,32 +25,32 @@ const AUTOSAVE_TIMEOUT = 2000;
 export default class ContentMedia extends ContentBase {
   site = this.props.site;
   mediaTimeouts = [];
-  
-  
+
+
   constructor (props) {
     super(props);
-    
+
     this.state.loading = false;
   }
-  
+
   checkSize = size => {
     if (!size)
       return;
-    
+
     let max = FILE_SIZE_MAX;
     let fileSizeValid;
 
     const {validations} = this.state.field;
-    
+
     if (validations && validations.fileSize && validations.fileSize.active) {
       fileSizeValid = validations.fileSize;
-  
+
       let min = 0;
       if (fileSizeValid.minActive)
         min = convertDataUnits(fileSizeValid.min, fileSizeValid.minUnit, BYTES);
       if (fileSizeValid.maxActive)
         max = convertDataUnits(fileSizeValid.max, fileSizeValid.maxUnit, BYTES);
-  
+
       if (size < min) {
         let error = fileSizeValid.errorMsg;
         if (!error) {
@@ -61,7 +61,7 @@ export default class ContentMedia extends ContentBase {
         return error;
       }
     }
-    
+
     if (size > max) {
       let error;
       if (fileSizeValid && fileSizeValid.maxActive) {
@@ -80,22 +80,22 @@ export default class ContentMedia extends ContentBase {
       return error;
     }
   };
-  
+
   checkType = type => {
     if (!type || !this.state.field.validations)
       return;
-    
+
     const {fileTypes} = this.state.field.validations;
     if (!fileTypes || !fileTypes.active || !fileTypes.types || !fileTypes.types.length)
       return;
-    
+
     type = checkFileType(type);
-    
+
     for (let typeTemp of fileTypes.types) {
       if (type == typeTemp)
         return;
     }
-  
+
     let error = fileTypes.errorMsg;
     if (!error) {
       if (type != TYPE_OTHER)
@@ -103,15 +103,15 @@ export default class ContentMedia extends ContentBase {
       else
         error = `The file type is unsupported!`;
     }
-    
+
     return error;
   };
-  
+
   getError () {
     const baseError = super.getError();
     if (baseError)
       return baseError;
-  
+
     const checkValidations = item => {
       let error = this.checkSize(item.size);
       if (error)
@@ -120,7 +120,7 @@ export default class ContentMedia extends ContentBase {
       if (error)
         return error;
     };
-  
+
     const value = this.state.value;
     if (this.state.field.isList) {
       for (let itemValue of value) {
@@ -128,12 +128,12 @@ export default class ContentMedia extends ContentBase {
         if (error)
           return error;
       }
-    
+
     } else if (value) {
       return checkValidations(value);
     }
   }
-  
+
   onMediaChoose = () => {
     if (!this.props.isEditable)
       return;
@@ -143,7 +143,7 @@ export default class ContentMedia extends ContentBase {
     this.props.showModal(MODAL_TYPE_MEDIA, {
       isMult: field.isList,
       filters: field.validations,
-      
+
       callback: itemsSrc => {
         let newItems = [];
         for (let itemSrc of itemsSrc) {
@@ -151,44 +151,44 @@ export default class ContentMedia extends ContentBase {
           this.props.addMediaItem(item);
           newItems.push(item);
         }
-        
+
         if (field.isList) {
           let items = this.state.value;
           if (!items)
             items = [];
           this.setValue(items.concat(newItems), true);
-          
+
         } else {
           this.setValue(newItems[0], true);
         }
       }
     });
   };
-  
+
   onMediaNew = event => {
     const file = event.target.files[0];
     if (!file)
       return;
-    
+
     const checkSizeError = this.checkSize(file.size);
     if (checkSizeError) {
       this.setState({error: checkSizeError});
       return;
     }
-  
+
     const checkTypeError = this.checkType(file.type);
     if (checkTypeError) {
       this.setState({error: checkTypeError});
       return;
     }
-    
+
     this.setState({loading: true});
     let parseFile = new Parse.File(filterSpecials(file.name), file, file.type);
     parseFile.save().then(() => {
       this.setState({loading: false});
-      
+
       const {addMediaItem} = this.props;
-      
+
       let item = new MediaItemData();
       item.file = parseFile;
       item.name = trimFileExt(file.name);
@@ -196,11 +196,11 @@ export default class ContentMedia extends ContentBase {
       item.size = file.size;
       item.site = this.site;
       addMediaItem(item);
-      
+
       item = item.clone();
       item.assigned = true;
       addMediaItem(item);
-      
+
       if (this.state.field.isList) {
         let items = this.state.value;
         if (!items)
@@ -211,10 +211,10 @@ export default class ContentMedia extends ContentBase {
       }
     });
   };
-  
+
   onMediaClear(item) {
     this.props.removeMediaItem(item);
-    
+
     if (this.state.field.isList) {
       let items = this.state.value;
       items.splice(items.indexOf(item), 1);
@@ -223,23 +223,23 @@ export default class ContentMedia extends ContentBase {
       this.setValue(null, true);
     }
   }
-  
+
   onMediaNameChange(value, item) {
     item.name = value;
-    
+
     if (!this.mediaTimeouts[item.key])
       this.mediaTimeouts[item.key] = setTimeout(() => {
         this.props.updateMediaItem(item);
         this.mediaTimeouts[item.key] = 0;
       }, AUTOSAVE_TIMEOUT);
-    
+
     this.setValue(this.state.value);
   }
-  
+
   getInput() {
     const {isEditable} = this.props;
     let value = this.state.value;
-    
+
     let oneMediaBlock = item => {
       return (
         <div styleName="media-item" key={item.key}>
@@ -258,11 +258,11 @@ export default class ContentMedia extends ContentBase {
         </div>
       );
     };
-  
+
     let btnStyle = `media-button`;
     if (!isEditable)
       btnStyle += ` media-button-disabled`;
-  
+
     let addMediaBlock;
     if (this.state.loading) {
       addMediaBlock = (
@@ -287,7 +287,7 @@ export default class ContentMedia extends ContentBase {
         </div>
       );
     }
-  
+
     let mediaInner = addMediaBlock;
     if (this.state.field.isList) {
       if (value && value.length)
@@ -297,17 +297,17 @@ export default class ContentMedia extends ContentBase {
             {addMediaBlock}
           </div>
         );
-    
+
     } else {
       if (value && value.file)
         mediaInner = oneMediaBlock(value);
     }
-  
+
     return (
       <div styleName="media">
         {mediaInner}
       </div>
     );
   }
-  
+
 }
