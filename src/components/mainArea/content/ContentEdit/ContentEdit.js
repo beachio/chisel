@@ -54,15 +54,13 @@ export default class ContentEdit extends Component {
     super(props);
 
     const draft = this.item.draft ? this.item.draft : this.item;
-    this.state = {
+    Object.assign(this.state, {
       title:  draft.title,
       color:  draft.color,
       fields: new Map(draft.fields),
-      dirty:  false,
-      errors: false,
       oldItemData: draft.toJSON(true),
       oldItemId: draft.origin.id
-    };
+    });
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -137,6 +135,9 @@ export default class ContentEdit extends Component {
   }
 
   saveItem() {
+    if (!this.state.fieldsToUpdate.size)
+      return;
+
     const {item} = this.props;
     const draft = item.draft ? item.draft : item;
 
