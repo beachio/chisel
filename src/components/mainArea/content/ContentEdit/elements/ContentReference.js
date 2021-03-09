@@ -103,7 +103,7 @@ export default class ContentReference extends ContentBase {
     if (this.state.field.isList)
       refers.splice(refers.indexOf(item), 1);
     else
-      refers = undefined;
+      refers = [];
     this.setValue(refers, true);
   };
 
