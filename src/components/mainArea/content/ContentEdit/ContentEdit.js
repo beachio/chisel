@@ -42,6 +42,7 @@ export default class ContentEdit extends Component {
 
   fieldsArchive = new Map(this.item.fields);
   addingItem = null;
+  addingField = null;
 
   wait = false;
   waitSave = false;
@@ -108,8 +109,16 @@ export default class ContentEdit extends Component {
     const {item, lastItem, showNotification, showAlert} = this.props;
 
     if (this.addingItem && lastItem.origin.id == this.addingItem.origin.id) {
-      this.props.gotoItem(this.addingItem);
+      let refers = this.state.fields.get(this.addingField);
+      if (!refers)
+        refers = [];
+
+      this.setFieldValue(this.addingField, refers.concat(lastItem), true);
+
       this.addingItem = null;
+      setTimeout(() => {
+        this.props.gotoItem(lastItem);
+      }, 1);
     }
 
     if (item.origin.id != this.item.origin.id)
@@ -280,8 +289,9 @@ export default class ContentEdit extends Component {
     this.setState({title});
   };
 
-  addItem = item => {
+  addItem = (item, field) => {
     this.addingItem = item;
+    this.addingField = field;
     this.props.addItem(item);
   };
 
