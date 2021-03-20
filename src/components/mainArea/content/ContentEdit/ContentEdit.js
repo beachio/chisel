@@ -247,7 +247,21 @@ export default class ContentEdit extends Component {
     const fieldsToUpdate = new Map(this.state.fieldsToUpdate);
     fieldsToUpdate.set(field, value);
 
-    this.setState({fields, fieldsToUpdate, dirty: true}, () => {
+    let stateUpdate = {fields, fieldsToUpdate, dirty: true};
+
+    if (field.isTitle) {
+      let slug = removeOddSpaces(value);
+      slug = filterSpecialsAndCapital(slug, '-');
+      for (let [field2, value2] of fields) {
+        if (field2.appearance == ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG) {
+          fields.set(field2, slug);
+          fieldsToUpdate.set(field2, slug);
+        }
+      }
+      stateUpdate.title = value;
+    }
+
+    this.setState(stateUpdate, () => {
       if (save || !this.wait) {
         this.saveItem();
         this.wait = true;
@@ -277,18 +291,6 @@ export default class ContentEdit extends Component {
     return !errors;
   };
 
-  updateItemTitle = title => {
-    let slug = removeOddSpaces(title);
-    slug = filterSpecialsAndCapital(slug, '-');
-    for (let [field, value2] of this.state.fields) {
-      if (field.appearance == ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG) {
-        this.setFieldValue(field, slug);
-      }
-    }
-
-    this.setState({title});
-  };
-
   addItem = (item, field) => {
     this.addingItem = item;
     this.addingField = field;
@@ -315,8 +317,7 @@ export default class ContentEdit extends Component {
                               value={value}
                               isEditable={isEditable}
                               setFieldValue={this.setFieldValue}
-                              showModal={this.props.showModal}
-                              updateItemTitle={this.updateItemTitle} />;
+                              showModal={this.props.showModal} />;
 
       case ftps.FIELD_TYPE_FLOAT:
       case ftps.FIELD_TYPE_INTEGER:

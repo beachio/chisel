@@ -154,8 +154,6 @@ export default class ContentString extends ContentBase {
 
   onChange = value => {
     this.setValue(value);
-    if (this.state.field.isTitle)
-      this.props.updateItemTitle(value);
   };
 
   onChangeTextarea = event => {
