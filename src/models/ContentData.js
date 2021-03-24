@@ -77,10 +77,25 @@ export class ContentItemData {
 
     for (let field of this.model.fields) {
       let value = origin.get(field.nameId);
-      if (field.type == FIELD_TYPE_MEDIA && !field.isList)
-        this.fields.set(field, getMediaByO(value));
-      else
+      if (field.type == FIELD_TYPE_MEDIA) {
+        if (field.isList) {
+          let meds_o = value;
+          if (!meds_o)
+            meds_o = [];
+
+          let meds = [];
+          for (let med_o of meds_o) {
+            let med = getMediaByO(med_o);
+            if (med)
+              meds.push(med);
+          }
+          this.fields.set(field, meds);
+        } else {
+          this.fields.set(field, getMediaByO(value));
+        }
+      } else {
         this.fields.set(field, value);
+      }
 
       if (field.isTitle)
         this._titleField = field;
@@ -104,19 +119,6 @@ export class ContentItemData {
             refers.push(ref);
         }
         this.fields.set(field, refers);
-
-      } else if (field.type == FIELD_TYPE_MEDIA && field.isList) {
-        let medsO = this.fields.get(field);
-        if (!medsO)
-          medsO = [];
-
-        let meds = [];
-        for (let medO of medsO) {
-          let med = getMediaByO(medO, items);
-          if (med)
-            meds.push(med);
-        }
-        this.fields.set(field, meds);
       }
     }
   }
@@ -161,10 +163,15 @@ export class ContentItemData {
       if (value) {
         if (field.type == FIELD_TYPE_REFERENCE && !field.isList && !value.length)
           continue;
-        if (field.type == FIELD_TYPE_REFERENCE || field.type == FIELD_TYPE_MEDIA && field.isList)
+        if (field.type == FIELD_TYPE_REFERENCE) {
           value = value.map(ref => ref.origin.id);
-        else if (field.type == FIELD_TYPE_MEDIA && value.file)
-          value = value.file.url();
+        } else if (field.type == FIELD_TYPE_MEDIA) {
+          if (field.isList) {
+            value = value.map(media => media.file ? media.file.url() : null);
+          } else if (value.file) {
+            value = value.file.url();
+          }
+        }
         fields[id] = value;
       }
     }

@@ -93,11 +93,8 @@ export default class ContentReference extends ContentBase {
     if (!this.props.isEditable)
       return;
 
-    let refers = this.state.value;
-    if (this.state.field.isList)
-      refers.splice(refers.indexOf(item), 1);
-    else
-      refers = [];
+    const refers = this.state.value
+      .filter(_item => _item != item);
     this.setValue(refers, true);
   };
 

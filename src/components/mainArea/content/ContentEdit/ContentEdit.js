@@ -73,7 +73,8 @@ export default class ContentEdit extends Component {
       return null;
     if (item.deleted)
       return {deleted: true};
-    if (JSON.stringify(draft.toJSON(true)) != JSON.stringify(oldItemData))
+    const draftData = draft.toJSON(true);
+    if (JSON.stringify(draftData) != JSON.stringify(oldItemData))
       return {newData: true};
     return null;
   }

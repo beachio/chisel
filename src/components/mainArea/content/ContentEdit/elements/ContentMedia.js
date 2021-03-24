@@ -217,8 +217,8 @@ export default class ContentMedia extends ContentBase {
     this.props.removeMediaItem(item);
 
     if (this.state.field.isList) {
-      let items = this.state.value;
-      items.splice(items.indexOf(item), 1);
+      const items = this.state.value
+        .filter(_item => _item != item);
       this.setValue(items, true);
     } else {
       this.setValue(null, true);
