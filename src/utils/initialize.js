@@ -12,7 +12,7 @@ export const config = {..._config};
 
 async function requestConfig() {
   //try to load config from process.env
-  if (process) {
+  if (typeof process !== 'undefined' && process) {
     config.serverURL  = process.env.REACT_APP_SERVER_URL  || config.serverURL;
     config.appId      = process.env.REACT_APP_APP_ID      || config.appId;
     config.JSkey      = process.env.JS_KEY                || config.JSkey;
