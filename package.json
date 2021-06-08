@@ -55,7 +55,7 @@
     "cssnano": "^4.1.10",
     "dotenv": "^8.2.0",
     "electron": "^11.1.1",
-    "electron-builder": "^22.9.1",
+    "electron-builder": "^22.11.5",
     "electron-notarize": "^1.0.0",
     "eslint": "^7.17.0",
     "eslint-plugin-react": "^7.22.0",
