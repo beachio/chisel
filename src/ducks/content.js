@@ -11,7 +11,7 @@ import {
 } from 'ducks/models';
 import {LOGOUT} from './user';
 import {getRandomColor} from 'utils/common';
-import {getContentForModel, getContentForSite, getModelFromAnySite} from 'utils/data';
+import {getModelFromAnySite} from 'utils/data';
 import {send, getAllObjects} from 'utils/server';
 
 

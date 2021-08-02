@@ -211,7 +211,7 @@ export default class ContentString extends ContentBase {
     const {field} = this.state;
 
     switch (field.appearance) {
-      case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
+      case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWYG:
         return (
           <div styleName="field-title">
             {field.name}
@@ -351,7 +351,7 @@ export default class ContentString extends ContentBase {
                         onChange={this.onChangeTextarea} />
             );
 
-          case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWIG:
+          case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWYG:
             return (
               <Editor styleName="wysiwig"
                       text={value}
