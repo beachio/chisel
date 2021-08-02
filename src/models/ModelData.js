@@ -272,10 +272,25 @@ export const FIELD_TYPES = new Map([
   ]]
 ]);
 
+export const FIELD_TITLE_TYPES = new Map([
+  [FIELD_TYPE_SHORT_TEXT, [
+    FIELD_APPEARANCE__SHORT_TEXT__SINGLE
+  ]],
+  [FIELD_TYPE_LONG_TEXT, [
+    FIELD_APPEARANCE__LONG_TEXT__SINGLE,
+    FIELD_APPEARANCE__LONG_TEXT__MULTI
+  ]]
+]);
+
 export function canBeTitle(field) {
-  return field.type == FIELD_TYPE_SHORT_TEXT &&
-    field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SINGLE &&
-    !field.isList && !field.isDisabled;
+  if (!Array.from(FIELD_TITLE_TYPES.keys()).includes(field.type))
+    return false;
+
+  const appearances = FIELD_TITLE_TYPES.get(field.type);
+  if (!appearances.includes(field.appearance))
+    return false;
+
+  return !field.isList && !field.isDisabled;
 }
 
 export function canBeList(field) {

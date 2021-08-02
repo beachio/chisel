@@ -17,7 +17,7 @@ import {BYTES, convertDataUnits, throttle} from "utils/common";
 import {removeOddSpaces} from "utils/strings";
 import {getNameId, checkFieldName, NAME_ERROR_NAME_EXIST} from 'utils/data';
 
-import {FIELD_TYPES, canBeList, canBeTitle, canBeUnique} from 'models/ModelData';
+import {FIELD_TYPES, FIELD_TITLE_TYPES, canBeList, canBeTitle, canBeUnique} from 'models/ModelData';
 import * as ftps from 'models/ModelData';
 
 import styles from './FieldModal.sss';
@@ -26,6 +26,9 @@ import styles from './FieldModal.sss';
 const TAB_SETTINGS = 'TAB_SETTINGS';
 const TAB_APPEARANCE = 'TAB_APPEARANCE';
 const TAB_VALIDATIONS = 'TAB_VALIDATIONS';
+
+const FIELD_TYPES_ARRAY = Array.from(FIELD_TYPES.keys());
+const FIELD_TITLE_TYPES_ARRAY = Array.from(FIELD_TITLE_TYPES.keys());
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -50,7 +53,9 @@ export default class FieldModal extends Component {
 
     errorName: false,
 
-    appList: FIELD_TYPES.get(this.field.type),
+    appList: this.field.isTitle ?
+      FIELD_TITLE_TYPES.get(this.field.type) :
+      FIELD_TYPES.get(this.field.type),
 
     tab: TAB_SETTINGS,
 
@@ -59,7 +64,6 @@ export default class FieldModal extends Component {
   };
 
   active = false;
-  typeList = Array.from(FIELD_TYPES.keys());
   updating = !!this.field.origin;
   validValuesList = null;
   focusElm = null;
@@ -74,6 +78,7 @@ export default class FieldModal extends Component {
     if (!this.updating && canBeTitle(this.state) && !this.field.model.getTitle()) {
       this.state.isTitle = true;
       this.state.isRequired = true;
+      this.state.appList = FIELD_TITLE_TYPES.get(this.state.type);
     }
   }
 
@@ -133,7 +138,9 @@ export default class FieldModal extends Component {
   onChangeType = type => {
     this.setState({
       type,
-      appList: FIELD_TYPES.get(type),
+      appList: this.state.isTitle ?
+        FIELD_TITLE_TYPES.get(type) :
+        FIELD_TYPES.get(type),
       appearance: FIELD_TYPES.get(type)[0]
     }, this.resetControls);
   };
@@ -151,7 +158,28 @@ export default class FieldModal extends Component {
   };
 
   onChangeIsTitle = isTitle => {
-    this.setState({isTitle, isRequired: isTitle});
+    let {type, appearance, isDisabled} = this.state;
+    if (isTitle) {
+      if (!FIELD_TITLE_TYPES_ARRAY.includes(type))
+        type = FIELD_TITLE_TYPES_ARRAY[0];
+      const appearances = FIELD_TITLE_TYPES.get(type);
+      if (!appearances.includes(appearance))
+        appearance = appearances[0];
+      this.isDisabled = false;
+    }
+
+    const appList = isTitle ?
+      FIELD_TITLE_TYPES.get(type) :
+      FIELD_TYPES.get(type);
+
+    this.setState({
+      type,
+      appearance,
+      isTitle,
+      isDisabled,
+      isRequired: isTitle,
+      appList
+    });
   };
 
   onChangeIsList = isList => {
@@ -409,6 +437,11 @@ export default class FieldModal extends Component {
     let tabAppStyle = 'tab';
     let tabValidStyle = 'tab';
     let content = null;
+
+    const typeList = this.state.isTitle ?
+      FIELD_TITLE_TYPES_ARRAY :
+      FIELD_TYPES_ARRAY;
+
     switch (this.state.tab) {
       case TAB_SETTINGS:
         tabSettStyle += ' active';
@@ -435,8 +468,8 @@ export default class FieldModal extends Component {
 
             <div styleName="input-wrapper">
               <DropdownControl label="Type"
-                               disabled={this.updating || this.state.isTitle}
-                               list={this.typeList}
+                               disabled={this.updating}
+                               list={typeList}
                                onSuggest={this.onChangeType}
                                current={this.state.type} />
             </div>
@@ -539,7 +572,6 @@ export default class FieldModal extends Component {
           <div>
             <div styleName={dropdownStyleName}>
               <DropdownControl label="Appearance"
-                               disabled={this.state.isTitle}
                                list={this.state.appList}
                                onSuggest={this.onChangeAppearance}
                                current={this.state.appearance} />
