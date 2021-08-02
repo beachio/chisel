@@ -13,7 +13,7 @@ const server = new WebpackDevServer(
   {
     static: path.join(__dirname, '../static/'),
     historyApiFallback: true,
-    dev: {
+    devMiddleware: {
       publicPath: config.output.publicPath
     }
   }

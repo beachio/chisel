@@ -10,12 +10,13 @@ program.option('--RESTkey [RESTkey]', 'the REST key.');
 program.option('--port [port]', 'the port to run Chisel');
 
 program.parse(process.argv);
+const options = program.opts();
 
-const port            = program.port || process.env.PORT || 9000;
-const configServerURL = program.serverURL;
-const configAppId     = program.appId;
-const configJSkey     = program.JSkey;
-const configRESTkey   = program.RESTkey;
+const port            = options.port || process.env.PORT || 9000;
+const configServerURL = options.serverURL;
+const configAppId     = options.appId;
+const configJSkey     = options.JSkey;
+const configRESTkey   = options.RESTkey;
 
 
 const server = new express();
