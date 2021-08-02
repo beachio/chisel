@@ -29,7 +29,7 @@
     "start-electron-server-selector": "node electron/server-selector/server.js",
     "build-electron-server-selector": "node electron/server-selector/build.js",
     "start-electron-only": "electron electron/electron.js",
-    "electron-pack": "electron-builder -c electron/electron-builder.js --mac --win"
+    "electron-pack": "electron-builder -c electron/electron-builder.js --mac --win -p always"
   },
   "bin": {
     "chisel-cms": "./bin/chisel-cms"
