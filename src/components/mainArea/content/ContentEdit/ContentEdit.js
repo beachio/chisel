@@ -153,10 +153,7 @@ export default class ContentEdit extends Component {
 
     const fields = new Map(draft.fields);
     for (let [field, value] of this.state.fieldsToUpdate) {
-      if (field.isTitle)
-        fields.set(field, removeOddSpaces(value));
-      else
-        fields.set(field, value);
+      fields.set(field, value);
     }
     draft.fields = fields;
 

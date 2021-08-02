@@ -37,12 +37,13 @@ export class ContentItemData {
     if (!this.titleField)
       return;
 
-    title = removeOddSpaces(title);
     this.fields.set(this.titleField, title);
 
+    let slug = removeOddSpaces(title);
+    slug = filterSpecialsAndCapital(title, '-');
     for (let [field, value2] of this.fields) {
       if (field.appearance == FIELD_APPEARANCE__SHORT_TEXT__SLUG)
-        this.fields.set(field, filterSpecialsAndCapital(title, '-'));
+        this.fields.set(field, slug);
     }
   }
 
