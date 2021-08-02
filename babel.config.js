@@ -22,7 +22,6 @@ module.exports = ({cache, env}) => {
       "@babel/plugin-syntax-import-meta",
 
       ["@babel/plugin-proposal-decorators", {legacy: true}],
-      ["@babel/plugin-proposal-class-properties", {loose: true}],
 
       "@babel/plugin-proposal-export-namespace-from",
       "@babel/plugin-proposal-numeric-separator",
