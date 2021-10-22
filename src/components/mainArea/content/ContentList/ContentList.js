@@ -4,6 +4,7 @@ import InlineSVG from 'svg-inline-react';
 import FlipMove from 'react-flip-move';
 
 import {ContentItemData, STATUS_DRAFT, STATUS_PUBLISHED, STATUS_UPDATED, STATUS_ARCHIVED} from 'models/ContentData';
+import {FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCE} from "models/ModelData";
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
@@ -32,6 +33,7 @@ export default class ContentList extends Component {
 
     filteredModels: new Set(),
     filteredStatuses: new Set(),
+    visibleFields: new Set()
   };
 
   activeInput;
@@ -142,6 +144,19 @@ export default class ContentList extends Component {
     });
   };
 
+  onVisibleFieldClick = field => {
+    let {visibleFields} = this.state;
+    visibleFields = new Set(visibleFields);
+    if (visibleFields.has(field))
+      visibleFields.delete(field);
+    else
+      visibleFields.add(field);
+
+    this.setState({
+      visibleFields
+    });
+  };
+
   onRemoveClick = (event, item) => {
     event.stopPropagation();
 
@@ -184,6 +199,14 @@ export default class ContentList extends Component {
         const title = item.draft ? item.draft.title : item.title;
         return title && title.toLowerCase().indexOf(sText.toLowerCase()) != -1;
       });
+
+    const showingModels = new Set();
+    visibleItems.forEach(item => showingModels.add(item.model));
+    const singleModel = showingModels.size == 1 ? Array.from(showingModels)[0] : null;
+    const visibleFields = singleModel ?
+      this.state.visibleFields
+        .filter(field => singleModel.fields.includes(field))
+      : [];
 
     return (
       <ContainerComponent title="Content">
@@ -235,6 +258,34 @@ export default class ContentList extends Component {
                 })
               }
             </div>
+
+            {!!singleModel &&
+              <div styleName="filters-item">
+                <div styleName="filters-title filters-status">
+                  Visible fields
+                </div>
+                {
+                  singleModel.fields
+                    .filter(field => !field.isTitle)
+                    .map(field => {
+                      let eye = eyeDisabled;
+                      let styleName = "filters-type filters-typeHidden";
+                      if (visibleFields.has(field)) {
+                        eye = eyeEnabled;
+                        styleName = "filters-type";
+                      }
+
+                      return(
+                        <div styleName={styleName} key={field.origin.id} onClick={() => this.onVisibleFieldClick(field)}>
+                          {field.name}
+                          {eye}
+                        </div>
+                      );
+                    })
+                }
+              </div>
+            }
+
           </div>
 
           <div styleName="list-wrapper">
@@ -264,6 +315,9 @@ export default class ContentList extends Component {
                     <div styleName="list-item list-header" key="header!">
                       <div styleName="colorLabel"></div>
                       <div styleName="name">Name</div>
+                      {Array.from(visibleFields)
+                        .map(field => <div styleName="name" key={field.origin.id}>{field.name}</div>)
+                      }
                       <div styleName="model">Model</div>
                       <div styleName="updated">Updated</div>
                     </div>
@@ -293,6 +347,23 @@ export default class ContentList extends Component {
                             <div styleName="name">{title}</div>
                           :
                             <div styleName="name untitled">Untitled</div>
+                          }
+                          {Array.from(visibleFields)
+                            .map(field => {
+                              let value = item.fields.get(field);
+                              if (!value) {
+
+                              } else if (field.type == FIELD_TYPE_REFERENCE) {
+                                value = value.map(ref => ref.origin.id);
+                              } else if (field.type == FIELD_TYPE_MEDIA) {
+                                if (field.isList) {
+                                  value = value.map(media => media.file ? media.file.url() : null);
+                                } else if (value.file) {
+                                  value = value.file.url();
+                                }
+                              }
+                              return <div styleName="name" key={field.origin.id}>{value}</div>;
+                            })
                           }
                           <div styleName="model">{item.model.name}</div>
                           <div styleName="updated">{updatedStr}</div>
