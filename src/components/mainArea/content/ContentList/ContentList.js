@@ -28,7 +28,10 @@ export default class ContentList extends Component {
 
     searchText: '',
 
-    currentModel: this.props.models[0]
+    currentModel: this.props.models[0],
+
+    filteredModels: new Set(),
+    filteredStatuses: new Set(),
   };
 
   activeInput;
@@ -113,12 +116,30 @@ export default class ContentList extends Component {
   };
 
   onModelClick = model => {
-    this.props.filterModel(model);
-    this.setState({currentModel: model});
+    let {filteredModels} = this.state;
+    filteredModels = new Set(filteredModels);
+    if (filteredModels.has(model))
+      filteredModels.delete(model);
+    else
+      filteredModels.add(model);
+
+    this.setState({
+      filteredModels,
+      currentModel: model
+    });
   };
 
   onStatusClick = status => {
-    this.props.filterStatus(status);
+    let {filteredStatuses} = this.state;
+    filteredStatuses = new Set(filteredStatuses);
+    if (filteredStatuses.has(status))
+      filteredStatuses.delete(status);
+    else
+      filteredStatuses.add(status);
+
+    this.setState({
+      filteredStatuses
+    });
   };
 
   onRemoveClick = (event, item) => {
@@ -146,22 +167,24 @@ export default class ContentList extends Component {
   };
 
   render() {
-    const {isEditable, models, filteredModels, filteredStatuses, items} = this.props;
+    const {isEditable, models, items} = this.props;
+    const {filteredModels, filteredStatuses} = this.state;
 
     const eyeDisabled = <img styleName="eye" src={ImageEyeGray} />;
     const eyeEnabled = <img styleName="eye eye-active" src={ImageEye} />;
 
     const visibleItems = items
-        .filter(item => !filteredModels.size || filteredModels.has(item.model))
-        .filter(item => !filteredStatuses.size || filteredStatuses.has(item.status))
-        .filter(item => {
-          const sText = this.state.searchText;
-          if (!sText.length)
-            return true;
+      .filter(item => !filteredModels.size || filteredModels.has(item.model))
+      .filter(item => !filteredStatuses.size || filteredStatuses.has(item.status))
+      .filter(item => {
+        const sText = this.state.searchText;
+        if (!sText.length)
+          return true;
 
-          const title = item.draft ? item.draft.title : item.title;
-          return title && title.toLowerCase().indexOf(sText.toLowerCase()) != -1;
-        });
+        const title = item.draft ? item.draft.title : item.title;
+        return title && title.toLowerCase().indexOf(sText.toLowerCase()) != -1;
+      });
+
     return (
       <ContainerComponent title="Content">
         <div styleName="content-wrapper">

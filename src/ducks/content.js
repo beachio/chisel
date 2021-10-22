@@ -25,8 +25,6 @@ export const ITEM_ARCHIVE         = 'app/content/ITEM_ARCHIVE';
 export const ITEM_RESTORE         = 'app/content/ITEM_RESTORE';
 export const ITEM_DELETE          = 'app/content/ITEM_DELETE';
 export const SET_CURRENT_ITEM     = 'app/content/SET_CURRENT_ITEM';
-export const FILTER_MODEL         = 'app/content/FILTER_MODEL';
-export const FILTER_STATUS        = 'app/content/FILTER_STATUS';
 
 function requestContentItems(model, items, itemsDraft) {
   return send(getAllObjects(
@@ -326,26 +324,9 @@ function deleteItemFromServer(item) {
   };
 }
 
-export function filterModel(model) {
-  return {
-    type: FILTER_MODEL,
-    model
-  };
-}
-
-export function filterStatus(status) {
-  return {
-    type: FILTER_STATUS,
-    status
-  };
-}
-
 const initialState = {
   items: [],
   itemsDraft: [],
-
-  filteredModels: new Set(),
-  filteredStatuses: new Set(),
 
   currentItem: null
 };
@@ -438,30 +419,6 @@ export default function contentReducer(state = initialState, action) {
         ...state,
         items,
         itemsDraft
-      };
-
-    case FILTER_MODEL:
-      let {filteredModels} = state;
-      let newFM = new Set(filteredModels);
-      if (filteredModels.has(action.model))
-        newFM.delete(action.model);
-      else
-        newFM.add(action.model);
-      return {
-        ...state,
-        filteredModels: newFM
-      };
-
-    case FILTER_STATUS:
-      let {filteredStatuses} = state;
-      let newFS = new Set(filteredStatuses);
-      if (filteredStatuses.has(action.status))
-        newFS.delete(action.status);
-      else
-        newFS.add(action.status);
-      return {
-        ...state,
-        filteredStatuses: newFS
       };
 
     case FIELD_ADD:
