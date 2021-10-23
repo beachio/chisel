@@ -7,7 +7,7 @@ import InlineSVG from 'svg-inline-react';
 
 import ContentList from 'components/mainArea/content/ContentList/ContentList';
 import {ROLE_OWNER, ROLE_ADMIN, ROLE_DEVELOPER} from 'models/UserData';
-import {addItem, deleteItem} from 'ducks/content';
+import {addItem, deleteItem, filterModel, filterStatus, setVisibleField} from 'ducks/content';
 import {showAlert, URL_CONTENT, URL_ITEM, URL_USERSPACE, URL_SITE} from 'ducks/nav';
 
 import ImageHammer from 'assets/images/hammer.svg';
@@ -16,7 +16,7 @@ import ImageHammer from 'assets/images/hammer.svg';
 export class ContentListContainer extends Component {
   render() {
     const {models, content, nav} = this.props;
-    const {addItem, deleteItem} = this.props.contentActions;
+    const {addItem, deleteItem, filterModel, filterStatus, setVisibleField} = this.props.contentActions;
     const {showAlert} = this.props.navActions;
     
     let cmpContent = (
@@ -62,7 +62,13 @@ export class ContentListContainer extends Component {
                                   deleteItem={deleteItem}
                                   showAlert={showAlert}
                                   alertShowing={nav.alertShowing}
-                                  isEditable={models.role != ROLE_DEVELOPER} />;
+                                  isEditable={models.role != ROLE_DEVELOPER}
+                                  filteredModels={content.filteredModels}
+                                  filteredStatuses={content.filteredStatuses}
+                                  visibleFields={content.visibleFields}
+                                  filterModel={filterModel}
+                                  filterStatus={filterStatus}
+                                  setVisibleField={setVisibleField} />;
       }
 
     } else if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN) {
@@ -93,7 +99,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    contentActions: bindActionCreators({addItem, deleteItem}, dispatch),
+    contentActions: bindActionCreators({addItem, deleteItem, filterModel, filterStatus, setVisibleField}, dispatch),
     navActions:     bindActionCreators({showAlert}, dispatch)
   };
 }

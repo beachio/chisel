@@ -29,11 +29,7 @@ export default class ContentList extends Component {
 
     searchText: '',
 
-    currentModel: this.props.models[0],
-
-    filteredModels: new Set(),
-    filteredStatuses: new Set(),
-    visibleFields: new Set()
+    currentModel: this.props.models[0]
   };
 
   activeInput;
@@ -118,43 +114,16 @@ export default class ContentList extends Component {
   };
 
   onModelClick = model => {
-    let {filteredModels} = this.state;
-    filteredModels = new Set(filteredModels);
-    if (filteredModels.has(model))
-      filteredModels.delete(model);
-    else
-      filteredModels.add(model);
-
-    this.setState({
-      filteredModels,
-      currentModel: model
-    });
+    this.props.filterModel(model);
+    this.setState({currentModel: model});
   };
 
   onStatusClick = status => {
-    let {filteredStatuses} = this.state;
-    filteredStatuses = new Set(filteredStatuses);
-    if (filteredStatuses.has(status))
-      filteredStatuses.delete(status);
-    else
-      filteredStatuses.add(status);
-
-    this.setState({
-      filteredStatuses
-    });
+    this.props.filterStatus(status);
   };
 
   onVisibleFieldClick = field => {
-    let {visibleFields} = this.state;
-    visibleFields = new Set(visibleFields);
-    if (visibleFields.has(field))
-      visibleFields.delete(field);
-    else
-      visibleFields.add(field);
-
-    this.setState({
-      visibleFields
-    });
+    this.props.setVisibleField(field);
   };
 
   onRemoveClick = (event, item) => {
@@ -182,8 +151,7 @@ export default class ContentList extends Component {
   };
 
   render() {
-    const {isEditable, models, items} = this.props;
-    const {filteredModels, filteredStatuses} = this.state;
+    let {isEditable, models, filteredModels, filteredStatuses, visibleFields, items} = this.props;
 
     const eyeDisabled = <img styleName="eye" src={ImageEyeGray} />;
     const eyeEnabled = <img styleName="eye eye-active" src={ImageEye} />;
@@ -203,9 +171,8 @@ export default class ContentList extends Component {
     const showingModels = new Set();
     visibleItems.forEach(item => showingModels.add(item.model));
     const singleModel = showingModels.size == 1 ? Array.from(showingModels)[0] : null;
-    const visibleFields = singleModel ?
-      this.state.visibleFields
-        .filter(field => singleModel.fields.includes(field))
+    visibleFields = singleModel ?
+      visibleFields.filter(field => singleModel.fields.includes(field))
       : [];
 
     return (
