@@ -4,7 +4,6 @@ import InlineSVG from 'svg-inline-react';
 import FlipMove from 'react-flip-move';
 
 import {ContentItemData, STATUS_DRAFT, STATUS_PUBLISHED, STATUS_UPDATED, STATUS_ARCHIVED} from 'models/ContentData';
-import {FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCE} from "models/ModelData";
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
@@ -317,19 +316,11 @@ export default class ContentList extends Component {
                           }
                           {Array.from(visibleFields)
                             .map(field => {
-                              let value = item.fields.get(field);
-                              if (!value) {
-
-                              } else if (field.type == FIELD_TYPE_REFERENCE) {
-                                value = value.map(ref => ref.origin.id);
-                              } else if (field.type == FIELD_TYPE_MEDIA) {
-                                if (field.isList) {
-                                  value = value.map(media => media.file ? media.file.url() : null);
-                                } else if (value.file) {
-                                  value = value.file.url();
-                                }
-                              }
-                              return <div styleName="name" key={field.origin.id}>{value}</div>;
+                              const value = item.getStringValue(field);
+                              if (value === undefined)
+                                return <div styleName="name undef" key={field.origin.id}>undefined</div>;
+                              else
+                                return <div styleName="name" key={field.origin.id}>{value}</div>;
                             })
                           }
                           <div styleName="model">{item.model.name}</div>

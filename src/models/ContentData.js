@@ -1,8 +1,13 @@
 import {Parse} from 'parse';
 
-import {removeOddSpaces, filterSpecialsAndCapital} from 'utils/strings';
+import {removeOddSpaces, filterSpecialsAndCapital, getTextDate} from 'utils/strings';
 import {getMediaByO, getContentByO} from 'utils/data';
-import {FIELD_APPEARANCE__SHORT_TEXT__SLUG, FIELD_TYPE_MEDIA, FIELD_TYPE_REFERENCE} from 'models/ModelData';
+import {
+  FIELD_APPEARANCE__SHORT_TEXT__SLUG,
+  FIELD_TYPE_DATE,
+  FIELD_TYPE_MEDIA,
+  FIELD_TYPE_REFERENCE
+} from 'models/ModelData';
 
 
 export const STATUS_DRAFT     = `Draft`;
@@ -182,5 +187,32 @@ export class ContentItemData {
       status: withouStatus ? undefined : this.status,
       fields
     };
+  }
+
+  getStringValue(field) {
+    const value = this.fields.get(field);
+    if (value === undefined)
+      return undefined;
+    if (!value)
+      return '';
+
+    const getElementStringValue = element => {
+      if (!element)
+        return '';
+
+      if (field.type == FIELD_TYPE_DATE)
+        return getTextDate(element);
+      if (field.type == FIELD_TYPE_REFERENCE)
+        return element.title ? element.title : element.origin.id;
+      if (field.type == FIELD_TYPE_MEDIA)
+        return element.name;
+
+      return element.toString();
+    };
+
+    if (field.isList || field.type == FIELD_TYPE_REFERENCE)
+      return value.map(getElementStringValue).join(',\n');
+    else
+      return getElementStringValue(value);
   }
 }
