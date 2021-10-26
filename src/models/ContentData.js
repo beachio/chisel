@@ -67,7 +67,9 @@ export class ContentItemData {
     const oldFields = this.fields;
     this.fields = new Map();
     for (let field of this.model.fields) {
-      const oldValue = oldFields.get(field);
+      let oldValue = oldFields.get(field);
+      if (!oldValue && (field.isList || field.type == FIELD_TYPE_REFERENCE))
+        oldValue = [];
       this.fields.set(field, oldValue);
 
       if (field.isTitle)
