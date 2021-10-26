@@ -2,32 +2,30 @@ import {Parse} from 'parse';
 
 import {store} from '../index';
 import {ContentItemData, STATUS_ARCHIVED, STATUS_UPDATED, STATUS_PUBLISHED, STATUS_DRAFT} from 'models/ContentData';
-import {
-  SITE_DELETE,
-  MODEL_DELETE,
-  FIELD_ADD,
-  FIELD_UPDATE,
-  FIELD_DELETE,
-} from 'ducks/models';
+import {FIELD_ADD, FIELD_UPDATE, FIELD_DELETE} from 'ducks/models';
 import {LOGOUT} from './user';
 import {getRandomColor} from 'utils/common';
 import {getModelFromAnySite} from 'utils/data';
 import {send, getAllObjects} from 'utils/server';
+import {LOCATION_CHANGE} from "react-router-redux";
+import {URL_ITEM} from "./nav";
 
 
-export const INIT_END             = 'app/content/INIT_END';
-export const LOAD_NEW_SITE_ITEMS  = 'app/content/LOAD_NEW_SITE_ITEMS';
-export const ITEM_ADD             = 'app/content/ITEM_ADD';
-export const ITEM_UPDATE          = 'app/content/ITEM_UPDATE';
-export const ITEM_PUBLISH         = 'app/content/ITEM_PUBLISH';
-export const ITEM_DISCARD         = 'app/content/ITEM_DISCARD';
-export const ITEM_ARCHIVE         = 'app/content/ITEM_ARCHIVE';
-export const ITEM_RESTORE         = 'app/content/ITEM_RESTORE';
-export const ITEM_DELETE          = 'app/content/ITEM_DELETE';
-export const SET_CURRENT_ITEM     = 'app/content/SET_CURRENT_ITEM';
-export const FILTER_MODEL         = 'app/content/FILTER_MODEL';
-export const FILTER_STATUS        = 'app/content/FILTER_STATUS';
-export const SET_VISIBLE_FIELD    = 'app/content/SET_VISIBLE_FIELD';
+export const INIT_END               = 'app/content/INIT_END';
+export const LOAD_NEW_SITE_ITEMS    = 'app/content/LOAD_NEW_SITE_ITEMS';
+export const ITEM_ADD               = 'app/content/ITEM_ADD';
+export const ITEM_UPDATE            = 'app/content/ITEM_UPDATE';
+export const ITEM_PUBLISH           = 'app/content/ITEM_PUBLISH';
+export const ITEM_DISCARD           = 'app/content/ITEM_DISCARD';
+export const ITEM_ARCHIVE           = 'app/content/ITEM_ARCHIVE';
+export const ITEM_RESTORE           = 'app/content/ITEM_RESTORE';
+export const ITEM_DELETE            = 'app/content/ITEM_DELETE';
+export const SET_CURRENT_ITEM       = 'app/content/SET_CURRENT_ITEM';
+export const FILTER_MODEL           = 'app/content/FILTER_MODEL';
+export const FILTER_STATUS          = 'app/content/FILTER_STATUS';
+export const SET_VISIBLE_FIELD      = 'app/content/SET_VISIBLE_FIELD';
+export const PUSH_TO_ITEMS_HISTORY  = 'app/content/PUSH_TO_ITEMS_HISTORY';
+export const POP_FROM_ITEMS_HISTORY = 'app/content/POP_FROM_ITEMS_HISTORY';
 
 function requestContentItems(model, items, itemsDraft) {
   return send(getAllObjects(
@@ -348,6 +346,20 @@ export function setVisibleField(field) {
   };
 }
 
+export function pushToItemsHistory(item) {
+  return {
+    type: PUSH_TO_ITEMS_HISTORY,
+    item
+  };
+}
+
+export function popFromItemsHistory(item) {
+  return {
+    type: POP_FROM_ITEMS_HISTORY,
+    item
+  };
+}
+
 const initialState = {
   items: [],
   itemsDraft: [],
@@ -356,11 +368,13 @@ const initialState = {
   filteredStatuses: new Set(),
   visibleFields: new Set(),
 
-  currentItem: null
+  currentItem: null,
+
+  itemsHistory: []
 };
 
 export default function contentReducer(state = initialState, action) {
-  let item, items, itemsDraft, delItems;
+  let item, items, itemsDraft, delItems, itemsHistory;
   switch (action.type) {
     case INIT_END:
     case LOAD_NEW_SITE_ITEMS:
@@ -505,6 +519,37 @@ export default function contentReducer(state = initialState, action) {
         ...state,
         items,
         itemsDraft
+      };
+
+    case PUSH_TO_ITEMS_HISTORY:
+      itemsHistory = state.itemsHistory;
+      itemsHistory.push(action.item);
+
+      return {
+        ...state,
+        itemsHistory
+      };
+
+    case POP_FROM_ITEMS_HISTORY:
+      itemsHistory = state.itemsHistory;
+      const ind = itemsHistory.indexOf(action.item);
+      if (ind != -1)
+        itemsHistory = itemsHistory.slice(0, ind);
+
+      return {
+        ...state,
+        itemsHistory
+      };
+
+    case LOCATION_CHANGE:
+      itemsHistory = state.itemsHistory;
+      const URL = action.payload.pathname;
+      if (URL.indexOf(URL_ITEM) == -1)
+        itemsHistory = [];
+
+      return {
+        ...state,
+        itemsHistory
       };
 
     case LOGOUT:

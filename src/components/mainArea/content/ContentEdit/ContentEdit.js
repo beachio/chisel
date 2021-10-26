@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import CSSModules from 'react-css-modules';
 
 
@@ -49,8 +49,6 @@ export default class ContentEdit extends Component {
 
   fieldElements = [];
   fieldElementRefs = [];
-
-  previousItem = null;
 
 
   constructor(props) {
@@ -145,15 +143,12 @@ export default class ContentEdit extends Component {
   }
 
   gotoItem(item) {
-    this.previousItem = this.item;
-    this.props.gotoItem(item);
+    this.props.gotoItem(item, this.item);
   }
 
-  gotoPreviousItem = () => {
-    const item = this.previousItem;
-    this.previousItem = null;
+  gotoItemInHistory(item) {
     this.props.gotoItem(item);
-  };
+  }
 
   saveItem() {
     if (!this.state.fieldsToUpdate.size)
@@ -193,18 +188,17 @@ export default class ContentEdit extends Component {
   };
 
   renderTitle = () => {
-    const {gotoList} = this.props;
-    const showPrevious = !!this.previousItem && this.previousItem != this.item;
+    const {gotoList, itemsHistory} = this.props;
     return (
       <span>
         <span styleName="back-link" onClick={gotoList}>Content</span>
-        {showPrevious &&
-          <>
+        {itemsHistory.map(item => (
+          <Fragment key={item.origin?.id || Math.random()}>
             <span> / </span>
-            <span styleName="back-link" onClick={this.gotoPreviousItem}>
-              {this.previousItem.title || 'Untitled'}
+            <span styleName="back-link" onClick={() => this.gotoItemInHistory(item)}>
+              {item.title || 'Untitled'}
             </span>
-          </>
+          </Fragment>))
         }
         <span> / </span>
         <span styleName="item-title">{this.state.title || 'Untitled'}</span>

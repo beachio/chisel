@@ -6,7 +6,18 @@ import {Helmet} from "react-helmet-async";
 
 import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
 import {ROLE_DEVELOPER} from 'models/UserData';
-import {setCurrentItem, addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem} from 'ducks/content';
+import {
+  setCurrentItem,
+  addItem,
+  updateItem,
+  publishItem,
+  discardItem,
+  archiveItem,
+  restoreItem,
+  deleteItem,
+  pushToItemsHistory,
+  popFromItemsHistory
+} from 'ducks/content';
 import {addMediaItem, updateMediaItem, removeMediaItem} from 'ducks/media';
 import {
   showModal,
@@ -60,7 +71,7 @@ export class ContentEditContainer extends Component {
 
   render() {
     const {models, content} = this.props;
-    const {addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem} = this.props.contentActions;
+    const {addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem, pushToItemsHistory, popFromItemsHistory} = this.props.contentActions;
     const {showModal, showAlert, showNotification, closeNotification} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
 
@@ -73,11 +84,16 @@ export class ContentEditContainer extends Component {
 
     const closeItem = () => browserHistory.push(basePath);
 
-    const gotoItem = item => {
+    const gotoItem = (item, prevItem) => {
+      if (prevItem)
+        pushToItemsHistory(prevItem);
+      else
+        popFromItemsHistory(item);
       let modelId = item.model.nameId;
       let itemId = item.origin.id;
       browserHistory.push(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
     };
+
     const gotoList = () =>
       browserHistory.push(basePath);
 
@@ -91,6 +107,7 @@ export class ContentEditContainer extends Component {
         <title>{title}</title>
       </Helmet>
       <ContentEdit item={item}
+                   itemsHistory={content.itemsHistory}
                    onClose={closeItem}
                    gotoItem={gotoItem}
                    gotoList={gotoList}
@@ -123,7 +140,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    contentActions: bindActionCreators({setCurrentItem, addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem}, dispatch),
+    contentActions: bindActionCreators({setCurrentItem, addItem, updateItem, publishItem, discardItem,
+      archiveItem, restoreItem, deleteItem, pushToItemsHistory, popFromItemsHistory}, dispatch),
     mediaActions:   bindActionCreators({addMediaItem, updateMediaItem, removeMediaItem}, dispatch),
     navActions:     bindActionCreators({showModal, showAlert, showNotification, closeNotification}, dispatch)
   };
