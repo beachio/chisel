@@ -195,13 +195,18 @@ export default class ContentEdit extends Component {
         {itemsHistory.map(item => (
           <Fragment key={item.origin?.id || Math.random()}>
             <span> / </span>
-            <span styleName="back-link" onClick={() => this.gotoItemInHistory(item)}>
+            <span
+              styleName={`back-link ${!item.title ? 'undef' : ''}`}
+              onClick={() => this.gotoItemInHistory(item)}
+            >
               {item.title || 'Untitled'}
             </span>
           </Fragment>))
         }
         <span> / </span>
-        <span styleName="item-title">{this.state.title || 'Untitled'}</span>
+        <span styleName={`item-title ${!this.state.title ? 'undef' : ''}`}>
+          {this.state.title || 'Untitled'}
+        </span>
       </span>
     );
   };
