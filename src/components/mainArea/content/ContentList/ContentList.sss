@@ -27,14 +27,12 @@
 .list-wrapper
   flex: 1
   margin-top: -75px
-
-.list
   display: flex
   flex-flow: column nowrap
   width: 100%
   border-radius: 20px
 
-  &-no-items
+  .list-no-items
     padding: 36px
     margin-left: auto
     margin-right: auto
@@ -42,82 +40,79 @@
     font-size: 16px
     color: #a7a7a7
 
-  &-item
-    display: flex
-    flex-flow: row nowrap
-    align-items: center
-    position: relative
-    cursor: pointer
-    background: #fff
-    padding: 16px
+  .items
+    background: #ffffff
+    border-radius: 20px
+    box-shadow: 0 1px 0 0 rgba(0,0,0,0.1), 0 1px 10px 0 rgba(0,0,0,0.05)
+    overflow: hidden
 
-    z-index: 5
-    cursor: pointer
+    margin-left: 40px
 
-    &:nth-child(2n)
-      background: #FCFCFC
+    .list-item
+      display: flex
+      flex-flow: row nowrap
+      align-items: center
+      position: relative
+      cursor: pointer
+      background: #fff
+      padding: 16px
 
-    &:hover
-      .remove
-        opacity: 1
+      z-index: 5
 
-    .colorLabel
-      margin-right: 10px
-      height: 20px
-      width: 20px
-      min-width: 20px
-      border-radius: 100%
+      &:nth-child(2n)
+        background: #FCFCFC
 
-    .name,
-    .model,
-    .updated
-      font-size: 14px
-      color: #2C2C30
-      letter-spacing: 0.5px
-      text-align: left
+      &:hover
+        .remove
+          opacity: 1
 
-    .name
-      flex-grow: 1
-      flex-shrink: 0.8
-      width: 100%
+      .colorLabel
+        margin-right: 10px
+        height: 20px
+        width: 20px
+        min-width: 20px
+        border-radius: 100%
 
-      &.untitled
-        font-weight: 400
+      .name,
+      .model,
+      .updated
+        font-size: 14px
+        color: #2C2C30
+        letter-spacing: 0.5px
+        text-align: left
+        margin-right: 8px
 
-    .model
-      flex-grow: 1
-      width: 100%
-      letter-spacing: 0.46px
+      .name
+        flex-grow: 1
+        flex-shrink: 0.8
+        width: 100%
 
-    .updated
-      flex-shrink: 0.2
-      width: 180px
+      .model
+        flex-grow: 1
+        width: 100%
+        letter-spacing: 0.46px
 
-  &-header
-    border-bottom: 1px solid #e8e8e8
-    font-weight: 600
-    font-family: 'Inter-UI'
+      .updated
+        flex-shrink: 0.2
+        width: 180px
 
-    .colorLabel
-      visibility: hidden
+    .list-header
+      border-bottom: 1px solid #e8e8e8
+      font-weight: 600
+      font-family: 'Inter-UI'
 
-    .model,
-    .name,
-    .updated
-      color: #313133
-      text-align: left
-      font-size: 18px
+      .colorLabel
+        visibility: hidden
 
-    .updated
-      width: 218px
+      .model,
+      .name,
+      .updated
+        color: #313133
+        text-align: left
+        font-size: 18px
 
-.items
-  background: #ffffff
-  border-radius: 20px
-  box-shadow: 0 1px 0 0 rgba(0,0,0,0.1), 0 1px 10px 0 rgba(0,0,0,0.05)
-  overflow: hidden
-
-  margin-left: 40px
+      .updated
+        width: 218px
 
 .filters
   flex: 0 0 16%
