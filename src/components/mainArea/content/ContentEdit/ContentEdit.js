@@ -50,6 +50,8 @@ export default class ContentEdit extends Component {
   fieldElements = [];
   fieldElementRefs = [];
 
+  previousItem = null;
+
 
   constructor(props) {
     super(props);
@@ -117,9 +119,7 @@ export default class ContentEdit extends Component {
       this.setFieldValue(this.addingField, refers.concat(lastItem), true);
 
       this.addingItem = null;
-      setTimeout(() => {
-        this.props.gotoItem(lastItem);
-      }, 1);
+      setTimeout(() => this.gotoItem(lastItem), 1);
     }
 
     if (item.origin.id != this.item.origin.id)
@@ -143,6 +143,17 @@ export default class ContentEdit extends Component {
       });
     }
   }
+
+  gotoItem(item) {
+    this.previousItem = this.item;
+    this.props.gotoItem(item);
+  }
+
+  gotoPreviousItem = () => {
+    const item = this.previousItem;
+    this.previousItem = null;
+    this.props.gotoItem(item);
+  };
 
   saveItem() {
     if (!this.state.fieldsToUpdate.size)
@@ -183,9 +194,18 @@ export default class ContentEdit extends Component {
 
   renderTitle = () => {
     const {gotoList} = this.props;
+    const showPrevious = !!this.previousItem && this.previousItem != this.item;
     return (
       <span>
         <span styleName="back-link" onClick={gotoList}>Content</span>
+        {showPrevious &&
+          <>
+            <span> / </span>
+            <span styleName="back-link" onClick={this.gotoPreviousItem}>
+              {this.previousItem.title || 'Untitled'}
+            </span>
+          </>
+        }
         <span> / </span>
         <span styleName="item-title">{this.state.title || 'Untitled'}</span>
       </span>
@@ -297,7 +317,7 @@ export default class ContentEdit extends Component {
 
   onReferenceClick = newItem => {
     this.saveItem();
-    this.props.gotoItem(newItem);
+    this.gotoItem(newItem);
   };
 
   generateElement(field, value, ref) {
