@@ -169,8 +169,9 @@ export class ContentItemData {
       const {id} = field.origin;
       let value = _value;
       if (value) {
-        if (field.type == FIELD_TYPE_REFERENCE && !field.isList && !value.length)
+        if ((field.type == FIELD_TYPE_REFERENCE || field.isList) && !value.length)
           continue;
+
         if (field.type == FIELD_TYPE_REFERENCE) {
           value = value.map(ref => ref.origin.id);
         } else if (field.type == FIELD_TYPE_MEDIA) {
