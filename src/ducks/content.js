@@ -543,8 +543,10 @@ export default function contentReducer(state = initialState, action) {
 
     case LOCATION_CHANGE:
       itemsHistory = state.itemsHistory;
-      const URL = action.payload.pathname;
-      if (URL.indexOf(URL_ITEM) == -1)
+      const {pathname, action: historyAction} = action.payload;
+      if (historyAction == 'POP')
+        itemsHistory = itemsHistory.slice(0, itemsHistory.length - 1);
+      if (pathname.indexOf(URL_ITEM) == -1)
         itemsHistory = [];
 
       return {
