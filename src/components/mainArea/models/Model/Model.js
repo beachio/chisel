@@ -18,17 +18,14 @@ import styles from './Model.sss';
 import ImageIconDelete from 'assets/images/icons/delete.svg';
 
 
-const DragHandle = SortableHandle(({color}) =>
-  (<div className={styles.listItemColor} style={{background: color}}></div>)
-);
-
-const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemoveClick}) => {
+const DragHandle = SortableHandle(({field, isEditable, onFieldClick, onRemoveClick}) => {
   let style = [styles.listItem];
   if (field.isDisabled)
     style.push(styles.listItemDisabled);
 
   return (
     <div className={style.join(' ')} onClick={() => onFieldClick(field)}>
+      {/*<div className={styles.listItemColor} style={{background: field.color}}></div>*/}
       <div className={styles.listItemName}>{field.name}</div>
       <div className={styles.listItemType}>
         {field.type} - {field.appearance}
@@ -51,6 +48,13 @@ const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemove
       }
     </div>
   );
+});
+
+const SortableItem = SortableElement(({field, isEditable, onFieldClick, onRemoveClick}) => {
+  return <DragHandle field={field}
+                     isEditable={isEditable}
+                     onFieldClick={onFieldClick}
+                     onRemoveClick={onRemoveClick} />;
 });
 
 const SortableList = SortableContainer(({fields, isEditable, onFieldClick, onRemoveClick}) => {
@@ -253,6 +257,7 @@ export default class Model extends Component {
         <div>
           <div styleName="list">
             <div styleName="head listItem">
+              {/*<div styleName="listItemColor"></div>*/}
               <div styleName="listItemName">Name</div>
               <div styleName="listItemType">Type</div>
             </div>
@@ -262,7 +267,8 @@ export default class Model extends Component {
                           fields={this.state.fields}
                           isEditable={isEditable}
                           onFieldClick={this.onFieldClick}
-                          onRemoveClick={this.onRemoveClick} />
+                          onRemoveClick={this.onRemoveClick}
+                          distance={5} />
           </div>
           {isEditable &&
             <div styleName="input-wrapper">
