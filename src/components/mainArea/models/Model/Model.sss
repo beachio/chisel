@@ -41,20 +41,10 @@
     &Pointer
       cursor: pointer
 
-    &Disabled
-      .listItemColor
-        opacity: 0.5
-      .listItemText
-        opacity: 0.5
-
-    &Color
-      height: 20px
-      width: 20px
-      border-radius: 100%
-      position: absolute
-      left: -30px
-      top: 50%
-      transform: translateY(-50%)
+    &Disabled &Name,
+    &Disabled &Type,
+    &Disabled &Color
+      opacity: 0.5
 
     &Name,
     &Type
@@ -76,6 +66,14 @@
       flex-grow: 1
       width: 100%
 
+    &Color
+      margin-right: 10px
+      height: 20px
+      width: 20px
+      min-width: 20px
+      border-radius: 100%
+      background: #DCC191
+
   .head
     font-size: 18px
     font-weight: 600
@@ -87,6 +85,9 @@
 
     .listItemType
       margin-right: 138px
+
+    .listItemColor
+      visibility: hidden
 
 
 .listButtons
