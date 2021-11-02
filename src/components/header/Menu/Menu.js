@@ -39,6 +39,12 @@ export default class Menu extends Component  {
     if (!this.caretRef)
       return;
 
+    const {siteNameId} = this.props;
+    if (!siteNameId) {
+      this.caretRef.style = 'visibility: hidden';
+      return;
+    }
+
     const input = this.menuRef.getElementsByClassName(styles.activeItem)[0];
 
     if (input) {
@@ -59,35 +65,39 @@ export default class Menu extends Component  {
     
     const prefix = `/${URL_USERSPACE}/${URL_SITE}${siteNameId}/`;
 
+    let buttonStyle = "button";
+    if (!siteNameId)
+      buttonStyle += " button-disabled";
+
     return (
       <div styleName="menu"
            ref={el => this.menuRef = el}>
         <Link to={prefix + URL_MODELS}>
-          <div styleName="button"
+          <div styleName={buttonStyle}
                className={openedPage == PAGE_MODELS || openedPage == PAGE_MODELS_ITEM ? styles.activeItem : ''}>
             Models
           </div>
         </Link>
         <Link to={prefix + URL_CONTENT}>
-          <div styleName="button"
+          <div styleName={buttonStyle}
                className={openedPage == PAGE_CONTENT || openedPage == PAGE_CONTENT_ITEM ? styles.activeItem : ''}>
             Content
           </div>
         </Link>
         <Link to={prefix + URL_API}>
-          <div styleName="button"
+          <div styleName={buttonStyle}
                className={openedPage == PAGE_API ? styles.activeItem : ''}>
             API
           </div>
         </Link>
         <Link to={prefix + URL_SHARING}>
-          <div styleName="button"
+          <div styleName={buttonStyle}
                className={openedPage == PAGE_SHARING ? styles.activeItem : ''}>
             Sharing
           </div>
         </Link>
         <Link to={prefix + URL_SETTINGS}>
-          <div styleName="button"
+          <div styleName={buttonStyle}
                className={openedPage == PAGE_SETTINGS ? styles.activeItem : ''}>
             Settings
           </div>
