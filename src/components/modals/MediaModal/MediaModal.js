@@ -155,6 +155,7 @@ export default class MediaModal extends Component {
                   .filter(this.filterSize)
                   .filter(this.filterType)
                   .filter(item => this.searchMatch(item.name))
+                  .sort((a, b) => b.origin.updatedAt - a.origin.updatedAt)
                   .map(item => {
                     let itemStyle = "media-item";
                     if (this.state.selectedItems.indexOf(item) != -1)
