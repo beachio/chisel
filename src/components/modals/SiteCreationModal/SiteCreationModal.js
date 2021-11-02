@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
+import InlineSVG from 'svg-inline-react';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import InputControl from 'components/elements/InputControl/InputControl';
@@ -9,7 +10,7 @@ import {removeOddSpaces} from "utils/strings";
 
 import styles from './SiteCreationModal.sss';
 
-import ImageTemplateEmpty from "assets/images/template-empty.png";
+import ImageTemplateEmpty from "assets/images/template-empty.svg";
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -43,9 +44,13 @@ export class TemplateControl extends Component {
       <div styleName="TemplateControl"
            onClick={this.onClick}>
         <div styleName={style}>
-          <img styleName="icon-img"
-               src={this.template.icon ? this.template.icon.url() : ImageTemplateEmpty}>
-          </img>
+          {this.template.icon ?
+            <img styleName="icon-img"
+                 src={this.template.icon.url()} />
+          :
+            <InlineSVG styleName="icon-img"
+                       src={ImageTemplateEmpty} />
+          }
           <div styleName="text">
             <div styleName="title">{this.template.name}</div>
             <div styleName="description">{this.template.description}</div>
