@@ -28,7 +28,7 @@
 
   .content
     width: 100%
-    padding: 32px 10%
+    padding: 32px 6%
 
   .input-wrapper
     width: 100%
@@ -37,7 +37,8 @@
   .buttons-wrapper
     display: flex
     flex-flow: row nowrap
-    margin-top: 80px
+    width: 100%
+    margin-top: 30px
     justify-content: center
 
   .buttons-inner:first-child
@@ -49,12 +50,12 @@
 
   .media
     display: flex
-    flex-flow: row nowrap
+    flex-flow: row wrap
     align-items: flex-start
+    justify-content: space-between
 
-    overflow-x: auto
+    overflow-y: auto
     min-height: 190px
-    padding-bottom: 10px
 
     &-item
       position: relative
@@ -62,10 +63,12 @@
 
       display: flex
       flex-flow: column nowrap
-      flex: 0 0 310px
+      flex-shrink: 0
+      width: 200px
 
       cursor: pointer
       margin-right: 25px
+      margin-bottom: 25px
 
       background: rgba(255,255,255,0.80)
       border: 2px solid #DDDDDD
@@ -87,16 +90,17 @@
         &:after
           content: ''
           background: url('~assets/images/okay.png') no-repeat center center / contain
-          height: 30px
-          width: 30px
+          height: 18px
+          width: 18px
 
           position: absolute
-          top: 10px
-          right: 10px
+          top: 8px
+          right: 8px
 
     &-header
-      font-size: 24px
-      color: #666666
-      letter-spacing: 0.54px
+      font-size: 15px
+      color: #313133
+      text-align: center
+      //background-color: #F5F5F5
 
-      padding: 11px 38px
+      padding: 10px

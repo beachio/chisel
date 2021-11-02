@@ -172,7 +172,7 @@ export default class MediaModal extends Component {
               }
             </div>
 
-            <div styleName="input-wrapper buttons-wrapper">
+            <div styleName="buttons-wrapper">
               <div styleName="buttons-inner">
                 <ButtonControl color="green"
                                value="Choose"
