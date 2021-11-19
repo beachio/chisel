@@ -27,18 +27,23 @@ export default class ContentString extends ContentBase {
   constructor (props) {
     super(props);
 
-    if (!this.state.value && this.state.field.isList)
-      this.state.value = [];
+    if (!this.state.value) {
+      if (this.state.field.isList)
+        this.state.value = [];
+      else if (this.state.field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWYG)
+        this.state.value = '<p><br/></p>';
+    }
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (state.field.appearance == ftps.FIELD_APPEARANCE__SHORT_TEXT__SLUG)
-      return {
-        item:  props.item,
-        field: props.field,
-        value: props.value
-      };
-    return ContentBase.getDerivedStateFromProps(props, state);
+    let {value, field, item} = props;
+    if (!value) {
+      if (field.isList)
+        value = [];
+      else if (field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWYG)
+        value = '<p><br/></p>';
+    }
+    return {item, field, value};
   }
 
   getError () {
