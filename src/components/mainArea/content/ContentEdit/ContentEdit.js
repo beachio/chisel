@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import CSSModules from 'react-css-modules';
 
-
+import {NOTIFICATION_TYPE_NEW_DATA} from "ducks/nav";
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import {STATUS_ARCHIVED, STATUS_PUBLISHED, STATUS_DRAFT, STATUS_UPDATED, ContentItemData} from 'models/ContentData';
@@ -80,7 +80,6 @@ export default class ContentEdit extends Component {
   }
 
   componentWillUnmount() {
-    this.props.closeNotification();
     if (this.state.dirty)
       this.saveItem();
   }
@@ -107,7 +106,7 @@ export default class ContentEdit extends Component {
   }
 
   componentDidUpdate() {
-    const {item, lastItem, showNotification, showAlert} = this.props;
+    const {item, lastItem, showNotification, closeNotification, showAlert} = this.props;
 
     if (this.addingItem && lastItem.origin.id == this.addingItem.origin.id) {
       let refers = this.state.fields.get(this.addingField);
@@ -123,14 +122,6 @@ export default class ContentEdit extends Component {
     if (item.origin.id != this.item.origin.id)
       this.updateItem(item);
 
-    if (this.state.newData) {
-      showNotification({
-        text: 'There are some changes. What do you want to do?',
-        confirmLabel: 'Load new data',
-        cancelLabel: 'Keep my data',
-        onConfirm: () => this.updateItem(item)
-      });
-    }
     if (this.state.deleted) {
       showAlert({
         type: ALERT_TYPE_CONFIRM,
@@ -139,6 +130,16 @@ export default class ContentEdit extends Component {
         onConfirm: this.restoreItem,
         onCancel: this.onClose
       });
+    } else if (this.state.newData) {
+      showNotification({
+        type: NOTIFICATION_TYPE_NEW_DATA,
+        text: 'There are some changes. What do you want to do?',
+        confirmLabel: 'Load new data',
+        cancelLabel: 'Keep my data',
+        onConfirm: () => this.updateItem(item)
+      });
+    } else {
+      closeNotification(NOTIFICATION_TYPE_NEW_DATA);
     }
   }
 

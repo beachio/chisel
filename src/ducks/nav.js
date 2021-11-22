@@ -43,6 +43,8 @@ export const MODAL_TYPE_MARKDOWN        = 'app/nav/modals/MODAL_TYPE_MARKDOWN';
 export const MODAL_TYPE_MODEL_CHOOSE    = 'app/nav/modals/MODAL_TYPE_MODEL_CHOOSE';
 export const MODAL_TYPE_ROLE            = 'app/nav/modals/MODAL_TYPE_ROLE';
 
+export const NOTIFICATION_TYPE_NEW_DATA = 'app/nav/notification/NOTIFICATION_TYPE_NEW_DATA';
+
 
 export const URL_EMAIL_VERIFY     = 'email-verify';
 export const URL_PASSWORD_SET     = 'password-set';
@@ -109,9 +111,10 @@ export function showNotification(notification) {
   };
 }
 
-export function closeNotification() {
+export function closeNotification(notificationType) {
   return {
-    type: CLOSE_NOTIFICATION
+    type: CLOSE_NOTIFICATION,
+    notificationType
   };
 }
 
@@ -252,16 +255,21 @@ export default function navReducer(state = initialState, action) {
       };
 
     case CLOSE_NOTIFICATION:
-      return {
+      if (action.notificationType && action.notificationType != state.notification?.type) {
+        return {...state};
+      } else {        return {
         ...state,
         notification: null
       };
+
+      }
 
     case LOCATION_CHANGE:
       return {
         ...state,
         alertShowing: false,
-        modalShowing: false
+        modalShowing: false,
+        notification: null
       };
 
 
