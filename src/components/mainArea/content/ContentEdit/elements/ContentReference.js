@@ -108,8 +108,9 @@ export default class ContentReference extends ContentBase {
       let key = item.origin && item.origin.id ? item.origin.id : Math.random();
 
       if (exist) {
-        let title = item.title ? item.title : "Untitled";
-        let titleStyle = item.title ? '' : 'untitled';
+        const draft = item.draft ? item.draft : item;
+        const title = draft.title ? draft.title : "Untitled";
+        const titleStyle = draft.title ? '' : 'untitled';
 
         return (
           <div styleName="reference-item" key={key} onClick={() => this.props.onReferenceClick(item)}>
