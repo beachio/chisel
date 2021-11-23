@@ -71,15 +71,15 @@ export default class Sites extends Component {
                    onClick={() => this.onClickSite(site)}
                    key={site.origin.id ? site.origin.id : Math.random()}>
 
-                {!!site.icon ?
-                  <img styleName="icon-img"
-                       src={site.icon.url()}>
-                  </img>
-                :
-                  <div styleName="icon">
-                     <InlineSVG src={ImageHammer}/>
-                  </div>
-                }
+                <div styleName="icon-wrapper">
+                  {!!site.icon ?
+                    <div styleName="icon-img"
+                         style={{backgroundImage: `url(${site.icon.url()})`}}>
+                    </div>
+                  :
+                    <InlineSVG src={ImageHammer}/>
+                  }
+                </div>
 
                 <div styleName="site-name">{site.name}</div>
                 {!!site.domain ?

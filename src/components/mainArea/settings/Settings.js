@@ -165,9 +165,9 @@ export default class Settings extends Component {
     let icon = null;
     if (this.state.icon)
       icon = (
-        <img styleName="icon-img"
-          src={this.state.icon.url()}>
-        </img>
+        <div styleName="icon-img"
+             style={{backgroundImage: `url(${this.state.icon.url()})`}} >
+        </div>
       );
 
     return (

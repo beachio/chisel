@@ -58,18 +58,20 @@
 
       transition: color 0.2s ease
 
-    .icon
+    .icon-wrapper
+      height: 24px
+      width: 24px
+
       background: #000
       border-radius: 50%
+      overflow: hidden
+
       border: 1px solid #fff
 
       display: flex
       flex-flow: column nowrap
       justify-content: center
       align-items: center
-
-      width: 24px
-      height: 24px
 
       & svg
         height: 12px
@@ -78,6 +80,7 @@
     .icon-img
       height: 24px
       width: 24px
+      background: no-repeat center center / cover
 
     .link
       transition: opacity 0.2s ease
