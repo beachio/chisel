@@ -9,9 +9,6 @@ process.env.NODE_ENV = 'development';
 module.exports = merge(baseWebpackConfig, {
   mode: 'development',
   devtool: 'source-map',
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
   module: {
     rules: [
       {
