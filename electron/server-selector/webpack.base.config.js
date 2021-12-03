@@ -33,21 +33,27 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 3000,
-          name: 'assets/images/[name].[ext]'
+        type: 'asset',
+        parser: {
+          dataUrlCondition: {
+            maxSize: 3 * 1024
+          }
         },
-        type: 'javascript/auto'
+        generator: {
+          filename: 'assets/images/[name][ext]'
+        }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 3000,
-          name: 'assets/fonts/[name].[hash:7].[ext]'
+        type: 'asset',
+        parser: {
+          dataUrlCondition: {
+            maxSize: 3 * 1024
+          }
         },
-        type: 'javascript/auto'
+        generator: {
+          filename: 'assets/fonts/[name].[hash:7][ext]'
+        }
       }
     ]
   },

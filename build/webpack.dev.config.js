@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const {merge} = require('webpack-merge');
 
 const baseWebpackConfig = require('./webpack.base.config');
@@ -9,9 +8,6 @@ process.env.NODE_ENV = 'development';
 module.exports = merge(baseWebpackConfig, {
   mode: 'development',
   devtool: 'source-map',
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
   module: {
     rules: [
       {

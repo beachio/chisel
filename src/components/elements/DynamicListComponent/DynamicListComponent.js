@@ -101,8 +101,6 @@ export default class DynamicListComponent extends Component {
     if (this.state.values.length)
       values = this.state.values;
 
-    this.inputs = [];
-
     if (values.length) {
       const elements = [];
 

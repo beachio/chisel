@@ -11,7 +11,8 @@ module.exports = ({file, options, env}) => {
 
   if (extname === '.sss') {
     res.parser = 'sugarss';
-    res.plugins.push(require('precss'));
+    res.plugins.push(require('postcss-nested'));
+    res.plugins.push(require('postcss-advanced-variables'));
   }
 
   res.plugins.push(
