@@ -8,19 +8,22 @@ const config = require('./webpack.dev.config');
 const port = process.env.PORT || 9900;
 
 const server = new WebpackDevServer(
-  webpack(config),
   {
     static: path.join(__dirname, './static/'),
     historyApiFallback: true,
-    dev: {
+    devMiddleware: {
       publicPath: config.output.publicPath
-    }
-  }
+    },
+    port,
+    host: 'localhost',
+    hot: true
+  },
+  webpack(config)
 );
 
-server.listen(port, 'localhost', error => {
-  if (error) {
-    console.error(error);
-    return;
-  }
-});
+
+try {
+  server.start();
+} catch (error) {
+  console.error(error);
+}
