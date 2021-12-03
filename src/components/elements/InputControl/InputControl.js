@@ -10,8 +10,6 @@ import styles from './InputControl.sss';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class InputControl extends Component {
-  ref = React.createRef();
-
   onChange = e => {
     const {onChange} = this.props;
     if (onChange)
@@ -19,14 +17,15 @@ export default class InputControl extends Component {
   };
 
   setRef = ref => {
-    const {readOnly} = this.props;
-    addElectronContextMenu(ref.current, readOnly);
-    this.ref = ref;
-  };
+    const {readOnly, DOMRef} = this.props;
+    addElectronContextMenu(ref, readOnly);
+    if (DOMRef)
+      DOMRef(ref);
+  }
 
   render() {
     let {label, type, value, placeholder, onChange, readOnly, autoFocus, onKeyDown, onBlur, icon,
-      onIconClick, inputType, dropdown, titled, red, DOMRef} = this.props;
+      onIconClick, inputType, dropdown, titled, red} = this.props;
 
     if (!onChange)
       readOnly = true;
@@ -49,16 +48,12 @@ export default class InputControl extends Component {
     if (red)
       inputStyles += ' input-red';
 
-
     let iconEl;
     if (icon)
       iconEl = (
         <div onClick={onIconClick} styleName={'icon ' + icon}>
           <IconsComponent icon={icon} />
         </div>);
-
-    if (DOMRef)
-      DOMRef(this.ref.current);
 
     return (
       <div styleName="InputControl">
@@ -76,7 +71,7 @@ export default class InputControl extends Component {
                  onBlur={onBlur}
                  onKeyDown={onKeyDown}
                  readOnly={readOnly}
-                 ref={this.ref} />
+                 ref={this.setRef} />
         </div>
       </div>
     );
