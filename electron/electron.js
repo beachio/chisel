@@ -6,8 +6,8 @@ const isDev = require('electron-is-dev');
 const {autoUpdater} = require("electron-updater");
 const log = require('electron-log');
 
-const remote = require('@electron/remote/main');
-remote.initialize();
+const remoteMain = require('@electron/remote/main');
+remoteMain.initialize();
 
 
 let selectorWindow;
@@ -26,10 +26,10 @@ function createSelectorWindow(onStart = false) {
     webPreferences: {
       additionalArguments,
       nodeIntegration: true,
-      enableRemoteModule: true,
       contextIsolation: false
     }
   });
+  remoteMain.enable(selectorWindow.webContents);
   selectorWindow.loadURL(isDev ? 'http://localhost:9900' : `file://${path.join(__dirname, '../server-selector/index.html')}`);
   selectorWindow.on('closed', () => selectorWindow = null);
 }
@@ -188,10 +188,10 @@ ipcMain.on('server-select--select', (event, server) => {
     webPreferences: {
       additionalArguments: ['--chisel-server=' + JSON.stringify(server)],
       nodeIntegration: true,
-      enableRemoteModule: true,
       contextIsolation: false
     }
   });
+  remoteMain.enable(window.webContents);
   window.loadURL(isDev ? 'http://localhost:9000' : `file://${path.join(__dirname, '../dist/index.html')}`);
 
   selectorWindow.close();
