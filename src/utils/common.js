@@ -186,7 +186,7 @@ export function addElectronContextMenu(elm, readOnly) {
   if (!isElectron() || !elm)
     return;
 
-  const {remote} = window.require('electron');
+  const remote = window.require('@electron/remote');
   const {Menu} = remote;
 
   const templateMenu =
