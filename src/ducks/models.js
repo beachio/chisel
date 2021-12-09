@@ -619,8 +619,6 @@ export function addCollaboration(user, email) {
   collab.site = currentSite;
 
   collab.updateOrigin();
-
-  collab.origin.setACL(new Parse.ACL(currentSite.owner.origin));
   send(collab.origin.save());
 
   return {
