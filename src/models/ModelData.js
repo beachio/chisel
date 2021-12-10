@@ -195,6 +195,7 @@ export const FIELD_TYPE_DATE        = "Date/time";
 export const FIELD_TYPE_MEDIA       = "Media";
 export const FIELD_TYPE_JSON        = "JSON";
 export const FIELD_TYPE_REFERENCE   = "Reference";
+export const FIELD_TYPE_USER        = "Chisel user";
 
 
 export const FIELD_APPEARANCE__SHORT_TEXT__SINGLE   = "Single line";
@@ -227,6 +228,8 @@ export const FIELD_APPEARANCE__MEDIA__MEDIA         = "Media";
 export const FIELD_APPEARANCE__JSON__JSON           = "Date & time";
 
 export const FIELD_APPEARANCE__REFERENCE_REFERENCE  = "Reference";
+
+export const FIELD_APPEARANCE__USER_USER  = "Chisel user";
 
 
 export const FIELD_TYPES = new Map([
@@ -269,6 +272,9 @@ export const FIELD_TYPES = new Map([
   ]],*/
   [FIELD_TYPE_REFERENCE, [
     FIELD_APPEARANCE__REFERENCE_REFERENCE,
+  ]],
+  [FIELD_TYPE_USER, [
+    FIELD_APPEARANCE__USER_USER,
   ]]
 ]);
 
@@ -307,7 +313,9 @@ export function canBeList(field) {
     field.type == FIELD_TYPE_MEDIA &&
       field.appearance == FIELD_APPEARANCE__MEDIA__MEDIA ||
     field.type == FIELD_TYPE_REFERENCE &&
-      field.appearance == FIELD_APPEARANCE__REFERENCE_REFERENCE) &&
+      field.appearance == FIELD_APPEARANCE__REFERENCE_REFERENCE ||
+    field.type == FIELD_TYPE_USER &&
+      field.appearance == FIELD_APPEARANCE__USER_USER) &&
     !field.isTitle;
 }
 

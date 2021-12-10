@@ -6,8 +6,10 @@ import {
   FIELD_APPEARANCE__SHORT_TEXT__SLUG,
   FIELD_TYPE_DATE,
   FIELD_TYPE_MEDIA,
-  FIELD_TYPE_REFERENCE
+  FIELD_TYPE_REFERENCE,
+  FIELD_TYPE_USER
 } from 'models/ModelData';
+import {UserData} from "models/UserData";
 
 
 export const STATUS_DRAFT     = `Draft`;
@@ -127,6 +129,18 @@ export class ContentItemData {
             refers.push(ref);
         }
         this.fields.set(field, refers);
+      } else if (field.type == FIELD_TYPE_USER) {
+        let userData = this.fields.get(field);
+        if (field.isList) {
+          if (!userData)
+            userData = [];
+
+          let users = userData.map(user_o =>
+            new UserData().setOrigin(user_o));
+          this.fields.set(field, users);
+        } else if (userData) {
+          this.fields.set(field, new UserData().setOrigin(userData));
+        }
       }
     }
   }
@@ -139,8 +153,10 @@ export class ContentItemData {
     this.origin.set("t__color",   this.color);
 
     for (let [field, value] of this.fields) {
-      const isRefList = field.type == FIELD_TYPE_REFERENCE ||
-          field.type == FIELD_TYPE_MEDIA && field.isList;
+      const isRefList =
+        field.type == FIELD_TYPE_REFERENCE ||
+        field.type == FIELD_TYPE_MEDIA && field.isList ||
+        field.type == FIELD_TYPE_USER && field.isList;
 
       if (isRefList && value) {
         let refOrigins = [];
@@ -149,7 +165,7 @@ export class ContentItemData {
             refOrigins.push(ref.origin);
         }
         this.origin.set(field.nameId, refOrigins);
-      } else if (field.type == FIELD_TYPE_MEDIA && value) {
+      } else if ((field.type == FIELD_TYPE_MEDIA || field.type == FIELD_TYPE_USER) && value) {
         this.origin.set(field.nameId, value.origin);
       } else if (value === undefined) {
         this.origin.unset(field.nameId);
@@ -180,6 +196,12 @@ export class ContentItemData {
           } else if (value.file) {
             value = value.file.url();
           }
+        } else if (field.type == FIELD_TYPE_USER) {
+          if (field.isList) {
+            value = value.map(user => user.origin?.id ? user.origin?.id : null);
+          } else if (value.origin) {
+            value = value.origin.id;
+          }
         }
         fields[id] = value;
       }
@@ -209,6 +231,8 @@ export class ContentItemData {
         return element.title ? element.title : element.origin.id;
       if (field.type == FIELD_TYPE_MEDIA)
         return element.name;
+      if (field.type == FIELD_TYPE_USER)
+        return element.email;
 
       return element.toString();
     };

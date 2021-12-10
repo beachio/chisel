@@ -288,6 +288,96 @@
       width: 18px
       height: 18px
 
+.user
+  position: relative
+  width: 100%
+
+  &-item
+    display: flex
+    flex-flow: row nowrap
+    align-items: center
+    position: relative
+
+    margin-bottom: 6px
+    padding: 8px 10px
+
+    border-radius: 20px
+    background: #FFFFFF
+    box-shadow: 0 1px 0 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.05)
+
+    &:hover
+      .hidden-controls
+        opacity: 0.999
+
+  &-avatar
+    height: 32px
+    width: 32px
+    border-radius: 100%
+    margin-right: 10px
+
+    position: relative
+    overflow: hidden
+
+  &-gravatar
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%,-50%)
+    height: 100%
+    width: 100%
+
+  &-type
+    flex: 1
+
+  &-name,
+  &-email
+    font-size: 13px
+    color: #666666
+    font-family: 'Inter-UI', sans-serif
+    font-weight: 500
+    letter-spacing: 0.5px
+    text-align: left
+
+  &-name
+    font-weight: 600
+
+  &-email
+    letter-spacing: 0.46px
+
+  &-type-one-str
+    flex: 1
+
+    .user-email
+      font-size: 13px
+      color: #666666
+      letter-spacing: 0.5px
+      text-align: left
+
+  .user-remove
+    display: flex
+    flex-flow: row nowrap
+    align-items: center
+
+    margin-left: 25px
+    height: 24px
+    width: 24px
+    cursor: pointer
+
+  .user-cross
+    height: 24px
+    width: 24px
+    opacity: .6
+
+    &:hover
+      opacity: 1
+
+.user-input-wrapper
+  margin-top: 10px
+  display: flex
+
+  *:not(:last-child)
+    margin-right: 20px
+
 
 .data-time-wrapper
   display: flex

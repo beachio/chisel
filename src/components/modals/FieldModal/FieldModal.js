@@ -365,6 +365,10 @@ export default class FieldModal extends Component {
 
         error = error1 || error2;
         break;
+
+      case ftps.FIELD_TYPE_USER:
+        break;
+
     }
 
     return error;
@@ -650,6 +654,9 @@ export default class FieldModal extends Component {
           case ftps.FIELD_TYPE_MEDIA:
             validationsComponent = <ValidationMedia validations={this.state.validations}
                                                     update={this.onUpdateValidations} />;
+            break;
+
+          case ftps.FIELD_TYPE_USER:
             break;
         }
 

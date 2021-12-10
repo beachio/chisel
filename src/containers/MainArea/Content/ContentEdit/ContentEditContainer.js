@@ -70,7 +70,7 @@ export class ContentEditContainer extends Component {
   }
 
   render() {
-    const {models, content} = this.props;
+    const {models, content, nav} = this.props;
     const {addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem, pushToItemsHistory, popFromItemsHistory} = this.props.contentActions;
     const {showModal, showAlert, showNotification, closeNotification} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
@@ -125,6 +125,7 @@ export class ContentEditContainer extends Component {
                    showAlert={showAlert}
                    showModal={showModal}
                    showNotification={showNotification}
+                   alertShowing={nav.alertShowing}
                    closeNotification={closeNotification}
                    isEditable={models.role != ROLE_DEVELOPER} />
     </>;
@@ -134,7 +135,8 @@ export class ContentEditContainer extends Component {
 function mapStateToProps(state) {
   return {
     models:   state.models,
-    content:  state.content
+    content:  state.content,
+    nav:      state.nav
   };
 }
 

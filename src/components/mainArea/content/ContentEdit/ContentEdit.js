@@ -14,6 +14,7 @@ import ContentNumber from './elements/ContentNumber';
 import ContentBoolean from './elements/ContentBoolean';
 import ContentDate from './elements/ContentDate';
 import ContentReference from './elements/ContentReference';
+import ContentUser from './elements/ContentUser';
 import ContentMedia from './elements/ContentMedia';
 
 import styles from './ContentEdit.sss';
@@ -390,6 +391,18 @@ export default class ContentEdit extends Component {
                                  showModal={this.props.showModal}
                                  addItem={this.addItem}
                                  onReferenceClick={this.onReferenceClick} />;
+
+      case ftps.FIELD_TYPE_USER:
+        return <ContentUser ref={ref}
+                            field={field}
+                            item={this.item}
+                            key={field.nameId}
+                            value={value}
+                            isEditable={isEditable}
+                            setFieldValue={this.setFieldValue}
+                            showAlert={this.props.showAlert}
+                            alertShowing={this.props.alertShowing}
+                            addItem={this.addItem} />;
 
     }
   }
