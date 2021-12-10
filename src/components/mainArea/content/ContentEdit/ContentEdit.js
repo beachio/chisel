@@ -450,7 +450,7 @@ export default class ContentEdit extends Component {
                                onClick={this.onArchive}/>
               </div>
             }
-            <div styleName="button-publish button-last">
+            <div styleName="button-publish">
               <ButtonControl color="purple"
                              value="Publish"
                              disabled={this.item.status == STATUS_PUBLISHED || this.item.status == STATUS_ARCHIVED || (this.state.errors && !this.state.dirty)}
