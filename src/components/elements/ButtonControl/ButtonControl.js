@@ -5,9 +5,12 @@ import LoaderComponent from "components/elements/LoaderComponent/LoaderComponent
 import styles from './ButtonControl.sss';
 
 
-export default ({value, color, onClick, type, disabled, DOMRef, showLoader}) => {
+export default ({value, color, onClick, type, disabled, DOMRef, showLoader, minWidth}) => {
   if (!type)
     type = 'button';
+
+  if (!minWidth)
+    minWidth = 150;
 
   let buttonControlClasses = styles.ButtonControl;
   if (disabled) {
@@ -23,6 +26,7 @@ export default ({value, color, onClick, type, disabled, DOMRef, showLoader}) => 
 
   return (
     <button className={buttonControlClasses}
+            style={{minWidth}}
             onClick={onClick}
             type={type}
             ref={ref}>
