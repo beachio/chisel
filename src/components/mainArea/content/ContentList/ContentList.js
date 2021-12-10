@@ -289,9 +289,11 @@ export default class ContentList extends Component {
                 }
                 {visibleItems
                   .map((item, key) => {
-                    const title = item.draft ? item.draft.title : item.title;
+                    const draft = item.draft ? item.draft : item;
 
-                    let updatedDate = item.draft ? item.draft.origin.updatedAt : item.origin.updatedAt;
+                    const title = draft.title;
+
+                    let updatedDate = draft.origin.updatedAt;
                     if (!updatedDate)
                       updatedDate = new Date();
                     const updatedStr = getRelativeTime(updatedDate);
@@ -315,7 +317,7 @@ export default class ContentList extends Component {
                         }
                         {Array.from(visibleFields)
                           .map(field => {
-                            const value = item.getStringValue(field);
+                            const value = draft.getStringValue(field);
                             if (value === undefined)
                               return <div styleName="name undef" key={field.origin.id}>undefined</div>;
                             else
