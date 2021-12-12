@@ -1,5 +1,3 @@
-import {browserHistory} from "react-router";
-
 import {FIELD_DELETE, MODEL_ADD, MODEL_DELETE, SITE_ADD, SITE_DELETE} from "ducks/models";
 import {subscribeToContentItem, loadNewSiteContentItems} from "ducks/content";
 import {LOAD_NEW_SITE_ITEMS as LOAD_NEW_SITE_ITEMS_media, loadNewSiteMediaItems} from "ducks/media";
@@ -56,7 +54,7 @@ const controlRemoving = store => next => action => {
       type: ALERT_TYPE_ALERT,
       description: "Someone just deleted the current model. Press OK to return to models' list.",
       callback: () => {
-        browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${action.model.site.nameId}`);
+        //browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${action.model.site.nameId}`);
       }
     }));
   }

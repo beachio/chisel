@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
-import {browserHistory} from "react-router";
 
 import {MODAL_TYPE_SITE, URL_USERSPACE, URL_PAY_PLANS} from "ducks/nav";
+import {withRouter} from 'utils/routing';
 import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from "components/modals/AlertModal/AlertModal";
 
 import styles from './Sites.sss';
@@ -13,9 +13,8 @@ import ImageIconLink from 'assets/images/icons/link.svg';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export default class Sites extends Component {
+class Sites extends Component {
   state = {sitesLimit: 0};
-
 
   static getDerivedStateFromProps(props, state) {
     return {sitesLimit: (props.payPlan ? props.payPlan.limitSites : 0)};
@@ -26,7 +25,7 @@ export default class Sites extends Component {
   };
 
   onClickAdd = () => {
-    const {sites, showPayUpgrade} = this.props;
+    const {sites, showPayUpgrade, history} = this.props;
     const {sitesLimit} = this.state;
 
     if (sitesLimit && sites.length >= sitesLimit) {
@@ -39,7 +38,7 @@ export default class Sites extends Component {
         options.type = ALERT_TYPE_CONFIRM;
         options.confirmLabel = `Upgrade my account`;
         options.cancelLabel = `Close`;
-        options.onConfirm = () => browserHistory.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
+        options.onConfirm = () => history.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
       }
       this.props.showAlert(options);
     } else {
@@ -104,3 +103,5 @@ export default class Sites extends Component {
     );
   }
 }
+
+export default withRouter(Sites);

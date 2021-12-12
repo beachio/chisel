@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
 import {Helmet} from "react-helmet-async";
 
-import Model from 'components/mainArea/models/Model/Model';
 import {setCurrentModel, updateModel, updateField, deleteField} from 'ducks/models';
 import {showAlert, showModal, URL_USERSPACE, URL_SITE, URL_MODELS, URL_MODEL} from 'ducks/nav';
+import {withRouter, setSiteFromNameId} from 'utils/routing';
 import {getModelByNameId} from 'utils/data';
 import {ROLE_ADMIN, ROLE_OWNER} from 'models/UserData';
+
+import Model from 'components/mainArea/models/Model/Model';
 import NoRights from "components/mainArea/common/NoRights";
 
 
@@ -20,17 +21,15 @@ export class ModelContainer extends Component  {
   constructor(props) {
     super(props);
 
-    let modelId = props.params.model;
-    if (modelId.indexOf(URL_MODEL) != 0)
-      return;
-
-    modelId = modelId.slice(URL_MODEL.length);
+    const modelId = props.match.params.model;
 
     const {setCurrentModel} = props.modelsActions;
     const {models} = props;
     this.model = models.currentModel;
 
     const model = getModelByNameId(modelId);
+    console.log('!!! Model Container');
+    console.log(model);
     if (model && model != this.model) {
       this.model = model;
       setCurrentModel(model);
@@ -38,7 +37,7 @@ export class ModelContainer extends Component  {
   }
 
   render() {
-    const {models, nav} = this.props;
+    const {models, nav, history} = this.props;
     const {updateModel, updateField, deleteField} = this.props.modelsActions;
     const {showAlert, showModal} = this.props.navActions;
 
@@ -51,7 +50,7 @@ export class ModelContainer extends Component  {
     if (site && model && (models.role == ROLE_ADMIN || models.role == ROLE_OWNER)) {
       title = `Model: ${model.name} - Site: ${site.name} - Chisel`;
 
-      const gotoList = () => browserHistory.push(
+      const gotoList = () => history.push(
         `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}`);
 
       content = (
@@ -91,4 +90,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModelContainer);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ModelContainer));

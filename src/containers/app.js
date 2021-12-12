@@ -1,9 +1,22 @@
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {hot} from 'react-hot-loader/root';
+import {Navigate, Route, Routes} from "react-router-dom";
 import CSSModules from 'react-css-modules';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
+import {
+  closeAlert, closeModal, MODAL_TYPE_SITE, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG,
+  MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN, MODAL_TYPE_ROLE} from 'ducks/nav';
+import {addSite, addField, updateField} from 'ducks/models';
+import {withRouter} from 'utils/routing';
+
+import MainArea from 'containers/MainArea/MainArea';
+import Sign from 'containers/Sign/Sign';
+import EmailVerify from 'containers/LinksEmail/EmailVerify/EmailVerify';
+import PasswordSet from 'containers/LinksEmail/PasswordSet/PasswordSet';
+import InvalidLink from 'containers/LinksEmail/InvalidLink/InvalidLink';
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import SiteCreationModal from 'components/modals/SiteCreationModal/SiteCreationModal';
 import FieldModal from 'components/modals/FieldModal/FieldModal';
@@ -14,12 +27,9 @@ import ReferenceModal from 'components/modals/ReferenceModal/ReferenceModal';
 import ModelChooseModal from 'components/modals/ModelChooseModal/ModelChooseModal';
 import CollabRoleModal from 'components/modals/CollabRoleModal/CollabRoleModal';
 import AlertModal, {ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
-import {
-  closeAlert, closeModal, MODAL_TYPE_SITE, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG,
-  MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN, MODAL_TYPE_ROLE} from 'ducks/nav';
-import {addSite, addField, updateField} from 'ducks/models';
 
 import styles from './app.sss';
+
 
 
 
@@ -121,10 +131,17 @@ class App extends React.Component {
 
     let res = (
       <div styleName="wrapper">
-        {this.props.children}
+
+        <div>
+            <Routes>
+              <Route path="/userspace" element={<MainArea/>} />
+            </Routes>
+        </div>
+
         {showModalLoader &&
           <SiteLoader />
         }
+
         <CSSTransition in={!!modal}
                        timeout={300}
                        classNames={trans}
@@ -132,6 +149,7 @@ class App extends React.Component {
                        unmountOnExit={true}>
           {this.lastModal}
         </CSSTransition>
+
         {getAlarm()}
       </div>
     );
@@ -159,4 +177,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(hot(App)));
