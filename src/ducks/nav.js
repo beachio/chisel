@@ -225,6 +225,8 @@ export default function navReducer(state = initialState, action) {
       };
 
     case SHOW_ALERT:
+      if (JSON.stringify(action.params) == JSON.stringify(state.alertParams))
+        return state;
       return {
         ...state,
         alertShowing: true,
@@ -238,6 +240,9 @@ export default function navReducer(state = initialState, action) {
       };
 
     case SHOW_MODAL:
+      if (action.modalType == state.modalType &&
+          JSON.stringify(action.params) == JSON.stringify(state.modalParams))
+        return state;
       return {
         ...state,
         modalShowing: true,
@@ -249,20 +254,21 @@ export default function navReducer(state = initialState, action) {
       return {...state, modalShowing: false};
 
     case SHOW_NOTIFICATION:
+      if (JSON.stringify(action.notification) == JSON.stringify(state.notification))
+        return state;
       return {
         ...state,
         notification: action.notification
       };
 
     case CLOSE_NOTIFICATION:
-      if (action.notificationType && action.notificationType != state.notification?.type) {
-        return {...state};
-      } else {        return {
+      if (!state.notification ||
+          action.notificationType && action.notificationType != state.notification?.type)
+        return state;
+      return {
         ...state,
         notification: null
       };
-
-      }
 
     case LOCATION_CHANGE:
       return {
