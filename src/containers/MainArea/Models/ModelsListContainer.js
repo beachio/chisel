@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 import {Helmet} from "react-helmet-async";
-
-import {setSiteFromNameId, withRouter} from "utils/routing";
 
 import ModelsList from 'components/mainArea/models/ModelsList/ModelsList';
 import {addModel, deleteModel} from 'ducks/models';
@@ -13,15 +12,8 @@ import NoRights from "components/mainArea/common/NoRights";
 
 
 export class ModelsListContainer extends Component {
-  constructor(props) {
-    super(props);
-
-    if (props.match.params.site)
-      setSiteFromNameId(props.match.params.site);
-  }
-
   render() {
-    const {models, nav, history} = this.props;
+    const {models, nav} = this.props;
     const {addModel, deleteModel} = this.props.modelsActions;
     const {showAlert} = this.props.navActions;
     
@@ -31,7 +23,7 @@ export class ModelsListContainer extends Component {
     const site = models.currentSite;
     if (site && (models.role == ROLE_ADMIN || models.role == ROLE_OWNER)) {
       title = `Models - Site: ${site.name} - Chisel`;
-      const gotoModel = model => history.push(
+      const gotoModel = model => browserHistory.push(
         `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}/${URL_MODEL}${model.nameId}`);
       content = (
         <ModelsList site={site}
@@ -67,4 +59,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ModelsListContainer));
+export default connect(mapStateToProps, mapDispatchToProps)(ModelsListContainer);

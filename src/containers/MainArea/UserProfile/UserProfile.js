@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Helmet} from "react-helmet-async";
+import {browserHistory} from "react-router";
 import CSSModules from 'react-css-modules';
 
 import InputControl from 'components/elements/InputControl/InputControl';
@@ -12,7 +13,6 @@ import {URL_PAY_PLANS, URL_USERSPACE, URL_PAYMENT_METHODS} from "ducks/nav";
 import {config, changeServerURL} from 'utils/initialize';
 import {checkURL, checkEmail, getTextDate} from 'utils/strings';
 import {checkPassword} from 'utils/data';
-import {withRouter} from 'utils/routing';
 
 import styles from './UserProfile.sss';
 
@@ -233,11 +233,11 @@ export class UserProfile extends Component  {
   };
 
   onChangePayPlan = () => {
-    this.props.history.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
+    browserHistory.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
   };
 
   onChangePayMethods = () => {
-    this.props.history.push(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`);
+    browserHistory.push(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`);
   };
 
   render() {
@@ -464,4 +464,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserProfile));
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);

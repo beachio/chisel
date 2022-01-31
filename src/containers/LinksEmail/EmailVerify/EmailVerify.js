@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 import {Helmet} from "react-helmet-async";
+import {browserHistory} from 'react-router';
 
-import {URL_USERSPACE, URL_SIGN} from 'ducks/nav';
-import {withRouter} from 'utils/routing';
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
+import {URL_USERSPACE, URL_SIGN} from 'ducks/nav';
 
 import styles from './EmailVerify.sss';
 
@@ -15,13 +15,12 @@ import ImageChiselLogo from 'assets/images/chisel-logo.png';
 @CSSModules(styles, {allowMultiple: true})
 export class EmailVerify extends Component  {
   onLogin = event => {
-    const {authorized, history} = this.props;
     event.preventDefault();
     
-    if (authorized)
-      history.replace(`/${URL_USERSPACE}`);
+    if (this.props.authorized)
+      browserHistory.replace(`/${URL_USERSPACE}`);
     else
-      history.replace(`/${URL_SIGN}`);
+      browserHistory.replace(`/${URL_SIGN}`);
     
     return false;
   };
@@ -54,4 +53,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default withRouter(connect(mapStateToProps)(EmailVerify));
+export default connect(mapStateToProps)(EmailVerify);

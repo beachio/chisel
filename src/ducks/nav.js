@@ -1,4 +1,5 @@
-//import {LOCATION_CHANGE} from 'react-router-redux';
+import {browserHistory} from "react-router";
+import {LOCATION_CHANGE} from 'react-router-redux';
 
 
 import {LOGOUT} from 'ducks/user';
@@ -118,7 +119,7 @@ export function closeNotification(notificationType) {
 }
 
 export function returnHome() {
-  //browserHistory.push(`/${URL_USERSPACE}`);
+  browserHistory.push(`/${URL_USERSPACE}`);
 
   return {
     type: RETURN_HOME
@@ -187,7 +188,7 @@ export default function navReducer(state = initialState, action) {
           description: `We can't withdraw money for next payment period. Please, update your payment methods.`,
           confirmLabel: 'Open payment methods',
           cancelLabel: 'Close',
-          //onConfirm: () => browserHistory.push(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`)
+          onConfirm: () => browserHistory.push(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`)
         };
       }
 
@@ -269,7 +270,6 @@ export default function navReducer(state = initialState, action) {
         notification: null
       };
 
-/*
     case LOCATION_CHANGE:
       return {
         ...state,
@@ -277,7 +277,6 @@ export default function navReducer(state = initialState, action) {
         modalShowing: false,
         notification: null
       };
-*/
 
 
     case SET_SERVER_PROBLEM_A:

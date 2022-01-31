@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 import {Helmet} from "react-helmet-async";
 import InlineSVG from 'svg-inline-react';
 
@@ -14,7 +15,7 @@ import ImageHammer from 'assets/images/hammer.svg';
 
 export class ContentListContainer extends Component {
   render() {
-    const {models, content, nav, history} = this.props;
+    const {models, content, nav} = this.props;
     const {addItem, deleteItem, filterModel, filterStatus, setVisibleField} = this.props.contentActions;
     const {showAlert} = this.props.navActions;
     
@@ -50,7 +51,7 @@ export class ContentListContainer extends Component {
         let gotoItem = item => {
           let modelId = item.model.nameId;
           let itemId = item.origin.id;
-          history.push(
+          browserHistory.push(
             `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_CONTENT}/${URL_ITEM}${modelId}~${itemId}`);
         };
 

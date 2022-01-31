@@ -7,7 +7,7 @@ import {LOGOUT} from './user';
 import {getRandomColor} from 'utils/common';
 import {getModelFromAnySite} from 'utils/data';
 import {send, getAllObjects} from 'utils/server';
-//import {LOCATION_CHANGE} from "react-router-redux";
+import {LOCATION_CHANGE} from "react-router-redux";
 import {URL_ITEM} from "./nav";
 
 
@@ -541,7 +541,7 @@ export default function contentReducer(state = initialState, action) {
         itemsHistory
       };
 
-/*    case LOCATION_CHANGE:
+    case LOCATION_CHANGE:
       itemsHistory = state.itemsHistory;
       const {pathname, action: historyAction} = action.payload;
       if (historyAction == 'POP')
@@ -552,7 +552,7 @@ export default function contentReducer(state = initialState, action) {
       return {
         ...state,
         itemsHistory
-      };*/
+      };
 
     case LOGOUT:
       return {

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 import {Helmet} from "react-helmet-async";
 
 import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
@@ -29,7 +30,6 @@ import {
   URL_SITE
 } from 'ducks/nav';
 import {getContentByModelAndId} from 'utils/data';
-import {withRouter} from 'utils/routing';
 
 
 export class ContentEditContainer extends Component {
@@ -70,7 +70,7 @@ export class ContentEditContainer extends Component {
   }
 
   render() {
-    const {models, content, nav, history} = this.props;
+    const {models, content, nav} = this.props;
     const {addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem, pushToItemsHistory, popFromItemsHistory} = this.props.contentActions;
     const {showModal, showAlert, showNotification, closeNotification} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
@@ -82,7 +82,7 @@ export class ContentEditContainer extends Component {
 
     const basePath = `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_CONTENT}`;
 
-    const closeItem = () => history.push(basePath);
+    const closeItem = () => browserHistory.push(basePath);
 
     const gotoItem = (item, prevItem) => {
       if (prevItem)
@@ -91,11 +91,11 @@ export class ContentEditContainer extends Component {
         popFromItemsHistory(item);
       let modelId = item.model.nameId;
       let itemId = item.origin.id;
-      history.push(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
+      browserHistory.push(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
     };
 
     const gotoList = () =>
-      history.push(basePath);
+      browserHistory.push(basePath);
 
     const lastItem = content.items[content.items.length - 1];
 
@@ -149,4 +149,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ContentEditContainer));
+export default connect(mapStateToProps, mapDispatchToProps)(ContentEditContainer);

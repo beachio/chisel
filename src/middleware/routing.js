@@ -1,3 +1,4 @@
+import {browserHistory} from 'react-router';
 import {LOCATION_CHANGE} from 'react-router-redux';
 
 import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';

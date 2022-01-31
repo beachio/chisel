@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import Gravatar from 'react-gravatar';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 
 import {URL_USERSPACE, URL_PROFILE} from 'ducks/nav';
 

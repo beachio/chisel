@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import {connect} from 'react-redux';
 import {Helmet} from "react-helmet-async";
+import {browserHistory} from 'react-router';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {URL_USERSPACE, URL_SIGN} from 'ducks/nav';
-import {withRouter} from 'utils/routing';
 
 import styles from './InvalidLink.sss';
 
@@ -16,13 +16,11 @@ import ImageChiselLogo from 'assets/images/chisel-logo.png';
 export class InvalidLink extends Component  {
   onLogin = event => {
     event.preventDefault();
-
-    const {authorized, history} = this.props;
     
-    if (authorized)
-      history.replace(`/${URL_USERSPACE}`);
+    if (this.props.authorized)
+      browserHistory.replace(`/${URL_USERSPACE}`);
     else
-      history.replace(`/${URL_SIGN}`);
+      browserHistory.replace(`/${URL_SIGN}`);
     
     return false;
   };
@@ -55,4 +53,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default withRouter(connect(mapStateToProps)(InvalidLink));
+export default connect(mapStateToProps)(InvalidLink);

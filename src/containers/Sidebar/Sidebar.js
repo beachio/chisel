@@ -2,12 +2,11 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
-import {Link} from 'react-router-dom';
+import {browserHistory, Link} from 'react-router';
 
 import Sites from 'components/sidebar/Sites/Sites';
 import {showModal, showAlert, URL_USERSPACE, URL_SITE, URL_PAY_PLANS} from 'ducks/nav';
 import {isPayPlanTop} from 'utils/data';
-import {withRouter} from 'utils/routing';
 
 import styles from './Sidebar.sss';
 
@@ -16,17 +15,14 @@ import styles from './Sidebar.sss';
 @CSSModules(styles, {allowMultiple: true})
 export class Sidebar extends Component {
   render() {
-    const {models, isSidebarVisible, history} = this.props;
+    const {models, isSidebarVisible} = this.props;
     const {userData} = this.props.user;
     const {stripeInitError} = this.props.pay;
     const {showModal, showAlert} = this.props.navActions;
-
-    console.log('!!! Sidebar !!!');
-    console.log(this.props.history);
-
+  
     const gotoSite = site => {
       const nameId = site.nameId;
-      history.push(`/${URL_USERSPACE}/${URL_SITE}${nameId}`);
+      browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${nameId}`);
     };
 
     const showPay = !!userData.payPlan;
@@ -80,4 +76,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Sidebar));
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
