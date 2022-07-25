@@ -1,9 +1,16 @@
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {Route, Switch, Redirect, withRouter} from "react-router-dom";
+import {Helmet} from "react-helmet-async";
 import CSSModules from 'react-css-modules';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
+import Sign from 'containers/Sign/Sign';
+import EmailVerify from 'containers/LinksEmail/EmailVerify/EmailVerify';
+import PasswordSet from 'containers/LinksEmail/PasswordSet/PasswordSet';
+import InvalidLink from 'containers/LinksEmail/InvalidLink/InvalidLink';
+import MainArea from 'containers/MainArea/MainArea';
 import SiteLoader from 'components/modals/SiteLoader/SiteLoader';
 import SiteCreationModal from 'components/modals/SiteCreationModal/SiteCreationModal';
 import FieldModal from 'components/modals/FieldModal/FieldModal';
@@ -15,8 +22,8 @@ import ModelChooseModal from 'components/modals/ModelChooseModal/ModelChooseModa
 import CollabRoleModal from 'components/modals/CollabRoleModal/CollabRoleModal';
 import AlertModal, {ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
 import {
-  closeAlert, closeModal, MODAL_TYPE_SITE, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE, MODAL_TYPE_WYSIWYG,
-  MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN, MODAL_TYPE_ROLE} from 'ducks/nav';
+  changeLocation, closeAlert, closeModal, MODAL_TYPE_SITE, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE,
+  MODAL_TYPE_WYSIWYG, MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN, MODAL_TYPE_ROLE} from 'ducks/nav';
 import {addSite, addField, updateField} from 'ducks/models';
 
 import styles from './app.sss';
@@ -26,6 +33,14 @@ import styles from './app.sss';
 @CSSModules(styles, {allowMultiple: true})
 class App extends React.Component {
   lastModal = <span></span>;
+
+  constructor(props) {
+    super(props);
+    props.history.listen((location, action) => {
+      props.navActions.changeLocation(props.history, location, action);
+    });
+    props.navActions.changeLocation(props.history, this.props.location);
+  }
 
   render() {
     const {nav, user, content, models} = this.props;
@@ -121,10 +136,32 @@ class App extends React.Component {
 
     let res = (
       <div styleName="wrapper">
-        {this.props.children}
+        <Helmet>
+          <title>Chisel</title>
+        </Helmet>
+
+        <div>
+          {user.authorized ?
+            <Switch>
+              <Route path="/userspace" component={MainArea} />
+              <Redirect to="/userspace" />
+            </Switch>
+            :
+            <Switch>
+              <Route path="/sign" exact component={Sign} />
+              <Route path="/email-verify" component={EmailVerify} />
+              <Route path="/password-set-success" component={PasswordSet} />
+              <Route path="/password-set" component={PasswordSet} />
+              <Route path="/invalid-link" component={InvalidLink} />
+              <Redirect to="/sign" />
+            </Switch>
+          }
+        </div>
+
         {showModalLoader &&
           <SiteLoader />
         }
+
         <CSSTransition in={!!modal}
                        timeout={300}
                        classNames={trans}
@@ -155,8 +192,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     modelActions: bindActionCreators({addSite, addField, updateField}, dispatch),
-    navActions: bindActionCreators({closeAlert, closeModal}, dispatch)
+    navActions: bindActionCreators({changeLocation, closeAlert, closeModal}, dispatch)
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

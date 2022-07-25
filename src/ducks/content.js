@@ -7,8 +7,7 @@ import {LOGOUT} from './user';
 import {getRandomColor} from 'utils/common';
 import {getModelFromAnySite} from 'utils/data';
 import {send, getAllObjects} from 'utils/server';
-import {LOCATION_CHANGE} from "react-router-redux";
-import {URL_ITEM} from "./nav";
+import {LOCATION_CHANGE, URL_ITEM} from "ducks/nav";
 
 
 export const INIT_END               = 'app/content/INIT_END';
@@ -543,7 +542,8 @@ export default function contentReducer(state = initialState, action) {
 
     case LOCATION_CHANGE:
       itemsHistory = state.itemsHistory;
-      const {pathname, action: historyAction} = action.payload;
+      const {location, action: historyAction} = action;
+      const {pathname} = location;
       if (historyAction == 'POP')
         itemsHistory = itemsHistory.slice(0, itemsHistory.length - 1);
       if (pathname.indexOf(URL_ITEM) == -1)

@@ -30,8 +30,7 @@ export class Header extends Component  {
           <InlineSVG src={ImageIconSidebar} />
         </div>
         <Menu siteNameId={nameId}
-              isSidebarOpened={nav.isSidebarVisible}
-              openedPage={nav.openedPage} />
+              isSidebarOpened={nav.isSidebarVisible} />
         <User userData={userData} logoutHandler={logout} />
       </div>
     );

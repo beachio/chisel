@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import Gravatar from 'react-gravatar';
-import {Link} from 'react-router';
+import {NavLink} from 'react-router-dom';
 
 import {URL_USERSPACE, URL_PROFILE} from 'ducks/nav';
 
@@ -53,7 +53,7 @@ export default class User extends Component {
         
         {this.state.isAccountOpened &&
           <div styleName="submenu">
-            <Link
+            <NavLink
                 activeClassName={styles.userActive}
                 to={`/${URL_USERSPACE}/${URL_PROFILE}/`}
               >
@@ -61,7 +61,7 @@ export default class User extends Component {
                 <InlineSVG styleName="logout-icon" src={ImageAvatar} />
                 Profile
               </div>
-            </Link>
+            </NavLink>
             <div styleName="logout" onClick={logoutHandler}>
               <InlineSVG styleName="logout-icon" src={ImageLogout} />
               Log out

@@ -1,6 +1,3 @@
-import {browserHistory} from "react-router";
-import {LOCATION_CHANGE} from 'react-router-redux';
-
 
 import {LOGOUT} from 'ducks/user';
 import {SITE_ADDING_PROBLEM as SITE_ADDING_PROBLEM_models} from "ducks/models";
@@ -8,6 +5,7 @@ import {INIT_END as INIT_END_pay} from "ducks/pay";
 import {ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 
 
+export const LOCATION_CHANGE      = 'app/nav/LOCATION_CHANGE';
 export const INIT_END             = 'app/nav/INIT_END';
 export const SHOW_ALERT           = 'app/nav/SHOW_ALERT';
 export const CLOSE_ALERT          = 'app/nav/CLOSE_ALERT';
@@ -16,23 +14,9 @@ export const CLOSE_MODAL          = 'app/nav/CLOSE_MODAL';
 export const SHOW_NOTIFICATION    = 'app/nav/SHOW_NOTIFICATION';
 export const CLOSE_NOTIFICATION   = 'app/nav/CLOSE_NOTIFICATION';
 export const RETURN_HOME          = 'app/nav/RETURN_HOME';
-export const SET_CURRENT_PAGE     = 'app/nav/SET_CURRENT_PAGE';
 export const TOGGLE_SIDEBAR       = 'app/nav/TOGGLE_SIDEBAR';
 export const SET_SERVER_PROBLEM_A = 'app/nav/SET_SERVER_PROBLEM_A';
 export const SET_SERVER_PROBLEM_B = 'app/nav/SET_SERVER_PROBLEM_B';
-
-
-export const PAGE_NO_SITES        = 'app/nav/pages/PAGE_NO_SITES';
-export const PAGE_MODELS          = 'app/nav/pages/PAGE_MODELS';
-export const PAGE_MODELS_ITEM     = 'app/nav/pages/PAGE_MODELS_ITEM';
-export const PAGE_CONTENT         = 'app/nav/pages/PAGE_CONTENT';
-export const PAGE_CONTENT_ITEM    = 'app/nav/pages/PAGE_CONTENT_ITEM';
-export const PAGE_API             = 'app/nav/pages/PAGE_API';
-export const PAGE_SETTINGS        = 'app/nav/pages/PAGE_SETTINGS';
-export const PAGE_SHARING         = 'app/nav/pages/PAGE_SHARING';
-export const PAGE_PROFILE         = 'app/nav/pages/PAGE_PROFILE';
-export const PAGE_PAY_PLANS       = 'app/nav/pages/PAGE_PAY_PLANS';
-export const PAGE_PAYMENT_METHODS = 'app/nav/pages/PAGE_PAYMENT_METHODS';
 
 export const MODAL_TYPE_SITE            = 'app/nav/modals/MODAL_TYPE_SITE';
 export const MODAL_TYPE_FIELD           = 'app/nav/modals/MODAL_TYPE_FIELD';
@@ -66,6 +50,15 @@ export const URL_PAYMENT_METHODS  = 'payment-methods';
 
 
 export const URLS_EMAIL = [URL_EMAIL_VERIFY, URL_PASSWORD_SET, URL_PASSWORD_SUCCESS, URL_INVALID_LINK];
+
+export function changeLocation(history, location, action) {
+  return {
+    type: LOCATION_CHANGE,
+    history,
+    location,
+    action
+  };
+}
 
 export function toggleSidebar() {
   return {
@@ -119,17 +112,8 @@ export function closeNotification(notificationType) {
 }
 
 export function returnHome() {
-  browserHistory.push(`/${URL_USERSPACE}`);
-
   return {
     type: RETURN_HOME
-  };
-}
-
-export function setCurrentPage(openedPage) {
-  return {
-    type: SET_CURRENT_PAGE,
-    openedPage
   };
 }
 
@@ -150,9 +134,10 @@ export function setServerProblemB (value = true) {
 const initialState = {
   initEnded: false,
 
-  isSidebarVisible: true,
+  history: null,
+  pathname: null,
 
-  openedPage: PAGE_MODELS,
+  isSidebarVisible: true,
 
   alertShowing: false,
   alertParams: null,
@@ -178,25 +163,11 @@ export default function navReducer(state = initialState, action) {
       };
 
     case INIT_END:
-      let alertShowing = false;
-      let alertParams = null;
-      if (state.showUnpaidSub) {
-        alertShowing = true;
-        alertParams = {
-          type: ALERT_TYPE_CONFIRM,
-          title: `Failed payment`,
-          description: `We can't withdraw money for next payment period. Please, update your payment methods.`,
-          confirmLabel: 'Open payment methods',
-          cancelLabel: 'Close',
-          onConfirm: () => browserHistory.push(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`)
-        };
-      }
-
       return {
         ...state,
         initEnded: true,
-        alertShowing,
-        alertParams
+        alertShowing: false,
+        alertParams: null
       };
 
     case TOGGLE_SIDEBAR:
@@ -208,24 +179,17 @@ export default function navReducer(state = initialState, action) {
     case LOGOUT:
       return {
         ...state,
-        openedPage: PAGE_MODELS,
         initEnded: false
       };
 
     case RETURN_HOME:
       return {
         ...state,
-        openedPage: PAGE_MODELS
-      };
-
-    case SET_CURRENT_PAGE:
-      return {
-        ...state,
-        openedPage: action.openedPage
       };
 
     case SHOW_ALERT:
-      if (JSON.stringify(action.params) == JSON.stringify(state.alertParams))
+      if (state.alertShowing &&
+          JSON.stringify(action.params) == JSON.stringify(state.alertParams))
         return state;
       return {
         ...state,
@@ -240,7 +204,8 @@ export default function navReducer(state = initialState, action) {
       };
 
     case SHOW_MODAL:
-      if (action.modalType == state.modalType &&
+      if (state.modalShowing &&
+          action.modalType == state.modalType &&
           JSON.stringify(action.params) == JSON.stringify(state.modalParams))
         return state;
       return {
@@ -251,7 +216,10 @@ export default function navReducer(state = initialState, action) {
       };
 
     case CLOSE_MODAL:
-      return {...state, modalShowing: false};
+      return {
+        ...state,
+        modalShowing: false
+      };
 
     case SHOW_NOTIFICATION:
       if (JSON.stringify(action.notification) == JSON.stringify(state.notification))
@@ -273,6 +241,8 @@ export default function navReducer(state = initialState, action) {
     case LOCATION_CHANGE:
       return {
         ...state,
+        history: action.history,
+        pathname: action.location.pathname,
         alertShowing: false,
         modalShowing: false,
         notification: null

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
 import {Helmet} from "react-helmet-async";
 
 import ContentEdit from 'components/mainArea/content/ContentEdit/ContentEdit';
@@ -38,21 +37,17 @@ export class ContentEditContainer extends Component {
 
   constructor(props) {
     super(props);
-    this.setItem(props.params.item);
+    this.setItem(props.match.params.item);
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.params.item != this.props.params.item)
-      this.setItem(this.props.params.item);
+    if (prevProps.match.params.item != this.props.match.params.item)
+      this.setItem(this.props.match.params.item);
   }
 
   // on mount / change item:
   // get item ID from URL, then send action "setCurrentItem"
   setItem(nameId) {
-    if (nameId.indexOf(URL_ITEM) != 0)
-      return;
-
-    nameId = nameId.slice(URL_ITEM.length);
     const modelNameId = nameId.slice(0, nameId.indexOf('~'));
     const itemId = nameId.slice(nameId.indexOf('~') + 1);
     if (!modelNameId || !itemId)
@@ -82,7 +77,7 @@ export class ContentEditContainer extends Component {
 
     const basePath = `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_CONTENT}`;
 
-    const closeItem = () => browserHistory.push(basePath);
+    const closeItem = () => this.props.history.push(basePath);
 
     const gotoItem = (item, prevItem) => {
       if (prevItem)
@@ -91,11 +86,11 @@ export class ContentEditContainer extends Component {
         popFromItemsHistory(item);
       let modelId = item.model.nameId;
       let itemId = item.origin.id;
-      browserHistory.push(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
+      this.props.history.push(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
     };
 
     const gotoList = () =>
-      browserHistory.push(basePath);
+      this.props.history.push(basePath);
 
     const lastItem = content.items[content.items.length - 1];
 

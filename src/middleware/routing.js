@@ -1,6 +1,4 @@
-import {browserHistory} from 'react-router';
-import {LOCATION_CHANGE} from 'react-router-redux';
-
+import {LOCATION_CHANGE, RETURN_HOME} from 'ducks/nav';
 import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';
 import {setCurrentSite, SITE_ADD, SITE_DELETE} from 'ducks/models';
 import {getSiteByNameId} from 'utils/data';
@@ -43,13 +41,16 @@ let isEmailURL = URL => {
 };
 
 export const routing = store => next => action => {
+  //TODO: костыль!
+  const {history} = store.getState().nav;
+
   if ((action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) &&
       !action.authorized && !isEmailURL(URL) && URL.indexOf(URL_SIGN) == -1)
-    browserHistory.push(`/${URL_SIGN}`);
+    history.push(`/${URL_SIGN}`);
 
   next(action);
 
-  const setFromURL = () => {
+  const setFromURL = () => setTimeout(() => {
     let path = URL;
     URL = '/';
 
@@ -59,13 +60,13 @@ export const routing = store => next => action => {
     let cSite = store.getState().models.currentSite;
     let setDefaultSite = () => {
       if (cSite) {
-        browserHistory.replace(`/${URL_USERSPACE}/${URL_SITE}${cSite.nameId}`);
+        history.replace(`/${URL_USERSPACE}/${URL_SITE}${cSite.nameId}`);
       } else {
         let sites = store.getState().models.sites;
         if (sites.length)
-          browserHistory.replace(`/${URL_USERSPACE}/${URL_SITE}${sites[0].nameId}`);
+          history.replace(`/${URL_USERSPACE}/${URL_SITE}${sites[0].nameId}`);
         else if (path != `/${URL_USERSPACE}`)
-          browserHistory.replace(`/${URL_USERSPACE}`);
+          history.replace(`/${URL_USERSPACE}`);
       }
     };
 
@@ -85,12 +86,13 @@ export const routing = store => next => action => {
                path.indexOf(URL_PAYMENT_METHODS) == -1) {
       setDefaultSite();
     }
-  };
+
+  }, 1);
 
 
   switch (action.type) {
     case LOCATION_CHANGE:
-      URL = action.payload.pathname;
+      URL = action.location.pathname;
 
       if (URL.indexOf(URL_USERSPACE) != -1 && !returnURL)
         returnURL = URL;
@@ -104,13 +106,13 @@ export const routing = store => next => action => {
       if (returnURL) {
         URL = returnURL;
         returnURL = null;
-        browserHistory.replace(URL);
+        history.replace(URL);
 
       } else if (
           URL.indexOf(URL_USERSPACE) == -1 &&
           URL.indexOf(URL_EMAIL_VERIFY) == -1 &&
           URL.indexOf(URL_INVALID_LINK) == -1) {
-        browserHistory.replace(`/${URL_USERSPACE}`);
+        history.replace(`/${URL_USERSPACE}`);
       }
 
       setFromURL();
@@ -119,15 +121,16 @@ export const routing = store => next => action => {
 
     case SITE_ADD:
       if (!action.fromServer)
-        browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${action.site.nameId}`);
+        history.push(`/${URL_USERSPACE}/${URL_SITE}${action.site.nameId}`);
       break;
 
     case SITE_DELETE:
-      browserHistory.push(`/${URL_USERSPACE}`);
+    case RETURN_HOME:
+      history.push(`/${URL_USERSPACE}`);
       break;
 
     case LOGOUT:
-      browserHistory.push(`/${URL_SIGN}`);
+      history.push(`/${URL_SIGN}`);
       break;
   }
 };

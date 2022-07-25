@@ -1,5 +1,4 @@
 import {combineReducers} from 'redux';
-import {routerReducer} from 'react-router-redux';
 
 import models from './models';
 import content from './content';
@@ -15,6 +14,5 @@ export default combineReducers({
   nav,
   user,
   media,
-  pay,
-  routing: routerReducer
+  pay
 });

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
 import {Helmet} from "react-helmet-async";
 
 import ModelsList from 'components/mainArea/models/ModelsList/ModelsList';
@@ -23,7 +22,7 @@ export class ModelsListContainer extends Component {
     const site = models.currentSite;
     if (site && (models.role == ROLE_ADMIN || models.role == ROLE_OWNER)) {
       title = `Models - Site: ${site.name} - Chisel`;
-      const gotoModel = model => browserHistory.push(
+      const gotoModel = model => this.props.history.push(
         `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}/${URL_MODEL}${model.nameId}`);
       content = (
         <ModelsList site={site}

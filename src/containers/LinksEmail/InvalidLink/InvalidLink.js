@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import {connect} from 'react-redux';
 import {Helmet} from "react-helmet-async";
-import {browserHistory} from 'react-router';
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {URL_USERSPACE, URL_SIGN} from 'ducks/nav';
@@ -18,9 +17,9 @@ export class InvalidLink extends Component  {
     event.preventDefault();
     
     if (this.props.authorized)
-      browserHistory.replace(`/${URL_USERSPACE}`);
+      this.props.history.replace(`/${URL_USERSPACE}`);
     else
-      browserHistory.replace(`/${URL_SIGN}`);
+      this.props.history.replace(`/${URL_SIGN}`);
     
     return false;
   };

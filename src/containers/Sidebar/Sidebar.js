@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
-import {browserHistory, Link} from 'react-router';
+import {NavLink, withRouter} from 'react-router-dom';
 
 import Sites from 'components/sidebar/Sites/Sites';
 import {showModal, showAlert, URL_USERSPACE, URL_SITE, URL_PAY_PLANS} from 'ducks/nav';
@@ -22,7 +22,7 @@ export class Sidebar extends Component {
   
     const gotoSite = site => {
       const nameId = site.nameId;
-      browserHistory.push(`/${URL_USERSPACE}/${URL_SITE}${nameId}`);
+      this.props.history.push(`/${URL_USERSPACE}/${URL_SITE}${nameId}`);
     };
 
     const showPay = !!userData.payPlan;
@@ -31,9 +31,9 @@ export class Sidebar extends Component {
     return (
       <div styleName="sidebar"
            className={isSidebarVisible ? `sidebar-visible` : styles.sidebarHidden}>
-        <Link styleName="header" to="/">
+        <NavLink styleName="header" to="/">
           Chisel
-        </Link>
+        </NavLink>
         <div styleName="sites-wrapper">
           <Sites sites={models.sites}
                  currentSite={models.currentSite}
@@ -46,10 +46,10 @@ export class Sidebar extends Component {
   
         <div styleName="bottom-panel">
           {showPayUpgrade &&
-            <Link styleName="bottom-link"
-                  to={`/${URL_USERSPACE}/${URL_PAY_PLANS}/`}>
+            <NavLink styleName="bottom-link"
+                     to={`/${URL_USERSPACE}/${URL_PAY_PLANS}/`}>
               Upgrade your account
-            </Link>
+            </NavLink>
           }
           <a styleName="bottom-link"
              href="http://guild.beach.io"
@@ -76,4 +76,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Sidebar));

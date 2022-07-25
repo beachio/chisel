@@ -3,7 +3,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Helmet} from "react-helmet-async";
 import CSSModules from 'react-css-modules';
-import {browserHistory} from "react-router";
 import {Parse} from "parse";
 
 import {send} from "utils/server";
@@ -78,7 +77,7 @@ export class PayPlans extends Component {
       let URL = `/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`;
       if (payPlan)
         URL += `?plan=${payPlan.origin.id}&yearly=${this.state.isYearly}`;
-      browserHistory.push(URL);
+      this.props.history.push(URL);
     
     } else {
       const {showAlert, returnHome} = this.props.navActions;
@@ -134,6 +133,8 @@ export class PayPlans extends Component {
   render() {
     const {payPlans, stripeData} = this.props.pay;
     const payPlanUser = this.props.user.userData.payPlan;
+    if (!payPlanUser)
+      return null;
 
     const cancelSub = stripeData.subscription ? stripeData.subscription.cancel_at_period_end : false;
     

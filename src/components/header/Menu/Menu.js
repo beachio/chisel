@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
-import {Link} from 'react-router';
+import {NavLink} from "react-router-dom";
 
-import {PAGE_MODELS, PAGE_MODELS_ITEM, PAGE_CONTENT, PAGE_CONTENT_ITEM, PAGE_API, PAGE_SETTINGS, PAGE_SHARING,
-  URL_USERSPACE, URL_SITE, URL_MODELS, URL_CONTENT, URL_API, URL_SETTINGS, URL_SHARING} from 'ducks/nav';
+import {URL_USERSPACE, URL_SITE, URL_MODELS, URL_CONTENT, URL_API, URL_SETTINGS, URL_SHARING} from 'ducks/nav';
 import {throttle} from 'utils/common';
 
 import styles from './Menu.sss';
@@ -25,10 +24,13 @@ export default class Menu extends Component  {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.isSidebarOpened !== this.props.isSidebarOpened)
+    if (prevProps.isSidebarOpened !== this.props.isSidebarOpened) {
+      this.caretRef.style = `opacity: 0;`;
       setTimeout(this.calcCaretPos, 200);
-    else
-      this.calcCaretPos();
+    } else {
+      //TODO: костыль
+      setTimeout(this.calcCaretPos, 1);
+    }
   }
 
   componentWillUnmount() {
@@ -61,7 +63,7 @@ export default class Menu extends Component  {
   };
 
   render() {
-    const {siteNameId, openedPage} = this.props;
+    const {siteNameId} = this.props;
     
     const prefix = `/${URL_USERSPACE}/${URL_SITE}${siteNameId}/`;
 
@@ -72,36 +74,31 @@ export default class Menu extends Component  {
     return (
       <div styleName="menu"
            ref={el => this.menuRef = el}>
-        <Link to={prefix + URL_MODELS}>
-          <div styleName={buttonStyle}
-               className={openedPage == PAGE_MODELS || openedPage == PAGE_MODELS_ITEM ? styles.activeItem : ''}>
-            Models
-          </div>
-        </Link>
-        <Link to={prefix + URL_CONTENT}>
-          <div styleName={buttonStyle}
-               className={openedPage == PAGE_CONTENT || openedPage == PAGE_CONTENT_ITEM ? styles.activeItem : ''}>
-            Content
-          </div>
-        </Link>
-        <Link to={prefix + URL_API}>
-          <div styleName={buttonStyle}
-               className={openedPage == PAGE_API ? styles.activeItem : ''}>
-            API
-          </div>
-        </Link>
-        <Link to={prefix + URL_SHARING}>
-          <div styleName={buttonStyle}
-               className={openedPage == PAGE_SHARING ? styles.activeItem : ''}>
-            Sharing
-          </div>
-        </Link>
-        <Link to={prefix + URL_SETTINGS}>
-          <div styleName={buttonStyle}
-               className={openedPage == PAGE_SETTINGS ? styles.activeItem : ''}>
-            Settings
-          </div>
-        </Link>
+        <NavLink to={prefix + URL_MODELS}
+                 styleName={buttonStyle}
+                 activeClassName={styles.activeItem}>
+          Models
+        </NavLink>
+        <NavLink to={prefix + URL_CONTENT}
+                 styleName={buttonStyle}
+                 activeClassName={styles.activeItem}>
+          Content
+        </NavLink>
+        <NavLink to={prefix + URL_API}
+                 styleName={buttonStyle}
+                 activeClassName={styles.activeItem}>
+          API
+        </NavLink>
+        <NavLink to={prefix + URL_SHARING}
+                 styleName={buttonStyle}
+                 activeClassName={styles.activeItem}>
+          Sharing
+        </NavLink>
+        <NavLink to={prefix + URL_SETTINGS}
+                 styleName={buttonStyle}
+                 activeClassName={styles.activeItem}>
+          Settings
+        </NavLink>
 
         <div styleName="caret" ref={el => this.caretRef = el} />
       </div>

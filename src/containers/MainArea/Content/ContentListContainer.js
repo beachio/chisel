@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
 import {Helmet} from "react-helmet-async";
 import InlineSVG from 'svg-inline-react';
 
@@ -51,7 +50,7 @@ export class ContentListContainer extends Component {
         let gotoItem = item => {
           let modelId = item.model.nameId;
           let itemId = item.origin.id;
-          browserHistory.push(
+          this.props.history.push(
             `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_CONTENT}/${URL_ITEM}${modelId}~${itemId}`);
         };
 

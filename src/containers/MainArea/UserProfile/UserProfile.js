@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Helmet} from "react-helmet-async";
-import {browserHistory} from "react-router";
 import CSSModules from 'react-css-modules';
 
 import InputControl from 'components/elements/InputControl/InputControl';
@@ -233,11 +232,11 @@ export class UserProfile extends Component  {
   };
 
   onChangePayPlan = () => {
-    browserHistory.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
+    this.props.history.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
   };
 
   onChangePayMethods = () => {
-    browserHistory.push(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`);
+    this.props.history.push(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`);
   };
 
   render() {
