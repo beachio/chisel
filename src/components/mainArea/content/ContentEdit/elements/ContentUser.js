@@ -72,6 +72,8 @@ export default class ContentUser extends ContentBase {
   };
 
   onKeyDown = event => {
+    event.stopPropagation();
+
     if (this.props.alertShowing)
       return;
 

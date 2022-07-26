@@ -104,20 +104,22 @@ export default class Model extends Component {
     this.setState({fieldName: name});
   };
 
-  onAddKeyDown = event => {
+  onAddFieldKeyDown = event => {
+    event.stopPropagation();
+
     if (this.props.modalShowing || this.props.alertShowing)
       return;
 
     //Enter pressed
     if (event.keyCode == 13) {
-      this.onAddField();
+      this.addField();
     //Esc pressed
     } else if (event.keyCode == 27) {
       this.setState({fieldName: ""});
     }
   };
 
-  onAddField = event => {
+  addField = event => {
     if (event)
       event.preventDefault();
 
@@ -275,12 +277,12 @@ export default class Model extends Component {
               <InputControl placeholder=""
                             label="Add a Field"
                             value={this.state.fieldName}
-                            onKeyDown={this.onAddKeyDown}
+                            onKeyDown={this.onAddFieldKeyDown}
                             onChange={this.onFieldNameChange}
                             DOMRef={c => this.activeInput = c}
                             icon="plus"
                             autoFocus
-                            onIconClick={this.onAddField} />
+                            onIconClick={this.addField} />
             </div>
           }
         </div>

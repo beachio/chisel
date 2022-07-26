@@ -53,6 +53,8 @@ export default class ModelsList extends Component {
   };
 
   onKeyDown = event => {
+    event.stopPropagation();
+
     if (this.props.alertShowing)
       return;
     //Enter pressed

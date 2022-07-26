@@ -54,6 +54,8 @@ export default class ContentList extends Component {
   };
 
   onNewKeyDown = event => {
+    event.stopPropagation();
+
     if (this.props.alertShowing)
       return;
 
@@ -76,6 +78,8 @@ export default class ContentList extends Component {
   };
 
   onSearchKeyDown = event => {
+    event.stopPropagation();
+
     if (this.props.alertShowing)
       return;
 

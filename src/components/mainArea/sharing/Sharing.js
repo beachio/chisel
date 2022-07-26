@@ -42,6 +42,8 @@ export default class Sharing extends Component {
   };
 
   onKeyDown = event => {
+    event.stopPropagation();
+
     if (this.props.alertShowing)
       return;
 

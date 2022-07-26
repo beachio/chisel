@@ -112,12 +112,12 @@ export default class FieldModal extends Component {
   };
 
   onKeyDown = event => {
-    if (this.validValuesList && this.validValuesList.isFocused())
-      return;
-
     if (!event)
       event = window.event;
     event.stopPropagation();
+
+    if (this.validValuesList && this.validValuesList.isFocused())
+      return;
 
     //Enter pressed
     if (event.keyCode == 13)
