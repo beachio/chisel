@@ -16,7 +16,6 @@ module.exports = ({file, options, env}) => {
   }
 
   res.plugins.push(
-    require('postcss-flexibility'),
     require('postcss-flexbugs-fixes'),
     require('autoprefixer')
   );
