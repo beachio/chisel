@@ -38,6 +38,7 @@ export default class ContentEdit extends Component {
     newData: false,
     oldItemData: null,
     oldItemId: null,
+    comparedItemData: null,
     deleted: false
   };
 
@@ -75,8 +76,13 @@ export default class ContentEdit extends Component {
     if (item.deleted)
       return {deleted: true};
     const draftData = draft.toJSON(true);
-    if (JSON.stringify(draftData) != JSON.stringify(oldItemData))
-      return {newData: true};
+    if (JSON.stringify(draftData) != JSON.stringify(oldItemData) &&
+        JSON.stringify(draftData) != JSON.stringify(state.comparedItemData)) {
+      return {
+        comparedItemData: draftData,
+        newData: true
+      };
+    }
     return null;
   }
 
@@ -141,7 +147,8 @@ export default class ContentEdit extends Component {
         text: 'There are some changes. What do you want to do?',
         confirmLabel: 'Load new data',
         cancelLabel: 'Keep my data',
-        onConfirm: () => this.updateItem(item)
+        onConfirm: () => this.updateItem(item),
+        onCancel: () => this.setState({newData: false})
       });
     } else {
       closeNotification(NOTIFICATION_TYPE_NEW_DATA);

@@ -10,10 +10,13 @@ export default class Notification extends Component {
     const {onConfirm} = this.props.notification;
     if (onConfirm)
       onConfirm();
-    this.onCancel();
+    this.props.closeNotification();
   };
 
   onCancel = () => {
+    const {onCancel} = this.props.notification;
+    if (onCancel)
+      onCancel();
     this.props.closeNotification();
   };
 
