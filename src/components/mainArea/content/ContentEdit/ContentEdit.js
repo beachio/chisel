@@ -110,14 +110,18 @@ export default class ContentEdit extends Component {
     const {item, lastItem, showNotification, closeNotification, showAlert} = this.props;
 
     if (this.addingItem && lastItem.origin.id == this.addingItem.origin.id) {
-      let refers = this.state.fields.get(this.addingField);
-      if (!refers)
-        refers = [];
+      if (this.addingField) {
+        let refers = this.state.fields.get(this.addingField);
+        if (!refers)
+          refers = [];
 
-      this.setFieldValue(this.addingField, refers.concat(lastItem), true);
+        this.setFieldValue(this.addingField, refers.concat(lastItem), true);
 
+        setTimeout(() => this.gotoItem(lastItem), 1);
+      } else {
+        setTimeout(() => this.gotoItem(lastItem, true), 1);
+      }
       this.addingItem = null;
-      setTimeout(() => this.gotoItem(lastItem), 1);
     }
 
     if (item.origin.id != this.item.origin.id)
@@ -144,8 +148,8 @@ export default class ContentEdit extends Component {
     }
   }
 
-  gotoItem(item) {
-    this.props.gotoItem(item, this.item);
+  gotoItem(item, replace) {
+    this.props.gotoItem(item, this.item, replace);
   }
 
   gotoItemInHistory(item) {
@@ -184,7 +188,6 @@ export default class ContentEdit extends Component {
 
     const item = new ContentItemData(this.item.model);
     item.fields = new Map(draft.fields);
-    item.title = this.state.title;
 
     this.addItem(item);
   };

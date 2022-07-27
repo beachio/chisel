@@ -79,14 +79,19 @@ export class ContentEditContainer extends Component {
 
     const closeItem = () => this.props.history.push(basePath);
 
-    const gotoItem = (item, prevItem) => {
-      if (prevItem)
-        pushToItemsHistory(prevItem);
-      else
-        popFromItemsHistory(item);
+    const gotoItem = (item, prevItem, replace) => {
+      if (!replace) {
+        if (prevItem)
+          pushToItemsHistory(prevItem);
+        else
+          popFromItemsHistory(item);
+      }
       let modelId = item.model.nameId;
       let itemId = item.origin.id;
-      this.props.history.push(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
+      if (replace)
+        this.props.history.replace(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
+      else
+        this.props.history.push(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
     };
 
     const gotoList = () =>
