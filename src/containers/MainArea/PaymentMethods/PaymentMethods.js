@@ -247,11 +247,13 @@ class PaymentMethods extends Component {
   
   constructor(props) {
     super(props);
-    
-    if (props.location && props.location.query) {
-      if (props.location.query.plan)
-        this.payPlan = getPayPlan(props.location.query.plan);
-      this.isYearly = props.location.query.yearly == 'true';
+
+    if (props.location) {
+      const searchParams = new URLSearchParams(props.location.search);
+      const plan = searchParams.get("plan");
+      if (plan)
+        this.payPlan = getPayPlan(plan);
+      this.isYearly = searchParams.get("yearly") == 'true';
     }
   
     const {stripeData} = props.pay;
