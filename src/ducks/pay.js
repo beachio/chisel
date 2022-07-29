@@ -111,6 +111,7 @@ export default function payReducer(state = initialState, action) {
   
     case ADD_SOURCE:
       sources.push(action.source);
+      stripeData.sources = sources;
       if (action.isDefault)
         stripeData.defaultSource = action.source.id;
       return {
