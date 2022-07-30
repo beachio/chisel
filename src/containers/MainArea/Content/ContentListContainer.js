@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Helmet} from "react-helmet-async";
 import InlineSVG from 'svg-inline-react';
+import {useHistory} from 'react-router';
 
 import ContentList from 'components/mainArea/content/ContentList/ContentList';
 import {ROLE_OWNER, ROLE_ADMIN, ROLE_DEVELOPER} from 'models/UserData';
@@ -12,80 +13,79 @@ import {showAlert, URL_CONTENT, URL_ITEM, URL_USERSPACE, URL_SITE} from 'ducks/n
 import ImageHammer from 'assets/images/hammer.svg';
 
 
-export class ContentListContainer extends Component {
-  render() {
-    const {models, content, nav} = this.props;
-    const {addItem, deleteItem, filterModel, filterStatus, setVisibleField} = this.props.contentActions;
-    const {showAlert} = this.props.navActions;
-    
-    let cmpContent = (
-      <div className="start-working">
-        <InlineSVG className="hammer" src={ImageHammer}/>
-        There are no models.
-      </div>
-    );
-  
-    let site = models.currentSite;
-    if (!site)
-      return null;
-    
-    let title = `Content - Site: ${site.name} - Chisel`;
-    
-    if (site.models.length) {
-      let items = [];
-      for (let item of content.items) {
-        if (item.model.site == site)
-          items.push(item);
-      }
+function ContentListContainer(props) {
+  const {models, content, nav} = props;
+  const {addItem, deleteItem, filterModel, filterStatus, setVisibleField} = props.contentActions;
+  const {showAlert} = props.navActions;
+  const history = useHistory();
 
-      if (!items.length && models.role == ROLE_DEVELOPER) {
-        cmpContent = (
-          <div className="start-working">
-            <InlineSVG className="hammer" src={ImageHammer}/>
-            There are no items.
-          </div>
-        );
+  let cmpContent = (
+    <div className="start-working">
+      <InlineSVG className="hammer" src={ImageHammer}/>
+      There are no models.
+    </div>
+  );
 
-      } else {
-        let gotoItem = item => {
-          let modelId = item.model.nameId;
-          let itemId = item.origin.id;
-          this.props.history.push(
-            `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_CONTENT}/${URL_ITEM}${modelId}~${itemId}`);
-        };
+  let site = models.currentSite;
+  if (!site)
+    return null;
 
-        cmpContent = <ContentList items={items}
-                                  models={site.models}
-                                  gotoItem={gotoItem}
-                                  addItem={addItem}
-                                  deleteItem={deleteItem}
-                                  showAlert={showAlert}
-                                  alertShowing={nav.alertShowing}
-                                  isEditable={models.role != ROLE_DEVELOPER}
-                                  filteredModels={content.filteredModels}
-                                  filteredStatuses={content.filteredStatuses}
-                                  visibleFields={content.visibleFields}
-                                  filterModel={filterModel}
-                                  filterStatus={filterStatus}
-                                  setVisibleField={setVisibleField} />;
-      }
+  let title = `Content - Site: ${site.name} - Chisel`;
 
-    } else if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN) {
+  if (site.models.length) {
+    let items = [];
+    for (let item of content.items) {
+      if (item.model.site == site)
+        items.push(item);
+    }
+
+    if (!items.length && models.role == ROLE_DEVELOPER) {
       cmpContent = (
         <div className="start-working">
           <InlineSVG className="hammer" src={ImageHammer}/>
-          There are no models. Add any model to start creating content.
+          There are no items.
         </div>
       );
+
+    } else {
+      let gotoItem = item => {
+        let modelId = item.model.nameId;
+        let itemId = item.origin.id;
+        history.push(
+          `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_CONTENT}/${URL_ITEM}${modelId}~${itemId}`);
+      };
+
+      cmpContent = <ContentList items={items}
+                                models={site.models}
+                                gotoItem={gotoItem}
+                                addItem={addItem}
+                                deleteItem={deleteItem}
+                                showAlert={showAlert}
+                                alertShowing={nav.alertShowing}
+                                isEditable={models.role != ROLE_DEVELOPER}
+                                filteredModels={content.filteredModels}
+                                filteredStatuses={content.filteredStatuses}
+                                visibleFields={content.visibleFields}
+                                filterModel={filterModel}
+                                filterStatus={filterStatus}
+                                setVisibleField={setVisibleField} />;
     }
-    
-    return <>
-      <Helmet>
-        <title>{title}</title>
-      </Helmet>
-      {cmpContent}
-    </>;
+
+  } else if (models.role == ROLE_OWNER || models.role == ROLE_ADMIN) {
+    cmpContent = (
+      <div className="start-working">
+        <InlineSVG className="hammer" src={ImageHammer}/>
+        There are no models. Add any model to start creating content.
+      </div>
+    );
   }
+
+  return <>
+    <Helmet>
+      <title>{title}</title>
+    </Helmet>
+    {cmpContent}
+  </>;
 }
 
 function mapStateToProps(state) {

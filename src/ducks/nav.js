@@ -2,7 +2,6 @@
 import {LOGOUT} from 'ducks/user';
 import {SITE_ADDING_PROBLEM as SITE_ADDING_PROBLEM_models} from "ducks/models";
 import {INIT_END as INIT_END_pay} from "ducks/pay";
-import {ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 
 
 export const LOCATION_CHANGE      = 'app/nav/LOCATION_CHANGE';

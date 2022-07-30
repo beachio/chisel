@@ -12,6 +12,7 @@ import {URL_PAY_PLANS, URL_USERSPACE, URL_PAYMENT_METHODS} from "ducks/nav";
 import {config, changeServerURL} from 'utils/initialize';
 import {checkURL, checkEmail, getTextDate} from 'utils/strings';
 import {checkPassword} from 'utils/data';
+import {withRouter} from 'utils/routing';
 
 import styles from './UserProfile.sss';
 
@@ -232,11 +233,11 @@ export class UserProfile extends Component  {
   };
 
   onChangePayPlan = () => {
-    this.props.history.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
+    this.props.router.history.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
   };
 
   onChangePayMethods = () => {
-    this.props.history.push(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`);
+    this.props.router.history.push(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`);
   };
 
   render() {
@@ -463,4 +464,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserProfile));

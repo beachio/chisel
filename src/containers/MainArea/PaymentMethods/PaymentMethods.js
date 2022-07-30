@@ -14,9 +14,10 @@ import InputControl from "components/elements/InputControl/InputControl";
 import DropdownControl from "components/elements/DropdownControl/DropdownControl";
 import {ALERT_TYPE_ALERT, ALERT_TYPE_CONFIRM} from "components/modals/AlertModal/AlertModal";
 import {send} from 'utils/server';
-import {showAlert, returnHome, URL_USERSPACE} from "ducks/nav";
+import {showAlert, returnHome} from "ducks/nav";
 import {addSource, removeSource, updateSubscription, updateDefaultSource} from 'ducks/pay';
 import {getPayPlan, getPayMethod} from "utils/data";
+import {withRouter} from 'utils/routing';
 
 
 import styles from './PaymentMethods.sss';
@@ -248,8 +249,9 @@ class PaymentMethods extends Component {
   constructor(props) {
     super(props);
 
-    if (props.location) {
-      const searchParams = new URLSearchParams(props.location.search);
+    const {location} = props.router;
+    if (location) {
+      const searchParams = new URLSearchParams(location.search);
       const plan = searchParams.get("plan");
       if (plan)
         this.payPlan = getPayPlan(plan);
@@ -575,4 +577,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PaymentMethods);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PaymentMethods));

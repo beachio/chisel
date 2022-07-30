@@ -29,6 +29,7 @@ import {
   URL_SITE
 } from 'ducks/nav';
 import {getContentByModelAndId} from 'utils/data';
+import {withRouter} from 'utils/routing';
 
 
 export class ContentEditContainer extends Component {
@@ -37,12 +38,12 @@ export class ContentEditContainer extends Component {
 
   constructor(props) {
     super(props);
-    this.setItem(props.match.params.item);
+    this.setItem(props.router.params.item);
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.match.params.item != this.props.match.params.item)
-      this.setItem(this.props.match.params.item);
+    if (prevProps.router.params.item != this.props.router.params.item)
+      this.setItem(this.props.router.params.item);
   }
 
   // on mount / change item:
@@ -69,6 +70,7 @@ export class ContentEditContainer extends Component {
     const {addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem, pushToItemsHistory, popFromItemsHistory} = this.props.contentActions;
     const {showModal, showAlert, showNotification, closeNotification} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
+    const {history} = this.props.router;
 
     const site = models.currentSite;
     const item = this.item;
@@ -77,7 +79,7 @@ export class ContentEditContainer extends Component {
 
     const basePath = `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_CONTENT}`;
 
-    const closeItem = () => this.props.history.push(basePath);
+    const closeItem = () => history.push(basePath);
 
     const gotoItem = (item, prevItem, replace) => {
       if (!replace) {
@@ -89,13 +91,13 @@ export class ContentEditContainer extends Component {
       let modelId = item.model.nameId;
       let itemId = item.origin.id;
       if (replace)
-        this.props.history.replace(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
+        history.replace(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
       else
-        this.props.history.push(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
+        history.push(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
     };
 
     const gotoList = () =>
-      this.props.history.push(basePath);
+      history.push(basePath);
 
     const lastItem = content.items[content.items.length - 1];
 
@@ -149,4 +151,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContentEditContainer);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ContentEditContainer));

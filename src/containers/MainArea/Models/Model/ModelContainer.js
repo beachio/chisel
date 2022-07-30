@@ -7,6 +7,7 @@ import Model from 'components/mainArea/models/Model/Model';
 import {setCurrentModel, updateModel, updateField, deleteField} from 'ducks/models';
 import {showAlert, showModal, URL_USERSPACE, URL_SITE, URL_MODELS, URL_MODEL} from 'ducks/nav';
 import {getModelByNameId} from 'utils/data';
+import {withRouter} from 'utils/routing';
 import {ROLE_ADMIN, ROLE_OWNER} from 'models/UserData';
 import NoRights from "components/mainArea/common/NoRights";
 
@@ -19,7 +20,7 @@ export class ModelContainer extends Component  {
   constructor(props) {
     super(props);
 
-    const modelId = props.match.params.model;
+    const modelId = props.router.params.model;
 
     const {setCurrentModel} = props.modelsActions;
     const {models} = props;
@@ -33,7 +34,7 @@ export class ModelContainer extends Component  {
   }
 
   render() {
-    const {models, nav, history} = this.props;
+    const {models, nav} = this.props;
     const {updateModel, updateField, deleteField} = this.props.modelsActions;
     const {showAlert, showModal} = this.props.navActions;
 
@@ -46,7 +47,7 @@ export class ModelContainer extends Component  {
     if (site && model && (models.role == ROLE_ADMIN || models.role == ROLE_OWNER)) {
       title = `Model: ${model.name} - Site: ${site.name} - Chisel`;
 
-      const gotoList = () => history.push(
+      const gotoList = () => this.props.router.history.push(
         `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}`);
 
       content = (
@@ -86,4 +87,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModelContainer);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ModelContainer));

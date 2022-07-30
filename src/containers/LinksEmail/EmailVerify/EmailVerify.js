@@ -5,6 +5,7 @@ import {Helmet} from "react-helmet-async";
 
 import ButtonControl from 'components/elements/ButtonControl/ButtonControl';
 import {URL_USERSPACE, URL_SIGN} from 'ducks/nav';
+import {withRouter} from 'utils/routing';
 
 import styles from './EmailVerify.sss';
 
@@ -16,10 +17,11 @@ export class EmailVerify extends Component  {
   onLogin = event => {
     event.preventDefault();
     
+    const {history} = this.props.router;
     if (this.props.authorized)
-      this.props.history.replace(`/${URL_USERSPACE}`);
+      history.replace(`/${URL_USERSPACE}`);
     else
-      this.props.history.replace(`/${URL_SIGN}`);
+      history.replace(`/${URL_SIGN}`);
     
     return false;
   };
@@ -52,4 +54,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(EmailVerify);
+export default withRouter(connect(mapStateToProps)(EmailVerify));

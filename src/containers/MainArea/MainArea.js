@@ -27,14 +27,6 @@ import ImageHammer from 'assets/images/hammer.svg';
 
 @CSSModules(styles, {allowMultiple: true})
 export class MainArea extends Component {
-  cmpNoSites = () =>
-    <div className="start-working">
-      <InlineSVG className="hammer" src={ImageHammer}/>
-      Add new site to start working
-      <div className="hint">Find "Create new site" button in the sidebar</div>
-    </div>
-  ;
-
   render() {
     const {models, nav} = this.props;
     const {closeNotification} = this.props.navActions;
@@ -49,23 +41,29 @@ export class MainArea extends Component {
           <div styleName="mainArea">
             {noSites ?
               <Switch>
-                <Route path="/userspace/profile"                          component={UserProfile}           />
-                <Route path="/userspace/pay-plans"                        component={PayPlans}              />
-                <Route path="/userspace/payment-methods"                  component={PaymentMethods}        />
-                <Route render={this.cmpNoSites} />
+                <Route path="/userspace/profile"                        children={<UserProfile />}           />
+                <Route path="/userspace/pay-plans"                      children={<PayPlans />}              />
+                <Route path="/userspace/payment-methods"                children={<PaymentMethods />}        />
+                <Route>
+                  <div className="start-working">
+                    <InlineSVG className="hammer" src={ImageHammer}/>
+                    Add new site to start working
+                    <div className="hint">Find "Create new site" button in the sidebar</div>
+                  </div>
+                </Route>
               </Switch>
             :
               <Switch>
-                <Route path="/userspace/profile"                          component={UserProfile}           />
-                <Route path="/userspace/pay-plans"                        component={PayPlans}              />
-                <Route path="/userspace/payment-methods"                  component={PaymentMethods}        />
-                <Route path="/userspace/site~:site/models/model~:model"   component={ModelContainer}        />
-                <Route path="/userspace/site~:site/models"                component={ModelsListContainer}   />
-                <Route path="/userspace/site~:site/content/item~:item"    component={ContentEditContainer}  />
-                <Route path="/userspace/site~:site/content"               component={ContentListContainer}  />
-                <Route path="/userspace/site~:site/api"                   component={APIPage}               />
-                <Route path="/userspace/site~:site/settings"              component={SettingsContainer}     />
-                <Route path="/userspace/site~:site/sharing"               component={SharingContainer}      />
+                <Route path="/userspace/profile"                        children={<UserProfile />}           />
+                <Route path="/userspace/pay-plans"                      children={<PayPlans />}              />
+                <Route path="/userspace/payment-methods"                children={<PaymentMethods />}        />
+                <Route path="/userspace/site~:site/models/model~:model" children={<ModelContainer />}        />
+                <Route path="/userspace/site~:site/models"              children={<ModelsListContainer />}   />
+                <Route path="/userspace/site~:site/content/item~:item"  children={<ContentEditContainer />}  />
+                <Route path="/userspace/site~:site/content"             children={<ContentListContainer />}  />
+                <Route path="/userspace/site~:site/api"                 children={<APIPage />}               />
+                <Route path="/userspace/site~:site/settings"            children={<SettingsContainer />}     />
+                <Route path="/userspace/site~:site/sharing"             children={<SharingContainer />}      />
 
                 <Redirect from='/userspace/site~:site' to='/userspace/site~:site/models' />
               </Switch>

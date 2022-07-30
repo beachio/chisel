@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
-import {NavLink, withRouter} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
 import Sites from 'components/sidebar/Sites/Sites';
 import {showModal, showAlert, URL_USERSPACE, URL_SITE, URL_PAY_PLANS} from 'ducks/nav';
 import {isPayPlanTop} from 'utils/data';
+import {withRouter} from 'utils/routing';
 
 import styles from './Sidebar.sss';
 
@@ -19,10 +20,11 @@ export class Sidebar extends Component {
     const {userData} = this.props.user;
     const {stripeInitError} = this.props.pay;
     const {showModal, showAlert} = this.props.navActions;
+    const {history} = this.props.router;
   
     const gotoSite = site => {
       const nameId = site.nameId;
-      this.props.history.push(`/${URL_USERSPACE}/${URL_SITE}${nameId}`);
+      history.push(`/${URL_USERSPACE}/${URL_SITE}${nameId}`);
     };
 
     const showPay = !!userData.payPlan;

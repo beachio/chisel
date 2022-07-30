@@ -1,7 +1,7 @@
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Route, Switch, Redirect, withRouter} from "react-router-dom";
+import {Route, Switch, Redirect} from "react-router-dom";
 import {Helmet} from "react-helmet-async";
 import CSSModules from 'react-css-modules';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -25,6 +25,7 @@ import {
   changeLocation, closeAlert, closeModal, MODAL_TYPE_SITE, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE,
   MODAL_TYPE_WYSIWYG, MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN, MODAL_TYPE_ROLE} from 'ducks/nav';
 import {addSite, addField, updateField} from 'ducks/models';
+import {withRouter} from 'utils/routing';
 
 import styles from './app.sss';
 
@@ -36,10 +37,12 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    props.history.listen((location, action) => {
-      props.navActions.changeLocation(props.history, location, action);
+    const {navActions, router} = props;
+    const {history, location} = router;
+    router.history.listen((location, action) => {
+      navActions.changeLocation(history, location, action);
     });
-    props.navActions.changeLocation(props.history, this.props.location);
+    navActions.changeLocation(history, location);
   }
 
   render() {
@@ -143,16 +146,16 @@ class App extends React.Component {
         <div>
           {user.authorized ?
             <Switch>
-              <Route path="/userspace" component={MainArea} />
+              <Route path="/userspace" children={<MainArea />} />
               <Redirect to="/userspace" />
             </Switch>
             :
             <Switch>
-              <Route path="/sign" exact component={Sign} />
-              <Route path="/email-verify" component={EmailVerify} />
-              <Route path="/password-set-success" component={PasswordSet} />
-              <Route path="/password-set" component={PasswordSet} />
-              <Route path="/invalid-link" component={InvalidLink} />
+              <Route path="/sign" exact children={<Sign />} />
+              <Route path="/email-verify" children={<EmailVerify />} />
+              <Route path="/password-set-success" children={<PasswordSet />} />
+              <Route path="/password-set" children={<PasswordSet />} />
+              <Route path="/invalid-link" children={<InvalidLink />} />
               <Redirect to="/sign" />
             </Switch>
           }

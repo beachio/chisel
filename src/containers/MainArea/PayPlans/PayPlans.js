@@ -6,6 +6,7 @@ import CSSModules from 'react-css-modules';
 import {Parse} from "parse";
 
 import {send} from "utils/server";
+import {withRouter} from 'utils/routing';
 import ContainerComponent from "components/elements/ContainerComponent/ContainerComponent";
 import {checkPayPlan} from "ducks/user";
 import {URL_PAYMENT_METHODS, URL_USERSPACE, showAlert, returnHome} from "ducks/nav";
@@ -77,7 +78,7 @@ export class PayPlans extends Component {
       let URL = `/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`;
       if (payPlan)
         URL += `?plan=${payPlan.origin.id}&yearly=${this.state.isYearly}`;
-      this.props.history.push(URL);
+      this.props.router.history.push(URL);
     
     } else {
       const {showAlert, returnHome} = this.props.navActions;
@@ -197,4 +198,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PayPlans);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PayPlans));

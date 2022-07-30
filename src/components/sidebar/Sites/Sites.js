@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
-import {withRouter} from "react-router-dom";
 
 import {MODAL_TYPE_SITE, URL_USERSPACE, URL_PAY_PLANS} from "ducks/nav";
+import {withRouter} from "utils/routing";
 import {ALERT_TYPE_CONFIRM, ALERT_TYPE_ALERT} from "components/modals/AlertModal/AlertModal";
 
 import styles from './Sites.sss';
@@ -27,6 +27,7 @@ export class Sites extends Component {
 
   onClickAdd = () => {
     const {sites, showPayUpgrade} = this.props;
+    const {history} = this.props.router;
     const {sitesLimit} = this.state;
 
     if (sitesLimit && sites.length >= sitesLimit) {
@@ -39,7 +40,7 @@ export class Sites extends Component {
         options.type = ALERT_TYPE_CONFIRM;
         options.confirmLabel = `Upgrade my account`;
         options.cancelLabel = `Close`;
-        options.onConfirm = () => this.props.history.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
+        options.onConfirm = () => history.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
       }
       this.props.showAlert(options);
     } else {
