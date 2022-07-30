@@ -16,48 +16,47 @@ import {ALERT_TYPE_ALERT, ALERT_TYPE_CONFIRM} from "components/modals/AlertModal
 import styles from './PayPlans.sss';
 
 
-@CSSModules(styles, {allowMultiple: true})
-export class PlanControl extends Component {
-  render() {
-    const {onClick, payPlan, payPlanUser, isYearly, cancelSub} = this.props;
-    
-    let btnStyle = '';
-    let btnText;
+function _PlanControl(props) {
+  const {onClick, payPlan, payPlanUser, isYearly, cancelSub} = props;
 
-    if (!cancelSub && payPlanUser == payPlan  ||  cancelSub && payPlan.isFree) {
-      btnText = "It's your current plan";
+  let btnStyle = '';
+  let btnText;
 
-    } else if (payPlan.greaterThan(payPlanUser)  ||  cancelSub) {
-      btnText = "Upgrade";
-      btnStyle = 'upgrade';
-      
-    } else {
-      btnText = "Downgrade";
-      btnStyle = 'downgrade';
-    }
-    
-    return (
-      <div styleName="PlanControl">
-        <div styleName="title">{payPlan.name}</div>
+  if (!cancelSub && payPlanUser == payPlan  ||  cancelSub && payPlan.isFree) {
+    btnText = "It's your current plan";
 
-        {payPlan.isFree ?
-          <div styleName="cost">Free</div>
-        :
-          <div styleName="cost">
-            ${isYearly ? payPlan.priceYearly : payPlan.priceMonthly}<span>{isYearly ? '/year' : '/month'}</span>
-          </div>
-        }
+  } else if (payPlan.greaterThan(payPlanUser)  ||  cancelSub) {
+    btnText = "Upgrade";
+    btnStyle = 'upgrade';
 
-        <div styleName="sites-title">Sites</div>
-        <div styleName="sites-number">{payPlan.limitSites ? payPlan.limitSites : 'unlimited'}</div>
-
-        <div styleName={`button ${btnStyle}`} onClick={onClick}>
-          {btnText}
-        </div>
-      </div>
-    );
+  } else {
+    btnText = "Downgrade";
+    btnStyle = 'downgrade';
   }
+
+  return (
+    <div styleName="PlanControl">
+      <div styleName="title">{payPlan.name}</div>
+
+      {payPlan.isFree ?
+        <div styleName="cost">Free</div>
+      :
+        <div styleName="cost">
+          ${isYearly ? payPlan.priceYearly : payPlan.priceMonthly}<span>{isYearly ? '/year' : '/month'}</span>
+        </div>
+      }
+
+      <div styleName="sites-title">Sites</div>
+      <div styleName="sites-number">{payPlan.limitSites ? payPlan.limitSites : 'unlimited'}</div>
+
+      <div styleName={`button ${btnStyle}`} onClick={onClick}>
+        {btnText}
+      </div>
+    </div>
+  );
 }
+
+const PlanControl = CSSModules(_PlanControl, styles, {allowMultiple: true});
 
 
 @CSSModules(styles, {allowMultiple: true})

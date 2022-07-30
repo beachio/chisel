@@ -37,6 +37,7 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
+
     const {navActions, router} = props;
     const {history, location} = router;
     router.history.listen((location, action) => {

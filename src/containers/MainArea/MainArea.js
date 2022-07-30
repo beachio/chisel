@@ -25,58 +25,55 @@ import styles from './MainArea.sss';
 import ImageHammer from 'assets/images/hammer.svg';
 
 
-@CSSModules(styles, {allowMultiple: true})
-export class MainArea extends Component {
-  render() {
-    const {models, nav} = this.props;
-    const {closeNotification} = this.props.navActions;
+function MainArea(props) {
+  const {models, nav} = props;
+  const {closeNotification} = props.navActions;
 
-    const noSites = !nav.initEnded || !models.currentSite;
+  const noSites = !nav.initEnded || !models.currentSite;
 
-    return (
-      <div styleName="wrapper">
-        <Sidebar isSidebarVisible={nav.isSidebarVisible}/>
-        <div styleName="inner">
-          <Header />
-          <div styleName="mainArea">
-            {noSites ?
-              <Switch>
-                <Route path="/userspace/profile"                        children={<UserProfile />}           />
-                <Route path="/userspace/pay-plans"                      children={<PayPlans />}              />
-                <Route path="/userspace/payment-methods"                children={<PaymentMethods />}        />
-                <Route>
-                  <div className="start-working">
-                    <InlineSVG className="hammer" src={ImageHammer}/>
-                    Add new site to start working
-                    <div className="hint">Find "Create new site" button in the sidebar</div>
-                  </div>
-                </Route>
-              </Switch>
-            :
-              <Switch>
-                <Route path="/userspace/profile"                        children={<UserProfile />}           />
-                <Route path="/userspace/pay-plans"                      children={<PayPlans />}              />
-                <Route path="/userspace/payment-methods"                children={<PaymentMethods />}        />
-                <Route path="/userspace/site~:site/models/model~:model" children={<ModelContainer />}        />
-                <Route path="/userspace/site~:site/models"              children={<ModelsListContainer />}   />
-                <Route path="/userspace/site~:site/content/item~:item"  children={<ContentEditContainer />}  />
-                <Route path="/userspace/site~:site/content"             children={<ContentListContainer />}  />
-                <Route path="/userspace/site~:site/api"                 children={<APIPage />}               />
-                <Route path="/userspace/site~:site/settings"            children={<SettingsContainer />}     />
-                <Route path="/userspace/site~:site/sharing"             children={<SharingContainer />}      />
+  return (
+    <div styleName="wrapper">
+      <Sidebar isSidebarVisible={nav.isSidebarVisible}/>
+      <div styleName="inner">
+        <Header />
+        <div styleName="mainArea">
+          {noSites ?
+            <Switch>
+              <Route path="/userspace/profile"                        children={<UserProfile />}           />
+              <Route path="/userspace/pay-plans"                      children={<PayPlans />}              />
+              <Route path="/userspace/payment-methods"                children={<PaymentMethods />}        />
+              <Route>
+                <div className="start-working">
+                  <InlineSVG className="hammer" src={ImageHammer}/>
+                  Add new site to start working
+                  <div className="hint">Find "Create new site" button in the sidebar</div>
+                </div>
+              </Route>
+            </Switch>
+          :
+            <Switch>
+              <Route path="/userspace/profile"                        children={<UserProfile />}           />
+              <Route path="/userspace/pay-plans"                      children={<PayPlans />}              />
+              <Route path="/userspace/payment-methods"                children={<PaymentMethods />}        />
+              <Route path="/userspace/site~:site/models/model~:model" children={<ModelContainer />}        />
+              <Route path="/userspace/site~:site/models"              children={<ModelsListContainer />}   />
+              <Route path="/userspace/site~:site/content/item~:item"  children={<ContentEditContainer />}  />
+              <Route path="/userspace/site~:site/content"             children={<ContentListContainer />}  />
+              <Route path="/userspace/site~:site/api"                 children={<APIPage />}               />
+              <Route path="/userspace/site~:site/settings"            children={<SettingsContainer />}     />
+              <Route path="/userspace/site~:site/sharing"             children={<SharingContainer />}      />
 
-                <Redirect from='/userspace/site~:site' to='/userspace/site~:site/models' />
-              </Switch>
-            }
-          </div>
-          {!!nav.notification &&
-            <Notification notification={nav.notification}
-                          closeNotification={closeNotification} />
+              <Redirect from='/userspace/site~:site' to='/userspace/site~:site/models' />
+            </Switch>
           }
         </div>
+        {!!nav.notification &&
+          <Notification notification={nav.notification}
+                        closeNotification={closeNotification} />
+        }
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 function mapStateToProps(state) {
@@ -92,4 +89,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainArea);
+export default connect(mapStateToProps, mapDispatchToProps)(CSSModules(MainArea, styles, {allowMultiple: true}));
