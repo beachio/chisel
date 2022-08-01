@@ -148,7 +148,7 @@ class App extends React.Component {
           {user.authorized ?
             <Switch>
               <Route path="/userspace" children={<MainArea />} />
-              <Redirect to="/userspace" />
+              <Route path="*" render={() => <Redirect to="/userspace" />} />
             </Switch>
             :
             <Switch>
@@ -157,7 +157,7 @@ class App extends React.Component {
               <Route path="/password-set-success" children={<PasswordSet />} />
               <Route path="/password-set" children={<PasswordSet />} />
               <Route path="/invalid-link" children={<InvalidLink />} />
-              <Redirect to="/sign" />
+              <Route path="*" render={() => <Redirect to="/sign" />} />
             </Switch>
           }
         </div>

@@ -1,4 +1,3 @@
-import {LOCATION_CHANGE, RETURN_HOME} from 'ducks/nav';
 import {LOGIN_RESPONSE, REGISTER_RESPONSE, LOGOUT} from 'ducks/user';
 import {setCurrentSite, SITE_ADD, SITE_DELETE} from 'ducks/models';
 import {getSiteByNameId} from 'utils/data';
@@ -7,12 +6,15 @@ import {
   URL_SIGN,
   URL_SITE,
   URL_USERSPACE,
+  URL_MODELS,
   URLS_EMAIL,
   URL_EMAIL_VERIFY,
   URL_INVALID_LINK,
   URL_PROFILE,
   URL_PAY_PLANS,
-  URL_PAYMENT_METHODS
+  URL_PAYMENT_METHODS,
+  LOCATION_CHANGE,
+  RETURN_HOME
 } from 'ducks/nav';
 
 
@@ -99,6 +101,15 @@ export const routing = store => next => action => {
 
       if (store.getState().nav.initEnded)
         setFromURL();
+
+      //Redirect from '/userspace/site~:site' to '/userspace/site~:site/models'
+      //To replace <Redirect from='/userspace/site~:site' to='/userspace/site~:site/models' /> from MainArea
+      const regexp = new RegExp("^/" + URL_USERSPACE + "/" + URL_SITE + "\\w+$");
+      if (URL.match(regexp)) {
+        let nameId = getNameId(URL, URL_SITE);
+        if (nameId)
+          setTimeout(() => history.replace(`/${URL_USERSPACE}/${URL_SITE}${nameId}/${URL_MODELS}`), 1);
+      }
 
       break;
 

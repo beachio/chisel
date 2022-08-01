@@ -63,7 +63,7 @@ function MainArea(props) {
               <Route path="/userspace/site~:site/settings"            children={<SettingsContainer />}     />
               <Route path="/userspace/site~:site/sharing"             children={<SharingContainer />}      />
 
-              <Redirect from='/userspace/site~:site' to='/userspace/site~:site/models' />
+              {/*<Route path='/userspace/site~:site' render={() => <Redirect to="userspace/site~:site/models" />} />*/}
             </Switch>
           }
         </div>
