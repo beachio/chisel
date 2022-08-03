@@ -6,14 +6,14 @@ export const payments = store => next => action => {
 
   if (action.type == INIT_END) {
     if (store.getState().nav.showUnpaidSub) {
-      const {history} = store.getState().nav;
+      const {navigate} = store.getState().nav;
       next(showAlert({
         type: ALERT_TYPE_CONFIRM,
         title: `Failed payment`,
         description: `We can't withdraw money for next payment period. Please, update your payment methods.`,
         confirmLabel: 'Open payment methods',
         cancelLabel: 'Close',
-        onConfirm: () => history.push(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`)
+        onConfirm: () => navigate(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`)
       }));
     }
   }

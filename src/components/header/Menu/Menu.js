@@ -4,12 +4,13 @@ import {NavLink} from "react-router-dom";
 
 import {URL_USERSPACE, URL_SITE, URL_MODELS, URL_CONTENT, URL_API, URL_SETTINGS, URL_SHARING} from 'ducks/nav';
 import {throttle} from 'utils/common';
+import {withRouter} from "utils/routing";
 
 import styles from './Menu.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-export default class Menu extends Component  {
+class Menu extends Component  {
   state = {
     isSidebarOpened: true
   };
@@ -28,8 +29,7 @@ export default class Menu extends Component  {
       this.caretRef.style = `opacity: 0;`;
       setTimeout(this.calcCaretPos, 200);
     } else {
-      //TODO: костыль
-      setTimeout(this.calcCaretPos, 1);
+      this.calcCaretPos();
     }
   }
 
@@ -71,32 +71,39 @@ export default class Menu extends Component  {
     if (!siteNameId)
       buttonStyle += " button-disabled";
 
+    const {location} = this.props.router;
+    const isModels = location.pathname.indexOf(URL_MODELS) != -1;
+    const isContent = location.pathname.indexOf(URL_CONTENT) != -1;
+    const isAPI = location.pathname.indexOf(URL_API) != -1;
+    const isSharing = location.pathname.indexOf(URL_SHARING) != -1;
+    const isSettings = location.pathname.indexOf(URL_SETTINGS) != -1;
+
     return (
       <div styleName="menu"
            ref={el => this.menuRef = el}>
         <NavLink to={prefix + URL_MODELS}
                  styleName={buttonStyle}
-                 activeClassName={styles.activeItem}>
+                 className={isModels ? styles.activeItem : ""}>
           Models
         </NavLink>
         <NavLink to={prefix + URL_CONTENT}
                  styleName={buttonStyle}
-                 activeClassName={styles.activeItem}>
+                 className={isContent ? styles.activeItem : ""}>
           Content
         </NavLink>
         <NavLink to={prefix + URL_API}
                  styleName={buttonStyle}
-                 activeClassName={styles.activeItem}>
+                 className={isAPI ? styles.activeItem : ""}>
           API
         </NavLink>
         <NavLink to={prefix + URL_SHARING}
                  styleName={buttonStyle}
-                 activeClassName={styles.activeItem}>
+                 className={isSharing ? styles.activeItem : ""}>
           Sharing
         </NavLink>
         <NavLink to={prefix + URL_SETTINGS}
                  styleName={buttonStyle}
-                 activeClassName={styles.activeItem}>
+                 className={isSettings ? styles.activeItem : ""}>
           Settings
         </NavLink>
 
@@ -105,3 +112,5 @@ export default class Menu extends Component  {
     );
   }
 }
+
+export default withRouter(Menu);

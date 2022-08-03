@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Route, Switch, Redirect} from "react-router-dom";
+import {Route, Routes, Navigate} from "react-router-dom";
 import {Helmet} from "react-helmet-async";
 import CSSModules from 'react-css-modules';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -32,18 +32,23 @@ import styles from './app.sss';
 
 
 @CSSModules(styles, {allowMultiple: true})
-class App extends React.Component {
+class App extends Component {
   lastModal = <span></span>;
 
   constructor(props) {
     super(props);
 
     const {navActions, router} = props;
-    const {history, location} = router;
-    router.history.listen((location, action) => {
-      navActions.changeLocation(history, location, action);
-    });
-    navActions.changeLocation(history, location);
+    const {location, navigate, navigationType, params} = router;
+    navActions.changeLocation(location, navigate, navigationType, params);
+  }
+
+  componentDidUpdate(prevProps) {
+    const {navActions, router} = this.props;
+    const {location, navigate, navigationType, params} = router;
+    if (location !== prevProps.router.location) {
+      navActions.changeLocation(location, navigate, navigationType, params);
+    }
   }
 
   render() {
@@ -146,19 +151,20 @@ class App extends React.Component {
 
         <div>
           {user.authorized ?
-            <Switch>
-              <Route path="/userspace" children={<MainArea />} />
-              <Route path="*" render={() => <Redirect to="/userspace" />} />
-            </Switch>
-            :
-            <Switch>
-              <Route path="/sign" exact children={<Sign />} />
-              <Route path="/email-verify" children={<EmailVerify />} />
-              <Route path="/password-set-success" children={<PasswordSet />} />
-              <Route path="/password-set" children={<PasswordSet />} />
-              <Route path="/invalid-link" children={<InvalidLink />} />
-              <Route path="*" render={() => <Redirect to="/sign" />} />
-            </Switch>
+            <Routes>
+              <Route path="userspace/*" element={<MainArea />} />
+              <Route path="*" render={() => <Navigate to="userspace" />} />
+              <Route path="" render={() => <Navigate to="userspace" />} />
+            </Routes>
+          :
+            <Routes>
+              <Route path="sign" exact           element={<Sign />} />
+              <Route path="email-verify"         element={<EmailVerify />} />
+              <Route path="password-set-success" element={<PasswordSet />} />
+              <Route path="password-set"         element={<PasswordSet />} />
+              <Route path="invalid-link"         element={<InvalidLink />} />
+              <Route path="*" render={() => <Navigate to="sign" />} />
+            </Routes>
           }
         </div>
 

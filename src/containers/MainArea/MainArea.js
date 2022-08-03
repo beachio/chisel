@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
-import {Route, Switch, Redirect} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 
 import {closeNotification} from 'ducks/nav';
 import Header from 'containers/Header/Header';
@@ -38,33 +38,33 @@ function MainArea(props) {
         <Header />
         <div styleName="mainArea">
           {noSites ?
-            <Switch>
-              <Route path="/userspace/profile"                        children={<UserProfile />}           />
-              <Route path="/userspace/pay-plans"                      children={<PayPlans />}              />
-              <Route path="/userspace/payment-methods"                children={<PaymentMethods />}        />
-              <Route>
-                <div className="start-working">
-                  <InlineSVG className="hammer" src={ImageHammer}/>
-                  Add new site to start working
-                  <div className="hint">Find "Create new site" button in the sidebar</div>
-                </div>
-              </Route>
-            </Switch>
+            <>
+              <Routes>
+                <Route path="profile"                        element={<UserProfile />}           />
+                <Route path="pay-plans"                      element={<PayPlans />}              />
+                <Route path="payment-methods"                element={<PaymentMethods />}        />
+              </Routes>
+              <div className="start-working">
+                <InlineSVG className="hammer" src={ImageHammer}/>
+                Add new site to start working
+                <div className="hint">Find "Create new site" button in the sidebar</div>
+              </div>
+            </>
           :
-            <Switch>
-              <Route path="/userspace/profile"                        children={<UserProfile />}           />
-              <Route path="/userspace/pay-plans"                      children={<PayPlans />}              />
-              <Route path="/userspace/payment-methods"                children={<PaymentMethods />}        />
-              <Route path="/userspace/site~:site/models/model~:model" children={<ModelContainer />}        />
-              <Route path="/userspace/site~:site/models"              children={<ModelsListContainer />}   />
-              <Route path="/userspace/site~:site/content/item~:item"  children={<ContentEditContainer />}  />
-              <Route path="/userspace/site~:site/content"             children={<ContentListContainer />}  />
-              <Route path="/userspace/site~:site/api"                 children={<APIPage />}               />
-              <Route path="/userspace/site~:site/settings"            children={<SettingsContainer />}     />
-              <Route path="/userspace/site~:site/sharing"             children={<SharingContainer />}      />
+            <Routes>
+              <Route path="profile"                         element={<UserProfile />}           />
+              <Route path="pay-plans"                       element={<PayPlans />}              />
+              <Route path="payment-methods"                 element={<PaymentMethods />}        />
+              <Route path="site~:site/models/model~:model"  element={<ModelContainer />}        />
+              <Route path="site~:site/models"               element={<ModelsListContainer />}   />
+              <Route path="site~:site/content/item~:item"   element={<ContentEditContainer />}  />
+              <Route path="site~:site/content"              element={<ContentListContainer />}  />
+              <Route path="site~:site/api"                  element={<APIPage />}               />
+              <Route path="site~:site/settings"             element={<SettingsContainer />}     />
+              <Route path="site~:site/sharing"              element={<SharingContainer />}      />
 
-              {/*<Route path='/userspace/site~:site' render={() => <Redirect to="userspace/site~:site/models" />} />*/}
-            </Switch>
+              {/*<Route path='site~:site' render={() => <Navigate to="site~:site/models" />} />*/}
+            </Routes>
           }
         </div>
         {!!nav.notification &&

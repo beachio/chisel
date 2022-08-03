@@ -50,12 +50,13 @@ export const URL_PAYMENT_METHODS  = 'payment-methods';
 
 export const URLS_EMAIL = [URL_EMAIL_VERIFY, URL_PASSWORD_SET, URL_PASSWORD_SUCCESS, URL_INVALID_LINK];
 
-export function changeLocation(history, location, action) {
+export function changeLocation(location, navigate, navigationType, params) {
   return {
     type: LOCATION_CHANGE,
-    history,
     location,
-    action
+    navigate,
+    navigationType,
+    params
   };
 }
 
@@ -133,7 +134,7 @@ export function setServerProblemB (value = true) {
 const initialState = {
   initEnded: false,
 
-  history: null,
+  navigate: null,
   pathname: null,
 
   isSidebarVisible: true,
@@ -240,7 +241,7 @@ export default function navReducer(state = initialState, action) {
     case LOCATION_CHANGE:
       return {
         ...state,
-        history: action.history,
+        navigate: action.navigate,
         pathname: action.location.pathname,
         alertShowing: false,
         modalShowing: false,

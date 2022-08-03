@@ -3,7 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Helmet} from "react-helmet-async";
 import InlineSVG from 'svg-inline-react';
-import {useHistory} from 'react-router';
+import {useNavigate} from 'react-router-dom';
 
 import ContentList from 'components/mainArea/content/ContentList/ContentList';
 import {ROLE_OWNER, ROLE_ADMIN, ROLE_DEVELOPER} from 'models/UserData';
@@ -17,7 +17,7 @@ function ContentListContainer(props) {
   const {models, content, nav} = props;
   const {addItem, deleteItem, filterModel, filterStatus, setVisibleField} = props.contentActions;
   const {showAlert} = props.navActions;
-  const history = useHistory();
+  const navigate = useNavigate();
 
   let cmpContent = (
     <div className="start-working">
@@ -51,7 +51,7 @@ function ContentListContainer(props) {
       let gotoItem = item => {
         let modelId = item.model.nameId;
         let itemId = item.origin.id;
-        history.push(
+        navigate(
           `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_CONTENT}/${URL_ITEM}${modelId}~${itemId}`);
       };
 

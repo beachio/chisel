@@ -27,7 +27,7 @@ export class Sites extends Component {
 
   onClickAdd = () => {
     const {sites, showPayUpgrade} = this.props;
-    const {history} = this.props.router;
+    const {navigate} = this.props.router;
     const {sitesLimit} = this.state;
 
     if (sitesLimit && sites.length >= sitesLimit) {
@@ -40,7 +40,7 @@ export class Sites extends Component {
         options.type = ALERT_TYPE_CONFIRM;
         options.confirmLabel = `Upgrade my account`;
         options.cancelLabel = `Close`;
-        options.onConfirm = () => history.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
+        options.onConfirm = () => navigate(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
       }
       this.props.showAlert(options);
     } else {

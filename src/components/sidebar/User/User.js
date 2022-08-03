@@ -53,10 +53,7 @@ export default class User extends Component {
         
         {this.state.isAccountOpened &&
           <div styleName="submenu">
-            <NavLink
-                activeClassName={styles.userActive}
-                to={`/${URL_USERSPACE}/${URL_PROFILE}/`}
-              >
+            <NavLink to={`/${URL_USERSPACE}/${URL_PROFILE}/`}>
               <div styleName="logout">
                 <InlineSVG styleName="logout-icon" src={ImageAvatar} />
                 Profile

@@ -70,7 +70,7 @@ export class ContentEditContainer extends Component {
     const {addItem, updateItem, publishItem, discardItem, archiveItem, restoreItem, deleteItem, pushToItemsHistory, popFromItemsHistory} = this.props.contentActions;
     const {showModal, showAlert, showNotification, closeNotification} = this.props.navActions;
     const {addMediaItem, updateMediaItem, removeMediaItem} = this.props.mediaActions;
-    const {history} = this.props.router;
+    const {navigate} = this.props.router;
 
     const site = models.currentSite;
     const item = this.item;
@@ -79,7 +79,7 @@ export class ContentEditContainer extends Component {
 
     const basePath = `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_CONTENT}`;
 
-    const closeItem = () => history.push(basePath);
+    const closeItem = () => navigate(basePath);
 
     const gotoItem = (item, prevItem, replace) => {
       if (!replace) {
@@ -91,13 +91,13 @@ export class ContentEditContainer extends Component {
       let modelId = item.model.nameId;
       let itemId = item.origin.id;
       if (replace)
-        history.replace(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
+        navigate(`${basePath}/${URL_ITEM}${modelId}~${itemId}`, {replace: true});
       else
-        history.push(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
+        navigate(`${basePath}/${URL_ITEM}${modelId}~${itemId}`);
     };
 
     const gotoList = () =>
-      history.push(basePath);
+      navigate(basePath);
 
     const lastItem = content.items[content.items.length - 1];
 

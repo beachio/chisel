@@ -7,7 +7,7 @@ import './styles.global.sss';
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {BrowserRouter as Router} from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {StripeProvider} from 'react-stripe-elements';
 import {HelmetProvider} from 'react-helmet-async';
 
@@ -34,7 +34,9 @@ class Root extends Component {
           <Provider store={store}>
             <HelmetProvider>
               <Router>
-                <App />
+                <Routes>
+                  <Route path="*" element={<App />} />
+                </Routes>
               </Router>
             </HelmetProvider>
           </Provider>

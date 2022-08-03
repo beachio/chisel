@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Helmet} from "react-helmet-async";
-import {useHistory} from 'react-router';
+import {useNavigate} from 'react-router-dom';
 
 import ModelsList from 'components/mainArea/models/ModelsList/ModelsList';
 import {addModel, deleteModel} from 'ducks/models';
@@ -15,7 +15,7 @@ function ModelsListContainer(props) {
   const {models, nav} = props;
   const {addModel, deleteModel} = props.modelsActions;
   const {showAlert} = props.navActions;
-  const history = useHistory();
+  const navigate = useNavigate();
 
   let title = `Chisel`;
   let content = <NoRights />;
@@ -23,7 +23,7 @@ function ModelsListContainer(props) {
   const site = models.currentSite;
   if (site && (models.role == ROLE_ADMIN || models.role == ROLE_OWNER)) {
     title = `Models - Site: ${site.name} - Chisel`;
-    const gotoModel = model => history.push(
+    const gotoModel = model => navigate(
       `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}/${URL_MODEL}${model.nameId}`);
     content = (
       <ModelsList site={site}

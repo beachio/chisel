@@ -55,8 +55,8 @@ const controlRemoving = store => next => action => {
       type: ALERT_TYPE_ALERT,
       description: "Someone just deleted the current model. Press OK to return to models' list.",
       callback: () => {
-        const history = store.getState().nav.history;
-        history.push(`/${URL_USERSPACE}/${URL_SITE}${action.model.site.nameId}`);
+        const navigate = store.getState().nav.navigate;
+        navigate(`/${URL_USERSPACE}/${URL_SITE}${action.model.site.nameId}`);
       }
     }));
   }

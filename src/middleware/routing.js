@@ -44,11 +44,11 @@ let isEmailURL = URL => {
 
 export const routing = store => next => action => {
   //TODO: костыль!
-  const {history} = store.getState().nav;
+  const {navigate} = store.getState().nav;
 
   if ((action.type == REGISTER_RESPONSE || action.type == LOGIN_RESPONSE) &&
       !action.authorized && !isEmailURL(URL) && URL.indexOf(URL_SIGN) == -1)
-    history.push(`/${URL_SIGN}`);
+    navigate(`/${URL_SIGN}`);
 
   next(action);
 
@@ -62,13 +62,13 @@ export const routing = store => next => action => {
     let cSite = store.getState().models.currentSite;
     let setDefaultSite = () => {
       if (cSite) {
-        history.replace(`/${URL_USERSPACE}/${URL_SITE}${cSite.nameId}`);
+        navigate(`/${URL_USERSPACE}/${URL_SITE}${cSite.nameId}`, {replace: true});
       } else {
         let sites = store.getState().models.sites;
         if (sites.length)
-          history.replace(`/${URL_USERSPACE}/${URL_SITE}${sites[0].nameId}`);
+          navigate(`/${URL_USERSPACE}/${URL_SITE}${sites[0].nameId}`, {replace: true});
         else if (path != `/${URL_USERSPACE}`)
-          history.replace(`/${URL_USERSPACE}`);
+          navigate(`/${URL_USERSPACE}`, {replace: true});
       }
     };
 
@@ -103,12 +103,12 @@ export const routing = store => next => action => {
         setFromURL();
 
       //Redirect from '/userspace/site~:site' to '/userspace/site~:site/models'
-      //To replace <Redirect from='/userspace/site~:site' to='/userspace/site~:site/models' /> from MainArea
-      const regexp = new RegExp("^/" + URL_USERSPACE + "/" + URL_SITE + "\\w+$");
+      //To replace <Redirect from='/userspace/site~:site' to='/userspace/site~:site/models' /> in MainArea
+      const regexp = new RegExp("^/" + URL_USERSPACE + "/" + URL_SITE + "\\w+/?$");
       if (URL.match(regexp)) {
         let nameId = getNameId(URL, URL_SITE);
         if (nameId)
-          setTimeout(() => history.replace(`/${URL_USERSPACE}/${URL_SITE}${nameId}/${URL_MODELS}`), 1);
+          setTimeout(() => navigate(`/${URL_USERSPACE}/${URL_SITE}${nameId}/${URL_MODELS}`, {replace: true}), 1);
       }
 
       break;
@@ -117,13 +117,13 @@ export const routing = store => next => action => {
       if (returnURL) {
         URL = returnURL;
         returnURL = null;
-        history.replace(URL);
+        navigate(URL, {replace: true});
 
       } else if (
           URL.indexOf(URL_USERSPACE) == -1 &&
           URL.indexOf(URL_EMAIL_VERIFY) == -1 &&
           URL.indexOf(URL_INVALID_LINK) == -1) {
-        history.replace(`/${URL_USERSPACE}`);
+        navigate(`/${URL_USERSPACE}`, {replace: true});
       }
 
       setFromURL();
@@ -132,16 +132,16 @@ export const routing = store => next => action => {
 
     case SITE_ADD:
       if (!action.fromServer)
-        history.push(`/${URL_USERSPACE}/${URL_SITE}${action.site.nameId}`);
+        navigate(`/${URL_USERSPACE}/${URL_SITE}${action.site.nameId}`);
       break;
 
     case SITE_DELETE:
     case RETURN_HOME:
-      history.push(`/${URL_USERSPACE}`);
+      navigate(`/${URL_USERSPACE}`);
       break;
 
     case LOGOUT:
-      history.push(`/${URL_SIGN}`);
+      navigate(`/${URL_SIGN}`);
       break;
   }
 };

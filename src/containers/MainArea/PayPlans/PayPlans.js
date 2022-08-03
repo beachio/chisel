@@ -77,7 +77,7 @@ export class PayPlans extends Component {
       let URL = `/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`;
       if (payPlan)
         URL += `?plan=${payPlan.origin.id}&yearly=${this.state.isYearly}`;
-      this.props.router.history.push(URL);
+      this.props.router.navigate(URL);
     
     } else {
       const {showAlert, returnHome} = this.props.navActions;

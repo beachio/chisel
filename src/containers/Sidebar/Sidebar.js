@@ -9,7 +9,7 @@ import {showModal, showAlert, URL_USERSPACE, URL_SITE, URL_PAY_PLANS} from 'duck
 import {isPayPlanTop} from 'utils/data';
 
 import styles from './Sidebar.sss';
-import {useHistory} from "react-router";
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -18,11 +18,11 @@ function Sidebar(props) {
   const {userData} = props.user;
   const {stripeInitError} = props.pay;
   const {showModal, showAlert} = props.navActions;
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const gotoSite = site => {
     const nameId = site.nameId;
-    history.push(`/${URL_USERSPACE}/${URL_SITE}${nameId}`);
+    navigate(`/${URL_USERSPACE}/${URL_SITE}${nameId}`);
   };
 
   const showPay = !!userData.payPlan;
@@ -31,7 +31,7 @@ function Sidebar(props) {
   return (
     <div styleName="sidebar"
          className={isSidebarVisible ? `sidebar-visible` : styles.sidebarHidden}>
-      <NavLink styleName="header" to="/">
+      <NavLink styleName="header" to="/userspace">
         Chisel
       </NavLink>
       <div styleName="sites-wrapper">

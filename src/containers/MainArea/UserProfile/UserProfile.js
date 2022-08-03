@@ -233,11 +233,11 @@ export class UserProfile extends Component  {
   };
 
   onChangePayPlan = () => {
-    this.props.router.history.push(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
+    this.props.router.navigate(`/${URL_USERSPACE}/${URL_PAY_PLANS}`);
   };
 
   onChangePayMethods = () => {
-    this.props.router.history.push(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`);
+    this.props.router.navigate(`/${URL_USERSPACE}/${URL_PAYMENT_METHODS}`);
   };
 
   render() {

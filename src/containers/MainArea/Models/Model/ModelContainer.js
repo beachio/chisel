@@ -47,7 +47,7 @@ export class ModelContainer extends Component  {
     if (site && model && (models.role == ROLE_ADMIN || models.role == ROLE_OWNER)) {
       title = `Model: ${model.name} - Site: ${site.name} - Chisel`;
 
-      const gotoList = () => this.props.router.history.push(
+      const gotoList = () => this.props.router.navigate(
         `/${URL_USERSPACE}/${URL_SITE}${site.nameId}/${URL_MODELS}`);
 
       content = (

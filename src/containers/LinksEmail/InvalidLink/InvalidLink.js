@@ -17,11 +17,11 @@ export class InvalidLink extends Component  {
   onLogin = event => {
     event.preventDefault();
     
-    const {history} = this.props.router;
+    const {navigate} = this.props.router;
     if (this.props.authorized)
-      history.replace(`/${URL_USERSPACE}`);
+      navigate(`/${URL_USERSPACE}`, {replace: true});
     else
-      history.replace(`/${URL_SIGN}`);
+      navigate(`/${URL_SIGN}`, {replace: true});
     
     return false;
   };
