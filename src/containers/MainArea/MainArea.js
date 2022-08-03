@@ -5,7 +5,8 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import {Navigate, Route, Routes} from "react-router-dom";
 
-import {closeNotification} from 'ducks/nav';
+import {closeNotification, URL_CONTENT, URL_ITEM, URL_MODELS, URL_MODEL, URL_SHARING, URL_SITE, URL_SETTINGS, URL_API,
+  URL_PROFILE, URL_PAYMENT_METHODS, URL_PAY_PLANS} from 'ducks/nav';
 import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
 import Notification from 'components/mainArea/common/Notification/Notification';
@@ -40,9 +41,9 @@ function MainArea(props) {
           {noSites ?
             <>
               <Routes>
-                <Route path="profile"                        element={<UserProfile />}           />
-                <Route path="pay-plans"                      element={<PayPlans />}              />
-                <Route path="payment-methods"                element={<PaymentMethods />}        />
+                <Route path={URL_PROFILE}                        element={<UserProfile />}           />
+                <Route path={URL_PAY_PLANS}                      element={<PayPlans />}              />
+                <Route path={URL_PAYMENT_METHODS}                element={<PaymentMethods />}        />
               </Routes>
               <div className="start-working">
                 <InlineSVG className="hammer" src={ImageHammer}/>
@@ -52,16 +53,16 @@ function MainArea(props) {
             </>
           :
             <Routes>
-              <Route path="profile"                         element={<UserProfile />}           />
-              <Route path="pay-plans"                       element={<PayPlans />}              />
-              <Route path="payment-methods"                 element={<PaymentMethods />}        />
-              <Route path="site~:site/models/model~:model"  element={<ModelContainer />}        />
-              <Route path="site~:site/models"               element={<ModelsListContainer />}   />
-              <Route path="site~:site/content/item~:item"   element={<ContentEditContainer />}  />
-              <Route path="site~:site/content"              element={<ContentListContainer />}  />
-              <Route path="site~:site/api"                  element={<APIPage />}               />
-              <Route path="site~:site/settings"             element={<SettingsContainer />}     />
-              <Route path="site~:site/sharing"              element={<SharingContainer />}      />
+              <Route path={URL_PROFILE}                                         element={<UserProfile />}           />
+              <Route path={URL_PAY_PLANS}                                       element={<PayPlans />}              />
+              <Route path={URL_PAYMENT_METHODS}                                 element={<PaymentMethods />}        />
+              <Route path={`${URL_SITE}:site/${URL_MODELS}/${URL_MODEL}:model`} element={<ModelContainer />}        />
+              <Route path={`${URL_SITE}:site/${URL_MODELS}`}                    element={<ModelsListContainer />}   />
+              <Route path={`${URL_SITE}:site/${URL_CONTENT}/${URL_ITEM}:item`}  element={<ContentEditContainer />}  />
+              <Route path={`${URL_SITE}:site/${URL_CONTENT}`}                   element={<ContentListContainer />}  />
+              <Route path={`${URL_SITE}:site/${URL_API}`}                       element={<APIPage />}               />
+              <Route path={`${URL_SITE}:site/${URL_SETTINGS}`}                  element={<SettingsContainer />}     />
+              <Route path={`${URL_SITE}:site/${URL_SHARING}`}                   element={<SharingContainer />}      />
 
               {/*<Route path='site~:site' render={() => <Navigate to="site~:site/models" />} />*/}
             </Routes>

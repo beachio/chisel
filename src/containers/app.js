@@ -22,8 +22,10 @@ import ModelChooseModal from 'components/modals/ModelChooseModal/ModelChooseModa
 import CollabRoleModal from 'components/modals/CollabRoleModal/CollabRoleModal';
 import AlertModal, {ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
 import {
+  URL_USERSPACE, URL_INVALID_LINK, URL_EMAIL_VERIFY, URL_PASSWORD_SET, URL_PASSWORD_SUCCESS, URL_SIGN,
   changeLocation, closeAlert, closeModal, MODAL_TYPE_SITE, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE,
-  MODAL_TYPE_WYSIWYG, MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN, MODAL_TYPE_ROLE} from 'ducks/nav';
+  MODAL_TYPE_WYSIWYG, MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN, MODAL_TYPE_ROLE
+} from 'ducks/nav';
 import {addSite, addField, updateField} from 'ducks/models';
 import {withRouter} from 'utils/routing';
 
@@ -152,18 +154,18 @@ class App extends Component {
         <div>
           {user.authorized ?
             <Routes>
-              <Route path="userspace/*" element={<MainArea />} />
+              <Route path={`${URL_USERSPACE}/*`} element={<MainArea />} />
               <Route path="*" render={() => <Navigate to="userspace" />} />
               <Route path="" render={() => <Navigate to="userspace" />} />
             </Routes>
           :
             <Routes>
-              <Route path="sign" exact           element={<Sign />} />
-              <Route path="email-verify"         element={<EmailVerify />} />
-              <Route path="password-set-success" element={<PasswordSet />} />
-              <Route path="password-set"         element={<PasswordSet />} />
-              <Route path="invalid-link"         element={<InvalidLink />} />
-              <Route path="*" render={() => <Navigate to="sign" />} />
+              <Route path={URL_SIGN} exact       element={<Sign />} />
+              <Route path={URL_EMAIL_VERIFY}     element={<EmailVerify />} />
+              <Route path={URL_PASSWORD_SUCCESS} element={<PasswordSet />} />
+              <Route path={URL_PASSWORD_SET}     element={<PasswordSet />} />
+              <Route path={URL_INVALID_LINK}     element={<InvalidLink />} />
+              <Route path="*" render={() => <Navigate to={URL_SIGN} />} />
             </Routes>
           }
         </div>
