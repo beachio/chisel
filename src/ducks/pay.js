@@ -5,6 +5,7 @@ import {PayPlanData} from 'models/PayPlanData';
 import {send, getAllObjects, CLOUD_ERROR_CODE__STRIPE_INIT_ERROR, PARSE_ERROR_CODE__CLOUD_FAIL} from 'utils/server';
 
 
+export const SET_STRIPE_PROMISE     = 'app/pay/SET_STRIPE_PROMISE';
 export const INIT_END               = 'app/pay/INIT_END';
 export const ADD_SOURCE             = 'app/pay/ADD_SOURCE';
 export const REMOVE_SOURCE          = 'app/pay/REMOVE_SOURCE';
@@ -29,6 +30,13 @@ async function requestStripeData() {
   return await send(
     Parse.Cloud.run('getStripeData')
   );
+}
+
+export function setStripePromise(stripePromise) {
+  return {
+    type: SET_STRIPE_PROMISE,
+    stripePromise
+  };
 }
 
 export function init() {
@@ -91,6 +99,7 @@ export function updateDefaultSource(sourceId) {
 
 
 const initialState = {
+  stripePromise: null,
   payPlans: [],
   stripeData: {},
   stripeInitError: false
@@ -101,6 +110,12 @@ export default function payReducer(state = initialState, action) {
   const sources = stripeData.sources ? stripeData.sources : [];
   
   switch (action.type) {
+    case SET_STRIPE_PROMISE:
+      return {
+        ...state,
+        stripePromise: action.stripePromise
+      };
+
     case INIT_END:
       return {
         ...state,

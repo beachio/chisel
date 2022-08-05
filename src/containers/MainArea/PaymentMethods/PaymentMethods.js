@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
-import {CardElement, injectStripe, Elements} from 'react-stripe-elements';
+import {CardElement, ElementsConsumer, Elements} from '@stripe/react-stripe-js';
 import {Parse} from 'parse';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
@@ -85,10 +85,12 @@ class _PayCardElement extends Component {
       return;
     }
 
-    const {onStart, onComplete, onError} = this.props;
+    const {onStart, onComplete, onError, stripe, elements} = this.props;
     
     onStart();
-    const {token, error} = await this.props.stripe.createToken({
+
+    const cardElement = elements.getElement(CardElement);
+    const {token, error} = await stripe.createToken(cardElement, {
       name:           this.state.name,
       address_line1:  this.state.address,
       address_city:   this.state.city,
@@ -202,7 +204,8 @@ class _PayCardElement extends Component {
         <section styleName="section">
           <div styleName="section-header">Card details</div>
           <div styleName="card-wrapper">
-            <CardElement style={style} onChange={this.onChangeCard} hidePostalCode />
+            <CardElement onChange={this.onChangeCard}
+                         options={{style,  hidePostalCode: true}} />
           </div>
         </section>
 
@@ -230,7 +233,13 @@ class _PayCardElement extends Component {
   }
 }
 
-export const PayCardElement = injectStripe(_PayCardElement);
+export const PayCardElement = (props) => (
+  <ElementsConsumer>
+    {({stripe, elements}) => (
+      <_PayCardElement stripe={stripe} elements={elements} {...props} />
+    )}
+  </ElementsConsumer>
+);
 
 
 @CSSModules(styles, {allowMultiple: true})
@@ -448,7 +457,7 @@ class PaymentMethods extends Component {
   };
   
   render() {
-    const {stripeData} = this.props.pay;
+    const {stripePromise, stripeData} = this.props.pay;
     let defaultMethod = null;
     if (stripeData) {
       this.methods = stripeData.sources;
@@ -544,7 +553,7 @@ class PaymentMethods extends Component {
               </div>
             :
               <div styleName="method-content">
-                <Elements>
+                <Elements stripe={stripePromise}>
                   <PayCardElement onStart={() => this.setState({pending: true})}
                                   onComplete={this.onNewSourceSubscribe}
                                   onError={this.onError}

@@ -1,7 +1,9 @@
 import {Parse} from 'parse';
+import {loadStripe} from '@stripe/stripe-js';
 
-import {store, setStripeKey} from 'index';
+import {store} from 'index';
 import {getLocalStorage} from 'ducks/user';
+import {setStripePromise} from 'ducks/pay';
 import {config as _config} from 'ConnectConstants';
 import {send} from 'utils/server';
 
@@ -55,7 +57,8 @@ async function initParse() {
     const key = appConfig.get('StripeKeyPublic');
     if (key) {
       config.stripeKeyExists = true;
-      setStripeKey(key);
+      const stripePromise = loadStripe(key);
+      store.dispatch(setStripePromise(stripePromise));
     }
   }
 }
