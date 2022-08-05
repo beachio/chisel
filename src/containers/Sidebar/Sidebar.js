@@ -31,7 +31,7 @@ function Sidebar(props) {
   return (
     <div styleName="sidebar"
          className={isSidebarVisible ? `sidebar-visible` : styles.sidebarHidden}>
-      <NavLink styleName="header" to="/userspace">
+      <NavLink styleName="header" to="/">
         Chisel
       </NavLink>
       <div styleName="sites-wrapper">

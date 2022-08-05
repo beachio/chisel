@@ -64,7 +64,7 @@ function MainArea(props) {
               <Route path={`${URL_SITE}:site/${URL_SETTINGS}`}                  element={<SettingsContainer />}     />
               <Route path={`${URL_SITE}:site/${URL_SHARING}`}                   element={<SharingContainer />}      />
 
-              {/*<Route path='site~:site' render={() => <Navigate to="site~:site/models" />} />*/}
+              <Route path={`${URL_SITE}:site`}                                  element={<Navigate to={`${URL_MODELS}`} replace />} />
             </Routes>
           }
         </div>

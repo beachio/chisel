@@ -154,18 +154,17 @@ class App extends Component {
         <div>
           {user.authorized ?
             <Routes>
-              <Route path={`${URL_USERSPACE}/*`} element={<MainArea />} />
-              <Route path="*" render={() => <Navigate to="userspace" />} />
-              <Route path="" render={() => <Navigate to="userspace" />} />
+              <Route path={`${URL_USERSPACE}/*`}  element={<MainArea />} />
+              <Route path="*"                     element={<Navigate to={URL_USERSPACE} replace />} />
             </Routes>
           :
             <Routes>
-              <Route path={URL_SIGN} exact       element={<Sign />} />
-              <Route path={URL_EMAIL_VERIFY}     element={<EmailVerify />} />
-              <Route path={URL_PASSWORD_SUCCESS} element={<PasswordSet />} />
-              <Route path={URL_PASSWORD_SET}     element={<PasswordSet />} />
-              <Route path={URL_INVALID_LINK}     element={<InvalidLink />} />
-              <Route path="*" render={() => <Navigate to={URL_SIGN} />} />
+              <Route path={URL_SIGN}              element={<Sign />} />
+              <Route path={URL_EMAIL_VERIFY}      element={<EmailVerify />} />
+              <Route path={URL_PASSWORD_SUCCESS}  element={<PasswordSet />} />
+              <Route path={URL_PASSWORD_SET}      element={<PasswordSet />} />
+              <Route path={URL_INVALID_LINK}      element={<InvalidLink />} />
+              <Route path="*"                     element={<Navigate to={URL_SIGN} replace />} />
             </Routes>
           }
         </div>

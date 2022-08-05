@@ -52,7 +52,7 @@ export const routing = store => next => action => {
 
   next(action);
 
-  const setFromURL = () => setTimeout(() => {
+  const setFromURL = () => {
     let path = URL;
     URL = '/';
 
@@ -88,8 +88,7 @@ export const routing = store => next => action => {
                path.indexOf(URL_PAYMENT_METHODS) == -1) {
       setDefaultSite();
     }
-
-  }, 1);
+  }
 
 
   switch (action.type) {
@@ -101,15 +100,6 @@ export const routing = store => next => action => {
 
       if (store.getState().nav.initEnded)
         setFromURL();
-
-      //Redirect from '/userspace/site~:site' to '/userspace/site~:site/models'
-      //To replace <Redirect from='/userspace/site~:site' to='/userspace/site~:site/models' /> in MainArea
-      const regexp = new RegExp("^/" + URL_USERSPACE + "/" + URL_SITE + "\\w+/?$");
-      if (URL.match(regexp)) {
-        let nameId = getNameId(URL, URL_SITE);
-        if (nameId)
-          setTimeout(() => navigate(`/${URL_USERSPACE}/${URL_SITE}${nameId}/${URL_MODELS}`, {replace: true}), 1);
-      }
 
       break;
 
