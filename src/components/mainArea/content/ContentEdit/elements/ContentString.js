@@ -42,6 +42,8 @@ export default class ContentString extends ContentBase {
         value = [];
       else if (field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWYG)
         value = '<p><br/></p>';
+      else if (field.appearance == ftps.FIELD_APPEARANCE__LONG_TEXT__MARKDOWN)
+        value = '';
     }
     return {item, field, value};
   }
