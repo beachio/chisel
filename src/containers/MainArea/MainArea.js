@@ -30,7 +30,7 @@ function MainArea(props) {
   const {models, nav} = props;
   const {closeNotification} = props.navActions;
 
-  const noSites = !nav.initEnded || !models.currentSite;
+  const noSites = nav.initEnded && !models.sites.length;
 
   return (
     <div styleName="wrapper">
