@@ -18,7 +18,7 @@ function ModelsListContainer(props) {
   const navigate = useNavigate();
 
   let title = `Chisel`;
-  let content = <NoRights />;
+  let content = nav.initEnded ? <NoRights /> : null;
 
   const site = models.currentSite;
   if (site && (models.role == ROLE_ADMIN || models.role == ROLE_OWNER)) {

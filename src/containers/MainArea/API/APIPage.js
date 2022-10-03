@@ -25,10 +25,10 @@ export class APIPage extends Component  {
 
 export class APIPageContainer extends Component  {
   render () {
-    const {models} = this.props;
+    const {models, nav} = this.props;
 
     let title = `Chisel`;
-    let content = <NoRights />;
+    let content = nav.initEnded ? <NoRights /> : null;
 
     const curSite = models.currentSite;
     if (curSite) {
@@ -49,7 +49,10 @@ export class APIPageContainer extends Component  {
 }
 
 function mapStateToProps(state) {
-  return {models: state.models};
+  return {
+    models: state.models,
+    nav:    state.nav
+  };
 }
 
 export default connect(mapStateToProps)(APIPageContainer);

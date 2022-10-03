@@ -39,7 +39,7 @@ export class ModelContainer extends Component  {
     const {showAlert, showModal} = this.props.navActions;
 
     let title = `Chisel`;
-    let content = <NoRights />;
+    let content = nav.initEnded ? <NoRights /> : null;
 
     const site = models.currentSite;
     const model = this.model;
