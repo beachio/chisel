@@ -244,11 +244,11 @@ export class Sign extends Component  {
                              value="Log In" />
             </div>
 
-            <div styleName="errors">
-              {this.state.error == ERROR_WRONG_PASS &&
+            {this.state.error == ERROR_WRONG_PASS &&
+              <div styleName="errors">
                 <div styleName="error">Wrong email or password!</div>
-              }
-            </div>
+              </div>
+            }
           </form>
         );
 
@@ -308,9 +308,11 @@ export class Sign extends Component  {
                              value="Register" />
             </div>
 
-            <div styleName="errors">
-              {errorElm}
-            </div>
+            {!!errorElm &&
+              <div styleName="errors">
+                {errorElm}
+              </div>
+            }
           </form>
         );
 
@@ -394,11 +396,11 @@ export class Sign extends Component  {
                              value="Restore Password" />
             </div>
 
-            <div styleName="errors">
-              {this.state.error == ERROR_OTHER &&
+            {this.state.error == ERROR_OTHER &&
+              <div styleName="errors">
                 <div styleName="error">Wrong email!</div>
-              }
-            </div>
+              </div>
+            }
 
             <div styleName="forgot" onClick={() => this.setMode(MODE_LOGIN)}>
               Return to log in
