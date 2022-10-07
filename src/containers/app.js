@@ -151,7 +151,7 @@ class App extends Component {
           <title>Chisel</title>
         </Helmet>
 
-        <div>
+        <>
           {user.authorized ?
             <Routes>
               <Route path={`${URL_USERSPACE}/*`}  element={<MainArea />} />
@@ -167,7 +167,7 @@ class App extends Component {
               <Route path="*"                     element={<Navigate to={URL_SIGN} replace />} />
             </Routes>
           }
-        </div>
+        </>
 
         {showModalLoader &&
           <SiteLoader />
