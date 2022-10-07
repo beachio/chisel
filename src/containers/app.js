@@ -54,7 +54,7 @@ class App extends Component {
   }
 
   render() {
-    const {nav, user, content, models} = this.props;
+    const {nav, user, content, models, media} = this.props;
     const {closeAlert, closeModal} = this.props.navActions;
     const {addSite, addField, updateField} = this.props.modelActions;
 
@@ -102,6 +102,8 @@ class App extends Component {
 
         case MODAL_TYPE_MEDIA:
           return <MediaModal params={nav.modalParams}
+                             mediaItems={media.items}
+                             currentSite={models.currentSite}
                              onClose={closeModal}/>;
 
         case MODAL_TYPE_REFERENCE:
@@ -194,6 +196,7 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     content:  state.content,
+    media:    state.media,
     models:   state.models,
     nav:      state.nav,
     user:     state.user

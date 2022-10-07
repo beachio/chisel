@@ -18,7 +18,6 @@ export default class MediaModal extends Component {
     searchText: ''
   };
 
-  items = store.getState().media.items;
   active = false;
   focusElm = null;
 
@@ -133,6 +132,7 @@ export default class MediaModal extends Component {
   };
   
   render() {
+    const {mediaItems, currentSite} = this.props;
     return (
       <div styleName="modal" onClick={this.close}>
 
@@ -150,8 +150,9 @@ export default class MediaModal extends Component {
 
             <div styleName="media">
               {
-                this.items
+                mediaItems
                   .filter(item => !item.assigned)
+                  .filter(item => item.site == currentSite)
                   .filter(this.filterSize)
                   .filter(this.filterType)
                   .filter(item => this.searchMatch(item.name))
