@@ -39,6 +39,7 @@ export const URL_SITE             = 'site~';
 export const URL_MODELS           = 'models';
 export const URL_MODEL            = 'model~';
 export const URL_CONTENT          = 'content';
+export const URL_MEDIA            = 'media';
 export const URL_ITEM             = 'item~';
 export const URL_API              = 'api';
 export const URL_SETTINGS         = 'settings';

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
 import {NavLink} from "react-router-dom";
 
-import {URL_USERSPACE, URL_SITE, URL_MODELS, URL_CONTENT, URL_API, URL_SETTINGS, URL_SHARING} from 'ducks/nav';
+import {URL_USERSPACE, URL_SITE, URL_MODELS, URL_CONTENT, URL_MEDIA, URL_API, URL_SETTINGS, URL_SHARING} from 'ducks/nav';
 import {throttle} from 'utils/common';
 import {withRouter} from "utils/routing";
 
@@ -74,6 +74,7 @@ class Menu extends Component  {
     const {location} = this.props.router;
     const isModels = location.pathname.indexOf(URL_MODELS) != -1;
     const isContent = location.pathname.indexOf(URL_CONTENT) != -1;
+    const isMedia = location.pathname.indexOf(URL_MEDIA) != -1;
     const isAPI = location.pathname.indexOf(URL_API) != -1;
     const isSharing = location.pathname.indexOf(URL_SHARING) != -1;
     const isSettings = location.pathname.indexOf(URL_SETTINGS) != -1;
@@ -90,6 +91,11 @@ class Menu extends Component  {
                  styleName={buttonStyle}
                  className={isContent ? styles.activeItem : ""}>
           Content
+        </NavLink>
+        <NavLink to={prefix + URL_MEDIA}
+                 styleName={buttonStyle}
+                 className={isMedia ? styles.activeItem : ""}>
+          Media
         </NavLink>
         <NavLink to={prefix + URL_API}
                  styleName={buttonStyle}

@@ -1,0 +1,72 @@
+.content
+  text-align: center
+  user-select: none
+
+
+
+.input-wrapper
+  margin-top: 20px
+  width: 100%
+  position: relative
+
+  &-align
+    text-align: left
+
+
+.media
+  margin-top: 25px
+  margin-right: -25px
+
+  display: flex
+  flex-flow: row wrap
+  align-items: flex-start
+  justify-content: space-between
+
+  overflow-y: auto
+  min-height: 190px
+
+  &-item
+    position: relative
+    overflow: hidden
+
+    display: flex
+    flex-flow: column nowrap
+    flex-shrink: 0
+    width: 200px
+
+    cursor: pointer
+    margin-right: 25px
+    margin-bottom: 25px
+
+    background: rgba(255,255,255,0.80)
+    border: 2px solid #DDDDDD
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10)
+    border-radius: 10px
+
+    transition: border-color 0.2s ease
+    will-change: border-color
+
+    &:hover
+      border-color: #6D9EE1
+
+    &.media-chosen
+      border-color: #6D9EE1
+
+      &:after
+        content: ''
+        background: url('assets/images/okay.png') no-repeat center center / contain
+        height: 18px
+        width: 18px
+
+        position: absolute
+        top: 8px
+        right: 8px
+
+  &-header
+    font-size: 15px
+    color: #313133
+    text-align: center
+    //background-color: #F5F5F5
+
+    padding: 10px
+

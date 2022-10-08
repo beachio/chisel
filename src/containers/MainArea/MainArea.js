@@ -5,12 +5,13 @@ import CSSModules from 'react-css-modules';
 import InlineSVG from 'svg-inline-react';
 import {Navigate, Route, Routes} from "react-router-dom";
 
-import {closeNotification, URL_CONTENT, URL_ITEM, URL_MODELS, URL_MODEL, URL_SHARING, URL_SITE, URL_SETTINGS, URL_API,
-  URL_PROFILE, URL_PAYMENT_METHODS, URL_PAY_PLANS} from 'ducks/nav';
+import {closeNotification, URL_CONTENT, URL_ITEM, URL_MODELS, URL_MODEL, URL_MEDIA, URL_SHARING, URL_SITE, URL_SETTINGS,
+  URL_API, URL_PROFILE, URL_PAYMENT_METHODS, URL_PAY_PLANS} from 'ducks/nav';
 import Header from 'containers/Header/Header';
 import Sidebar from 'containers/Sidebar/Sidebar';
 import Notification from 'components/mainArea/common/Notification/Notification';
 import APIPage from 'containers/MainArea/API/APIPage';
+import MediaContainer from 'containers/MainArea/Media/MediaContainer';
 import SettingsContainer from 'containers/MainArea/Settings/SettingsContainer';
 import SharingContainer from 'containers/MainArea/Sharing/SharingContainer';
 import ModelsListContainer from 'containers/MainArea/Models/ModelsListContainer';
@@ -60,6 +61,7 @@ function MainArea(props) {
               <Route path={`${URL_SITE}:site/${URL_MODELS}`}                    element={<ModelsListContainer />}   />
               <Route path={`${URL_SITE}:site/${URL_CONTENT}/${URL_ITEM}:item`}  element={<ContentEditContainer />}  />
               <Route path={`${URL_SITE}:site/${URL_CONTENT}`}                   element={<ContentListContainer />}  />
+              <Route path={`${URL_SITE}:site/${URL_MEDIA}`}                     element={<MediaContainer />}        />
               <Route path={`${URL_SITE}:site/${URL_API}`}                       element={<APIPage />}               />
               <Route path={`${URL_SITE}:site/${URL_SETTINGS}`}                  element={<SettingsContainer />}     />
               <Route path={`${URL_SITE}:site/${URL_SHARING}`}                   element={<SharingContainer />}      />
