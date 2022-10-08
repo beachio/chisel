@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Helmet} from "react-helmet-async";
@@ -9,29 +9,27 @@ import {updateSite, deleteSite} from 'ducks/models';
 import {showAlert} from 'ducks/nav';
 
 
-export class SettingsContainer extends Component  {
-  render() {
-    const {models} = this.props;
-    const {updateSite, deleteSite} = this.props.modelsActions;
-    const {showAlert} = this.props.navActions;
+function SettingsContainer(props)  {
+  const {models} = props;
+  const {updateSite, deleteSite} = props.modelsActions;
+  const {showAlert} = props.navActions;
 
-    const site = models.currentSite;
-    if (!site)
-      return null;
+  const site = models.currentSite;
+  if (!site)
+    return null;
 
-    const title = `Settings - Site: ${site.name} - Chisel`;
+  const title = `Settings - Site: ${site.name} - Chisel`;
 
-    return <>
-      <Helmet>
-        <title>{title}</title>
-      </Helmet>
-      <Settings site={site}
-                updateSite={updateSite}
-                deleteSite={deleteSite}
-                showAlert={showAlert}
-                isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
-    </>;
-  }
+  return <>
+    <Helmet>
+      <title>{title}</title>
+    </Helmet>
+    <Settings site={site}
+              updateSite={updateSite}
+              deleteSite={deleteSite}
+              showAlert={showAlert}
+              isEditable={models.role == ROLE_OWNER || models.role == ROLE_ADMIN} />
+  </>;
 }
 
 function mapStateToProps(state) {
