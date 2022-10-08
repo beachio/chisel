@@ -32,7 +32,7 @@ function ModelsListContainer(props) {
                   deleteModel={deleteModel}
                   showAlert={showAlert}
                   alertShowing={nav.alertShowing}
-                  isEditable={true}/>
+                  isEditable={true} />
     );
   }
 

@@ -164,20 +164,20 @@ export default class ModelsList extends Component {
             </FlipMove>
           </div>
           {isEditable &&
-              <div styleName="input-wrapper" key="input!">
-                <div styleName="input-wrapper-align">
-                  <InputControl value={this.state.modelName}
-                                label="Add a New Content Type"
-                                placeholder=""
-                                onChange={this.onModelNameChange}
-                                onKeyDown={this.onKeyDown}
-                                DOMRef={c => this.activeInput = c}
-                                icon="plus"
-                                autoFocus
-                                onIconClick={this.onAddModel} />
-                </div>
+            <div styleName="input-wrapper" key="input!">
+              <div styleName="input-wrapper-align">
+                <InputControl value={this.state.modelName}
+                              label="Add a New Content Type"
+                              placeholder=""
+                              onChange={this.onModelNameChange}
+                              onKeyDown={this.onKeyDown}
+                              DOMRef={c => this.activeInput = c}
+                              icon="plus"
+                              autoFocus
+                              onIconClick={this.onAddModel} />
               </div>
-            }
+            </div>
+          }
         </div>
       </ContainerComponent>
     );
