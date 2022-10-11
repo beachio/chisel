@@ -30,7 +30,7 @@ function MainArea(props) {
   const {models, nav} = props;
   const {closeNotification} = props.navActions;
 
-  const noSites = nav.initEnded && !models.sites.length;
+  const noSites = nav.initEnded && !models.currentSite;
 
   return (
     <div styleName="wrapper">
@@ -39,18 +39,18 @@ function MainArea(props) {
         <Header />
         <div styleName="mainArea">
           {noSites ?
-            <>
-              <Routes>
-                <Route path={URL_PROFILE}                        element={<UserProfile />}           />
-                <Route path={URL_PAY_PLANS}                      element={<PayPlans />}              />
-                <Route path={URL_PAYMENT_METHODS}                element={<PaymentMethods />}        />
-              </Routes>
-              <div className="start-working">
-                <InlineSVG className="hammer" src={ImageHammer}/>
-                Add new site to start working
-                <div className="hint">Find "Create new site" button in the sidebar</div>
-              </div>
-            </>
+            <Routes>
+              <Route path={URL_PROFILE}                        element={<UserProfile />}           />
+              <Route path={URL_PAY_PLANS}                      element={<PayPlans />}              />
+              <Route path={URL_PAYMENT_METHODS}                element={<PaymentMethods />}        />
+              <Route path="*" element={
+                <div className="start-working">
+                  <InlineSVG className="hammer" src={ImageHammer}/>
+                  Add new site to start working
+                  <div className="hint">Find "Create new site" button in the sidebar</div>
+                </div>
+              } />
+            </Routes>
           :
             <Routes>
               <Route path={URL_PROFILE}                                         element={<UserProfile />}           />
