@@ -56,7 +56,10 @@ export default class ContentMedia extends ContentBase {
         if (!error) {
           const unit = fileSizeValid.minUnit == BYTES ? 'bytes' : fileSizeValid.minUnit;
           size = convertDataUnits(size, BYTES, fileSizeValid.minUnit);
-          error = `The file size (${size} ${unit}) is smaller than the permissible value: ${fileSizeValid.min} ${unit}!`;
+          if (size == fileSizeValid.min || size == 0)
+            error = `The file size is smaller than the permissible value: ${fileSizeValid.min} ${unit}!`;
+          else
+            error = `The file size (${size} ${unit}) is smaller than the permissible value: ${fileSizeValid.min} ${unit}!`;
         }
         return error;
       }
@@ -69,13 +72,19 @@ export default class ContentMedia extends ContentBase {
         if (!error) {
           const unit = fileSizeValid.maxUnit == BYTES ? 'bytes' : fileSizeValid.maxUnit;
           size = convertDataUnits(size, BYTES, fileSizeValid.maxUnit);
-          error = `The file size (${size} ${unit}) is greater than the permissible value: ${fileSizeValid.max} ${unit}!`;
+          if (size == fileSizeValid.max)
+            error = `The file size is greater than the permissible value: ${fileSizeValid.max} ${unit}!`;
+          else
+            error = `The file size (${size} ${unit}) is greater than the permissible value: ${fileSizeValid.max} ${unit}!`;
         }
       } else {
         max = convertDataUnits(FILE_SIZE_MAX, BYTES, M_BYTES);
         const unit = M_BYTES;
         size = convertDataUnits(size, BYTES, M_BYTES);
-        error = `The file size (${size} ${unit}) is greater than the permissible value: ${max} ${unit}!`;
+        if (size == max)
+          error = `The file size is greater than the permissible value: ${max} ${unit}!`;
+        else
+          error = `The file size (${size} ${unit}) is greater than the permissible value: ${max} ${unit}!`;
       }
       return error;
     }
