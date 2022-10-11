@@ -4,10 +4,12 @@ import {connect} from 'react-redux';
 import {Helmet} from "react-helmet-async";
 
 import Media from 'components/mainArea/media/Media';
+import {addMediaItem} from 'ducks/media';
 
 
 function MediaContainer(props)  {
   const {media, models, nav} = props;
+  const {addMediaItem} = props.mediaActions;
 
   const site = models.currentSite;
   if (!site)
@@ -21,7 +23,8 @@ function MediaContainer(props)  {
     </Helmet>
     <Media mediaItems={media.items}
            currentSite={models.currentSite}
-           alertShowing={nav.alertShowing} />
+           alertShowing={nav.alertShowing}
+           addMediaItem={addMediaItem} />
   </>;
 }
 
@@ -35,7 +38,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    modelsActions:  bindActionCreators({}, dispatch)
+    mediaActions:  bindActionCreators({addMediaItem}, dispatch)
   };
 }
 

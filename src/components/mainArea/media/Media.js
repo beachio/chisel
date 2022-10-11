@@ -1,21 +1,31 @@
 import React, {Component} from 'react';
 import CSSModules from 'react-css-modules';
+import {Parse} from 'parse';
 
+import {filterSpecials, trimFileExt} from 'utils/strings';
+import {MediaItemData} from 'models/MediaItemData';
+import {FILE_SIZE_MAX} from 'ConnectConstants';
+import {BYTES, convertDataUnits, M_BYTES} from 'utils/common';
+import LoaderComponent from 'components/elements/LoaderComponent/LoaderComponent';
 import ContainerComponent from 'components/elements/ContainerComponent/ContainerComponent';
 import InputControl from 'components/elements/InputControl/InputControl';
 import MediaView from 'components/elements/MediaView/MediaView';
 
 import styles from './Media.sss';
 
+
 @CSSModules(styles, {allowMultiple: true})
 export default class Media extends Component {
   state = {
     selectedItems: [],
-    searchText: ''
+    searchText: '',
+    loading: false,
+    error: ''
   };
 
   activeInput = null;
   returnFocus = false;
+
 
   componentDidUpdate() {
     if (!this.props.alertShowing && this.returnFocus && this.activeInput) {
@@ -41,12 +51,82 @@ export default class Media extends Component {
     this.focusElm.focus();
   };
 
+  onSelect = (item) => {
+    let items = this.state.selectedItems;
+    let ind = items.indexOf(item);
+    if (ind == -1)
+      items.push(item);
+    else
+      items.splice(ind, 1);
+    this.setState({selectedItems: items});
+  };
+
+  onNew = event => {
+    const file = event.target.files[0];
+    if (!file)
+      return;
+
+    const checkSizeError = this.checkSize(file.size);
+    if (checkSizeError) {
+      this.setState({error: checkSizeError});
+      return;
+    }
+
+    this.setState({loading: true});
+    let parseFile = new Parse.File(filterSpecials(file.name), file, file.type);
+    parseFile.save().then(() => {
+      this.setState({loading: false});
+
+      const {addMediaItem} = this.props;
+
+      let item = new MediaItemData();
+      item.file = parseFile;
+      item.name = trimFileExt(file.name);
+      item.type = file.type;
+      item.size = file.size;
+      item.site = this.props.currentSite;
+      addMediaItem(item);
+    });
+  };
+
+  checkSize = size => {
+    if (!size)
+      return;
+
+    if (size > FILE_SIZE_MAX) {
+      let max = convertDataUnits(FILE_SIZE_MAX, BYTES, M_BYTES);
+      size = convertDataUnits(size, BYTES, M_BYTES);
+      if (size == max)
+        return `The file size is greater than the permissible value: ${max} ${M_BYTES}!`;
+      else
+        return `The file size (${size} ${M_BYTES}) is greater than the permissible value: ${max} ${M_BYTES}!`;
+    }
+  };
+
   render() {
     const {mediaItems, currentSite} = this.props;
 
     return (
       <ContainerComponent title="Media">
         <div styleName="content">
+
+          {this.state.loading ? (
+            <div>
+              <LoaderComponent/>
+            </div>
+          ) : (
+            <div styleName="media-button media-upload">
+              Upload New
+              <input styleName="media-hidden"
+                     type="file"
+                     onChange={this.onNew}/>
+            </div>
+          )}
+
+          <div>
+            {this.state.error}
+          </div>
+
           <div styleName="input-wrapper">
             <div styleName="input-wrapper-align">
               <InputControl label="Search"
