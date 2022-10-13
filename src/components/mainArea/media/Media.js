@@ -66,6 +66,12 @@ export default class Media extends Component {
     if (!file)
       return;
 
+    let {type} = file;
+    //workaround (when one uplods a font, file.type will be blank)
+    const fileExt = file.name.substring(file.name.lastIndexOf('.') + 1);
+    if (!type && (fileExt == `otf` || fileExt == `ttf` || fileExt == `woff` || fileExt == `woff2`))
+      type = 'font/ttf';
+
     const checkSizeError = this.checkSize(file.size);
     if (checkSizeError) {
       this.setState({error: checkSizeError});
@@ -73,7 +79,7 @@ export default class Media extends Component {
     }
 
     this.setState({loading: true});
-    let parseFile = new Parse.File(filterSpecials(file.name), file, file.type);
+    let parseFile = new Parse.File(filterSpecials(file.name), file, type);
     parseFile.save().then(() => {
       this.setState({loading: false});
 
@@ -82,7 +88,7 @@ export default class Media extends Component {
       let item = new MediaItemData();
       item.file = parseFile;
       item.name = trimFileExt(file.name);
-      item.type = file.type;
+      item.type = type;
       item.size = file.size;
       item.site = this.props.currentSite;
       addMediaItem(item);

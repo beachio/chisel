@@ -186,14 +186,20 @@ export default class ContentMedia extends ContentBase {
       return;
     }
 
-    const checkTypeError = this.checkType(file.type);
+    let {type} = file;
+    //workaround (when one uplods a font, file.type will be blank)
+    const fileExt = file.name.substring(file.name.lastIndexOf('.') + 1);
+    if (!type && (fileExt == `otf` || fileExt == `ttf` || fileExt == `woff` || fileExt == `woff2`))
+      type = 'font/ttf';
+
+    const checkTypeError = this.checkType(type);
     if (checkTypeError) {
       this.setState({error: checkTypeError});
       return;
     }
 
     this.setState({loading: true});
-    let parseFile = new Parse.File(filterSpecials(file.name), file, file.type);
+    let parseFile = new Parse.File(filterSpecials(file.name), file, type);
     parseFile.save().then(() => {
       this.setState({loading: false});
 
@@ -202,7 +208,7 @@ export default class ContentMedia extends ContentBase {
       let item = new MediaItemData();
       item.file = parseFile;
       item.name = trimFileExt(file.name);
-      item.type = file.type;
+      item.type = type;
       item.size = file.size;
       item.site = this.site;
       addMediaItem(item);
