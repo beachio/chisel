@@ -127,6 +127,27 @@ export function checkFileType(type) {
   return TYPE_OTHER;
 }
 
+export function getTypeString(type) {
+  switch (type) {
+    case TYPE_IMAGE:    return `image/*`;
+    case TYPE_HTML:     return `text/html`;
+    case TYPE_XML:      return `text/xml`;
+    case TYPE_MARKDOWN: return `text/markdown`;
+    case TYPE_JSON:     return `application/json`;
+    case TYPE_TEXT:     return `text/*`;
+    case TYPE_PDF:      return `application/pdf`;
+    case TYPE_F_TEXT:   return `application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.oasis.opendocument.text, application/x-iwork-pages-sffpages, application/rtf`;
+    case TYPE_TABLE:    return `application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.oasis.opendocument.spreadsheet, application/x-iwork-numbers-sffnumbers`;
+    case TYPE_PRESENT:  return `application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/vnd.oasis.opendocument.presentation, application/x-iwork-keynote-sffkey`;
+    case TYPE_FONT:     return `.ttf, .otf, .woff, .woff2`;
+    case TYPE_AUDIO:    return `audio/*`;
+    case TYPE_VIDEO:    return `video/*`;
+    case TYPE_ARCHIVE:  return `.zip, .7z, .rar, .gzip, .tar`;
+    case TYPE_EXE:      return `.exe`;
+  }
+  return null;
+}
+
 
 export function setTimeout64(func, delay) {
   if (delay > 0x7FFFFFFF) //setTimeout limit is MAX_INT32=(2^31-1)

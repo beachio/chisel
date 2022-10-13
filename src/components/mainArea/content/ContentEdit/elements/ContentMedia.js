@@ -7,7 +7,7 @@ import ContentBase from './ContentBase';
 import {MediaItemData} from 'models/MediaItemData';
 import {FILE_SIZE_MAX} from 'ConnectConstants';
 import {MODAL_TYPE_MEDIA} from 'ducks/nav';
-import {convertDataUnits, BYTES, M_BYTES, checkFileType, TYPE_OTHER} from 'utils/common';
+import {convertDataUnits, BYTES, M_BYTES, checkFileType, TYPE_OTHER, getTypeString} from 'utils/common'
 import {trimFileExt, filterSpecials} from 'utils/strings';
 import MediaView from 'components/elements/MediaView/MediaView';
 import LoaderComponent from "components/elements/LoaderComponent/LoaderComponent";
@@ -115,6 +115,19 @@ export default class ContentMedia extends ContentBase {
 
     return error;
   };
+
+  getTypesString = () => {
+    const {fileTypes} = this.state.field.validations;
+    if (!fileTypes || !fileTypes.active || !fileTypes.types || !fileTypes.types.length)
+      return;
+
+    let typesString = '';
+    for (let type of fileTypes.types) {
+      typesString += getTypeString(type) + ', ';
+    }
+    typesString = typesString.substring(0, typesString.length - 2);
+    return typesString;
+  }
 
   getError () {
     const baseError = super.getError();
@@ -228,6 +241,10 @@ export default class ContentMedia extends ContentBase {
     });
   };
 
+  onFileInputClick = event => {
+    event.target.value = null;
+  };
+
   onMediaClear(item) {
     this.props.removeMediaItem(item);
 
@@ -293,8 +310,10 @@ export default class ContentMedia extends ContentBase {
             Upload New
             <input styleName="media-hidden"
                    type="file"
+                   accept={this.getTypesString()}
                    disabled={!isEditable}
-                   onChange={this.onMediaNew}/>
+                   onChange={this.onMediaNew}
+                   onClick={this.onFileInputClick} />
           </div>
           <div styleName={btnStyle + ` media-insert`}
                onClick={this.onMediaChoose}>
