@@ -4,7 +4,7 @@ import CSSModules from 'react-css-modules';
 
 import {
   checkFileType, TYPE_AUDIO, TYPE_IMAGE, TYPE_PDF, TYPE_TEXT, TYPE_F_TEXT, TYPE_VIDEO, TYPE_HTML, TYPE_PRESENT,
-  TYPE_TABLE, TYPE_JSON, TYPE_XML, TYPE_MARKDOWN, TYPE_ARCHIVE, TYPE_EXE
+  TYPE_TABLE, TYPE_JSON, TYPE_XML, TYPE_MARKDOWN, TYPE_FONT, TYPE_ARCHIVE, TYPE_EXE
 } from "utils/common";
 
 import styles from './MediaView.sss';
@@ -23,6 +23,7 @@ export default class MediaView extends Component {
       case TYPE_F_TEXT:   return 'doc';
       case TYPE_TABLE:    return 'xls';
       case TYPE_PRESENT:  return 'ppt';
+      case TYPE_FONT:     return 'font';
       case TYPE_ARCHIVE:  return 'archive';
       case TYPE_EXE:      return 'exe';
     }

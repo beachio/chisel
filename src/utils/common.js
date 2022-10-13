@@ -50,13 +50,14 @@ export const TYPE_PDF     = "PDF";
 export const TYPE_F_TEXT  = "Formatted text";
 export const TYPE_TABLE   = "Table";
 export const TYPE_PRESENT = "Presentation";
+export const TYPE_FONT    = "Font";
 export const TYPE_AUDIO   = "Audio";
 export const TYPE_VIDEO   = "Video";
 export const TYPE_ARCHIVE = "Archive";
 export const TYPE_EXE     = "Windows program";
 export const TYPE_OTHER   = "Other";
 export const FILE_TYPES = [TYPE_IMAGE, TYPE_TEXT, TYPE_HTML, TYPE_XML, TYPE_MARKDOWN, TYPE_JSON, TYPE_PDF, TYPE_F_TEXT,
-  TYPE_TABLE, TYPE_PRESENT, TYPE_AUDIO, TYPE_VIDEO, TYPE_ARCHIVE, TYPE_EXE, TYPE_OTHER];
+  TYPE_TABLE, TYPE_PRESENT, TYPE_FONT, TYPE_AUDIO, TYPE_VIDEO, TYPE_ARCHIVE, TYPE_EXE, TYPE_OTHER];
 
 export function checkFileType(type) {
   if (type.slice(0, 6) == `image/`)
@@ -100,6 +101,9 @@ export function checkFileType(type) {
            type == `application/x-iwork-keynote-sffkey`)
     return TYPE_PRESENT;
     
+  else if (type.slice(0, 5) == `font/`)
+    return TYPE_FONT;
+
   else if (type.slice(0, 6) == `audio/`)
     return TYPE_AUDIO;
     
