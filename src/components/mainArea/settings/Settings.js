@@ -76,6 +76,10 @@ export default class Settings extends Component {
     this.setState({dirty: true, icon: parseFile});
   };
 
+  onFileInputClick = event => {
+    event.target.value = null;
+  };
+
   onTriggerWebhook = () => {
     const {webhook} = this.state;
     if (!webhook)
@@ -181,9 +185,10 @@ export default class Settings extends Component {
             Upload Site Icon
             <input styleName="icon-hidden"
                    type="file"
-                   accept="image/jpeg,image/png,image/gif"
+                   accept="image/*"
                    disabled={!isEditable}
-                   onChange={this.onChangeIcon} />
+                   onChange={this.onChangeIcon}
+                   onClick={this.onFileInputClick} />
           </div>
         </div>
         {this.state.errorFile &&
