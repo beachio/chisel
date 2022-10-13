@@ -120,7 +120,8 @@ export function checkFileType(type) {
   else if (type == `application/vnd.microsoft.portable-executable` ||
            type == `application/octet-stream` ||
            type == `application/exe` ||
-           type == `application/x-exe`)
+           type == `application/x-exe` ||
+           type == `application/x-msdownload`)
     return TYPE_EXE;
   
   return TYPE_OTHER;
