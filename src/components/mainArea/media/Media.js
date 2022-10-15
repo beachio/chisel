@@ -78,7 +78,11 @@ export default class Media extends Component {
       return;
     }
 
-    this.setState({loading: true});
+    this.setState({
+      error: null,
+      loading: true
+    });
+
     let parseFile = new Parse.File(filterSpecials(file.name), file, type);
     parseFile.save().then(() => {
       this.setState({loading: false});
@@ -109,30 +113,20 @@ export default class Media extends Component {
     }
   };
 
+  onClickError = () => {
+    this.setState({error: null});
+  };
+
+  onFileInputClick = event => {
+    event.target.value = null;
+  };
+
   render() {
     const {mediaItems, currentSite} = this.props;
 
     return (
       <ContainerComponent title="Media">
         <div styleName="content">
-
-          {this.state.loading ? (
-            <div>
-              <LoaderComponent/>
-            </div>
-          ) : (
-            <div styleName="media-button media-upload">
-              Upload New
-              <input styleName="media-hidden"
-                     type="file"
-                     onChange={this.onNew}/>
-            </div>
-          )}
-
-          <div>
-            {this.state.error}
-          </div>
-
           <div styleName="input-wrapper">
             <div styleName="input-wrapper-align">
               <InputControl label="Search"
@@ -145,6 +139,27 @@ export default class Media extends Component {
                             onChange={this.onSearch} />
             </div>
           </div>
+
+          {this.state.loading ?
+            <div>
+              <LoaderComponent/>
+            </div>
+          :
+            <div styleName="media-button media-upload">
+              Upload New
+              <input styleName="media-hidden"
+                     type="file"
+                     onChange={this.onNew}
+                     onClick={this.onFileInputClick} />
+            </div>
+          }
+
+          {this.state.error &&
+            <div styleName="error"
+                 onClick={this.onClickError}>
+              {this.state.error}
+            </div>
+          }
 
           <div styleName="media">
             {
