@@ -33,7 +33,7 @@ export default class MediaView extends Component {
   getIcon (item) {
     const iconName = this.getIconName(item.type);
     return (
-      <a styleName="link"
+      <a styleName="item"
          href={item.file.url()}
          target="_blank">
         <InlineSVG styleName="icon"
@@ -51,7 +51,8 @@ export default class MediaView extends Component {
     switch (checkFileType(item.type)) {
       case TYPE_IMAGE:
         return (
-          <a href={item.file.url()}
+          <a styleName="item"
+             href={item.file.url()}
              target="_blank">
             <div styleName="image"
                  style={{backgroundImage: `url(${item.file.url()})`}}>
@@ -61,20 +62,24 @@ export default class MediaView extends Component {
     
       case TYPE_AUDIO:
         return (
-          <audio src={item.file.url()}
-                 type={item.type}
-                 controls
-                 styleName="audio">
-          </audio>
+          <div styleName="item">
+            <audio src={item.file.url()}
+                   type={item.type}
+                   controls
+                   styleName="audio">
+            </audio>
+          </div>
         );
     
       case TYPE_VIDEO:
         return (
-          <video src={item.file.url()}
-                 type={item.type}
-                 controls
-                 styleName="video">
-          </video>
+          <div styleName="item">
+            <video src={item.file.url()}
+                   type={item.type}
+                   controls
+                   styleName="video">
+            </video>
+          </div>
         );
     
       default:
