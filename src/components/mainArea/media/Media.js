@@ -70,7 +70,7 @@ export default class Media extends Component {
     //workaround (when one uplods a font, file.type will be blank)
     const fileExt = file.name.substring(file.name.lastIndexOf('.') + 1);
     if (!type && (fileExt == `otf` || fileExt == `ttf` || fileExt == `woff` || fileExt == `woff2`))
-      type = 'font/ttf';
+      type = 'font/' + fileExt;
 
     const checkSizeError = this.checkSize(file.size);
     if (checkSizeError) {
