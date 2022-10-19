@@ -47,6 +47,8 @@ export default class InputControl extends Component {
       inputStyles += ' input-titled';
     if (red)
       inputStyles += ' input-red';
+    if (icon)
+      inputStyles += ' input-icon';
 
     let iconEl;
     if (icon)
