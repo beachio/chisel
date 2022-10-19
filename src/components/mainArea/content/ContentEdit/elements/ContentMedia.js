@@ -280,12 +280,9 @@ export default class ContentMedia extends ContentBase {
             <InputControl placeholder="File name"
                           readOnly={!isEditable}
                           onChange={e => this.onMediaNameChange(e, item)}
+                          icon={isEditable ? "cross" : undefined}
+                          onIconClick={() => this.onMediaClear(item)}
                           value={item.name} />
-            {isEditable &&
-              <InlineSVG styleName="media-cross"
-                         src={ImageIconDelete}
-                         onClick={() => this.onMediaClear(item)}/>
-            }
           </div>
           <MediaView item={item} />
         </div>
