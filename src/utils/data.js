@@ -35,7 +35,7 @@ export function getUser(email) {
 
   return send(
     new Parse.Query(Parse.User)
-      .equalTo("email", email)
+      .equalTo("username", email)
       .first()
     )
       .then(user_o => {
