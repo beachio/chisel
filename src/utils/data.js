@@ -365,3 +365,11 @@ export function getPayMethod(id) {
   }
   return null;
 }
+
+//==== openai===
+
+export function openAiCompletion(prompt) {
+  return send(
+    Parse.Cloud.run('openAiCompletion', {prompt})
+  );
+}

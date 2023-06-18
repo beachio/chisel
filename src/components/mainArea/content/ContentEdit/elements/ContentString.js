@@ -11,9 +11,11 @@ import InputControl from 'components/elements/InputControl/InputControl';
 import DynamicListComponent from 'components/elements/DynamicListComponent/DynamicListComponent';
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import MarkdownEditor from 'components/elements/MarkdownEditor/MarkdownEditor';
+import LoaderComponent from 'components/elements/LoaderComponent/LoaderComponent';
 import {MODAL_TYPE_WYSIWYG, MODAL_TYPE_MARKDOWN} from 'ducks/nav';
 import {addElectronContextMenu} from 'utils/common';
 import {filterSpecialsAndCapital, checkURL} from 'utils/strings';
+import {openAiCompletion} from 'utils/data';
 
 import * as ftps from 'models/ModelData';
 
@@ -24,6 +26,8 @@ import ImageIconLink from 'assets/images/icons/link.svg';
 
 @CSSModules(styles, {allowMultiple: true})
 export default class ContentString extends ContentBase {
+  textarea;
+
   constructor (props) {
     super(props);
 
@@ -214,6 +218,29 @@ export default class ContentString extends ContentBase {
     );
   };
 
+  textareaRef = elm => {
+    this.textarea = elm;
+    addElectronContextMenu(elm, !this.props.isEditable);
+  };
+
+  onAiComplete = () => {
+    let prompt = window.getSelection().toString();
+    if (!prompt)
+      prompt = this.state.value;
+    this.setState({aiLoader: true});
+
+    openAiCompletion(prompt)
+      .then(res => {
+        let newText = this.state.value + ' \n' + res.toString().trim();
+        this.setValue(newText);
+        this.setState({aiLoader: false});
+      })
+      .catch(e => {
+        console.error(e);
+        this.setState({aiLoader: false});
+      });
+  };
+
   getTitle() {
     const {field} = this.state;
 
@@ -340,26 +367,46 @@ export default class ContentString extends ContentBase {
 
         switch (field.appearance) {
           case ftps.FIELD_APPEARANCE__LONG_TEXT__SINGLE:
-            return (
+            return (<>
               <div styleName="input-wrapper">
                 <InputControl type="big"
                               value={value}
                               readOnly={!isEditable}
                               onChange={this.onChange} />
               </div>
-            );
+              {this.state.aiLoader ?
+                <div styleName="ai-loader">
+                  <LoaderComponent />
+                </div>
+              :
+                <div styleName="ai-complete"
+                     onClick={this.onAiComplete} >
+                  AI Complete
+                </div>
+              }
+            </>);
 
           case ftps.FIELD_APPEARANCE__LONG_TEXT__MULTI:
-            return (
+            return (<>
               <textarea styleName="textarea"
                         value={value}
-                        ref={elm => addElectronContextMenu(elm, !isEditable)}
+                        ref={elm => this.textareaRef(elm)}
                         readOnly={!isEditable}
                         onChange={this.onChangeTextarea} />
-            );
+              {this.state.aiLoader ?
+                <div styleName="ai-loader">
+                  <LoaderComponent />
+                </div>
+                :
+                <div styleName="ai-complete"
+                     onClick={this.onAiComplete} >
+                  AI Complete
+                </div>
+              }
+            </>);
 
           case ftps.FIELD_APPEARANCE__LONG_TEXT__WYSIWYG:
-            return (
+            return (<>
               <Editor styleName="wysiwig"
                       text={value}
                       onChange={this.onChangeWysiwyg}
@@ -367,14 +414,34 @@ export default class ContentString extends ContentBase {
                         placeholder: false,
                         disableEditing: !isEditable
                       }} />
-            );
+              {this.state.aiLoader ?
+                <div styleName="ai-loader">
+                  <LoaderComponent />
+                </div>
+                :
+                <div styleName="ai-complete"
+                     onClick={this.onAiComplete} >
+                  AI Complete
+                </div>
+              }
+            </>);
 
           case ftps.FIELD_APPEARANCE__LONG_TEXT__MARKDOWN:
-            return (
+            return (<>
               <MarkdownEditor value={value}
                               readOnly={!isEditable}
                               onChange={this.onChangeMarkdown} />
-            );
+              {this.state.aiLoader ?
+                <div styleName="ai-loader">
+                  <LoaderComponent />
+                </div>
+                :
+                <div styleName="ai-complete"
+                     onClick={this.onAiComplete} >
+                  AI Complete
+                </div>
+              }
+            </>);
         }
     }
 
