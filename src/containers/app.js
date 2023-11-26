@@ -21,10 +21,11 @@ import ReferenceModal from 'components/modals/ReferenceModal/ReferenceModal';
 import ModelChooseModal from 'components/modals/ModelChooseModal/ModelChooseModal';
 import CollabRoleModal from 'components/modals/CollabRoleModal/CollabRoleModal';
 import AlertModal, {ALERT_TYPE_ALERT} from 'components/modals/AlertModal/AlertModal';
+import AIPromptModal from "components/modals/AIPromptModal/AIPromptModal";
 import {
   URL_USERSPACE, URL_INVALID_LINK, URL_EMAIL_VERIFY, URL_PASSWORD_SET, URL_PASSWORD_SUCCESS, URL_SIGN,
   changeLocation, closeAlert, closeModal, MODAL_TYPE_SITE, MODAL_TYPE_FIELD, MODAL_TYPE_MEDIA, MODAL_TYPE_REFERENCE,
-  MODAL_TYPE_WYSIWYG, MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN, MODAL_TYPE_ROLE
+  MODAL_TYPE_WYSIWYG, MODAL_TYPE_MODEL_CHOOSE, MODAL_TYPE_MARKDOWN, MODAL_TYPE_ROLE, MODAL_TYPE_AI_PROMPT
 } from 'ducks/nav';
 import {addSite, addField, updateField} from 'ducks/models';
 import {withRouter} from 'utils/routing';
@@ -128,6 +129,10 @@ class App extends Component {
         case MODAL_TYPE_ROLE:
           return <CollabRoleModal params={nav.modalParams}
                                   onClose={closeModal} />;
+
+        case MODAL_TYPE_AI_PROMPT:
+          return <AIPromptModal params={nav.modalParams}
+                                onClose={closeModal} />;
       }
     };
 

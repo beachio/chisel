@@ -12,7 +12,7 @@ import DynamicListComponent from 'components/elements/DynamicListComponent/Dynam
 import DropdownControl from 'components/elements/DropdownControl/DropdownControl';
 import MarkdownEditor from 'components/elements/MarkdownEditor/MarkdownEditor';
 import LoaderComponent from 'components/elements/LoaderComponent/LoaderComponent';
-import {MODAL_TYPE_WYSIWYG, MODAL_TYPE_MARKDOWN} from 'ducks/nav';
+import {MODAL_TYPE_WYSIWYG, MODAL_TYPE_MARKDOWN, MODAL_TYPE_AI_PROMPT} from 'ducks/nav';
 import {addElectronContextMenu} from 'utils/common';
 import {filterSpecialsAndCapital, checkURL} from 'utils/strings';
 import {openAiCompletion} from 'utils/data';
@@ -224,21 +224,32 @@ export default class ContentString extends ContentBase {
   };
 
   onAiComplete = () => {
-    let prompt = window.getSelection().toString();
-    if (!prompt)
-      prompt = this.state.value;
-    this.setState({aiLoader: true});
+    const complete = prompt => {
+      this.setState({aiLoader: true});
+      openAiCompletion(prompt)
+        .then(res => {
+          console.log("AI finish reason: " + res.finish_reason);
+          let resText = res.message.content.toString().trim();
+          let newText;
+          if (!this.state.value.trim())
+            newText = resText;
+          else
+            newText = this.state.value + ' \n' + resText;
+          this.setValue(newText);
+          this.setState({aiLoader: false});
+        })
+        .catch(e => {
+          console.error(JSON.stringify(e, null, 2));
+          this.setState({aiLoader: false});
+        });
+    };
 
-    openAiCompletion(prompt)
-      .then(res => {
-        let newText = this.state.value + ' \n' + res.toString().trim();
-        this.setValue(newText);
-        this.setState({aiLoader: false});
-      })
-      .catch(e => {
-        console.error(e);
-        this.setState({aiLoader: false});
-      });
+    this.props.showModal(
+      MODAL_TYPE_AI_PROMPT,
+      {
+        complete
+      }
+    );
   };
 
   getTitle() {
